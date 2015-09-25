@@ -11,13 +11,9 @@ case class Box2d(x: Interval, y: Interval) extends Bounded2d {
 }
 
 @JSExport
+@JSExportAll
 object Box2d {
-  @JSExport("EMPTY")
-  val Empty = Box2d(Interval.Empty, Interval.Empty)
-
-  @JSExport("WHOLE")
-  val Whole = Box2d(Interval.Whole, Interval.Whole)
-
-  @JSExport("UNIT")
-  val Unit = Box2d(Interval.Unit, Interval.Unit)
+  val EMPTY = Box2d(Interval.EMPTY, Interval.EMPTY)
+  val WHOLE = Box2d(Interval.WHOLE, Interval.WHOLE)
+  val UNIT = Box2d(Interval.UNIT, Interval.UNIT)
 }

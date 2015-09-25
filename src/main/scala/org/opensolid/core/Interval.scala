@@ -13,16 +13,11 @@ case class Interval(lower: Double, upper: Double) extends Bounded1d {
 }
 
 @JSExport
+@JSExportAll
 object Interval {
-  @JSExport
   def singleton(value: Double): Interval = Interval(value, value)
 
-  @JSExport("EMPTY")
-  val Empty = Interval(Double.PositiveInfinity, Double.NegativeInfinity)
-
-  @JSExport("WHOLE")
-  val Whole = Interval(Double.NegativeInfinity, Double.PositiveInfinity)
-
-  @JSExport("UNIT")
-  val Unit = Interval(0.0, 1.0)
+  val EMPTY = Interval(Double.PositiveInfinity, Double.NegativeInfinity)
+  val WHOLE = Interval(Double.NegativeInfinity, Double.PositiveInfinity)
+  val UNIT = Interval(0.0, 1.0)
 }

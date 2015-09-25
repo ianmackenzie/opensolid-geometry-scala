@@ -11,7 +11,7 @@ case class Point2d(x: Double, y: Double) extends Bounded2d {
 }
 
 @JSExport
+@JSExportAll
 object Point2d {
-  @JSExport("ORIGIN")
-  val Origin = Point2d(0.0, 0.0)
+  val ORIGIN = Point2d(0.0, 0.0)
 }
