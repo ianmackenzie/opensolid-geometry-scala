@@ -4,7 +4,8 @@ import scala.scalajs.js
 import js.annotation.JSExport
 import js.annotation.JSExportAll
 
-class Handedness private (val value: Int) extends AnyVal {
+@JSExport("Handedness")
+case class Handedness(val value: Int) extends AnyVal {
   @JSExport
   def sign = Sign(value)
 
@@ -30,14 +31,11 @@ object Handedness {
   def fromSignOf(value: Double) = Handedness(value.signum)
 
   @JSExport("LEFT_HANDED")
-  val LeftHanded = new Handedness(-1)
+  val LeftHanded = Handedness(-1)
 
   @JSExport("NONE")
-  val None = new Handedness(0)
+  val None = Handedness(0)
 
   @JSExport("RIGHT_HANDED")
-  val RightHanded = new Handedness(1)
-
-  private val constants = Array(LeftHanded, None, RightHanded)
-  private[opensolid] def apply(value: Int) = constants(value + 1)
+  val RightHanded = Handedness(1)
 }

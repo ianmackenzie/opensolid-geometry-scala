@@ -4,7 +4,8 @@ import scala.scalajs.js
 import js.annotation.JSExport
 import js.annotation.JSExportAll
 
-class Sign private (val value: Int) extends AnyVal {
+@JSExport("Sign")
+case class Sign(val value: Int) extends AnyVal {
   @JSExport("multipliedBy")
   def *(that: Sign) = Sign(value * that.value)
 
@@ -18,14 +19,11 @@ object Sign {
   def of(value: Double) = Sign(value.signum)
 
   @JSExport("NEGATIVE")
-  val Negative = new Sign(-1)
+  val Negative = Sign(-1)
 
   @JSExport("ZERO")
-  val Zero = new Sign(0)
+  val Zero = Sign(0)
 
   @JSExport("POSITIVE")
-  val Positive = new Sign(1)
-
-  private val constants = Array(Negative, Zero, Positive)
-  private[opensolid] def apply(value: Int) = constants(value + 1)
+  val Positive = Sign(1)
 }
