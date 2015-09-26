@@ -6,9 +6,9 @@ import js.annotation.JSExportAll
 
 @JSExport("Interval")
 @JSExportAll
-case class Interval(lower: Double, upper: Double) extends Bounded1d {
-  def width: Double = upper - lower
-  def median: Double = lower + 0.5 * width
+case class Interval(lowerBound: Double, upperBound: Double) extends Bounded1d {
+  def width: Double = upperBound - lowerBound
+  def median: Double = lowerBound + 0.5 * width
   def bounds: Interval = this
 }
 
