@@ -1,4 +1,4 @@
-package org.opensolid.core
+package org.opensolid
 
 trait Bounded2d {
   def bounds: Box2d

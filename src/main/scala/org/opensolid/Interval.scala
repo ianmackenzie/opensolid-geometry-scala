@@ -1,10 +1,10 @@
-package org.opensolid.core
+package org.opensolid
 
 import scala.scalajs.js
 import js.annotation.JSExport
 import js.annotation.JSExportAll
 
-@JSExport
+@JSExport("Interval")
 @JSExportAll
 case class Interval(lower: Double, upper: Double) extends Bounded1d {
   def width: Double = upper - lower
@@ -12,12 +12,17 @@ case class Interval(lower: Double, upper: Double) extends Bounded1d {
   def bounds: Interval = this
 }
 
-@JSExport
-@JSExportAll
+@JSExport("Interval_StaticMembers")
 object Interval {
+  @JSExport
   def singleton(value: Double): Interval = Interval(value, value)
 
-  val EMPTY = Interval(Double.PositiveInfinity, Double.NegativeInfinity)
-  val WHOLE = Interval(Double.NegativeInfinity, Double.PositiveInfinity)
-  val UNIT = Interval(0.0, 1.0)
+  @JSExport("EMPTY")
+  val Empty = Interval(Double.PositiveInfinity, Double.NegativeInfinity)
+
+  @JSExport("WHOLE")
+  val Whole = Interval(Double.NegativeInfinity, Double.PositiveInfinity)
+
+  @JSExport("UNIT")
+  val Unit = Interval(0.0, 1.0)
 }
