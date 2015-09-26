@@ -36,19 +36,24 @@ scalaJSOutputWrapper := (
   }
 
   exports.addTolerantComparisonsTo = function (numberClass) {
-    numberClass.prototype.isLessThanZero = function (precision = 1e-12) {
+    numberClass.prototype.isLessThanZero = function (precision) {
+      if (precision === undefined) precision = 1e-12;
       return this < -precision;
     };
-    numberClass.prototype.isLessThanOrEqualToZero = function (precision = 1e-12) {
+    numberClass.prototype.isLessThanOrEqualToZero = function (precision) {
+      if (precision === undefined) precision = 1e-12;
       return this <= precision;
     };
-    numberClass.prototype.isZero = function (precision = 1e-12) {
+    numberClass.prototype.isZero = function (precision) {
+      if (precision === undefined) precision = 1e-12;
       return this >= -precision && this <= precision;
     };
-    numberClass.prototype.isGreaterThanOrEqualToZero = function (precision = 1e-12) {
+    numberClass.prototype.isGreaterThanOrEqualToZero = function (precision) {
+      if (precision === undefined) precision = 1e-12;
       return this >= -precision;
     };
-    numberClass.prototype.isGreateThanZero = function (precision = 1e-12) {
+    numberClass.prototype.isGreateThanZero = function (precision) {
+      if (precision === undefined) precision = 1e-12;
       return this > precision;
     };
   }
