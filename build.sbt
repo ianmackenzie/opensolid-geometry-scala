@@ -8,6 +8,8 @@ postLinkJSEnv := NodeJSEnv().value
 
 scalaJSStage in Global := FastOptStage
 
+artifactPath in (Compile, fullOptJS) := file("node/opensolid.js")
+
 scalaJSOutputWrapper := (
   """
   'use strict';
