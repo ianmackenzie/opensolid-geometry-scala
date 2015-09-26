@@ -63,3 +63,5 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 opensolid_scala.sublime-workspace
+node/opensolid.js
+node/opensolid.js.map
