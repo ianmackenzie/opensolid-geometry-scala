@@ -4,6 +4,7 @@ let opensolid = require('..');
 let Interval = opensolid.Interval;
 let Point2d = opensolid.Point2d;
 let Handedness = opensolid.Handedness;
+let Sign = opensolid.Sign;
 
 opensolid.addTolerantComparisonsTo(Number);
 
@@ -22,3 +23,9 @@ let small = 1e-8;
 console.log(tiny.isZero());
 console.log(small.isZero());
 console.log(small.isZero(1e-6));
+
+console.log('=== handedness and sign ===')
+console.log(Handedness.RIGHT_HANDED instanceof Handedness);
+console.log(Handedness.RIGHT_HANDED instanceof Sign);
+console.log(Sign.POSITIVE instanceof Handedness);
+console.log(Sign.POSITIVE instanceof Sign);
