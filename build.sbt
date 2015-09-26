@@ -32,5 +32,23 @@ scalaJSOutputWrapper := (
       }
     }
   }
+
+  exports.addTolerantComparisonsTo = function (numberClass) {
+    numberClass.prototype.isLessThanZero = function (precision = 1e-12) {
+      return this < -precision;
+    };
+    numberClass.prototype.isLessThanOrEqualToZero = function (precision = 1e-12) {
+      return this <= precision;
+    };
+    numberClass.prototype.isZero = function (precision = 1e-12) {
+      return this >= -precision && this <= precision;
+    };
+    numberClass.prototype.isGreaterThanOrEqualToZero = function (precision = 1e-12) {
+      return this >= -precision;
+    };
+    numberClass.prototype.isGreateThanZero = function (precision = 1e-12) {
+      return this > precision;
+    };
+  }
   """
 )
