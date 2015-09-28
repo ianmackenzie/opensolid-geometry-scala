@@ -19,8 +19,8 @@ object Sign {
   @JSExport("NEGATIVE")
   val Negative = Sign(-1)
 
-  @JSExport("ZERO")
-  val Zero = Sign(0)
+  @JSExport("NONE")
+  val None = Sign(0)
 
   @JSExport("POSITIVE")
   val Positive = Sign(1)
