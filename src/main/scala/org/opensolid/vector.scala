@@ -3,8 +3,6 @@ package org.opensolid
 import scala.math
 import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
-import org.opensolid.utils.TolerantComparisons
-
 @JSExportAll
 trait Vector {
   def squaredLength: Double
