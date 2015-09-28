@@ -1,8 +1,6 @@
 package org.opensolid
 
-import scala.scalajs.js
-import js.annotation.JSExport
-import js.annotation.JSExportAll
+import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
 @JSExport("Sign")
 case class Sign(val value: Int) extends AnyVal {

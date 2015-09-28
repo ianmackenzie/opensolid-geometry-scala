@@ -1,12 +1,9 @@
 package org.opensolid
 
 import scala.math
+import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
-import scala.scalajs.js
-import js.annotation.JSExport
-import js.annotation.JSExportAll
-
-import org.opensolid.utils._
+import org.opensolid.utils.TolerantComparisons
 
 @JSExportAll
 trait Vector {
