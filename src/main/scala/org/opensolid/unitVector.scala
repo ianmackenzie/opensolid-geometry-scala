@@ -4,7 +4,7 @@ import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
 @JSExport("UnitVector2d")
 @JSExportAll
-class UnitVector2d(x: Double, y: Double) extends Vector2d(x, y) {
+final class UnitVector2d(x: Double, y: Double) extends Vector2d(x, y) {
   override def squaredLength = if (x != 0.0 || y != 0.0) 1.0 else 0.0
   override def length = squaredLength
   override def normalized = this
@@ -27,7 +27,7 @@ object UnitVector2d {
 
 @JSExport("UnitVector3d")
 @JSExportAll
-class UnitVector3d(x: Double, y: Double, z: Double) extends Vector3d(x, y, z) {
+final class UnitVector3d(x: Double, y: Double, z: Double) extends Vector3d(x, y, z) {
   override def squaredLength = if (x != 0.0 || y != 0.0 || z != 0.0) 1.0 else 0.0
   override def length = squaredLength
   override def normalized = this

@@ -4,7 +4,7 @@ import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
 @JSExport("Interval")
 @JSExportAll
-case class Interval(lowerBound: Double, upperBound: Double) extends Bounded1d {
+final case class Interval(lowerBound: Double, upperBound: Double) extends Bounded1d {
   def width: Double = upperBound - lowerBound
   def median: Double = lowerBound + 0.5 * width
   def bounds: Interval = this

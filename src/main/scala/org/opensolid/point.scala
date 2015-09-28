@@ -4,7 +4,7 @@ import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
 @JSExport("Point2d")
 @JSExportAll
-case class Point2d(x: Double, y: Double) extends Bounded2d {
+final case class Point2d(x: Double, y: Double) extends Bounded2d {
   def bounds: Box2d = Box2d(Interval.singleton(x), Interval.singleton(y))
 }
 
@@ -16,7 +16,7 @@ object Point2d {
 
 @JSExport("Point3d")
 @JSExportAll
-case class Point3d(x: Double, y: Double, z: Double) extends Bounded3d {
+final case class Point3d(x: Double, y: Double, z: Double) extends Bounded3d {
   def bounds: Box3d = Box3d(Interval.singleton(x), Interval.singleton(y), Interval.singleton(z))
 }
 

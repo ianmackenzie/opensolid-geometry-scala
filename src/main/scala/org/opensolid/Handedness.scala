@@ -3,7 +3,7 @@ package org.opensolid
 import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
 @JSExport("Handedness")
-case class Handedness(val value: Int) extends AnyVal {
+final case class Handedness(val value: Int) extends AnyVal {
   @JSExport
   def sign = Sign(value)
 
