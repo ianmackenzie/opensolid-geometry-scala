@@ -10,6 +10,7 @@ class UnitVector2d(x: Double, y: Double) extends Vector2d(x, y) {
   override def squaredLength = if (x != 0.0 || y != 0.0) 1.0 else 0.0
   override def length = squaredLength
   override def normalized = this
+  override def toString = s"UnitVector2d($x,$y)"
 }
 
 @JSExport("UnitVector2d_StaticMembers")
@@ -32,6 +33,7 @@ class UnitVector3d(x: Double, y: Double, z: Double) extends Vector3d(x, y, z) {
   override def squaredLength = if (x != 0.0 || y != 0.0 || z != 0.0) 1.0 else 0.0
   override def length = squaredLength
   override def normalized = this
+  override def toString = s"UnitVector3d($x,$y,$z)"
 }
 
 @JSExport("UnitVector3d_StaticMembers")
