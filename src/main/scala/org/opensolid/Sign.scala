@@ -3,7 +3,7 @@ package org.opensolid
 import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
 @JSExport("Sign")
-final case class Sign(val value: Int) extends AnyVal {
+final case class Sign(value: Int) extends AnyVal {
   @JSExport("multipliedBy")
   def *(that: Sign) = Sign(value * that.value)
 
