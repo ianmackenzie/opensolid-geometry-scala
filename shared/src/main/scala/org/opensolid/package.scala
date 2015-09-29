@@ -20,8 +20,41 @@ package object opensolid {
     def isGreaterThanZero: Boolean = value > DefaultPrecision
   }
 
-  implicit class Multiplications(val value: Double) extends AnyVal {
+  implicit class IntervalArithmetic(val value: Double) extends AnyVal {
+    def +(interval: Interval): Interval = {
+      Interval(value + interval.lowerBound, value + interval.upperBound)
+    }
+
+    def -(interval: Interval): Interval = {
+      Interval(value - interval.upperBound, value - interval.lowerBound)
+    }
+    
     def *(interval: Interval): Interval = interval * value
+
+    def /(interval: Interval): Interval = {
+      if (interval.isEmpty) {
+        Interval.Empty
+      } else if (interval.lowerBound > 0.0) {
+        if (value >= 0.0) {
+          Interval(value / interval.upperBound, value / interval.lowerBound)
+        } else {
+          Interval(value / interval.lowerBound, value / interval.upperBound)
+        }
+      } else if (interval.upperBound < 0.0) {
+        if (value >= 0.0) {
+          Interval(value / interval.upperBound, value / interval.lowerBound)
+        } else {
+          Interval(value / interval.lowerBound, value / interval.upperBound)
+        }
+      } else if (value == 0.0) {
+        Interval(0.0)
+      } else {
+        Interval.Whole
+      }
+    }
+  }
+
+  implicit class VectorArithmetic(val value: Double) extends AnyVal {
     def *(vector: Vector2d): Vector2d = vector * value
     def *(vector: Vector3d): Vector3d = vector * value
   }
