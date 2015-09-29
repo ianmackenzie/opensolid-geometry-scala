@@ -1,22 +1,28 @@
 package org
 
 package object opensolid {
-  val DefaultPrecision = 1e-12
+  val DefaultPrecision: Double = 1e-12
 
   implicit class TolerantComparisons(val value: Double) extends AnyVal {
-    def isLessThanZero(precision: Double) = value < -precision
-    def isLessThanZero = value < -DefaultPrecision
+    def isLessThanZero(precision: Double): Boolean = value < -precision
+    def isLessThanZero: Boolean = value < -DefaultPrecision
 
-    def isLessThanOrEqualToZero(precision: Double) = value <= precision
-    def isLessThanOrEqualToZero = value <= DefaultPrecision
+    def isLessThanOrEqualToZero(precision: Double): Boolean = value <= precision
+    def isLessThanOrEqualToZero: Boolean = value <= DefaultPrecision
 
-    def isZero(precision: Double) = -precision <= value && value <= precision
-    def isZero = -DefaultPrecision <= value && value <= DefaultPrecision
+    def isZero(precision: Double): Boolean = -precision <= value && value <= precision
+    def isZero: Boolean = -DefaultPrecision <= value && value <= DefaultPrecision
 
-    def isGreaterThanOrEqualToZero(precision: Double) = value >= -precision
-    def isGreaterThanOrEqualToZero = value >= -DefaultPrecision
+    def isGreaterThanOrEqualToZero(precision: Double): Boolean = value >= -precision
+    def isGreaterThanOrEqualToZero: Boolean = value >= -DefaultPrecision
 
-    def isGreaterThanZero(precision: Double) = value > precision
-    def isGreaterThanZero = value > DefaultPrecision
+    def isGreaterThanZero(precision: Double): Boolean = value > precision
+    def isGreaterThanZero: Boolean = value > DefaultPrecision
+  }
+
+  implicit class Multiplications(val value: Double) extends AnyVal {
+    def *(interval: Interval): Interval = interval * value
+    def *(vector: Vector2d): Vector2d = vector * value
+    def *(vector: Vector3d): Vector3d = vector * value
   }
 }
