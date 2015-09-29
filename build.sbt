@@ -14,7 +14,7 @@ lazy val opensolid = crossProject.in(file(".")).
   ).
   jvmSettings().
   jsSettings(
-    scalaJSStage := FastOptStage,
+    scalaJSStage := FullOptStage,
     postLinkJSEnv := NodeJSEnv().value
   )
 
