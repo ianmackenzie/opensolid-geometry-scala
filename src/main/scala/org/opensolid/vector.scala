@@ -1,17 +1,13 @@
 package org.opensolid
 
 import scala.math
-import scala.scalajs.js.annotation.{JSExport, JSExportAll}
 
-@JSExportAll
 trait Vector {
   def squaredLength: Double
   def length = math.sqrt(squaredLength)
-  def isZero(precision: Double = 1e-12) = squaredLength.isZero(precision * precision)
+  def isZero(precision: Double = DefaultPrecision) = squaredLength.isZero(precision * precision)
 }
 
-@JSExport("Vector2d")
-@JSExportAll
 case class Vector2d(x: Double, y: Double) extends Vector {
   def squaredLength = x * x + y * y
 
@@ -25,14 +21,10 @@ case class Vector2d(x: Double, y: Double) extends Vector {
   }
 }
 
-@JSExport("Vector2d_StaticMembers")
 object Vector2d {
-  @JSExport("ZERO")
   val Zero = Vector2d(0.0, 0.0)
 }
 
-@JSExport("Vector3d")
-@JSExportAll
 case class Vector3d(x: Double, y: Double, z: Double) extends Vector {
   def squaredLength = x * x + y * y + z * z
 
@@ -46,8 +38,6 @@ case class Vector3d(x: Double, y: Double, z: Double) extends Vector {
   }
 }
 
-@JSExport("Vector3d_StaticMembers")
 object Vector3d {
-  @JSExport("ZERO")
   val Zero = Vector3d(0.0, 0.0, 0.0)
 }
