@@ -1,7 +1,7 @@
 package org.opensolid
 
 final case class Box2d(x: Interval, y: Interval) extends Bounded2d {
-  def bounds: Box2d = this
+  override def bounds: Box2d = this
 }
 
 object Box2d {
@@ -11,7 +11,7 @@ object Box2d {
 }
 
 final case class Box3d(x: Interval, y: Interval, z: Interval) extends Bounded3d {
-  def bounds: Box3d = this
+  override def bounds: Box3d = this
 }
 
 object Box3d {

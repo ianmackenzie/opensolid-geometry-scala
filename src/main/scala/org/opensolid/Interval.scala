@@ -3,7 +3,7 @@ package org.opensolid
 final case class Interval(lowerBound: Double, upperBound: Double) extends Bounded1d {
   def width: Double = upperBound - lowerBound
   def median: Double = lowerBound + 0.5 * width
-  def bounds: Interval = this
+  override def bounds: Interval = this
 }
 
 object Interval {
