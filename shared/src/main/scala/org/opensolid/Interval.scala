@@ -1,12 +1,7 @@
 package org.opensolid
 
-final class Interval private (val lowerBound: Double, val upperBound: Double) extends Bounded1d {
-  override def toString: String = s"Interval($upperBound, $lowerBound)"
-
-  override def equals(other: Any): Boolean = other match {
-    case that: Interval => lowerBound == that.lowerBound && upperBound == that.upperBound
-    case _ => false
-  }
+final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
+  def this(value: Double) = this(value, value)
 
   override def bounds: Interval = this
 
@@ -30,20 +25,7 @@ final class Interval private (val lowerBound: Double, val upperBound: Double) ex
 }
 
 object Interval {
-  def apply(lowerBound: Double, upperBound: Double): Interval = {
-    if (lowerBound <= upperBound) {
-      new Interval(lowerBound, upperBound)
-    } else {
-      Interval.Empty
-    }
-  }
-
-  def apply(value: Double): Interval = new Interval(value, value)
-
-  def unapply(argument: Any): Option[(Double, Double)] = argument match {
-    case interval: Interval => Some((interval.lowerBound, interval.upperBound))
-    case _ => None
-  }
+  def apply(value: Double): Interval = new Interval(value)
 
   val Empty: Interval = new Interval(Double.PositiveInfinity, Double.NegativeInfinity)
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
