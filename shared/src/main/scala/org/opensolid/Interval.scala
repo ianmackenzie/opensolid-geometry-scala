@@ -15,6 +15,8 @@ final class Interval private (val lowerBound: Double, val upperBound: Double) ex
   def median: Double = lowerBound + 0.5 * width
 
   def unary_- : Interval = Interval(-upperBound, -lowerBound)
+  
+  def negated: Interval = -this
 
   def *(value: Double): Interval = {
     if (value >= 0.0) {
@@ -23,6 +25,8 @@ final class Interval private (val lowerBound: Double, val upperBound: Double) ex
       Interval(value * upperBound, value * lowerBound)
     }
   }
+
+  def multipliedBy(value: Double): Interval = this * value
 }
 
 object Interval {
