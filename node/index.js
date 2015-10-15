@@ -22,7 +22,9 @@ for (let exportedName in opensolid) {
   }
 }
 
-opensolid.addTolerantComparisonsTo = function (numberClass) {
+// Define function for (optionally) adding tolerant comparison functions to
+// JavaScript numbers
+opensolid.addComparisonFunctionsTo = function (numberClass) {
   numberClass.prototype.isLessThanZero = function (precision) {
     if (precision === undefined) precision = 1e-12;
     return this < -precision;
@@ -43,6 +45,23 @@ opensolid.addTolerantComparisonsTo = function (numberClass) {
     if (precision === undefined) precision = 1e-12;
     return this > precision;
   };
-}
+};
+
+// Define function for (optionally) adding interval/vector arithmetic functions
+// to JavaScript numbers
+opensolid.addArithmeticFunctionsTo = function(numberClass) {
+  numberClass.prototype.plus = function(other) {
+    return opensolid.ScalarOperations().sum(this, other);
+  }
+  numberClass.prototype.minus = function(other) {
+    return opensolid.ScalarOperations().difference(this, other);
+  }
+  numberClass.prototype.times = function(other) {
+    return opensolid.ScalarOperations().product(this, other);
+  }
+  numberClass.prototype.dividedBy = function(other) {
+    return opensolid.ScalarOperations().quotient(this, other);
+  }
+};
 
 module.exports = opensolid;

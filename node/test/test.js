@@ -8,11 +8,13 @@ const Sign = opensolid.Sign;
 const Vector2d = opensolid.Vector2d;
 const UnitVector2d = opensolid.UnitVector2d;
 
-opensolid.addTolerantComparisonsTo(Number);
+opensolid.addComparisonFunctionsTo(Number);
+opensolid.addArithmeticFunctionsTo(Number);
 
 console.log("=== interval ===");
 const interval = Interval(2, 3);
 console.log(interval.median);
+console.log((-4).times(interval).toString());
 
 console.log("=== singleton ===");
 const singleton = Interval.singleton(5);
