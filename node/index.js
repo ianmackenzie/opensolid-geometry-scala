@@ -39,7 +39,7 @@ opensolid.addTolerantComparisonsTo = function (numberClass) {
     if (precision === undefined) precision = 1e-12;
     return this >= -precision;
   };
-  numberClass.prototype.isGreateThanZero = function (precision) {
+  numberClass.prototype.isGreaterThanZero = function (precision) {
     if (precision === undefined) precision = 1e-12;
     return this > precision;
   };
