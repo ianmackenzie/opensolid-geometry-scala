@@ -17,7 +17,7 @@ lazy val opensolid = crossProject.in(file(".")).
     scalaJSStage := FullOptStage,
     scalaJSOutputWrapper := (
       """
-      'use strict';
+      "use strict";
       let __ScalaJSEnv = {
         exportsNamespace: exports
       };
