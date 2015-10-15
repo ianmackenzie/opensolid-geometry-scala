@@ -66,3 +66,5 @@ opensolid_scala.sublime-workspace
 node/opensolid.js
 node/opensolid.js.map
 opensolid-scala.sublime-workspace
+node/lib/opensolid-opt.js
+node/lib/opensolid-opt.js.map

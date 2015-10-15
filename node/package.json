@@ -1,0 +1,33 @@
+{
+  "name": "opensolid",
+  "version": "0.1.0-SNAPSHOT",
+  "description": "3D geometry library",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianmackenzie/opensolid_scala.git"
+  },
+  "keywords": [
+    "opensolid",
+    "3d",
+    "cad",
+    "geometry",
+    "curve",
+    "surface",
+    "point",
+    "vector",
+    "axis",
+    "plane",
+    "triangle",
+    "transformation"
+  ],
+  "author": "Ian Mackenzie <ian.e.mackenzie@gmail.com>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/ianmackenzie/opensolid_scala/issues"
+  },
+  "homepage": "https://github.com/ianmackenzie/opensolid_scala#readme"
+}

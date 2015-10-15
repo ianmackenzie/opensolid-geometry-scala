@@ -1,6 +1,6 @@
 lazy val root =
   project.in(file(".")).
-  aggregate(opensolidJS, opensolidJVM).
+  aggregate(opensolidJVM, opensolidJS).
   settings(publish := {}, publishLocal := {})
 
 lazy val opensolid = crossProject.in(file(".")).
@@ -15,7 +15,17 @@ lazy val opensolid = crossProject.in(file(".")).
   jvmSettings().
   jsSettings(
     scalaJSStage := FullOptStage,
-    postLinkJSEnv := NodeJSEnv().value
+    scalaJSOutputWrapper := (
+      """
+      'use strict';
+      let __ScalaJSEnv = {
+        exportsNamespace: exports
+      };
+      """,
+      """
+      """
+    ),
+    artifactPath in (Compile, fullOptJS) := file("node/lib/opensolid-opt.js")
   )
 
 lazy val opensolidJVM = opensolid.jvm
