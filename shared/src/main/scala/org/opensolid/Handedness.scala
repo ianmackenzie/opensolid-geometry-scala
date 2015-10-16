@@ -17,15 +17,19 @@ final case class Handedness(value: Int) {
 }
 
 @JSExport("Handedness$StaticMembers")
-@JSExportAll
 object Handedness {
+  @JSExport
   def fromSign(sign: Sign): Handedness = Handedness(sign.value)
 
+  @JSExport
   def fromSignOf(value: Double): Handedness = Handedness(value.signum)
 
+  @JSExport("LEFT")
   val Left: Handedness = Handedness(-1)
 
+  @JSExport("NONE")
   val None: Handedness = Handedness(0)
 
+  @JSExport("RIGHT")
   val Right: Handedness = Handedness(1)
 }
