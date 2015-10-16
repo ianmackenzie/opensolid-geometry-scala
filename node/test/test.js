@@ -1,6 +1,7 @@
 "use strict";
 
-const opensolid = require('..');
+const opensolid = require("..");
+
 const Interval = opensolid.Interval;
 const Point2d = opensolid.Point2d;
 const Handedness = opensolid.Handedness;
@@ -8,8 +9,8 @@ const Sign = opensolid.Sign;
 const Vector2d = opensolid.Vector2d;
 const UnitVector2d = opensolid.UnitVector2d;
 
-opensolid.addComparisonFunctionsTo(Number);
-opensolid.addArithmeticFunctionsTo(Number);
+require("../arithmetic")
+require("../comparisons")
 
 console.log("=== interval ===");
 const interval = Interval(2, 3);
