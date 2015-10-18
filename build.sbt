@@ -13,20 +13,7 @@ lazy val opensolid = crossProject.in(file(".")).
     testFrameworks += new TestFramework("utest.runner.Framework")
   ).
   jvmSettings().
-  jsSettings(
-    scalaJSStage := FullOptStage,
-    scalaJSOutputWrapper := (
-      """
-      "use strict";
-      let __ScalaJSEnv = {
-        exportsNamespace: exports
-      };
-      """,
-      """
-      """
-    ),
-    artifactPath in (Compile, fullOptJS) := file("node/lib/opensolid-opt.js")
-  )
+  jsSettings(scalaJSStage := FullOptStage)
 
 lazy val opensolidJVM = opensolid.jvm
 
