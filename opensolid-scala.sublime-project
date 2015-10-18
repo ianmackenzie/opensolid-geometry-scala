@@ -10,7 +10,7 @@
     "tab_size": 2,
     "translate_tabs_to_spaces": true,
     "rulers": [100],
-    "match_brackets_angle": true,
+    "match_brackets_angle": false,
     "ensure_newline_at_eof_on_save": true
   },
 }
