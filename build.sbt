@@ -13,7 +13,7 @@ lazy val core = crossProject.in(file(".")).
     testFrameworks += new TestFramework("utest.runner.Framework")
   ).
   jvmSettings().
-  jsSettings(scalaJSStage := FullOptStage)
+  jsSettings(scalaJSStage := FastOptStage)
 
 lazy val coreJVM = core.jvm
 
