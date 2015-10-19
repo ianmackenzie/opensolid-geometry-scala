@@ -7,12 +7,12 @@ final case class Sign(value: Int) {
 
   def *(handedness: Handedness): Handedness = Handedness(value * handedness.value)
 
-  def *(unitVector: UnitVector2d): UnitVector2d = {
-    UnitVector2d(value * unitVector.x, value * unitVector.y)
+  def *(direction: Direction2d): Direction2d = {
+    Direction2d(value * direction.x, value * direction.y)
   }
   
-  def *(unitVector: UnitVector3d): UnitVector3d = {
-    UnitVector3d(value * unitVector.x, value * unitVector.y, value * unitVector.z)
+  def *(direction: Direction3d): Direction3d = {
+    Direction3d(value * direction.x, value * direction.y, value * direction.z)
   }
 }
 

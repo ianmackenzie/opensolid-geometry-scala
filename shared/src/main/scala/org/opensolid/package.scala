@@ -59,5 +59,9 @@ package object opensolid {
     def *(vector: Vector2d): Vector2d = vector * value
 
     def *(vector: Vector3d): Vector3d = vector * value
+
+    def *(direction: Direction2d): Vector2d = direction * value
+
+    def *(direction: Direction3d): Vector3d = direction * value
   }
 }
