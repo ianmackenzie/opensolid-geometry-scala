@@ -30,12 +30,12 @@ object Direction2d {
       val squaredNorm = x * x + y * y
       if (squaredNorm >= 0.25 && squaredNorm <= 1.0) {
         val norm = math.sqrt(squaredNorm)
-        return Direction2d(x / norm, y / norm)
+        Direction2d(x / norm, y / norm)
       } else {
-        return generate
+        generate
       }
     }
-    return generate
+    generate
   }
 
   val None: Direction2d = Direction2d(0.0, 0.0)

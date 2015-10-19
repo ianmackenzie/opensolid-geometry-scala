@@ -38,12 +38,12 @@ object Direction3d {
       val squaredNorm = x * x + y * y + z * z
       if (squaredNorm >= 0.25 && squaredNorm <= 1.0) {
         val norm = math.sqrt(squaredNorm)
-        return Direction3d(x / norm, y / norm, z / norm)
+        Direction3d(x / norm, y / norm, z / norm)
       } else {
-        return generate
+        generate
       }
     }
-    return generate
+    generate
   }
 
   val None: Direction3d = Direction3d(0.0, 0.0, 0.0)
