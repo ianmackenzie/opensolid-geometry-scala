@@ -1,6 +1,6 @@
 package org.opensolid
 
-final case class Sign(value: Int) {
+final case class Sign(value: Int) extends AnyVal {
   def unary_- : Sign = Sign(-value)
   
   def *(that: Sign): Sign = Sign(value * that.value)
