@@ -4,7 +4,7 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final case class Direction2d(x: Double, y: Double) extends VectorLike2d[Direction2d] {
+final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d[Direction2d] {
   def components: (Double, Double) = (x, y)
 
   def vector: Vector2d = Vector2d(x, y)

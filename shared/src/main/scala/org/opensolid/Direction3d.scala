@@ -4,7 +4,9 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final case class Direction3d(x: Double, y: Double, z: Double) extends VectorLike3d[Direction3d] {
+final case class Direction3d(x: Double, y: Double, z: Double)
+  extends VectorTransformable3d[Direction3d] {
+  
   def components: (Double, Double, Double) = (x, y, z)
 
   def vector: Vector3d = Vector3d(x, y, z)

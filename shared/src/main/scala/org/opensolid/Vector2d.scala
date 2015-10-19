@@ -3,7 +3,7 @@ package org.opensolid
 import scala.math
 import scala.util.Random
 
-final case class Vector2d(x: Double, y: Double) extends VectorLike2d[Vector2d] {
+final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
   def components: (Double, Double) = (x, y)
 
   def squaredLength: Double = x * x + y * y
