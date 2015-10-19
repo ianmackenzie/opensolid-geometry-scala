@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
   def this(value: Double) = this(value, value)

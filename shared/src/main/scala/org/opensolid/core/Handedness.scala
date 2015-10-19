@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 final case class Handedness(value: Int) {
   def sign: Sign = Sign(value)

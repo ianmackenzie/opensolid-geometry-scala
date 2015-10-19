@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 import scala.math
 import scala.util.Random

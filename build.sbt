@@ -1,11 +1,11 @@
 lazy val root =
   project.in(file(".")).
-  aggregate(opensolidJVM, opensolidJS).
+  aggregate(coreJVM, coreJS).
   settings(publish := {}, publishLocal := {})
 
-lazy val opensolid = crossProject.in(file(".")).
+lazy val core = crossProject.in(file(".")).
   settings(
-    name := "opensolid",
+    name := "opensolid-core",
     version := "0.1.0-SNAPSHOT",
     scalaVersion := "2.11.7",
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
@@ -15,6 +15,6 @@ lazy val opensolid = crossProject.in(file(".")).
   jvmSettings().
   jsSettings(scalaJSStage := FullOptStage)
 
-lazy val opensolidJVM = opensolid.jvm
+lazy val coreJVM = core.jvm
 
-lazy val opensolidJS = opensolid.js
+lazy val coreJS = core.js

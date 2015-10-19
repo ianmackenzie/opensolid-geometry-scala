@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 final case class Box2d(x: Interval, y: Interval) extends Bounded2d {
   override def bounds: Box2d = this

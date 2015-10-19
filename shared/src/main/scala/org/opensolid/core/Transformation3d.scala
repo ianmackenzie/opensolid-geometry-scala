@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 abstract class Transformation3d {
   def apply(length: Double): Double

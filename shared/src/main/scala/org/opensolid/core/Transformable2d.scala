@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 trait Transformable2d[T] {
   def transformedBy(transformation: Transformation2d): T

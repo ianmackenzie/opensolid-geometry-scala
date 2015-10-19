@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 final case class Sign(value: Int) extends AnyVal {
   def unary_- : Sign = Sign(-value)

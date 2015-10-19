@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 final case class CompoundTransformation2d(first: Transformation2d, second: Transformation2d)
   extends Transformation2d {

@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 import scala.annotation.tailrec
 import scala.math

@@ -1,6 +1,6 @@
-package org
+package org.opensolid
 
-package object opensolid {
+package object core {
   val DefaultPrecision: Double = 1e-12
 
   implicit class Scalar(val value: Double) extends AnyVal {

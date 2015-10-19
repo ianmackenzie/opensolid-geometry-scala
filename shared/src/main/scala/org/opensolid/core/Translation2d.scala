@@ -1,4 +1,4 @@
-package org.opensolid
+package org.opensolid.core
 
 final case class Translation2d(vector: Vector2d) extends Transformation2d {
   override def apply(length: Double): Double = length
