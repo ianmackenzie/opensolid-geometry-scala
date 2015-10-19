@@ -14,9 +14,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     squaredLength.isZero(precision * precision)
   }
 
-  override def transformedBy(transformation: Transformation3d): Vector3d = {
-    transformation.transform(this)
-  }
+  override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
   def normalized: Vector3d = {
     if (x != 0.0 || y != 0.0 || z != 0.0) {

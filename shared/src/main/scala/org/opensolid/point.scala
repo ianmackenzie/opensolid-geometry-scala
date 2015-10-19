@@ -6,7 +6,7 @@ final case class Point2d(x: Double, y: Double)
   override def bounds: Box2d = Box2d(Interval(x), Interval(y))
 
   override def transformedBy(transformation: Transformation2d): Point2d = {
-    transformation.transform(this)
+    transformation(this)
   }
 
   override def scaledAbout(point: Point2d, scale: Double): Point2d = point + scale * (this - point)
@@ -26,7 +26,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
   override def bounds: Box3d = Box3d(Interval(x), Interval(y), Interval(z))
 
   override def transformedBy(transformation: Transformation3d): Point3d = {
-    transformation.transform(this)
+    transformation(this)
   }
 
   override def scaledAbout(point: Point3d, scale: Double): Point3d = point + scale * (this - point)

@@ -15,9 +15,7 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
 
-  def transformedBy(transformation: Transformation2d): Direction2d = {
-    transformation.transform(this)
-  }
+  def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
 }
 
 object Direction2d {

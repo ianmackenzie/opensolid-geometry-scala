@@ -14,9 +14,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     squaredLength.isZero(precision * precision)
   }
 
-  override def transformedBy(transformation: Transformation2d): Vector2d = {
-    transformation.transform(this)
-  }
+  override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
 
   def normalized: Vector2d = {
     if (x != 0.0 || y != 0.0) {

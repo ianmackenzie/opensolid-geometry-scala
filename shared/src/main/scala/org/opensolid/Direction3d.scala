@@ -18,7 +18,7 @@ final case class Direction3d(x: Double, y: Double, z: Double)
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
 
   def transformedBy(transformation: Transformation3d): Direction3d = {
-    transformation.transform(this)
+    transformation(this)
   }
 }
 
