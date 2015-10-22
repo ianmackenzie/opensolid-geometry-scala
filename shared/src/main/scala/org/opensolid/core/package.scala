@@ -12,9 +12,13 @@ package object core {
 
     def isLessThanOrEqualToZero: Boolean = value <= DefaultPrecision
 
-    def isZero(precision: Double): Boolean = -precision <= value && value <= precision
+    def isZero(precision: Double): Boolean = value >= -precision && value <= precision
 
-    def isZero: Boolean = -DefaultPrecision <= value && value <= DefaultPrecision
+    def isZero: Boolean = value >= -DefaultPrecision && value <= DefaultPrecision
+
+    def isNotZero(precision: Double): Boolean = value < -precision || value > precision
+
+    def isNotZero: Boolean = value < -DefaultPrecision || value > DefaultPrecision
 
     def isGreaterThanOrEqualToZero(precision: Double): Boolean = value >= -precision
 

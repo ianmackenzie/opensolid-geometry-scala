@@ -17,6 +17,15 @@ object TolerantComparisonTests extends TestSuite {
       assert(small.isZero(1e-6))
       assert(negativeSmall.isZero(1e-6))
     }
+
+    "isNotZero" - {
+      assert(!tiny.isNotZero)
+      assert(!negativeTiny.isNotZero)
+      assert(small.isNotZero)
+      assert(negativeSmall.isNotZero)
+      assert(!small.isNotZero(1e-6))
+      assert(!negativeSmall.isNotZero(1e-6))
+    }
     
     "isLessThanZero" - {
       assert(!tiny.isLessThanZero)
