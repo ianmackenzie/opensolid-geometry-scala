@@ -3,9 +3,16 @@ package org.opensolid.core
 final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
   def this(value: Double) = this(value, value)
 
+  override def equals(other: Any): Boolean = other match {
+    case that: Interval =>
+      (this.lowerBound == that.lowerBound && this.upperBound == that.upperBound) ||
+      (this.isEmpty && that.isEmpty)
+    case _ => false
+  }
+
   override def bounds: Interval = this
 
-  def isEmpty: Boolean = upperBound < lowerBound;
+  def isEmpty: Boolean = lowerBound.isNaN && upperBound.isNaN;
 
   def width: Double = upperBound - lowerBound
 
@@ -25,7 +32,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 object Interval {
   def apply(value: Double): Interval = new Interval(value)
 
-  val Empty: Interval = new Interval(Double.PositiveInfinity, Double.NegativeInfinity)
+  val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
 
