@@ -1,5 +1,7 @@
 package org.opensolid.core
 
+import scala.util.Random
+
 final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
   def this(value: Double) = this(value, value)
 
@@ -16,7 +18,11 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 
   def width: Double = upperBound - lowerBound
 
-  def median: Double = lowerBound + 0.5 * width
+  def interpolated(value: Double): Double = lowerBound + value * width
+
+  def median: Double = interpolated(0.5)
+
+  def randomValue(generator: Random = Random): Double = interpolated(generator.nextDouble())
 
   def unary_- : Interval = Interval(-upperBound, -lowerBound)
 
@@ -27,6 +33,63 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       Interval(value * upperBound, value * lowerBound)
     }
   }
+
+  def squared = {
+    if (isEmpty) {
+      Interval.Empty
+    } else if (lowerBound > 0.0) {
+      Interval(lowerBound * lowerBound, upperBound * upperBound)
+    } else if (upperBound < 0.0) {
+      Interval(upperBound * upperBound, lowerBound * lowerBound)
+    } else if (-lowerBound < upperBound) {
+      Interval(0.0, upperBound * upperBound)
+    } else {
+      Interval(0.0, lowerBound * lowerBound)
+    }
+  }
+
+  def isSingleton = lowerBound == upperBound
+
+  def bisected: (Interval, Interval) = {
+    val median = this.median
+    (Interval(lowerBound, median), Interval(median, upperBound))
+  }
+
+  def hull(value: Double): Interval = {
+    if (isEmpty) {
+      Interval(value)
+    } else {
+      Interval(lowerBound.min(value), upperBound.max(value))
+    }
+  }
+
+  def hull(that: Interval): Interval = {
+    if (isEmpty) {
+      that
+    } else if (that.isEmpty) {
+      this
+    } else {
+      Interval(lowerBound.min(that.lowerBound), upperBound.max(that.upperBound))
+    }
+  }
+
+  def intersection(that: Interval): Interval = {
+    if (isEmpty || that.isEmpty) {
+      Interval.Empty
+    } else {
+      val lowerBound = this.lowerBound.max(that.lowerBound)
+      val upperBound = this.upperBound.min(that.upperBound)
+      if (lowerBound <= upperBound) Interval(lowerBound, upperBound) else Interval.Empty
+    }
+  }
+
+  def contains(value: Double): Boolean = value >= lowerBound && value <= upperBound
+
+  def contains(that: Interval): Boolean =
+    that.lowerBound >= lowerBound && that.upperBound <= upperBound
+
+  def overlaps(that: Interval): Boolean =
+    that.lowerBound <= upperBound && that.upperBound >= lowerBound
 }
 
 object Interval {
