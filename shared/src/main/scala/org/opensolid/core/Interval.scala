@@ -1,5 +1,6 @@
 package org.opensolid.core
 
+import scala.math
 import scala.util.Random
 
 final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
@@ -9,6 +10,10 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     case that: Interval =>
       (this.lowerBound == that.lowerBound && this.upperBound == that.upperBound) ||
       (this.isEmpty && that.isEmpty)
+    case value: Double => this.lowerBound == value && this.upperBound == value
+    case value: Float => this.lowerBound == value && this.upperBound == value
+    case value: Long => this.lowerBound == value && this.upperBound == value
+    case value: Int => this.lowerBound == value && this.upperBound == value
     case _ => false
   }
 
@@ -23,30 +28,6 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   def median: Double = interpolated(0.5)
 
   def randomValue(generator: Random = Random): Double = interpolated(generator.nextDouble())
-
-  def unary_- : Interval = Interval(-upperBound, -lowerBound)
-
-  def *(value: Double): Interval = {
-    if (value >= 0.0) {
-      Interval(value * lowerBound, value * upperBound)
-    } else {
-      Interval(value * upperBound, value * lowerBound)
-    }
-  }
-
-  def squared = {
-    if (isEmpty) {
-      Interval.Empty
-    } else if (lowerBound > 0.0) {
-      Interval(lowerBound * lowerBound, upperBound * upperBound)
-    } else if (upperBound < 0.0) {
-      Interval(upperBound * upperBound, lowerBound * lowerBound)
-    } else if (-lowerBound < upperBound) {
-      Interval(0.0, upperBound * upperBound)
-    } else {
-      Interval(0.0, lowerBound * lowerBound)
-    }
-  }
 
   def isSingleton = lowerBound == upperBound
 
@@ -90,6 +71,97 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 
   def overlaps(that: Interval): Boolean =
     that.lowerBound <= upperBound && that.upperBound >= lowerBound
+
+  def unary_- : Interval = Interval(-upperBound, -lowerBound)
+
+  def +(value: Double): Interval = Interval(lowerBound + value, upperBound + value)
+
+  def +(that: Interval): Interval =
+    Interval(lowerBound + that.lowerBound, upperBound + that.upperBound)
+
+  def -(value: Double): Interval = Interval(lowerBound - value, upperBound - value)
+
+  def -(that: Interval): Interval =
+    Interval(lowerBound - that.upperBound, upperBound - that.lowerBound)
+
+  def *(value: Double): Interval = {
+    if (value >= 0.0) {
+      Interval(value * lowerBound, value * upperBound)
+    } else {
+      Interval(value * upperBound, value * lowerBound)
+    }
+  }
+
+  def *(that: Interval): Interval = {
+    val ll = lowerBound * that.lowerBound
+    val lu = lowerBound * that.upperBound
+    val ul = upperBound * that.lowerBound
+    val uu = upperBound * that.upperBound
+    Interval(ll.min(lu).min(ul).min(uu), ll.max(lu).max(ul).max(uu))
+  }
+
+  def /(value: Double): Interval = {
+    if (isEmpty) {
+      Interval.Empty
+    } else if (value > 0.0) {
+      val reciprocal = 1.0 / value
+      Interval(lowerBound * reciprocal, upperBound * reciprocal)
+    } else if (value < 0.0) {
+      val reciprocal = 1.0 / value
+      Interval(upperBound * reciprocal, lowerBound * reciprocal)
+    } else {
+      Interval.Whole
+    }
+  }
+
+  def /(that: Interval): Interval = {
+    if (isEmpty || that.isEmpty) {
+      Interval.Empty
+    } else if (that.lowerBound > 0.0 || that.upperBound < 0.0) {
+      val reciprocal = Interval(1.0 / that.upperBound, 1.0 / that.lowerBound)
+      this * reciprocal
+    } else if (this == 0.0) {
+      Interval(0.0)
+    } else {
+      Interval.Whole
+    }
+  }
+
+  def abs: Interval = {
+    if (isEmpty) {
+      Interval.Empty
+    } else if (lowerBound >= 0.0) {
+      this
+    } else if (upperBound <= 0.0) {
+      -this
+    } else if (-lowerBound < upperBound) {
+      Interval(0.0, upperBound)
+    } else {
+      Interval(0.0, -lowerBound)
+    }
+  }
+
+  def squared: Interval = {
+    if (isEmpty) {
+      Interval.Empty
+    } else if (lowerBound > 0.0) {
+      Interval(lowerBound * lowerBound, upperBound * upperBound)
+    } else if (upperBound < 0.0) {
+      Interval(upperBound * upperBound, lowerBound * lowerBound)
+    } else if (-lowerBound < upperBound) {
+      Interval(0.0, upperBound * upperBound)
+    } else {
+      Interval(0.0, lowerBound * lowerBound)
+    }
+  }
+
+  def sqrt: Interval = {
+    if (isEmpty || upperBound < 0.0) {
+      Interval.Empty
+    } else {
+      Interval(math.sqrt(lowerBound), math.sqrt(upperBound))
+    }
+  }
 }
 
 object Interval {
