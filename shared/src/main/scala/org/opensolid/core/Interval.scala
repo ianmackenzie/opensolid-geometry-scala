@@ -292,6 +292,9 @@ object Interval {
   def pow(base: Interval, exponent: Interval): Interval =
     Interval.exp(Interval.log(base) * exponent)
 
+  def ulp(interval: Interval): Double =
+    math.ulp(interval.lowerBound).max(math.ulp(interval.upperBound))
+
   val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
