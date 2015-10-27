@@ -30,8 +30,33 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   def isSingleton = lowerBound == upperBound
 
   def bisected: (Interval, Interval) = {
-    val median = this.median
-    (Interval(lowerBound, median), Interval(median, upperBound))
+    if (isEmpty) {
+      (Interval.Empty, Interval.Empty)
+    } else {
+      val mid =
+        if (isWhole) {
+          0.0
+        } else if (lowerBound.isNegInfinity) {
+          if (upperBound > 0.0) {
+            0.0
+          } else if (upperBound < 0.0) {
+            2.0 * upperBound
+          } else { // upperBound == 0.0
+            -1.0
+          }
+        } else if (upperBound.isPosInfinity) {
+          if (lowerBound < 0.0) {
+            0.0
+          } else if (lowerBound > 0.0) {
+            2.0 * lowerBound
+          } else { // lowerBound == 0.0
+            1.0
+          }
+        } else {
+          this.median
+        }
+      (Interval(lowerBound, mid), Interval(mid, upperBound))
+    }
   }
 
   def hull(value: Double): Interval = {
