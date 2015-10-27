@@ -164,18 +164,46 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       Interval(0.0, lowerBound * lowerBound)
     }
   }
-
-  def sqrt: Interval = {
-    if (isEmpty || upperBound < 0.0) {
-      Interval.Empty
-    } else {
-      Interval(math.sqrt(lowerBound), math.sqrt(upperBound))
-    }
-  }
 }
 
 object Interval {
   def apply(value: Double): Interval = new Interval(value)
+
+  def sqrt(interval: Interval): Interval = {
+    if (interval.isEmpty || interval.upperBound < 0.0) {
+      Interval.Empty
+    } else {
+      Interval(math.sqrt(interval.lowerBound), math.sqrt(interval.upperBound))
+    }
+  }
+
+  def sin(interval: Interval): Interval = Interval.cos(interval - math.Pi / 2.0)
+
+  def cos(interval: Interval): Interval = {
+    val abs = interval.abs
+    val width = interval.width
+    val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
+    val hasMax = abs.upperBound % (2 * math.Pi) <= width
+    if (hasMin && hasMax) {
+      Interval(-1.0, 1.0)
+    } else {
+      val cosLower = math.cos(abs.lowerBound)
+      val cosUpper = math.cos(abs.upperBound)
+      val lowerBound = if (hasMin) -1.0 else cosLower.min(cosUpper)
+      val upperBound = if (hasMax) 1.0 else cosLower.max(cosUpper)
+      Interval(lowerBound, upperBound)
+    }
+  }
+
+  def tan(interval: Interval): Interval = {
+    val abs = interval.abs
+    val hasSingularity = (abs.upperBound + math.Pi / 2.0) % math.Pi <= abs.width
+    if (hasSingularity) {
+      Interval.Whole
+    } else {
+      Interval(math.tan(interval.lowerBound), math.tan(interval.upperBound))
+    }
+  }
 
   val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
