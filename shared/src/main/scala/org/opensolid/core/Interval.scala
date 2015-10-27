@@ -10,10 +10,6 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     case that: Interval =>
       (this.lowerBound == that.lowerBound && this.upperBound == that.upperBound) ||
       (this.isEmpty && that.isEmpty)
-    case value: Double => this.lowerBound == value && this.upperBound == value
-    case value: Float => this.lowerBound == value && this.upperBound == value
-    case value: Long => this.lowerBound == value && this.upperBound == value
-    case value: Int => this.lowerBound == value && this.upperBound == value
     case _ => false
   }
 
