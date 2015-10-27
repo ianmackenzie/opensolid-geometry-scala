@@ -19,7 +19,9 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 
   override def bounds: Interval = this
 
-  def isEmpty: Boolean = lowerBound.isNaN && upperBound.isNaN;
+  def isEmpty: Boolean = lowerBound.isNaN && upperBound.isNaN
+
+  def isWhole: Boolean = lowerBound.isNegInfinity && upperBound.isPosInfinity
 
   def width: Double = upperBound - lowerBound
 
