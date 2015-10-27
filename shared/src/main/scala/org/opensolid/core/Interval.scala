@@ -185,7 +185,7 @@ object Interval {
     val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
     val hasMax = abs.upperBound % (2 * math.Pi) <= width
     if (hasMin && hasMax) {
-      Interval(-1.0, 1.0)
+      cosFullRange
     } else {
       val cosLower = math.cos(abs.lowerBound)
       val cosUpper = math.cos(abs.upperBound)
@@ -194,6 +194,8 @@ object Interval {
       Interval(lowerBound, upperBound)
     }
   }
+
+  private[this] val cosFullRange = Interval(-1.0, 1.0)
 
   def tan(interval: Interval): Interval = {
     val abs = interval.abs
@@ -204,6 +206,68 @@ object Interval {
       Interval(math.tan(interval.lowerBound), math.tan(interval.upperBound))
     }
   }
+
+  def asin(interval: Interval): Interval = {
+    if (interval.isEmpty || interval.lowerBound > 1.0 || interval.upperBound < -1.0) {
+      Interval.Empty
+    } else {
+      Interval(math.asin(interval.lowerBound.max(-1.0)), math.asin(interval.upperBound.min(1.0)))
+    }
+  }
+
+  def acos(interval: Interval): Interval = {
+    if (interval.isEmpty || interval.lowerBound > 1.0 || interval.upperBound < -1.0) {
+      Interval.Empty
+    } else {
+      Interval(math.acos(interval.upperBound.min(1.0)), math.acos(interval.lowerBound.max(-1.0)))
+    }
+  }
+
+  def atan(interval: Interval): Interval =
+    Interval(math.atan(interval.lowerBound), math.atan(interval.upperBound))
+
+  def atan2(x: Interval, y:Interval): Interval = {
+    if (y.isEmpty || x.isEmpty) {
+      Interval.Empty
+    } else if (x.lowerBound > 0.0) {
+      Interval.atan(y / x)
+    } else if (y.lowerBound > 0.0) {
+      Interval.atan(-x / y) + math.Pi / 2.0
+    } else if (y.upperBound < 0.0) {
+      Interval.atan(-x / y) - math.Pi / 2.0
+    } else {
+      atan2FullRange
+    }
+  }
+
+  private[this] val atan2FullRange = Interval(-math.Pi, math.Pi)
+
+  def exp(interval: Interval): Interval = {
+    if (interval.isEmpty) {
+      Interval.Empty
+    } else {
+      Interval(math.exp(interval.lowerBound), math.exp(interval.upperBound))
+    }
+  }
+
+  def log(interval: Interval): Interval = {
+    if (interval.isEmpty || interval.upperBound < 0.0) {
+      Interval.Empty
+    } else if (interval.lowerBound > 0.0) {
+      Interval(math.log(interval.lowerBound), math.log(interval.upperBound))
+    } else {
+      Interval(Double.NegativeInfinity, math.log(interval.upperBound))
+    }
+  }
+
+  def pow(base: Double, exponent: Interval): Interval =
+    Interval.exp(math.log(base) * exponent)
+
+  def pow(base: Interval, exponent: Double): Interval =
+    Interval.exp(Interval.log(base) * exponent)
+
+  def pow(base: Interval, exponent: Interval): Interval =
+    Interval.exp(Interval.log(base) * exponent)
 
   val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
