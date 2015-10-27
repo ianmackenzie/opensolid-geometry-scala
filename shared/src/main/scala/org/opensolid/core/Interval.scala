@@ -64,13 +64,23 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     }
   }
 
-  def contains(value: Double): Boolean = value >= lowerBound && value <= upperBound
+  def contains(value: Double): Boolean =
+    value >= lowerBound && value <= upperBound
+
+  def contains(value: Double, tolerance: Double): Boolean =
+    value >= lowerBound - tolerance && value <= upperBound + tolerance
 
   def contains(that: Interval): Boolean =
-    that.lowerBound >= lowerBound && that.upperBound <= upperBound
+    that.lowerBound >= this.lowerBound && that.upperBound <= this.upperBound
+
+  def contains(that: Interval, tolerance: Double): Boolean =
+    that.lowerBound >= this.lowerBound - tolerance && that.upperBound <= this.upperBound + tolerance
 
   def overlaps(that: Interval): Boolean =
-    that.lowerBound <= upperBound && that.upperBound >= lowerBound
+    that.lowerBound <= this.upperBound && that.upperBound >= this.lowerBound
+
+  def overlaps(that: Interval, tolerance: Double): Boolean =
+    that.lowerBound <= this.upperBound + tolerance && that.upperBound >= this.lowerBound - tolerance
 
   def unary_- : Interval = Interval(-upperBound, -lowerBound)
 
