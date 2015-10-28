@@ -97,4 +97,21 @@ object IntervalSpec extends Properties("Interval") {
       }
     }
   }
+
+  property("intersection") = Prop.forAll(
+    (firstInterval: Interval, secondInterval: Interval) => {
+      val intersection = firstInterval.intersection(secondInterval)
+
+      if (firstInterval.isEmpty || secondInterval.isEmpty) {
+        intersection.isEmpty: Prop
+      } else {
+        Prop.forAll(Gen.chooseNum(firstInterval.lowerBound, firstInterval.upperBound)) {
+          firstValue => intersection.contains(firstValue) == secondInterval.contains(firstValue)
+        } &&
+        Prop.forAll(Gen.chooseNum(secondInterval.lowerBound, secondInterval.upperBound)) {
+          secondValue => intersection.contains(secondValue) == firstInterval.contains(secondValue)
+        }
+      }
+    }
+  )
 }
