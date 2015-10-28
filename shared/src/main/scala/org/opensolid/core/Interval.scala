@@ -78,13 +78,9 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   }
 
   def intersection(that: Interval): Interval = {
-    if (isEmpty || that.isEmpty) {
-      Interval.Empty
-    } else {
-      val lowerBound = this.lowerBound.max(that.lowerBound)
-      val upperBound = this.upperBound.min(that.upperBound)
-      if (lowerBound <= upperBound) Interval(lowerBound, upperBound) else Interval.Empty
-    }
+    val lowerBound = this.lowerBound.max(that.lowerBound)
+    val upperBound = this.upperBound.min(that.upperBound)
+    if (lowerBound <= upperBound) Interval(lowerBound, upperBound) else Interval.Empty
   }
 
   def contains(value: Double): Boolean =
