@@ -71,4 +71,30 @@ object IntervalSpec extends Properties("Interval") {
       }
     }
   }
+
+  property("hull(Double)") = Prop.forAll {
+    (interval: Interval, value: Double) => {
+      val hull = interval.hull(value)
+
+      if (interval.isEmpty) {
+        hull.isSingleton && hull.lowerBound == value
+      } else {
+        hull.contains(interval) && hull.contains(value)
+      }
+    }
+  }
+
+  property("hull(Interval)") = Prop.forAll {
+    (firstInterval: Interval, secondInterval: Interval) => {
+      val hull = firstInterval.hull(secondInterval)
+      
+      if (firstInterval.isEmpty) {
+        hull == secondInterval
+      } else if (secondInterval.isEmpty) {
+        hull == firstInterval
+      } else {
+        hull.contains(firstInterval) && hull.contains(secondInterval)
+      }
+    }
+  }
 }
