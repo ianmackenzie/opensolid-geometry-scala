@@ -3,6 +3,38 @@ package org.opensolid.core
 import scala.math
 import scala.util.Random
 
+/** Represents a range of real numbers and allows mathematical operations on those ranges.
+  *
+  * Examples:
+  * {{{
+  * scala> val a = Interval(2.0, 3.0)
+  * a: org.opensolid.core.Interval = Interval(2.0,3.0)
+  *
+  * scala> val b = 2.0 * a
+  * b: org.opensolid.core.Interval = Interval(4.0,6.0)
+  *
+  * scala> val c = a - b
+  * c: org.opensolid.core.Interval = Interval(-4.0,-1.0)
+  *
+  * scala> c.contains(-2.0)
+  * res0: Boolean = true
+  *
+  * scala> a.overlaps(b)
+  * res1: Boolean = false
+  *
+  * scala> c.lowerBound
+  * res2: Double = -4.0
+  *
+  * scala> c.upperBound
+  * res3: Double = -1.0
+  *
+  * scala> c.median
+  * res4: Double = -2.5
+  *
+  * scala> c.width
+  * res5: Double = 3.0
+  * }}}
+  */
 final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
   def this(value: Double) = this(value, value)
 
@@ -26,20 +58,86 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   /** Returns this interval (an interval is its own bounds). */
   override def bounds: Interval = this
 
+  /** Returns true if this is the empty interval (contains no values). Note that a singleton
+    * interval (one with zero width) is not considered empty since it contains a single value.
+    *
+    * Equivalent to `this == Interval.Empty`.
+    */
   def isEmpty: Boolean = lowerBound.isNaN && upperBound.isNaN
 
+  /** Returns true if this interval represents the entire range of possible real values (from
+    * negative infinity to positive infinity).
+    *
+    * Equivalent to `this == Interval.Whole`.
+    */
   def isWhole: Boolean = lowerBound.isNegInfinity && upperBound.isPosInfinity
 
+  /** Returns the width of this interval (the difference between the upper and lower bounds). */
   def width: Double = upperBound - lowerBound
 
+  /** Returns a value interpolated between the lower and upper bounds of this interval.
+    *
+    * Examples:
+    * {{{
+    * scala> val interval = Interval(2.0, 3.0)
+    * interval: org.opensolid.core.Interval = Interval(2.0,3.0)
+    * 
+    * scala> interval.interpolated(0.0)
+    * res0: Double = 2.0
+    * 
+    * scala> interval.interpolated(1.0)
+    * res1: Double = 3.0
+    * 
+    * scala> interval.interpolated(0.5)
+    * res2: Double = 2.5
+    * 
+    * scala> interval.interpolated(2.0)
+    * res3: Double = 4.0
+    * }}}
+    *
+    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
+    * infinite).
+    */
   def interpolated(value: Double): Double = lowerBound + value * width
 
+  /** Returns a value halfway between the lower and upper bounds of this interval. */
   def median: Double = interpolated(0.5)
 
-  def randomValue(generator: Random = Random): Double = interpolated(generator.nextDouble())
+  /** Returns a random value within this interval. */
+  def randomValue: Double = randomValue(Random)
 
+  /** Returns a random value within this interval, using the provided generator. */
+  def randomValue(generator: Random): Double = interpolated(generator.nextDouble())
+
+  /** Returns true if this interval consists of a single value (the upper and lower bounds are
+    * equal).
+    */
   def isSingleton = lowerBound == upperBound
 
+  /** Returns a pair of intervals equal to this interval split into two halves.
+    *
+    * If this interval has finite width, then the split point is this interval's median and the two
+    * returned intervals are `Interval(lowerBound, median)` and `Interval(median, upperBound)`.
+    * Otherwise, a set of heuristics is used to find a reasonable split point.
+    *
+    * Examples:
+    * {{{
+    * scala> Interval(2.0, 3.0).bisected
+    * res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(2.0, 2.5),Interval(2.5, 3.0))
+    * 
+    * scala> Interval.Whole.bisected
+    * res1: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, 0.0),Interval(0.0, Infinity))
+    * 
+    * scala> Interval(0.0, Double.PositiveInfinity).bisected
+    * res2: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(0.0, 1.0),Interval(1.0, Infinity))
+    * 
+    * scala> Interval(Double.NegativeInfinity, -10.0).bisected
+    * res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, -20.0),Interval(-20.0, -10.0))
+    * 
+    * scala> Interval.Empty.bisected
+    * res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval.Empty,Interval.Empty)
+    * }}}
+    */ 
   def bisected: (Interval, Interval) = {
     if (isEmpty) {
       (Interval.Empty, Interval.Empty)

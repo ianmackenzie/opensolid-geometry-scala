@@ -63,7 +63,7 @@ object IntervalProperties extends Properties("Interval") {
 
   property("randomValue()") = Prop.forAll(closedInterval) {
     (interval: Interval) => {
-      val randomValue = interval.randomValue()
+      val randomValue = interval.randomValue
       interval.contains(randomValue, 2.0 * Interval.ulp(interval))
     }
   }
