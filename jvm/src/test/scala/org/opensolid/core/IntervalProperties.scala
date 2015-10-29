@@ -9,7 +9,9 @@ object IntervalGenerators {
   val randomInterval: Gen[Interval] = for {
     median <- Arbitrary.arbitrary[Double]
     halfWidth <- Arbitrary.arbitrary[Double].retryUntil(_ >= 0.0)
-  } yield Interval(median - halfWidth, median + halfWidth)
+    interval = Interval(median - halfWidth, median + halfWidth)
+    if (!interval.width.isInfinity)
+  } yield interval
 
   val negativeHalfOpenInterval: Gen[Interval] =
     Arbitrary.arbitrary[Double].map(Interval(Double.NegativeInfinity, _))
