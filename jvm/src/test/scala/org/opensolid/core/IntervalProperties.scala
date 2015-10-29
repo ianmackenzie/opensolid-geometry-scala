@@ -115,7 +115,7 @@ object IntervalProperties extends Properties("Interval") {
     }
   }
 
-  property("intersection(that)") = Prop.forAll(
+  property("intersection(that)") = Prop.forAll {
     (firstInterval: Interval, secondInterval: Interval) => {
       val intersection = firstInterval.intersection(secondInterval)
 
@@ -130,5 +130,5 @@ object IntervalProperties extends Properties("Interval") {
         }
       }
     }
-  )
+  }
 }
