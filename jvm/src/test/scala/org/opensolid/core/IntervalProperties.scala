@@ -43,6 +43,9 @@ object IntervalGenerators {
     2 -> oneUlpInterval,
     2 -> twoUlpInterval,
     10 -> randomInterval))
+
+  def sortedValues(count: Integer): Gen[List[Double]] =
+    Gen.listOfN[Double](count, Arbitrary.arbitrary[Double]).map(list => list.sorted)
 }
 
 object IntervalProperties extends Properties("Interval") {
@@ -132,5 +135,25 @@ object IntervalProperties extends Properties("Interval") {
         }
       }
     }
+  }
+
+  property("contains(value)") = Prop.forAll(sortedValues(3)) {
+    case lower :: value :: upper :: Nil => Interval(lower, upper).contains(value)
+    case _ => false
+  }
+
+  property("contains(that)") = Prop.forAll(sortedValues(4)) {
+    case firstLower :: secondLower :: secondUpper :: firstUpper :: Nil =>
+      Interval(firstLower, firstUpper).contains(Interval(secondLower, secondUpper))
+    case _ => false
+  }
+
+  property("overlaps(that)") = Prop.forAll(sortedValues(4)) {
+    case firstLower :: secondLower :: firstUpper :: secondUpper :: Nil => {
+      val first = Interval(firstLower, firstUpper)
+      val second = Interval(secondLower, secondUpper)
+      first.overlaps(second) && second.overlaps(first)
+    }
+    case _ => false
   }
 }
