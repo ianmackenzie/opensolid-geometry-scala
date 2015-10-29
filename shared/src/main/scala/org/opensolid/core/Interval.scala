@@ -13,6 +13,17 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     case _ => false
   }
 
+  override def toString: String = {
+    if (isEmpty) {
+      "Interval.Empty"
+    } else if (isWhole) {
+      "Interval.Whole"
+    } else {
+      s"Interval($lowerBound, $upperBound)"
+    }
+  }
+
+  /** Returns this interval (an interval is its own bounds). */
   override def bounds: Interval = this
 
   def isEmpty: Boolean = lowerBound.isNaN && upperBound.isNaN
