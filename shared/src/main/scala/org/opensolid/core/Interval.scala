@@ -403,6 +403,9 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 object Interval {
   def apply(value: Double): Interval = new Interval(value)
 
+  def hull(firstValue: Double, secondValue: Double): Interval =
+    Interval(firstValue.min(secondValue), firstValue.max(secondValue))
+
   def sqrt(interval: Interval): Interval = {
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
