@@ -4,26 +4,35 @@ import org.scalacheck._
 import org.scalacheck.Prop.BooleanOperators
 
 object IntervalGenerators {
-  val singletonInterval: Gen[Interval] = Arbitrary.arbitrary[Double].map(Interval(_))
+  val randomDouble: Gen[Double] =
+    for {
+      s <- Gen.choose(0L, 1L)
+      e <- Gen.choose(0L, 40L)
+      m <- Gen.choose(0L, 0xfffffffffffffL)
+    } yield java.lang.Double.longBitsToDouble((s << 63) | (e << 52) | m)
+
+  implicit val arbitraryDouble: Arbitrary[Double] = Arbitrary(randomDouble)
+
+  val singletonInterval: Gen[Interval] = randomDouble.map(Interval(_))
 
   val randomInterval: Gen[Interval] = for {
-    median <- Arbitrary.arbitrary[Double]
-    halfWidth <- Arbitrary.arbitrary[Double].retryUntil(_ >= 0.0)
+    median <- randomDouble
+    halfWidth <- randomDouble.map(math.abs(_))
     interval = Interval(median - halfWidth, median + halfWidth)
     if (!interval.width.isInfinity)
   } yield interval
 
   val negativeHalfOpenInterval: Gen[Interval] =
-    Arbitrary.arbitrary[Double].map(Interval(Double.NegativeInfinity, _))
+    randomDouble.map(Interval(Double.NegativeInfinity, _))
 
   val positiveHalfOpenInterval: Gen[Interval] =
-    Arbitrary.arbitrary[Double].map(Interval(_, Double.PositiveInfinity))
+    randomDouble.map(Interval(_, Double.PositiveInfinity))
 
   val oneUlpInterval: Gen[Interval] =
-    Arbitrary.arbitrary[Double].map(value => Interval(value, value + math.ulp(value)))
+    randomDouble.map(value => Interval(value, value + math.ulp(value)))
 
   val twoUlpInterval: Gen[Interval] =
-    Arbitrary.arbitrary[Double].map(
+    randomDouble.map(
       value => Interval(value - math.ulp(value), value + math.ulp(value)))
 
   val closedInterval: Gen[Interval] = Gen.frequency(
@@ -45,7 +54,7 @@ object IntervalGenerators {
     10 -> randomInterval))
 
   def sortedValues(count: Integer): Gen[List[Double]] =
-    Gen.listOfN[Double](count, Arbitrary.arbitrary[Double]).map(list => list.sorted)
+    Gen.listOfN[Double](count, randomDouble).map(list => list.sorted)
 }
 
 object IntervalProperties extends Properties("Interval") {
@@ -156,4 +165,88 @@ object IntervalProperties extends Properties("Interval") {
     }
     case _ => false
   }
+
+  def valueWithin(interval: Interval): Gen[Double] = {
+    if (interval.width.isInfinity) {
+      randomDouble.retryUntil(x => interval.contains(x))
+    } else {
+      Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_))
+    }
+  }
+
+  def intervalWithin(domain: Interval): Gen[Interval] = {
+    for {
+      firstValue <- valueWithin(domain)
+      secondValue <- valueWithin(domain)
+    } yield Interval.hull(firstValue, secondValue)
+  }
+
+  def evaluateWithin(interval: Interval, scalarFunction: (Double) => Double): Gen[Double] = {
+    valueWithin(interval).map(x => scalarFunction(x)).suchThat(y => !y.isInfinity && !y.isNaN)
+  }
+
+  def unaryProperty(
+    scalarFunction: (Double) => Double,
+    intervalFunction: (Interval) => Interval,
+    domain: Interval = Interval.Whole): Prop = {
+
+    Prop.forAll(intervalWithin(domain)) {
+      (xInterval: Interval) => {
+        val yInterval = intervalFunction(xInterval)
+        if (xInterval.isEmpty) {
+          yInterval.isEmpty: Prop
+        } else if (xInterval.isSingleton) {
+          val yValue = scalarFunction(xInterval.lowerBound)
+          (yInterval.lowerBound == yValue && yInterval.upperBound == yValue): Prop
+        } else {
+          Prop.forAll(evaluateWithin(xInterval, scalarFunction)) {
+            (yValue: Double) => {
+              s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
+                yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  property("unary_-") = unaryProperty(value => -value, interval => -interval)
+
+  property("abs") = unaryProperty(value => value.abs, interval => interval.abs)
+
+  property("squared") = unaryProperty(value => value * value, interval => interval.squared)
+
+  property("sqrt") =
+    unaryProperty(
+      value => math.sqrt(value),
+      interval => Interval.sqrt(interval),
+      Interval(0.0, Double.PositiveInfinity))
+
+  property("sin") = unaryProperty(value => math.sin(value), interval => Interval.sin(interval))
+
+  property("cos") = unaryProperty(value => math.cos(value), interval => Interval.cos(interval))
+
+  property("tan") = unaryProperty(value => math.tan(value), interval => Interval.tan(interval))
+
+  property("asin") =
+    unaryProperty(
+      value => math.asin(value),
+      interval => Interval.asin(interval),
+      Interval(-1, 1))
+
+  property("acos") =
+    unaryProperty(
+      value => math.acos(value),
+      interval => Interval.acos(interval),
+      Interval(-1, 1))
+
+  property("atan") = unaryProperty(value => math.atan(value), interval => Interval.atan(interval))
+
+  property("exp") = unaryProperty(value => math.exp(value), interval => Interval.exp(interval))
+
+  property("log") =
+    unaryProperty(
+      value => math.log(value),
+      interval => Interval.log(interval),
+      Interval(0.0, Double.PositiveInfinity))
 }
