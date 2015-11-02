@@ -418,7 +418,7 @@ object Interval {
 
   def cos(interval: Interval): Interval = {
     val abs = interval.abs
-    val width = interval.width
+    val width = abs.width
     val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
     val hasMax = abs.upperBound % (2 * math.Pi) <= width
     if (hasMin && hasMax) {
