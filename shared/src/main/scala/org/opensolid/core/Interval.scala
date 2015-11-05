@@ -355,8 +355,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     } else if (that.lowerBound > 0.0 || that.upperBound < 0.0) {
       val reciprocal = Interval(1.0 / that.upperBound, 1.0 / that.lowerBound)
       this * reciprocal
-    } else if (this == 0.0) {
-      Interval(0.0)
+    } else if (this == Interval.Zero) {
+      Interval.Zero
     } else {
       Interval.Whole
     }
