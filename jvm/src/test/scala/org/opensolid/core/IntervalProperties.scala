@@ -246,7 +246,12 @@ object IntervalProperties extends Properties("Interval") {
           val zValue = scalarFunction(xInterval.lowerBound, yValue)
           (zInterval.lowerBound == zValue && zInterval.upperBound == zValue): Prop
         } else {
-          Prop.forAll(evaluateWithin(xInterval.intersection(xDomain), yDomain, scalarFunction)) {
+          Prop.forAll(
+            evaluateWithin(
+              xInterval.intersection(xDomain),
+              xValue => scalarFunction(xValue, yValue)
+            )
+          ) {
             (zValue: Double) => {
               val tag =
                 s"xInterval: $xInterval, yValue: $yValue, zInterval: $zInterval, zValue: $zValue"
