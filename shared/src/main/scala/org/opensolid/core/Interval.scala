@@ -512,4 +512,6 @@ object Interval {
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
 
   val Unit: Interval = new Interval(0.0, 1.0)
+
+  val Zero: Interval = new Interval(0.0, 0.0)
 }
