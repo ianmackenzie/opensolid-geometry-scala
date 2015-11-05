@@ -214,6 +214,11 @@ object IntervalProperties extends Properties("Interval") {
     } yield z
   }
 
+  def equalSingletons(interval: Interval, value: Double): Boolean = {
+    (interval.isEmpty && value.isNaN) ||
+    (interval.lowerBound == value && interval.upperBound == value)
+  }
+
   def unaryProperty(
     scalarFunction: (Double) => Double,
     intervalFunction: (Interval) => Interval,
@@ -226,7 +231,7 @@ object IntervalProperties extends Properties("Interval") {
           yInterval.isEmpty: Prop
         } else if (xInterval.isSingleton) {
           val yValue = scalarFunction(xInterval.lowerBound)
-          (yInterval.lowerBound == yValue && yInterval.upperBound == yValue): Prop
+          equalSingletons(yInterval, yValue): Prop
         } else {
           Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
             (yValue: Double) => {
@@ -252,7 +257,7 @@ object IntervalProperties extends Properties("Interval") {
           zInterval.isEmpty: Prop
         } else if (xInterval.isSingleton) {
           val zValue = scalarFunction(xInterval.lowerBound, yValue)
-          (zInterval.lowerBound == zValue && zInterval.upperBound == zValue): Prop
+          equalSingletons(zInterval, zValue): Prop
         } else {
           Prop.forAll(
             evaluateWithin(
@@ -284,7 +289,7 @@ object IntervalProperties extends Properties("Interval") {
           zInterval.isEmpty:  Prop
         } else if (xInterval.isSingleton && yInterval.isSingleton) {
           val zValue = scalarFunction(xInterval.lowerBound, yInterval.lowerBound)
-          (zInterval.lowerBound == zValue && zInterval.upperBound == zValue): Prop
+          equalSingletons(zInterval, zValue): Prop
         } else {
           val zValues = evaluateWithin(
             xInterval.intersection(xDomain),
