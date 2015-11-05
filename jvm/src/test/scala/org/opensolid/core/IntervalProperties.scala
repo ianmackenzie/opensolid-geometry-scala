@@ -305,6 +305,18 @@ object IntervalProperties extends Properties("Interval") {
 
   property("+(that)") = binaryProperty((x, y) => x + y, (x, y) => x + y)
 
+  property("-(value)") = mixedProperty((x, y) => x - y, (x, y) => x - y)
+
+  property("-(that)") = binaryProperty((x, y) => x - y, (x, y) => x - y)
+
+  property("*(value)") = mixedProperty((x, y) => x * y, (x, y) => x * y)
+
+  property("*(that)") = binaryProperty((x, y) => x * y, (x, y) => x * y)
+
+  property("/(value)") = mixedProperty((x, y) => x / y, (x, y) => x / y)
+
+  property("/(that)") = binaryProperty((x, y) => x / y, (x, y) => x / y)
+
   property("abs") = unaryProperty(value => value.abs, interval => interval.abs)
 
   property("squared") = unaryProperty(value => value * value, interval => interval.squared)
