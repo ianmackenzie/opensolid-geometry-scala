@@ -362,8 +362,12 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   }
 
   def /(value: Double): Interval = {
-    val reciprocal = 1.0 / value
-    Interval.hull(lowerBound * reciprocal, upperBound * reciprocal)
+    if (isSingleton) {
+      Interval(lowerBound / value)
+    } else {
+      val reciprocal = 1.0 / value
+      Interval.hull(lowerBound * reciprocal, upperBound * reciprocal)
+    }
   }
 
   def /(that: Interval): Interval = {
