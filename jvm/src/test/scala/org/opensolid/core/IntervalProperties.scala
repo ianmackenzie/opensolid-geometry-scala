@@ -185,6 +185,14 @@ object IntervalProperties extends Properties("Interval") {
     } yield interval
   }
 
+  def testIntervalForDomain(domain: Interval): Gen[Interval] = {
+    Gen.frequency(
+      1 -> Interval.Empty,
+      1 -> Interval.Whole,
+      10 -> intervalOverlapping(domain)
+    )
+  }
+
   def evaluateWithin(domain: Interval, unaryFunction: (Double) => Double): Gen[Double] = {
     for {
       x <- valueWithin(domain)
@@ -211,7 +219,7 @@ object IntervalProperties extends Properties("Interval") {
     intervalFunction: (Interval) => Interval,
     domain: Interval = Interval.Whole
   ): Prop = {
-    Prop.forAll(intervalOverlapping(domain)) {
+    Prop.forAll(testIntervalForDomain(domain)) {
       (xInterval: Interval) => {
         val yInterval = intervalFunction(xInterval)
         if (xInterval.isEmpty) {
@@ -237,7 +245,7 @@ object IntervalProperties extends Properties("Interval") {
     xDomain: Interval = Interval.Whole,
     yDomain: Interval = Interval.Whole
   ): Prop = {
-    Prop.forAll(intervalOverlapping(xDomain), valueWithin(yDomain)) {
+    Prop.forAll(testIntervalForDomain(xDomain), valueWithin(yDomain)) {
       (xInterval: Interval, yValue: Double) => {
         val zInterval = intervalFunction(xInterval, yValue)
         if (xInterval.isEmpty) {
@@ -269,7 +277,7 @@ object IntervalProperties extends Properties("Interval") {
     xDomain: Interval = Interval.Whole,
     yDomain: Interval = Interval.Whole) = {
 
-    Prop.forAll(intervalOverlapping(xDomain), intervalOverlapping(yDomain)) {
+    Prop.forAll(testIntervalForDomain(xDomain), testIntervalForDomain(yDomain)) {
       (xInterval: Interval, yInterval: Interval) => {
         val zInterval = intervalFunction(xInterval, yInterval)
         if (xInterval.isEmpty || yInterval.isEmpty) {
