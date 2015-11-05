@@ -490,10 +490,8 @@ object Interval {
   def log(interval: Interval): Interval = {
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
-    } else if (interval.lowerBound > 0.0) {
-      Interval(math.log(interval.lowerBound), math.log(interval.upperBound))
     } else {
-      Interval(Double.NegativeInfinity, math.log(interval.upperBound))
+      Interval(math.log(interval.lowerBound.max(0.0)), math.log(interval.upperBound))
     }
   }
 
