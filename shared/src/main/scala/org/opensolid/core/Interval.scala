@@ -543,4 +543,14 @@ object Interval {
   val Unit: Interval = new Interval(0.0, 1.0)
 
   val Zero: Interval = new Interval(0.0, 0.0)
+
+  private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
+    if (firstValue.isNaN || secondValue.isNaN) {
+      Double.NaN
+    } else if (firstValue == 0.0 || secondValue == 0.0) {
+      0.0
+    } else {
+      firstValue * secondValue
+    }
+  }
 }
