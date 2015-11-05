@@ -420,9 +420,27 @@ object Interval {
     }
   }
 
-  def sin(interval: Interval): Interval = Interval.cos(interval - math.Pi / 2.0)
+  def sin(interval: Interval): Interval = {
+    if (interval.isEmpty) {
+      Interval.Empty
+    } else if (interval.isSingleton) {
+      Interval(math.sin(interval.lowerBound))
+    } else {
+      _cos(interval - math.Pi / 2.0)
+    }
+  }
 
   def cos(interval: Interval): Interval = {
+    if (interval.isEmpty) {
+      Interval.Empty
+    } else if (interval.isSingleton) {
+      Interval(math.cos(interval.lowerBound))
+    } else {
+      _cos(interval)
+    }
+  }
+
+  private[this] def _cos(interval: Interval): Interval = {
     val abs = interval.abs
     val width = abs.width
     val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
