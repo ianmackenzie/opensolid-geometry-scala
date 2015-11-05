@@ -14,7 +14,8 @@ lazy val core = crossProject.in(file(".")).
     libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.12.2" % "test",
     javacOptions += "-Xmx2048M",
     testFrameworks += new TestFramework("org.scalacheck.ScalaCheckFramework"),
-    testOptions in Test += Tests.Argument(TestFrameworks.ScalaCheck, "-minSuccessfulTests", "500")
+    testOptions in Test += Tests.Argument(TestFrameworks.ScalaCheck, "-minSuccessfulTests", "500"),
+    logBuffered in Test := false
   ).
   jsSettings(scalaJSStage := FastOptStage)
 
