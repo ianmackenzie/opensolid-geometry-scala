@@ -448,17 +448,21 @@ object Interval {
 
   private[this] def _cos(interval: Interval): Interval = {
     val abs = interval.abs
-    val width = abs.width
-    val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
-    val hasMax = abs.upperBound % (2 * math.Pi) <= width
-    if (hasMin && hasMax) {
+    if (abs.upperBound.isInfinity) {
       cosFullRange
     } else {
-      val cosLower = math.cos(abs.lowerBound)
-      val cosUpper = math.cos(abs.upperBound)
-      val lowerBound = if (hasMin) -1.0 else cosLower.min(cosUpper)
-      val upperBound = if (hasMax) 1.0 else cosLower.max(cosUpper)
-      Interval(lowerBound, upperBound)
+      val width = abs.width
+      val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
+      val hasMax = abs.upperBound % (2 * math.Pi) <= width
+      if (hasMin && hasMax) {
+        cosFullRange
+      } else {
+        val cosLower = math.cos(abs.lowerBound)
+        val cosUpper = math.cos(abs.upperBound)
+        val lowerBound = if (hasMin) -1.0 else cosLower.min(cosUpper)
+        val upperBound = if (hasMax) 1.0 else cosLower.max(cosUpper)
+        Interval(lowerBound, upperBound)
+      }
     }
   }
 
@@ -466,11 +470,15 @@ object Interval {
 
   def tan(interval: Interval): Interval = {
     val abs = interval.abs
-    val hasSingularity = (abs.upperBound + math.Pi / 2.0) % math.Pi <= abs.width
-    if (hasSingularity) {
+    if (abs.upperBound.isInfinity) {
       Interval.Whole
     } else {
-      Interval(math.tan(interval.lowerBound), math.tan(interval.upperBound))
+      val hasSingularity = (abs.upperBound + math.Pi / 2.0) % math.Pi <= abs.width
+      if (hasSingularity) {
+        Interval.Whole
+      } else {
+        Interval(math.tan(interval.lowerBound), math.tan(interval.upperBound))
+      }
     }
   }
 
