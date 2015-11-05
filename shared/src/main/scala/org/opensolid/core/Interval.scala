@@ -519,15 +519,6 @@ object Interval {
     }
   }
 
-  def pow(base: Double, exponent: Interval): Interval =
-    Interval.exp(math.log(base) * exponent)
-
-  def pow(base: Interval, exponent: Double): Interval =
-    Interval.exp(Interval.log(base) * exponent)
-
-  def pow(base: Interval, exponent: Interval): Interval =
-    Interval.exp(Interval.log(base) * exponent)
-
   def ulp(interval: Interval): Double =
     math.ulp(interval.lowerBound).max(math.ulp(interval.upperBound))
 
