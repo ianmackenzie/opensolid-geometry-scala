@@ -410,7 +410,7 @@ object Interval {
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
     } else {
-      Interval(math.sqrt(interval.lowerBound), math.sqrt(interval.upperBound))
+      Interval(math.sqrt(interval.lowerBound.max(0.0)), math.sqrt(interval.upperBound))
     }
   }
 
