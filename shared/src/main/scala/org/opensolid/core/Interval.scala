@@ -329,19 +329,36 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     Interval(lowerBound - that.upperBound, upperBound - that.lowerBound)
 
   def *(value: Double): Interval = {
-    if (value >= 0.0) {
-      Interval(value * lowerBound, value * upperBound)
+    val lowerProduct = value * lowerBound
+    val upperProduct = value * upperBound
+    if (!lowerProduct.isNaN && !upperProduct.isNaN) {
+      Interval.hull(lowerProduct, upperProduct)
     } else {
-      Interval(value * upperBound, value * lowerBound)
+      Interval.hull(
+        Interval.safeProduct(value, lowerBound),
+        Interval.safeProduct(value, upperBound)
+      )
     }
   }
 
   def *(that: Interval): Interval = {
-    val ll = lowerBound * that.lowerBound
-    val lu = lowerBound * that.upperBound
-    val ul = upperBound * that.lowerBound
-    val uu = upperBound * that.upperBound
-    Interval(ll.min(lu).min(ul).min(uu), ll.max(lu).max(ul).max(uu))
+    val ll = this.lowerBound * that.lowerBound
+    val lu = this.lowerBound * that.upperBound
+    val ul = this.upperBound * that.lowerBound
+    val uu = this.upperBound * that.upperBound
+    val lower = ll.min(lu).min(ul).min(uu)
+    val upper = ll.max(lu).max(ul).max(uu)
+    if (!lower.isNaN && !upper.isNaN) {
+      Interval(lower, upper)
+    } else {
+      val safeLL = Interval.safeProduct(this.lowerBound, that.lowerBound)
+      val safeLU = Interval.safeProduct(this.lowerBound, that.upperBound)
+      val safeUL = Interval.safeProduct(this.upperBound, that.lowerBound)
+      val safeUU = Interval.safeProduct(this.upperBound, that.upperBound)
+      val safeLower = safeLL.min(safeLU).min(safeUL).min(safeUU)
+      val safeUpper = safeLL.max(safeLU).max(safeUL).max(safeUU)
+      Interval(safeLower, safeUpper)
+    }
   }
 
   def /(value: Double): Interval = {
