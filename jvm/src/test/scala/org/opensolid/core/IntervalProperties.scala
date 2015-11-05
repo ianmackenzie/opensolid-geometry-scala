@@ -174,23 +174,46 @@ object IntervalProperties extends Properties("Interval") {
     }
   }
 
-  def intervalWithin(domain: Interval): Gen[Interval] = {
+  def expandedInterval(interval: Interval): Interval =
+    Interval(interval.lowerBound - interval.width / 2, interval.upperBound + interval.width / 2)
+
+  def intervalOverlapping(domain: Interval): Gen[Interval] = {
+    val expandedDomain = expandedInterval(domain)
     for {
-      firstValue <- valueWithin(domain)
-      secondValue <- valueWithin(domain)
-    } yield Interval.hull(firstValue, secondValue)
+      firstValue <- valueWithin(expandedDomain)
+      secondValue <- valueWithin(expandedDomain)
+      interval = Interval.hull(firstValue, secondValue)
+      if interval.overlaps(domain)
+    } yield interval
   }
 
-  def evaluateWithin(interval: Interval, scalarFunction: (Double) => Double): Gen[Double] = {
-    valueWithin(interval).map(x => scalarFunction(x)).suchThat(y => !y.isInfinity && !y.isNaN)
+  def evaluateWithin(domain: Interval, unaryFunction: (Double) => Double): Gen[Double] = {
+    for {
+      x <- valueWithin(domain)
+      y = unaryFunction(x)
+      if !y.isInfinity && !y.isNaN
+    } yield y
+  }
+
+  def evaluateWithin(
+    xDomain: Interval,
+    yDomain: Interval,
+    binaryFunction: (Double, Double) => Double
+  ): Gen[Double] = {
+    for {
+      x <- valueWithin(xDomain)
+      y <- valueWithin(yDomain)
+      z = binaryFunction(x, y)
+      if !z.isInfinity && !z.isNaN
+    } yield z
   }
 
   def unaryProperty(
     scalarFunction: (Double) => Double,
     intervalFunction: (Interval) => Interval,
-    domain: Interval = Interval.Whole): Prop = {
-
-    Prop.forAll(intervalWithin(domain)) {
+    domain: Interval = Interval.Whole
+  ): Prop = {
+    Prop.forAll(intervalOverlapping(domain)) {
       (xInterval: Interval) => {
         val yInterval = intervalFunction(xInterval)
         if (xInterval.isEmpty) {
@@ -199,7 +222,7 @@ object IntervalProperties extends Properties("Interval") {
           val yValue = scalarFunction(xInterval.lowerBound)
           (yInterval.lowerBound == yValue && yInterval.upperBound == yValue): Prop
         } else {
-          Prop.forAll(evaluateWithin(xInterval, scalarFunction)) {
+          Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
             (yValue: Double) => {
               s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
                 yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
@@ -210,7 +233,74 @@ object IntervalProperties extends Properties("Interval") {
     }
   }
 
+  def mixedProperty(
+    scalarFunction: (Double, Double) => Double,
+    intervalFunction: (Interval, Double) => Interval,
+    xDomain: Interval = Interval.Whole,
+    yDomain: Interval = Interval.Whole
+  ): Prop = {
+    Prop.forAll(intervalOverlapping(xDomain), valueWithin(yDomain)) {
+      (xInterval: Interval, yValue: Double) => {
+        val zInterval = intervalFunction(xInterval, yValue)
+        if (xInterval.isEmpty) {
+          zInterval.isEmpty: Prop
+        } else if (xInterval.isSingleton) {
+          val zValue = scalarFunction(xInterval.lowerBound, yValue)
+          (zInterval.lowerBound == zValue && zInterval.upperBound == zValue): Prop
+        } else {
+          Prop.forAll(evaluateWithin(xInterval.intersection(xDomain), yDomain, scalarFunction)) {
+            (zValue: Double) => {
+              val tag =
+                s"xInterval: $xInterval, yValue: $yValue, zInterval: $zInterval, zValue: $zValue"
+              tag |: zInterval.contains(zValue, 2 * Interval.ulp(zInterval).max(math.ulp(1.0)))
+            }
+          }
+        }
+      }
+    }
+  }
+
+  def binaryProperty(
+    scalarFunction: (Double, Double) => Double,
+    intervalFunction: (Interval, Interval) => Interval,
+    xDomain: Interval = Interval.Whole,
+    yDomain: Interval = Interval.Whole) = {
+
+    Prop.forAll(intervalOverlapping(xDomain), intervalOverlapping(yDomain)) {
+      (xInterval: Interval, yInterval: Interval) => {
+        val zInterval = intervalFunction(xInterval, yInterval)
+        if (xInterval.isEmpty || yInterval.isEmpty) {
+          zInterval.isEmpty:  Prop
+        } else if (xInterval.isSingleton && yInterval.isSingleton) {
+          val zValue = scalarFunction(xInterval.lowerBound, yInterval.lowerBound)
+          (zInterval.lowerBound == zValue && zInterval.upperBound == zValue): Prop
+        } else {
+          val zValues = evaluateWithin(
+            xInterval.intersection(xDomain),
+            yInterval.intersection(yDomain),
+            scalarFunction
+          )
+          Prop.forAll(zValues) {
+            (zValue: Double) => {
+              val tag =
+                s"xInterval: $xInterval, " +
+                s"yInterval: $yInterval, " +
+                s"zInterval: $zInterval, " +
+                s"zValue: $zValue"
+
+              tag |: zInterval.contains(zValue, 2 * Interval.ulp(zInterval).max(math.ulp(1.0)))
+            }
+          }
+        }
+      }
+    }
+  }
+
   property("unary_-") = unaryProperty(value => -value, interval => -interval)
+
+  property("+(value)") = mixedProperty((x, y) => x + y, (x, y) => x + y)
+
+  property("+(that)") = binaryProperty((x, y) => x + y, (x, y) => x + y)
 
   property("abs") = unaryProperty(value => value.abs, interval => interval.abs)
 
