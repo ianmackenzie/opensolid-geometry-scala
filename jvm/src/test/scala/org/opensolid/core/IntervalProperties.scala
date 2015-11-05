@@ -321,6 +321,17 @@ object IntervalProperties extends Properties("Interval") {
 
   property("squared") = unaryProperty(value => value * value, interval => interval.squared)
 
+  property("hull(firstValue, secondValue)") = Prop.forAll(randomDouble, randomDouble) {
+    (firstValue: Double, secondValue: Double) => {
+      val interval = Interval.hull(firstValue, secondValue)
+      if (firstValue <= secondValue) {
+        interval.lowerBound == firstValue && interval.upperBound == secondValue
+      } else {
+        interval.lowerBound == secondValue && interval.upperBound == firstValue
+      }
+    }
+  }
+
   property("sqrt") =
     unaryProperty(
       value => math.sqrt(value),
