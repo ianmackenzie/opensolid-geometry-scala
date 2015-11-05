@@ -4,12 +4,10 @@ import org.scalacheck._
 import org.scalacheck.Prop.BooleanOperators
 
 object IntervalGenerators {
-  val randomDouble: Gen[Double] =
-    for {
-      s <- Gen.choose(0L, 1L)
-      e <- Gen.choose(0L, 40L)
-      m <- Gen.choose(0L, 0xfffffffffffffL)
-    } yield java.lang.Double.longBitsToDouble((s << 63) | (e << 52) | m)
+  val randomDouble: Gen[Double] = for {
+    x <- Gen.chooseNum(-1.0, 1.0)
+    y <- Gen.chooseNum(0.0, math.log(1e8))
+  } yield x * math.exp(y)
 
   implicit val arbitraryDouble: Arbitrary[Double] = Arbitrary(randomDouble)
 
