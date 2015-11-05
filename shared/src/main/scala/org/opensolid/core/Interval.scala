@@ -345,23 +345,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   }
 
   def /(value: Double): Interval = {
-    if (isEmpty) {
-      Interval.Empty
-    } else if (value > 0.0) {
-      val reciprocal = 1.0 / value
-      Interval(lowerBound * reciprocal, upperBound * reciprocal)
-    } else if (value < 0.0) {
-      val reciprocal = 1.0 / value
-      Interval(upperBound * reciprocal, lowerBound * reciprocal)
-    } else { // value == +/-0.0
-      if (lowerBound >= 0.0) {
-        Interval(upperBound / value)
-      } else if (upperBound < 0.0) {
-        Interval(lowerBound / value)
-      } else {
-        Interval.Whole
-      }
-    }
+    val reciprocal = 1.0 / value
+    Interval.hull(lowerBound * reciprocal, upperBound * reciprocal)
   }
 
   def /(that: Interval): Interval = {
