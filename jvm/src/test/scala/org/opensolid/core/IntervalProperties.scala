@@ -168,7 +168,7 @@ object IntervalProperties extends Properties("Interval") {
     if (interval.width.isInfinity) {
       randomDouble.retryUntil(x => interval.contains(x))
     } else {
-      Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_))
+      Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
     }
   }
 
