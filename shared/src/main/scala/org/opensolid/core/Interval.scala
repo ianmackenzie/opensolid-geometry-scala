@@ -137,7 +137,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * scala> Interval.Empty.bisected
     * res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval.Empty,Interval.Empty)
     * }}}
-    */ 
+    */
   def bisected: (Interval, Interval) = {
     if (isEmpty) {
       (Interval.Empty, Interval.Empty)
@@ -148,17 +148,17 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
         } else if (lowerBound.isNegInfinity) {
           if (upperBound > 0.0) {
             0.0
-          } else if (upperBound < 0.0) {
+          } else if (upperBound <= -0.5) {
             2.0 * upperBound
-          } else { // upperBound == 0.0
+          } else {
             -1.0
           }
         } else if (upperBound.isPosInfinity) {
           if (lowerBound < 0.0) {
             0.0
-          } else if (lowerBound > 0.0) {
+          } else if (lowerBound >= 0.5) {
             2.0 * lowerBound
-          } else { // lowerBound == 0.0
+          } else {
             1.0
           }
         } else {
