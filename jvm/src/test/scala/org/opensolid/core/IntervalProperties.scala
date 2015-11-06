@@ -219,6 +219,12 @@ object IntervalProperties extends Properties("Interval") {
     (interval.lowerBound == value && interval.upperBound == value)
   }
 
+  def classifyInterval(interval: Interval): String = interval match {
+    case Interval.Empty => "empty"
+    case Interval.Whole => "whole"
+    case _ => "other"
+  }
+
   def unaryProperty(
     scalarFunction: (Double) => Double,
     intervalFunction: (Interval) => Interval,
@@ -226,17 +232,19 @@ object IntervalProperties extends Properties("Interval") {
   ): Prop = {
     Prop.forAll(testIntervalForDomain(domain)) {
       (xInterval: Interval) => {
-        val yInterval = intervalFunction(xInterval)
-        if (xInterval.isEmpty) {
-          yInterval.isEmpty: Prop
-        } else if (xInterval.isSingleton) {
-          val yValue = scalarFunction(xInterval.lowerBound)
-          equalSingletons(yInterval, yValue): Prop
-        } else {
-          Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
-            (yValue: Double) => {
-              s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
-                yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
+        Prop.collect(classifyInterval(xInterval)) {
+          val yInterval = intervalFunction(xInterval)
+          if (xInterval.isEmpty) {
+            yInterval.isEmpty: Prop
+          } else if (xInterval.isSingleton) {
+            val yValue = scalarFunction(xInterval.lowerBound)
+            equalSingletons(yInterval, yValue): Prop
+          } else {
+            Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
+              (yValue: Double) => {
+                s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
+                  yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
+              }
             }
           }
         }
