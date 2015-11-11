@@ -18,6 +18,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def isZero(precision: Double): Boolean = squaredLength.isZero(precision * precision)
 
+  def isNotZero(precision: Double): Boolean = squaredLength.isNotZero(precision * precision)
+
   override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
 
   def normalized: Vector2d = {

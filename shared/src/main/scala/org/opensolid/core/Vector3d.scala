@@ -19,6 +19,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def isZero(precision: Double): Boolean = squaredLength.isZero(precision * precision)
 
+  def isNotZero(precision: Double): Boolean = squaredLength.isNotZero(precision * precision)
+
   override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
   def normalized: Vector3d = {
