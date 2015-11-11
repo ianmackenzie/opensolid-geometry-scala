@@ -154,6 +154,25 @@ object IntervalProperties extends Properties("Interval") {
     case _ => false
   }
 
+  property("contains(value, tolerance)") = Prop.forAll {
+    (interval: Interval) => {
+      val randomTolerance: Gen[Double] = for {
+        candidateTolerance <- Gen.chooseNum(-1e-3, 1e-3)
+        if interval.lowerBound - candidateTolerance <= interval.upperBound + candidateTolerance
+      } yield candidateTolerance
+      Prop.forAll(randomTolerance) {
+        (tolerance: Double) => {
+          val expanded = Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance)
+          Prop.forAll(valueWithin(expanded)) {
+            (value: Double) => {
+              interval.contains(value, tolerance)
+            }
+          }
+        }
+      }
+    }
+  }
+
   property("contains(that)") = Prop.forAll(sortedValues(4)) {
     case firstLower :: secondLower :: secondUpper :: firstUpper :: Nil =>
       Interval(firstLower, firstUpper).contains(Interval(secondLower, secondUpper))
