@@ -169,12 +169,11 @@ object IntervalProperties extends Properties("Interval") {
     case _ => false
   }
 
-  def valueWithin(interval: Interval): Gen[Double] = {
-    if (interval.width.isInfinity) {
-      randomDouble.retryUntil(x => interval.contains(x))
-    } else {
-      Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
-    }
+  def valueWithin(interval: Interval): Gen[Double] = interval match {
+    case Interval.Whole => randomDouble
+    case Interval(Double.NegativeInfinity, upper) => Gen.chooseNum(upper - 1e8, upper)
+    case Interval(lower, Double.PositiveInfinity) => Gen.chooseNum(lower, lower + 1e8)
+    case _ => Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
   }
 
   def expandedInterval(interval: Interval): Interval =
