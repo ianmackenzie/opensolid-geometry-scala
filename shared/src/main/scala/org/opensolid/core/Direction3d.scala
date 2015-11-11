@@ -9,6 +9,12 @@ final case class Direction3d(x: Double, y: Double, z: Double)
   
   def components: Array[Double] = Array(x, y, z)
 
+  def component(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Direction3d")
+  }
+
   def vector: Vector3d = Vector3d(x, y, z)
 
   def unary_- : Direction3d = Direction3d(-x, -y, -z)

@@ -3,6 +3,13 @@ package org.opensolid.core
 final case class Box3d(x: Interval, y: Interval, z: Interval) extends Bounded3d {
   def components: Array[Interval] = Array(x, y, z)
 
+  def component(index: Int): Interval = index match {
+    case 0 => x
+    case 1 => y
+    case 2 => z
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Box3d")
+  }
+
   override def bounds: Box3d = this
 }
 
