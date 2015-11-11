@@ -25,7 +25,7 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 
   def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
 
-  def dot(vector: Vector2d): Double = this.x * vector.x + this.y * vector.y
+  def dot(vector: Vector2d): Double = x * vector.x + y * vector.y
 
   def dot(that: Direction2d): Double = this.x * that.x + this.y * that.y
 }
@@ -41,7 +41,8 @@ object Direction2d {
   def random: Direction2d = random(Random)
 
   def random(generator: Random): Direction2d = {
-    @tailrec def generate: Direction2d = {
+    @tailrec
+    def generate: Direction2d = {
       val x = -1.0 + 2.0 * generator.nextDouble()
       val y = -1.0 + 2.0 * generator.nextDouble()
       val squaredNorm = x * x + y * y

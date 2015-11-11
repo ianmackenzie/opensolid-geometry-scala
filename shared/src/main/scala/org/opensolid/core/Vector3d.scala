@@ -33,11 +33,11 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   }
 
   def direction: Direction3d = {
-    if (x != 0.0 || y != 0.0 || z != 0.0) {
+    if (this == Vector3d.Zero) {
+      Direction3d.None
+    } else {
       val length = this.length
       Direction3d(x / length, y / length, z / length)
-    } else {
-      Direction3d.None
     }
   }
 

@@ -27,7 +27,7 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def transformedBy(transformation: Transformation3d): Direction3d = transformation(this)
 
-  def dot(vector: Vector3d): Double = this.x * vector.x + this.y * vector.y + this.z * vector.z
+  def dot(vector: Vector3d): Double = x * vector.x + y * vector.y + z * vector.z
 
   def dot(that: Direction3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 }
@@ -49,7 +49,8 @@ object Direction3d {
   def random: Direction3d = random(Random)
 
   def random(generator: Random): Direction3d = {
-    @tailrec def generate: Direction3d = {
+    @tailrec
+    def generate: Direction3d = {
       val x = -1.0 + 2.0 * generator.nextDouble()
       val y = -1.0 + 2.0 * generator.nextDouble()
       val z = -1.0 + 2.0 * generator.nextDouble()

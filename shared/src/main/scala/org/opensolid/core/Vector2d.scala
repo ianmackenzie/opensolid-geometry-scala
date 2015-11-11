@@ -32,19 +32,19 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   }
 
   def direction: Direction2d = {
-    if (x != 0.0 || y != 0.0) {
+    if (this == Vector2d.Zero) {
+      Direction2d.None
+    } else {
       val length = this.length
       Direction2d(x / length, y / length)
-    } else {
-      Direction2d.None
     }
   }
 
   def unary_- : Vector2d = Vector2d(-x, -y)
 
-  def +(that: Vector2d): Vector2d = Vector2d(x + that.x, y + that.y)
+  def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)
 
-  def -(that: Vector2d): Vector2d = Vector2d(x - that.x, y - that.y)
+  def -(that: Vector2d): Vector2d = Vector2d(this.x - that.x, this.y - that.y)
 
   def *(sign: Sign): Vector2d = Vector2d(x * sign, y * sign)
 
@@ -54,7 +54,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
 
-  def dot(direction: Direction2d): Double = this.x * direction.x + this.y * direction.y
+  def dot(direction: Direction2d): Double = x * direction.x + y * direction.y
 }
 
 object Vector2d {
