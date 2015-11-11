@@ -531,6 +531,8 @@ object Interval {
   def atan2(y: Interval, x:Interval): Interval = {
     if (y.isEmpty || x.isEmpty) {
       Interval.Empty
+    } else if (y.isSingleton && x.isSingleton) {
+      Interval(math.atan2(y.lowerBound, x.lowerBound))
     } else if (x.lowerBound > 0.0) {
       Interval.atan(y / x)
     } else if (y.lowerBound > 0.0) {
