@@ -25,9 +25,11 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
 
-  def transformedBy(transformation: Transformation3d): Direction3d = {
-    transformation(this)
-  }
+  def transformedBy(transformation: Transformation3d): Direction3d = transformation(this)
+
+  def dot(vector: Vector3d): Double = this.x * vector.x + this.y * vector.y + this.z * vector.z
+
+  def dot(that: Direction3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 }
 
 object Direction3d {

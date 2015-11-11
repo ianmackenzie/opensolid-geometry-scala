@@ -24,6 +24,10 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
 
   def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
+
+  def dot(vector: Vector2d): Double = this.x * vector.x + this.y * vector.y
+
+  def dot(that: Direction2d): Double = this.x * that.x + this.y * that.y
 }
 
 object Direction2d {

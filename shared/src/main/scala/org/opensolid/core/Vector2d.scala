@@ -51,6 +51,10 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
+
+  def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
+
+  def dot(direction: Direction2d): Double = this.x * direction.x + this.y * direction.y
 }
 
 object Vector2d {
