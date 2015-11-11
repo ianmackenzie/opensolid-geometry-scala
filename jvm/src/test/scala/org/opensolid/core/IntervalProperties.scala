@@ -264,9 +264,10 @@ object IntervalProperties extends Properties("Interval") {
     } yield z
   }
 
-  def equalSingletons(interval: Interval, value: Double): Boolean = {
-    (interval.isEmpty && value.isNaN) ||
-    (interval.lowerBound == value && interval.upperBound == value)
+  def tolerantContains(interval: Interval, value: Double): Prop = {
+    interval.contains(value) ||
+      interval.contains(value, 2 * Interval.ulp(interval).max(math.ulp(1.0))) ||
+      (interval.isEmpty && value.isNaN)
   }
 
   def classifyInterval(interval: Interval): String = interval match {
@@ -286,13 +287,12 @@ object IntervalProperties extends Properties("Interval") {
         if (xInterval.isEmpty) {
           yInterval.isEmpty: Prop
         } else if (xInterval.isSingleton) {
-          val yValue = scalarFunction(xInterval.lowerBound)
-          equalSingletons(yInterval, yValue): Prop
+          tolerantContains(yInterval, scalarFunction(xInterval.lowerBound))
         } else {
           Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
             (yValue: Double) => {
-              s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
-                yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
+              val tag = s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue"
+              tag |: tolerantContains(yInterval, yValue)
             }
           }
         }
@@ -312,8 +312,7 @@ object IntervalProperties extends Properties("Interval") {
         if (xInterval.isEmpty) {
           zInterval.isEmpty: Prop
         } else if (xInterval.isSingleton) {
-          val zValue = scalarFunction(xInterval.lowerBound, yValue)
-          equalSingletons(zInterval, zValue): Prop
+          tolerantContains(zInterval, scalarFunction(xInterval.lowerBound, yValue))
         } else {
           Prop.forAll(
             evaluateWithin(
@@ -324,7 +323,7 @@ object IntervalProperties extends Properties("Interval") {
             (zValue: Double) => {
               val tag =
                 s"xInterval: $xInterval, yValue: $yValue, zInterval: $zInterval, zValue: $zValue"
-              tag |: zInterval.contains(zValue, 2 * Interval.ulp(zInterval).max(math.ulp(1.0)))
+              tag |: tolerantContains(zInterval, zValue)
             }
           }
         }
@@ -344,8 +343,7 @@ object IntervalProperties extends Properties("Interval") {
         if (xInterval.isEmpty || yInterval.isEmpty) {
           zInterval.isEmpty:  Prop
         } else if (xInterval.isSingleton && yInterval.isSingleton) {
-          val zValue = scalarFunction(xInterval.lowerBound, yInterval.lowerBound)
-          equalSingletons(zInterval, zValue): Prop
+          tolerantContains(zInterval, scalarFunction(xInterval.lowerBound, yInterval.lowerBound))
         } else {
           val zValues = evaluateWithin(
             xInterval.intersection(xDomain),
@@ -359,8 +357,7 @@ object IntervalProperties extends Properties("Interval") {
                 s"yInterval: $yInterval, " +
                 s"zInterval: $zInterval, " +
                 s"zValue: $zValue"
-
-              tag |: zInterval.contains(zValue, 2 * Interval.ulp(zInterval).max(math.ulp(1.0)))
+              tag |: tolerantContains(zInterval, zValue)
             }
           }
         }
@@ -429,11 +426,17 @@ object IntervalProperties extends Properties("Interval") {
 
   property("atan2") = binaryProperty((y, x) => math.atan2(y, x), (y, x) => Interval.atan2(y, x))
 
-  property("exp") = unaryProperty(value => math.exp(value), interval => Interval.exp(interval))
+  property("exp") =
+    unaryProperty(
+      value => math.exp(value),
+      interval => Interval.exp(interval),
+      Interval(Double.NegativeInfinity, 1e2)
+    )
 
   property("log") =
     unaryProperty(
       value => math.log(value),
       interval => Interval.log(interval),
-      Interval(0.0, Double.PositiveInfinity))
+      Interval(0.0, Double.PositiveInfinity)
+    )
 }
