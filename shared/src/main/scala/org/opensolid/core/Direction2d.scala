@@ -28,6 +28,8 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
   def dot(vector: Vector2d): Double = x * vector.x + y * vector.y
 
   def dot(that: Direction2d): Double = this.x * that.x + this.y * that.y
+
+  def orthogonalDirection: Direction2d = Direction2d(-y, x)
 }
 
 object Direction2d {

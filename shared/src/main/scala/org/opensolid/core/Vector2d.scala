@@ -33,6 +33,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     }
   }
 
+  def orthogonalDirection: Direction2d = direction.orthogonalDirection
+
   def unary_- : Vector2d = Vector2d(-x, -y)
 
   def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)

@@ -34,6 +34,8 @@ final case class Direction3d(x: Double, y: Double, z: Double)
   def cross(vector: Vector3d): Vector3d = this.vector.cross(vector)
 
   def cross(that: Direction3d): Vector3d = this.vector.cross(that.vector)
+
+  def orthogonalDirection: Direction3d = vector.orthogonalDirection
 }
 
 object Direction3d {
