@@ -200,6 +200,21 @@ object IntervalProperties extends Properties("Interval") {
     case _ => false
   }
 
+  property("overlaps(that, tolerance)") = Prop.forAll(sortedValues(4)) {
+    case first :: second :: third :: fourth :: Nil => {
+      val tolerance = third - second
+      Interval(first, third).overlaps(Interval(second, fourth), -tolerance + 1e-3) &&
+        Interval(second, fourth).overlaps(Interval(first, third), -tolerance + 1e-3) &&
+        !Interval(first, third).overlaps(Interval(second, fourth), -tolerance - 1e-3) &&
+        !Interval(second, fourth).overlaps(Interval(first, third), -tolerance - 1e-3) &&
+        Interval(first, second).overlaps(Interval(third, fourth), tolerance + 1e-3) &&
+        Interval(third, fourth).overlaps(Interval(first, second), tolerance + 1e-3) &&
+        !Interval(first, second).overlaps(Interval(third, fourth), tolerance - 1e-3) &&
+        !Interval(third, fourth).overlaps(Interval(first, second), tolerance - 1e-3)
+    }
+    case _ => false
+  }
+
   def valueWithin(interval: Interval): Gen[Double] = interval match {
     case Interval.Whole => randomDouble
     case Interval(Double.NegativeInfinity, upper) => Gen.chooseNum(upper - 1e8, upper)
