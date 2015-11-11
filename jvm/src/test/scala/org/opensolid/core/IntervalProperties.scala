@@ -52,7 +52,7 @@ object IntervalGenerators {
     10 -> randomInterval))
 
   def sortedValues(count: Integer): Gen[List[Double]] =
-    Gen.listOfN[Double](count, randomDouble).map(list => list.sorted)
+    Gen.listOfN[Double](count, randomDouble).map(list => list.sorted).suchThat(_.length == count)
 }
 
 object IntervalProperties extends Properties("Interval") {
