@@ -10,9 +10,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def length: Double = math.sqrt(squaredLength)
 
-  def isZero(precision: Double = DefaultPrecision): Boolean = {
-    squaredLength.isZero(precision * precision)
-  }
+  def isZero(precision: Double): Boolean = squaredLength.isZero(precision * precision)
 
   override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
 
