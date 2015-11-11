@@ -46,7 +46,9 @@ object Direction3d {
     Direction3d(cosElevation * cosAzimuth, cosElevation * sinAzimuth, sinElevation)
   }
 
-  def random(generator: Random = Random): Direction3d = {
+  def random: Direction3d = random(Random)
+
+  def random(generator: Random): Direction3d = {
     @tailrec def generate: Direction3d = {
       val x = -1.0 + 2.0 * generator.nextDouble()
       val y = -1.0 + 2.0 * generator.nextDouble()

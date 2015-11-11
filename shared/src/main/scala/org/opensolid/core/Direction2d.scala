@@ -38,7 +38,9 @@ object Direction2d {
 
   def polar(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
 
-  def random(generator: Random = Random): Direction2d = {
+  def random: Direction2d = random(Random)
+
+  def random(generator: Random): Direction2d = {
     @tailrec def generate: Direction2d = {
       val x = -1.0 + 2.0 * generator.nextDouble()
       val y = -1.0 + 2.0 * generator.nextDouble()
