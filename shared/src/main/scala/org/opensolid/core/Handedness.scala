@@ -5,6 +5,8 @@ final case class Handedness(value: Int) {
 
   def unary_- : Handedness = Handedness(-value)
 
+  def *(sign: Sign): Handedness = Handedness(value * sign.value)
+
   def *(that: Handedness): Handedness = Handedness(value * that.value)
 
   def transformedBy(transformation: Transformation2d): Handedness = transformation(this)

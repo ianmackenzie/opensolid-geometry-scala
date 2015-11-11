@@ -44,6 +44,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def -(that: Vector2d): Vector2d = Vector2d(x - that.x, y - that.y)
 
+  def *(sign: Sign): Vector2d = Vector2d(x * sign, y * sign)
+
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)

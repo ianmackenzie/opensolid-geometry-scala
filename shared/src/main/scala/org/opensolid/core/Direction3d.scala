@@ -19,6 +19,8 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def unary_- : Direction3d = Direction3d(-x, -y, -z)
 
+  def *(sign: Sign): Direction3d = Direction3d(x * sign, y * sign, z * sign)
+
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)

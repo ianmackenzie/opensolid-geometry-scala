@@ -6,6 +6,8 @@ package object core {
 
     def isNotZero(precision: Double): Boolean = value < -precision || value > precision
   
+    def *(sign: Sign): Double = value * sign.value
+
     def +(interval: Interval): Interval = {
       Interval(value + interval.lowerBound, value + interval.upperBound)
     }

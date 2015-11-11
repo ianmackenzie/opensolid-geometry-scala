@@ -17,6 +17,8 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 
   def unary_- : Direction2d = Direction2d(-x, -y)
 
+  def *(sign: Sign): Direction2d = Direction2d(x * sign, y * sign)
+
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)

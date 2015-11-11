@@ -3,17 +3,19 @@ package org.opensolid.core
 final case class Sign(value: Int) extends AnyVal {
   def unary_- : Sign = Sign(-value)
   
-  def *(that: Sign): Sign = Sign(value * that.value)
+  def *(that: Sign): Sign = Sign(this.value * that.value)
 
-  def *(handedness: Handedness): Handedness = Handedness(value * handedness.value)
+  def *(value: Double): Double = this.value * value
 
-  def *(direction: Direction2d): Direction2d = {
-    Direction2d(value * direction.x, value * direction.y)
-  }
+  def *(handedness: Handedness): Handedness = handedness * this
+
+  def *(vector: Vector2d): Vector2d = vector * this
+
+  def *(vector: Vector3d): Vector3d = vector * this
+
+  def *(direction: Direction2d): Direction2d = direction * this
   
-  def *(direction: Direction3d): Direction3d = {
-    Direction3d(value * direction.x, value * direction.y, value * direction.z)
-  }
+  def *(direction: Direction3d): Direction3d = direction * this
 }
 
 object Sign {

@@ -45,6 +45,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def -(that: Vector3d): Vector3d = Vector3d(x - that.x, y - that.y, z - that.z)
 
+  def *(sign: Sign): Vector3d = Vector3d(x * sign, y * sign, z * sign)
+
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
