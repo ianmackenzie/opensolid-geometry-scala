@@ -179,6 +179,18 @@ object IntervalProperties extends Properties("Interval") {
     case _ => false
   }
 
+  property("contains(that, tolerance)") = Prop.forAll(sortedValues(4)) {
+    case first :: second :: third :: fourth :: Nil => {
+      val minTolerance = (second - first).min(fourth - third)
+      val maxTolerance = (second - first).max(fourth - third)
+      Interval(first, fourth).contains(Interval(second, third), -minTolerance + 1e-3) &&
+        Interval(second, third).contains(Interval(first, fourth), maxTolerance + 1e-3) &&
+        !Interval(second, third).contains(Interval(first, fourth), maxTolerance - 1e-3) &&
+        !Interval(first, fourth).contains(Interval(second, third), -minTolerance - 1e-3)
+    }
+    case _ => false
+  }
+
   property("overlaps(that)") = Prop.forAll(sortedValues(4)) {
     case firstLower :: secondLower :: firstUpper :: secondUpper :: Nil => {
       val first = Interval(firstLower, firstUpper)
