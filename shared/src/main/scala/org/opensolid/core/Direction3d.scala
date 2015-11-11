@@ -30,6 +30,10 @@ final case class Direction3d(x: Double, y: Double, z: Double)
   def dot(vector: Vector3d): Double = x * vector.x + y * vector.y + z * vector.z
 
   def dot(that: Direction3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
+
+  def cross(vector: Vector3d): Vector3d = this.vector.cross(vector)
+
+  def cross(that: Direction3d): Vector3d = this.vector.cross(that.vector)
 }
 
 object Direction3d {
