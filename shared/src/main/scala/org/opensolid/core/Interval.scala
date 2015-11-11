@@ -501,7 +501,7 @@ object Interval {
   def atan(interval: Interval): Interval =
     Interval(math.atan(interval.lowerBound), math.atan(interval.upperBound))
 
-  def atan2(x: Interval, y:Interval): Interval = {
+  def atan2(y: Interval, x:Interval): Interval = {
     if (y.isEmpty || x.isEmpty) {
       Interval.Empty
     } else if (x.lowerBound > 0.0) {
