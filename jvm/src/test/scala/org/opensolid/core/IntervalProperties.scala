@@ -236,19 +236,17 @@ object IntervalProperties extends Properties("Interval") {
   ): Prop = {
     Prop.forAll(testIntervalForDomain(domain)) {
       (xInterval: Interval) => {
-        Prop.collect(classifyInterval(xInterval)) {
-          val yInterval = intervalFunction(xInterval)
-          if (xInterval.isEmpty) {
-            yInterval.isEmpty: Prop
-          } else if (xInterval.isSingleton) {
-            val yValue = scalarFunction(xInterval.lowerBound)
-            equalSingletons(yInterval, yValue): Prop
-          } else {
-            Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
-              (yValue: Double) => {
-                s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
-                  yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
-              }
+        val yInterval = intervalFunction(xInterval)
+        if (xInterval.isEmpty) {
+          yInterval.isEmpty: Prop
+        } else if (xInterval.isSingleton) {
+          val yValue = scalarFunction(xInterval.lowerBound)
+          equalSingletons(yInterval, yValue): Prop
+        } else {
+          Prop.forAll(evaluateWithin(xInterval.intersection(domain), scalarFunction)) {
+            (yValue: Double) => {
+              s"xInterval: $xInterval, yInterval: $yInterval, yValue: $yValue" |:
+                yInterval.contains(yValue, 2 * Interval.ulp(yInterval).max(math.ulp(1.0)))
             }
           }
         }
