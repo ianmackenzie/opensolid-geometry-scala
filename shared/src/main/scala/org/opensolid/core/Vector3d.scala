@@ -6,7 +6,7 @@ import scala.util.Random
 final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransformable3d[Vector3d] {
   def components: Array[Double] = Array(x, y , z)
 
-  def apply(index: Int): Double = index match {
+  def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y
     case 2 => z

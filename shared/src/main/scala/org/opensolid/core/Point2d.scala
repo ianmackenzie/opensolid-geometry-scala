@@ -5,7 +5,7 @@ final case class Point2d(x: Double, y: Double)
   
   def components: Array[Double] = Array(x, y)
 
-  def apply(index: Int): Double = index match {
+  def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point2d")
