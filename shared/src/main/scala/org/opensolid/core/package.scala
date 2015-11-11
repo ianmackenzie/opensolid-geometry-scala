@@ -4,29 +4,9 @@ package object core {
   val DefaultPrecision: Double = 1e-12
 
   implicit class Scalar(val value: Double) extends AnyVal {
-    def isLessThanZero(precision: Double): Boolean = value < -precision
-
-    def isLessThanZero: Boolean = value < -DefaultPrecision
-
-    def isLessThanOrEqualToZero(precision: Double): Boolean = value <= precision
-
-    def isLessThanOrEqualToZero: Boolean = value <= DefaultPrecision
-
     def isZero(precision: Double): Boolean = value >= -precision && value <= precision
 
-    def isZero: Boolean = value >= -DefaultPrecision && value <= DefaultPrecision
-
     def isNotZero(precision: Double): Boolean = value < -precision || value > precision
-
-    def isNotZero: Boolean = value < -DefaultPrecision || value > DefaultPrecision
-
-    def isGreaterThanOrEqualToZero(precision: Double): Boolean = value >= -precision
-
-    def isGreaterThanOrEqualToZero: Boolean = value >= -DefaultPrecision
-
-    def isGreaterThanZero(precision: Double): Boolean = value > precision
-
-    def isGreaterThanZero: Boolean = value > DefaultPrecision
   
     def +(interval: Interval): Interval = {
       Interval(value + interval.lowerBound, value + interval.upperBound)
