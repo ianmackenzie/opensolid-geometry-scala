@@ -22,14 +22,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
 
-  def normalized: Vector2d = {
-    if (x != 0.0 || y != 0.0) {
-      val length = this.length
-      Vector2d(x / length, y / length)
-    } else {
-      Vector2d.Zero
-    }
-  }
+  def normalized: Vector2d = direction.vector
 
   def direction: Direction2d = {
     if (this == Vector2d.Zero) {

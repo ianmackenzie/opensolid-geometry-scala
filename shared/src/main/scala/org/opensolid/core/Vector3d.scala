@@ -23,14 +23,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
-  def normalized: Vector3d = {
-    if (x != 0.0 || y != 0.0 || z != 0.0) {
-      val length = this.length
-      Vector3d(x / length, y / length, z / length)
-    } else {
-      Vector3d.Zero
-    }
-  }
+  def normalized: Vector3d = direction.vector
 
   def direction: Direction3d = {
     if (this == Vector3d.Zero) {
