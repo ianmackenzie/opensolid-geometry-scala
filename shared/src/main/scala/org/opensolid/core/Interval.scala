@@ -432,7 +432,16 @@ object Interval {
     } else if (interval.isSingleton) {
       Interval(math.sin(interval.lowerBound))
     } else {
-      _cos(interval - math.Pi / 2.0)
+      val (hasMin, hasMax) = cosHasMinMax(interval - math.Pi / 2.0)
+      if (hasMin && hasMax) {
+        sinCosFullRange
+      } else {
+        val sinLower = math.sin(interval.lowerBound)
+        val sinUpper = math.sin(interval.upperBound)
+        val lowerBound = if (hasMin) -1.0 else sinLower.min(sinUpper)
+        val upperBound = if (hasMax) 1.0 else sinLower.max(sinUpper)
+        Interval(lowerBound, upperBound)
+      }
     }
   }
 
@@ -442,23 +451,12 @@ object Interval {
     } else if (interval.isSingleton) {
       Interval(math.cos(interval.lowerBound))
     } else {
-      _cos(interval)
-    }
-  }
-
-  private[this] def _cos(interval: Interval): Interval = {
-    val abs = interval.abs
-    if (abs.upperBound.isInfinity) {
-      cosFullRange
-    } else {
-      val width = abs.width
-      val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
-      val hasMax = abs.upperBound % (2 * math.Pi) <= width
+      val (hasMin, hasMax) = cosHasMinMax(interval)
       if (hasMin && hasMax) {
-        cosFullRange
+        sinCosFullRange
       } else {
-        val cosLower = math.cos(abs.lowerBound)
-        val cosUpper = math.cos(abs.upperBound)
+        val cosLower = math.cos(interval.lowerBound)
+        val cosUpper = math.cos(interval.upperBound)
         val lowerBound = if (hasMin) -1.0 else cosLower.min(cosUpper)
         val upperBound = if (hasMax) 1.0 else cosLower.max(cosUpper)
         Interval(lowerBound, upperBound)
@@ -466,7 +464,19 @@ object Interval {
     }
   }
 
-  private[this] val cosFullRange = Interval(-1.0, 1.0)
+  private[this] def cosHasMinMax(interval: Interval): (Boolean, Boolean) = {
+    val abs = interval.abs
+    if (abs.upperBound.isInfinity) {
+      (true, true)
+    } else {
+      val width = abs.width
+      val hasMin = (abs.upperBound + math.Pi) % (2 * math.Pi) <= width
+      val hasMax = abs.upperBound % (2 * math.Pi) <= width
+      (hasMin, hasMax)
+    }
+  }
+
+  private[this] val sinCosFullRange = Interval(-1.0, 1.0)
 
   def tan(interval: Interval): Interval = {
     val abs = interval.abs
