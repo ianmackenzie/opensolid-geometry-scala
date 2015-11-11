@@ -2,6 +2,14 @@ package org.opensolid.core
 
 final case class Point2d(x: Double, y: Double)
   extends Bounded2d with Transformable2d[Point2d] with Scalable2d[Point2d] {
+  
+  def components: Array[Double] = Array(x, y)
+
+  def apply(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point2d")
+  }
 
   override def bounds: Box2d = Box2d(Interval(x), Interval(y))
 
@@ -17,5 +25,10 @@ final case class Point2d(x: Double, y: Double)
 }
 
 object Point2d {
+  def fromComponents[T <% Double](components: Seq[T]): Point2d = components match {
+    case Seq(x, y) => Point2d(x, y)
+    case _ => throw new IllegalArgumentException("Point2d requires 2 components")
+  }
+
   val Origin: Point2d = Point2d(0.0, 0.0)
 }

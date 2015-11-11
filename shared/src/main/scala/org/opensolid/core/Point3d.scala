@@ -2,6 +2,15 @@ package org.opensolid.core
 
 final case class Point3d(x: Double, y: Double, z: Double)
   extends Bounded3d with Transformable3d[Point3d] with Scalable3d[Point3d] {
+  
+  def components: Array[Double] = Array(x, y, z)
+
+  def apply(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case 2 => z
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point3d")
+  }
 
   override def bounds: Box3d = Box3d(Interval(x), Interval(y), Interval(z))
 
@@ -17,5 +26,10 @@ final case class Point3d(x: Double, y: Double, z: Double)
 }
 
 object Point3d {
+  def fromComponents[T <% Double](components: Seq[T]): Point3d = components match {
+    case Seq(x, y, z) => Point3d(x, y, z)
+    case _ => throw new IllegalArgumentException("Point3d requires 3 components")
+  }
+
   val Origin: Point3d = Point3d(0.0, 0.0, 0.0)
 }

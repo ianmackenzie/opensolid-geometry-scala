@@ -4,7 +4,14 @@ import scala.math
 import scala.util.Random
 
 final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransformable3d[Vector3d] {
-  def components: (Double, Double, Double) = (x, y, z)
+  def components: Array[Double] = Array(x, y , z)
+
+  def apply(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case 2 => z
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Vector3d")
+  }
 
   def squaredLength: Double = x * x + y * y + z * z
 
@@ -44,8 +51,10 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 }
 
 object Vector3d {
-  def apply(components: (Double, Double, Double)): Vector3d =
-    Vector3d(components._1, components._2, components._3)
+  def fromComponents[T <% Double](components: Seq[T]): Vector3d = components match {
+    case Seq(x, y, z) => Vector3d(x, y, z)
+    case _ => throw new IllegalArgumentException("Vector3d requires 3 components")
+  }
 
   def spherical(radius: Double, azimuth: Double, elevation: Double): Vector3d = {
     val cosElevation = math.cos(elevation)

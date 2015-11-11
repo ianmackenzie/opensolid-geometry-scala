@@ -5,7 +5,13 @@ import scala.math
 import scala.util.Random
 
 final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d[Direction2d] {
-  def components: (Double, Double) = (x, y)
+  def components: Array[Double] = Array(x, y)
+
+  def apply(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Direction2d")
+  }
 
   def vector: Vector2d = Vector2d(x, y)
 
@@ -19,7 +25,10 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 }
 
 object Direction2d {
-  def apply(components: (Double, Double)): Direction2d = Direction2d(components._1, components._2)
+  def fromComponents[T <% Double](components: Seq[T]): Direction2d = components match {
+    case Seq(x, y) => Direction2d(x, y)
+    case _ => throw new IllegalArgumentException("Direction2d requires 2 components")
+  }
 
   def polar(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
 

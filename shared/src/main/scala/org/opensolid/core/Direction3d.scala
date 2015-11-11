@@ -7,7 +7,7 @@ import scala.util.Random
 final case class Direction3d(x: Double, y: Double, z: Double)
   extends VectorTransformable3d[Direction3d] {
   
-  def components: (Double, Double, Double) = (x, y, z)
+  def components: Array[Double] = Array(x, y, z)
 
   def vector: Vector3d = Vector3d(x, y, z)
 
@@ -23,8 +23,10 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 }
 
 object Direction3d {
-  def apply(components: (Double, Double, Double)): Direction3d =
-    Direction3d(components._1, components._2, components._3)
+  def fromComponents[T <% Double](components: Seq[T]): Direction3d = components match {
+    case Seq(x, y, z) => Direction3d(x, y, z)
+    case _ => throw new IllegalArgumentException("Direction3d requires 3 components")
+  }
 
   def spherical(azimuth: Double, elevation: Double): Direction3d = {
     val cosElevation = math.cos(elevation)

@@ -4,7 +4,13 @@ import scala.math
 import scala.util.Random
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
-  def components: (Double, Double) = (x, y)
+  def components: Array[Double] = Array(x, y)
+
+  def apply(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Vector2d")
+  }
 
   def squaredLength: Double = x * x + y * y
 
@@ -44,7 +50,10 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 }
 
 object Vector2d {
-  def apply(components: (Double, Double)): Vector2d = Vector2d(components._1, components._2)
+  def fromComponents[T <% Double](components: Seq[T]): Vector2d = components match {
+    case Seq(x, y) => Vector2d(x, y)
+    case _ => throw new IllegalArgumentException("Vector2d requires 2 components")
+  }
 
   def polar(radius: Double, angle: Double): Vector2d =
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
