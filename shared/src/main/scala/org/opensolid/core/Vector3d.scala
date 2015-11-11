@@ -73,5 +73,10 @@ object Vector3d {
       radius * math.sin(elevation))
   }
 
+  def random: Vector3d = random(Random)
+
+  def random(generator: Random): Vector3d =
+    Vector3d(generator.nextDouble(), generator.nextDouble(), generator.nextDouble())
+
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
 }
