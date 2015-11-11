@@ -61,6 +61,11 @@ object IntervalProperties extends Properties("Interval") {
   property("equals(other)") = Prop.forAll {(interval: Interval) => interval == interval} &&
     Prop.forAll {(interval: Interval, value: Double) => interval != value}
 
+  property("toString") =
+    Interval.Empty.toString == "Interval.Empty" &&
+    Interval.Whole.toString == "Interval.Whole" &&
+    Interval(2, 3).toString == "Interval(2.0, 3.0)"
+
   property("interpolated(value)") = Prop.forAll(closedInterval, Gen.chooseNum(0.0, 1.0)) {
     (interval: Interval, value: Double) => {
       val interpolated = interval.interpolated(value)
