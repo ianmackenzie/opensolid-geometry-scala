@@ -5,6 +5,23 @@ import scala.util.Random
 
 /** Represents a range of real numbers and allows mathematical operations on those ranges.
   *
+  * Intervals support most of the same operations as floating-point numbers (sum, square root,
+  * sine, logarithm etc.) as well as some specific to intervals (hull, intersection etc.). Mixed
+  * operations such as the sum of an interval and a floating-point value are also supported and
+  * result in an interval.
+  *
+  * In general, mathematical operations on intervals result in an interval that contains all
+  * possible floating-point values that could result from applying the corresponding floating-point
+  * mathematical operation to on any combination of values from the inputs. For instance, the
+  * expression `Interval(1.0, 2.0) * Interval(-5.0, -3.0)` results in `Interval(-10.0, -3.0)` since
+  * the lowest possible product of values taken from those two intervals is `2.0 * (-5.0) == -10.0`
+  * and the highest possible product is `1.0 * (-3.0) == -3.0`.
+  *
+  * Note that not only the endpoints are considered - `Interval.sin(Interval(0.0, math.Pi))` results
+  * in `Interval(0.0, 1.0)` even though `math.sin(0.0)` and `math.sin(math.Pi)` are both zero, since
+  * `math.sin(math.Pi / 2.0)` is 1.0 and `math.Pi / 2.0` is a possible value within
+  * `Interval(0.0, math.Pi)`.
+  *
   * Examples:
   * {{{
   * scala> val a = Interval(2.0, 3.0)
@@ -546,6 +563,12 @@ object Interval {
   def ulp(interval: Interval): Double =
     math.ulp(interval.lowerBound).max(math.ulp(interval.upperBound))
 
+  /** The empty interval (contains no values).
+    *
+    * This is returned in situations such as the intersection of two non-overlapping intervals, the
+    * square root of an interval containing only negative values, or the sum of the empty interval
+    * and any other interval.
+    */
   val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
