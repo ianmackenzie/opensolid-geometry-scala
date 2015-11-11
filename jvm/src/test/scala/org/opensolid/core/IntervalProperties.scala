@@ -427,6 +427,8 @@ object IntervalProperties extends Properties("Interval") {
 
   property("atan") = unaryProperty(value => math.atan(value), interval => Interval.atan(interval))
 
+  property("atan2") = binaryProperty((y, x) => math.atan2(y, x), (y, x) => Interval.atan2(y, x))
+
   property("exp") = unaryProperty(value => math.exp(value), interval => Interval.exp(interval))
 
   property("log") =
