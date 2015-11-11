@@ -377,7 +377,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       val reciprocal = Interval(1.0 / that.upperBound, 1.0 / that.lowerBound)
       this * reciprocal
     } else if (this == Interval.Zero) {
-      Interval.Zero
+      if (that == Interval.Zero) Interval.Empty else Interval.Zero
     } else {
       Interval.Whole
     }
