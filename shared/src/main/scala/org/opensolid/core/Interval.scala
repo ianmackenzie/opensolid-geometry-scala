@@ -345,6 +345,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   def -(that: Interval): Interval =
     Interval(lowerBound - that.upperBound, upperBound - that.lowerBound)
 
+  def *(sign: Sign): Interval = this * sign.value
+
   def *(value: Double): Interval = {
     val lowerProduct = value * lowerBound
     val upperProduct = value * upperBound

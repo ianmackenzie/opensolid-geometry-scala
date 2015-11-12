@@ -23,7 +23,11 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
+  def *(interval: Interval): VectorBox3d = VectorBox3d(x * interval, y * interval, z * interval)
+
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
+
+  def /(interval: Interval): VectorBox3d = VectorBox3d(x / interval, y / interval, z / interval)
 
   def transformedBy(transformation: Transformation3d): Direction3d = transformation(this)
 
@@ -31,9 +35,18 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def dot(that: Direction3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 
+  def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
+
+  def dot(directionBox: DirectionBox3d): Interval =
+    x * directionBox.x + y * directionBox.y + z * directionBox.z
+
   def cross(vector: Vector3d): Vector3d = this.vector.cross(vector)
 
   def cross(that: Direction3d): Vector3d = this.vector.cross(that.vector)
+
+  def cross(vectorBox: VectorBox3d): VectorBox3d = vector.cross(vectorBox)
+
+  def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox)
 
   def orthogonalDirection: Direction3d = vector.orthogonalDirection
 }

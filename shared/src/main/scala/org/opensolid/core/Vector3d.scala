@@ -38,17 +38,32 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def +(that: Vector3d): Vector3d = Vector3d(this.x + that.x, this.y + that.y, this.z + that.z)
 
+  def +(vectorBox: VectorBox3d): VectorBox3d =
+    VectorBox3d(x + vectorBox.x, y + vectorBox.y, z + vectorBox.z)
+
   def -(that: Vector3d): Vector3d = Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
+
+  def -(vectorBox: VectorBox3d): VectorBox3d =
+    VectorBox3d(x - vectorBox.x, y - vectorBox.y, z - vectorBox.z)
 
   def *(sign: Sign): Vector3d = Vector3d(x * sign, y * sign, z * sign)
 
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
+  def *(interval: Interval): VectorBox3d = VectorBox3d(x * interval, y * interval, z * interval)
+
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
+
+  def /(interval: Interval): VectorBox3d = VectorBox3d(x / interval, y / interval, z / interval)
 
   def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 
   def dot(direction: Direction3d): Double = x * direction.x + y * direction.y + z * direction.z
+
+  def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
+
+  def dot(directionBox: DirectionBox3d): Interval =
+    x * directionBox.x + y * directionBox.y + z * directionBox.z
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -58,6 +73,15 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     )
 
   def cross(direction: Direction3d): Vector3d = cross(direction.vector)
+
+  def cross(vectorBox: VectorBox3d): VectorBox3d =
+    VectorBox3d(
+      y * vectorBox.z - z * vectorBox.y,
+      z * vectorBox.x - x * vectorBox.z,
+      x * vectorBox.y - y * vectorBox.x
+    )
+
+  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vector)
 
   def orthogonalDirection: Direction3d = {
     if (this == Vector3d.Zero) {

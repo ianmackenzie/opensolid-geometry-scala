@@ -21,13 +21,21 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
+  def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)
+
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
+
+  def /(interval: Interval): VectorBox2d = VectorBox2d(x / interval, y / interval)
 
   def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
 
   def dot(vector: Vector2d): Double = x * vector.x + y * vector.y
 
   def dot(that: Direction2d): Double = this.x * that.x + this.y * that.y
+
+  def dot(vectorBox: VectorBox2d): Interval = x * vectorBox.x + y * vectorBox.y
+
+  def dot(directionBox: DirectionBox2d): Interval = x * directionBox.x + y * directionBox.y
 
   def orthogonalDirection: Direction2d = Direction2d(-y, x)
 }
