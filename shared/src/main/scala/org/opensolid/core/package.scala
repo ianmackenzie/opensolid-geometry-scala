@@ -2,9 +2,9 @@ package org.opensolid
 
 package object core {
   implicit class Scalar(val value: Double) extends AnyVal {
-    def isZero(precision: Double): Boolean = value >= -precision && value <= precision
+    def isZero(tolerance: Double): Boolean = value >= -tolerance && value <= tolerance
 
-    def isNotZero(precision: Double): Boolean = value < -precision || value > precision
+    def isNotZero(tolerance: Double): Boolean = value < -tolerance || value > tolerance
   
     def *(sign: Sign): Double = value * sign.value
 

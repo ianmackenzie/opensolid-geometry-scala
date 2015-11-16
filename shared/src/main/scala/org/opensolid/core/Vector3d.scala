@@ -17,9 +17,9 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def length: Double = math.sqrt(squaredLength)
 
-  def isZero(precision: Double): Boolean = squaredLength.isZero(precision * precision)
+  def isZero(tolerance: Double): Boolean = squaredLength.isZero(tolerance * tolerance)
 
-  def isNotZero(precision: Double): Boolean = squaredLength.isNotZero(precision * precision)
+  def isNotZero(tolerance: Double): Boolean = squaredLength.isNotZero(tolerance * tolerance)
 
   override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
