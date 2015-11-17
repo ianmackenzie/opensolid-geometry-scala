@@ -1,9 +1,8 @@
 package org.opensolid.core
 
+import org.opensolid.core.IntervalGenerators._
 import org.scalacheck._
 import org.scalacheck.Prop.BooleanOperators
-
-import IntervalGenerators._
 
 object IntervalProperties extends Properties("Interval") {
   property("equals(other)") = Prop.forAll {(interval: Interval) => interval == interval} &&
