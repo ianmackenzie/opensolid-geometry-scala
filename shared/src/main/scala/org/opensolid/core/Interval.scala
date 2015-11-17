@@ -62,6 +62,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     case _ => false
   }
 
+  override def hashCode: Int = (lowerBound, upperBound).hashCode
+
   override def toString: String = {
     if (isEmpty) {
       "Interval.Empty"
