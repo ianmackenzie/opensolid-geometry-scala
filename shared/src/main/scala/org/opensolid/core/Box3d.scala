@@ -23,7 +23,7 @@ final case class Box3d(x: Interval, y: Interval, z: Interval) extends Bounded3d 
   def hull(that: Box3d): Box3d =
     Box3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
 
-  def intersection(that: Box3d) = {
+  def intersection(that: Box3d): Box3d = {
     val x = this.x.intersection(that.x)
     val y = this.y.intersection(that.y)
     val z = this.z.intersection(that.z)

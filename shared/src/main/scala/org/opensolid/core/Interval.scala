@@ -129,7 +129,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   /** Returns true if this interval consists of a single value (the upper and lower bounds are
     * equal).
     */
-  def isSingleton = lowerBound == upperBound
+  def isSingleton: Boolean = lowerBound == upperBound
 
   /** Returns a pair of intervals equal to this interval split into two halves.
     *

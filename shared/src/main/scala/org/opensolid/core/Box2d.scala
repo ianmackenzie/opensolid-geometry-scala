@@ -21,7 +21,7 @@ final case class Box2d(x: Interval, y: Interval) extends Bounded2d {
 
   def hull(that: Box2d): Box2d = Box2d(this.x.hull(that.x), this.y.hull(that.y))
 
-  def intersection(that: Box2d) = {
+  def intersection(that: Box2d): Box2d = {
     val x = this.x.intersection(that.x)
     val y = this.y.intersection(that.y)
     if (x.isEmpty || y.isEmpty) Box2d.Empty else Box2d(x, y)

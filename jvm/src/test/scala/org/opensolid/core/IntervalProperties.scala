@@ -335,7 +335,7 @@ object IntervalProperties extends Properties("Interval") {
     scalarFunction: (Double, Double) => Double,
     intervalFunction: (Interval, Interval) => Interval,
     xDomain: Interval = Interval.Whole,
-    yDomain: Interval = Interval.Whole) = {
+    yDomain: Interval = Interval.Whole): Prop = {
 
     Prop.forAll(testIntervalForDomain(xDomain), testIntervalForDomain(yDomain)) {
       (xInterval: Interval, yInterval: Interval) => {
