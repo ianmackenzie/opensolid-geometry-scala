@@ -22,7 +22,15 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def +(vector: Vector3d): Point3d = Point3d(x + vector.x, y + vector.y, z + vector.z)
 
+  def +(vectorBox: VectorBox3d): Box3d = Box3d(x + vectorBox.x, y + vectorBox.y, z + vectorBox.z)
+
+  def -(vector: Vector3d): Point3d = Point3d(x - vector.x, y - vector.y, z - vector.z)
+
+  def -(vectorBox: VectorBox3d): Box3d = Box3d(x - vectorBox.x, y - vectorBox.y, z - vectorBox.z)
+
   def -(that: Point3d): Vector3d = Vector3d(x - that.x, y - that.y, z - that.z)
+
+  def -(box: Box3d): VectorBox3d = VectorBox3d(x - box.x, y - box.y, z - box.z)
 }
 
 object Point3d {

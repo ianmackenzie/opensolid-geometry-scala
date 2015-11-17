@@ -21,7 +21,15 @@ final case class Point2d(x: Double, y: Double)
 
   def +(vector: Vector2d): Point2d = Point2d(x + vector.x, y + vector.y)
 
+  def +(vectorBox: VectorBox2d): Box2d = Box2d(x + vectorBox.x, y + vectorBox.y)
+
+  def -(vector: Vector2d): Point2d = Point2d(x - vector.x, y - vector.y)
+
+  def -(vectorBox: VectorBox2d): Box2d = Box2d(x - vectorBox.x, y - vectorBox.y)
+
   def -(that: Point2d): Vector2d = Vector2d(x - that.x, y - that.y)
+
+  def -(box: Box2d): VectorBox2d = VectorBox2d(x - box.x, y - box.y)
 }
 
 object Point2d {
