@@ -140,7 +140,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
   def randomValue: Double = randomValue(Random)
 
   /** Returns a random value within this interval, using the provided generator. */
-  def randomValue(generator: Random): Double = interpolated(generator.nextDouble())
+  def randomValue(generator: Random): Double = interpolated(generator.nextDouble)
 
   /** Returns true if this interval consists of a single value (the upper and lower bounds are
     * equal).

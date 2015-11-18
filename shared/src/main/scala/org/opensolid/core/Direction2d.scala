@@ -67,8 +67,8 @@ object Direction2d {
   def random(generator: Random): Direction2d = {
     @tailrec
     def generate: Direction2d = {
-      val x = -1.0 + 2.0 * generator.nextDouble()
-      val y = -1.0 + 2.0 * generator.nextDouble()
+      val x = -1.0 + 2.0 * generator.nextDouble
+      val y = -1.0 + 2.0 * generator.nextDouble
       val squaredNorm = x * x + y * y
       if (squaredNorm >= 0.25 && squaredNorm <= 1.0) {
         val norm = math.sqrt(squaredNorm)

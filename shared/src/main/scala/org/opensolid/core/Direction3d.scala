@@ -84,9 +84,9 @@ object Direction3d {
   def random(generator: Random): Direction3d = {
     @tailrec
     def generate: Direction3d = {
-      val x = -1.0 + 2.0 * generator.nextDouble()
-      val y = -1.0 + 2.0 * generator.nextDouble()
-      val z = -1.0 + 2.0 * generator.nextDouble()
+      val x = -1.0 + 2.0 * generator.nextDouble
+      val y = -1.0 + 2.0 * generator.nextDouble
+      val z = -1.0 + 2.0 * generator.nextDouble
       val squaredNorm = x * x + y * y + z * z
       if (squaredNorm >= 0.25 && squaredNorm <= 1.0) {
         val norm = math.sqrt(squaredNorm)
