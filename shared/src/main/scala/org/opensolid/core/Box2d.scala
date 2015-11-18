@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.util.Random
+
 final case class Box2d(x: Interval, y: Interval) extends Bounded2d {
   def components: Array[Interval] = Array(x, y)
 
@@ -30,6 +32,15 @@ final case class Box2d(x: Interval, y: Interval) extends Bounded2d {
   def isWhole: Boolean = x.isWhole && y.isWhole
 
   def isSingleton: Boolean = x.isSingleton && y.isSingleton
+
+  def center: Point2d = Point2d(x.median, y.median)
+
+  def interpolated(u: Double, v: Double): Point2d = Point2d(x.interpolated(u), y.interpolated(v))
+
+  def randomPoint: Point2d = randomPoint(Random)
+
+  def randomPoint(generator: Random): Point2d =
+    interpolated(generator.nextDouble, generator.nextDouble)
 
   def hull(point: Point2d): Box2d = Box2d(x.hull(point.x), y.hull(point.y))
 

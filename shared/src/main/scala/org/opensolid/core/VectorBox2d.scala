@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.util.Random
+
 final case class VectorBox2d(x: Interval, y: Interval) {
   def components: Array[Interval] = Array(x, y)
 
@@ -28,6 +30,15 @@ final case class VectorBox2d(x: Interval, y: Interval) {
   def isWhole: Boolean = x.isWhole && y.isWhole
 
   def isSingleton: Boolean = x.isSingleton && y.isSingleton
+
+  def center: Vector2d = Vector2d(x.median, y.median)
+
+  def interpolated(u: Double, v: Double): Vector2d = Vector2d(x.interpolated(u), y.interpolated(v))
+
+  def randomVector: Vector2d = randomVector(Random)
+
+  def randomVector(generator: Random): Vector2d =
+    interpolated(generator.nextDouble, generator.nextDouble)
 
   def hull(vector: Vector2d): VectorBox2d = VectorBox2d(x.hull(vector.x), y.hull(vector.y))
 
