@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.math
+
 final case class Point2d(x: Double, y: Double)
   extends Bounded2d with Transformable2d[Point2d] with Scalable2d[Point2d] {
 
@@ -60,6 +62,9 @@ object Point2d {
     case Seq(x, y) => Point2d(x, y)
     case _ => throw new IllegalArgumentException("Point2d requires 2 components")
   }
+
+  def polar(radius: Double, angle: Double): Point2d =
+    Point2d(radius * math.cos(angle), radius * math.sin(angle))
 
   val Origin: Point2d = Point2d(0.0, 0.0)
 }
