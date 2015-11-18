@@ -24,6 +24,49 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for VectorBox3d")
   }
 
+  def isEmpty: Boolean = x.isEmpty || y.isEmpty || z.isEmpty
+
+  def isWhole: Boolean = x.isWhole && y.isWhole && z.isWhole
+
+  def isSingleton: Boolean = x.isSingleton && y.isSingleton && z.isSingleton
+
+  def hull(vector: Vector3d): VectorBox3d =
+    VectorBox3d(x.hull(vector.x), y.hull(vector.y), z.hull(vector.z))
+
+  def hull(that: VectorBox3d): VectorBox3d =
+    VectorBox3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
+
+  def intersection(that: VectorBox3d): VectorBox3d = {
+    val x = this.x.intersection(that.x)
+    val y = this.y.intersection(that.y)
+    val z = this.z.intersection(that.z)
+    if (x.isEmpty || y.isEmpty || z.isEmpty) VectorBox3d.Empty else VectorBox3d(x, y, z)
+  }
+
+  def overlaps(that: VectorBox3d): Boolean =
+    this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
+
+  def overlaps(that: VectorBox3d, tolerance: Double): Boolean =
+    this.x.overlaps(that.x, tolerance) &&
+    this.y.overlaps(that.y, tolerance) &&
+    this.z.overlaps(that.z, tolerance)
+
+  def contains(vector: Vector3d): Boolean =
+    x.contains(vector.x) && y.contains(vector.y) && z.contains(vector.z)
+
+  def contains(vector: Vector3d, tolerance: Double): Boolean =
+    x.contains(vector.x, tolerance) &&
+    y.contains(vector.y, tolerance) &&
+    z.contains(vector.z, tolerance)
+
+  def contains(that: VectorBox3d): Boolean =
+    this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
+
+  def contains(that: VectorBox3d, tolerance: Double): Boolean =
+    this.x.contains(that.x, tolerance) &&
+    this.y.contains(that.y, tolerance) &&
+    this.z.contains(that.z, tolerance)
+
   def squaredLength: Interval = x * x + y * y + z * z
 
   def length: Interval = Interval.sqrt(squaredLength)
@@ -94,6 +137,10 @@ object VectorBox3d {
     case Seq(x, y, z) => VectorBox3d(x, y, z)
     case _ => throw new IllegalArgumentException("VectorBox3d requires 3 components")
   }
+
+  val Empty: VectorBox3d = VectorBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
+
+  val Whole: VectorBox3d = VectorBox3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
   val Zero: VectorBox3d = VectorBox3d(Interval.Zero, Interval.Zero, Interval.Zero)
 }

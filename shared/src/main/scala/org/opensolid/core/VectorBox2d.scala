@@ -23,6 +23,37 @@ final case class VectorBox2d(x: Interval, y: Interval) {
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for VectorBox2d")
   }
 
+  def isEmpty: Boolean = x.isEmpty || y.isEmpty
+
+  def isWhole: Boolean = x.isWhole && y.isWhole
+
+  def isSingleton: Boolean = x.isSingleton && y.isSingleton
+
+  def hull(vector: Vector2d): VectorBox2d = VectorBox2d(x.hull(vector.x), y.hull(vector.y))
+
+  def hull(that: VectorBox2d): VectorBox2d = VectorBox2d(this.x.hull(that.x), this.y.hull(that.y))
+
+  def intersection(that: VectorBox2d): VectorBox2d = {
+    val x = this.x.intersection(that.x)
+    val y = this.y.intersection(that.y)
+    if (x.isEmpty || y.isEmpty) VectorBox2d.Empty else VectorBox2d(x, y)
+  }
+
+  def overlaps(that: VectorBox2d): Boolean = this.x.overlaps(that.x) && this.y.overlaps(that.y)
+
+  def overlaps(that: VectorBox2d, tolerance: Double): Boolean =
+    this.x.overlaps(that.x, tolerance) && this.y.overlaps(that.y, tolerance)
+
+  def contains(vector: Vector2d): Boolean = x.contains(vector.x) && y.contains(vector.y)
+
+  def contains(vector: Vector2d, tolerance: Double): Boolean =
+    x.contains(vector.x, tolerance) && y.contains(vector.y, tolerance)
+
+  def contains(that: VectorBox2d): Boolean = this.x.contains(that.x) && this.y.contains(that.y)
+
+  def contains(that: VectorBox2d, tolerance: Double): Boolean =
+    this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
+
   def squaredLength: Interval = x * x + y * y
 
   def length: Interval = Interval.sqrt(squaredLength)
@@ -72,6 +103,10 @@ object VectorBox2d {
     case Seq(x, y) => VectorBox2d(x, y)
     case _ => throw new IllegalArgumentException("VectorBox2d requires 2 components")
   }
+
+  val Empty: VectorBox2d = VectorBox2d(Interval.Empty, Interval.Empty)
+
+  val Whole: VectorBox2d = VectorBox2d(Interval.Whole, Interval.Whole)
 
   val Zero: VectorBox2d = VectorBox2d(Interval.Zero, Interval.Zero)
 }
