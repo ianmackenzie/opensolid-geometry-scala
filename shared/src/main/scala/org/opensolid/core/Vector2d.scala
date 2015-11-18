@@ -15,7 +15,6 @@
 package org.opensolid.core
 
 import scala.math
-import scala.util.Random
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
   def components: Array[Double] = Array(x, y)
@@ -86,10 +85,6 @@ object Vector2d {
 
   def polar(radius: Double, angle: Double): Vector2d =
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
-
-  def random: Vector2d = random(Random)
-
-  def random(generator: Random): Vector2d = Vector2d(generator.nextDouble(), generator.nextDouble())
 
   val Zero: Vector2d = Vector2d(0.0, 0.0)
 }

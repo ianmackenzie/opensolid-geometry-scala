@@ -15,7 +15,6 @@
 package org.opensolid.core
 
 import scala.math
-import scala.util.Random
 
 final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransformable3d[Vector3d] {
   def components: Array[Double] = Array(x, y, z)
@@ -126,11 +125,6 @@ object Vector3d {
     case Seq(x, y, z) => Vector3d(x, y, z)
     case _ => throw new IllegalArgumentException("Vector3d requires 3 components")
   }
-
-  def random: Vector3d = random(Random)
-
-  def random(generator: Random): Vector3d =
-    Vector3d(generator.nextDouble(), generator.nextDouble(), generator.nextDouble())
 
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
 }
