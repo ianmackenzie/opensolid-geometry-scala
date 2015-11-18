@@ -30,6 +30,17 @@ final case class Point2d(x: Double, y: Double)
   override def transformedBy(transformation: Transformation2d): Point2d = {
     transformation(this)
   }
+  def squaredDistanceTo(that: Point2d): Double = (this - that).squaredLength
+
+  def distanceTo(that: Point2d): Double = (this - that).length
+
+  def isOrigin: Boolean = x == 0.0 && y == 0.0
+
+  def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
+
+  def isEqualTo(that: Point2d, tolerance: Double): Boolean =
+    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+
 
   override def scaledAbout(point: Point2d, scale: Double): Point2d = point + scale * (this - point)
 

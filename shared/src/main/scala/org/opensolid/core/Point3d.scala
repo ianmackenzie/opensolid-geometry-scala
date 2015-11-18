@@ -31,6 +31,17 @@ final case class Point3d(x: Double, y: Double, z: Double)
   override def transformedBy(transformation: Transformation3d): Point3d = {
     transformation(this)
   }
+  def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
+
+  def distanceTo(that: Point3d): Double = (this - that).length
+
+  def isOrigin: Boolean = x == 0.0 && y == 0.0 && z == 0.0
+
+  def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
+
+  def isEqualTo(that: Point3d, tolerance: Double): Boolean =
+    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+
 
   override def scaledAbout(point: Point3d, scale: Double): Point3d = point + scale * (this - point)
 
