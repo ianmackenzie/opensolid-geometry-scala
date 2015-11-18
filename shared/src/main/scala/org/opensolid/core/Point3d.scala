@@ -28,9 +28,6 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   override def bounds: Box3d = Box3d(Interval(x), Interval(y), Interval(z))
 
-  override def transformedBy(transformation: Transformation3d): Point3d = {
-    transformation(this)
-  }
   def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
 
   def distanceTo(that: Point3d): Double = (this - that).length
@@ -42,6 +39,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def isEqualTo(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
+  override def transformedBy(transformation: Transformation3d): Point3d = transformation(this)
 
   override def scaledAbout(point: Point3d, scale: Double): Point3d = point + scale * (this - point)
 
