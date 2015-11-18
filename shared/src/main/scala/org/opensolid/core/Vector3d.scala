@@ -127,14 +127,6 @@ object Vector3d {
     case _ => throw new IllegalArgumentException("Vector3d requires 3 components")
   }
 
-  def spherical(radius: Double, azimuth: Double, elevation: Double): Vector3d = {
-    val cosElevation = math.cos(elevation)
-    Vector3d(
-      radius * cosElevation * math.cos(azimuth),
-      radius * cosElevation * math.sin(azimuth),
-      radius * math.sin(elevation))
-  }
-
   def random: Vector3d = random(Random)
 
   def random(generator: Random): Vector3d =
