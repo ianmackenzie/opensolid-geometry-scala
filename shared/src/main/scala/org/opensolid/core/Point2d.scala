@@ -16,7 +16,7 @@ package org.opensolid.core
 
 final case class Point2d(x: Double, y: Double)
   extends Bounded2d with Transformable2d[Point2d] with Scalable2d[Point2d] {
-  
+
   def components: Array[Double] = Array(x, y)
 
   def component(index: Int): Double = index match {

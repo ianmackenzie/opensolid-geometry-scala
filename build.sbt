@@ -3,6 +3,8 @@ lazy val root =
   aggregate(coreJVM, coreJS).
   settings(publish := {}, publishLocal := {})
 
+scalaSource in Compile := baseDirectory.value / "shared" / "src"
+
 lazy val core = crossProject.in(file(".")).
   settings(
     name := "opensolid-core",

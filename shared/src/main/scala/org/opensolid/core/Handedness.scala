@@ -24,7 +24,7 @@ final case class Handedness(value: Int) {
   def *(that: Handedness): Handedness = Handedness(value * that.value)
 
   def transformedBy(transformation: Transformation2d): Handedness = transformation(this)
-  
+
   def transformedBy(transformation: Transformation3d): Handedness = transformation(this)
 }
 

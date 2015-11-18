@@ -16,7 +16,7 @@ package org.opensolid.core
 
 final case class Point3d(x: Double, y: Double, z: Double)
   extends Bounded3d with Transformable3d[Point3d] with Scalable3d[Point3d] {
-  
+
   def components: Array[Double] = Array(x, y, z)
 
   def component(index: Int): Double = index match {

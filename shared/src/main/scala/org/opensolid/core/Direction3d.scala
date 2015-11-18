@@ -20,7 +20,7 @@ import scala.util.Random
 
 final case class Direction3d(x: Double, y: Double, z: Double)
   extends VectorTransformable3d[Direction3d] {
-  
+
   def components: Array[Double] = Array(x, y, z)
 
   def component(index: Int): Double = index match {

@@ -114,16 +114,16 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * {{{
     * scala> val interval = Interval(2.0, 3.0)
     * interval: org.opensolid.core.Interval = Interval(2.0,3.0)
-    * 
+    *
     * scala> interval.interpolated(0.0)
     * res0: Double = 2.0
-    * 
+    *
     * scala> interval.interpolated(1.0)
     * res1: Double = 3.0
-    * 
+    *
     * scala> interval.interpolated(0.5)
     * res2: Double = 2.5
-    * 
+    *
     * scala> interval.interpolated(2.0)
     * res3: Double = 4.0
     * }}}
@@ -157,16 +157,16 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * {{{
     * scala> Interval(2.0, 3.0).bisected
     * res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(2.0, 2.5),Interval(2.5, 3.0))
-    * 
+    *
     * scala> Interval.Whole.bisected
     * res1: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, 0.0),Interval(0.0, Infinity))
-    * 
+    *
     * scala> Interval(0.0, Double.PositiveInfinity).bisected
     * res2: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(0.0, 1.0),Interval(1.0, Infinity))
-    * 
+    *
     * scala> Interval(Double.NegativeInfinity, -10.0).bisected
     * res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, -20.0),Interval(-20.0, -10.0))
-    * 
+    *
     * scala> Interval.Empty.bisected
     * res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval.Empty,Interval.Empty)
     * }}}
@@ -244,13 +244,13 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * {{{
     * scala> Interval(2, 3).contains(3.000001)
     * res0: Boolean = false
-    * 
+    *
     * scala> Interval(2, 3).contains(3.000001, 0.001)
     * res1: Boolean = true
-    * 
+    *
     * scala> Interval(2, 3).contains(2.000001)
     * res2: Boolean = true
-    * 
+    *
     * scala> Interval(2, 3).contains(2.000001, -0.001)
     * res3: Boolean = false
     * }}}
@@ -287,13 +287,13 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * {{{
     * scala> Interval(5, 10).contains(Interval(8, 10.000001))
     * res0: Boolean = false
-    * 
+    *
     * scala> Interval(5, 10).contains(Interval(8, 10.000001), 0.001)
     * res1: Boolean = true
-    * 
+    *
     * scala> Interval(5, 10).contains(Interval(8, 9.99999))
     * res2: Boolean = true
-    * 
+    *
     * scala> Interval(5, 10).contains(Interval(8, 9.99999), -0.001)
     * res3: Boolean = false
     * }}}
@@ -307,16 +307,16 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * {{{
     * scala> Interval(2, 4).overlaps(Interval(3, 5))
     * res0: Boolean = true
-    * 
+    *
     * scala> Interval(5, 10).overlaps(Interval(6, 7))
     * res1: Boolean = true
-    * 
+    *
     * scala> Interval(2, 4).overlaps(Interval(6, 8))
     * res2: Boolean = false
-    * 
+    *
     * scala> Interval(0, 1).overlaps(Interval.Whole)
     * res3: Boolean = true
-    * 
+    *
     * scala> Interval(0, 1).overlaps(Interval.Empty)
     * res4: Boolean = false
     * }}}
@@ -335,13 +335,13 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     * {{{
     * scala> Interval(2, 3).overlaps(Interval(3.000001, 4))
     * res0: Boolean = false
-    * 
+    *
     * scala> Interval(2, 3).overlaps(Interval(3.000001, 4), 0.001)
     * res1: Boolean = true
-    * 
+    *
     * scala> Interval(2, 3).overlaps(Interval(2.99999, 4))
     * res2: Boolean = true
-    * 
+    *
     * scala> Interval(2, 3).overlaps(Interval(2.99999, 4), -0.001)
     * res3: Boolean = false
     * }}}
@@ -546,7 +546,7 @@ object Interval {
   def atan(interval: Interval): Interval =
     Interval(math.atan(interval.lowerBound), math.atan(interval.upperBound))
 
-  def atan2(y: Interval, x:Interval): Interval = {
+  def atan2(y: Interval, x: Interval): Interval = {
     if (y.isEmpty || x.isEmpty) {
       Interval.Empty
     } else if (y.isSingleton && x.isSingleton) {

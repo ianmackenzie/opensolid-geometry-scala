@@ -19,7 +19,7 @@ package object core {
     def isZero(tolerance: Double): Boolean = value >= -tolerance && value <= tolerance
 
     def isNotZero(tolerance: Double): Boolean = value < -tolerance || value > tolerance
-  
+
     def *(sign: Sign): Double = value * sign.value
 
     def +(interval: Interval): Interval = {
@@ -29,7 +29,7 @@ package object core {
     def -(interval: Interval): Interval = {
       Interval(value - interval.upperBound, value - interval.lowerBound)
     }
-    
+
     def *(interval: Interval): Interval = interval * value
 
     def /(interval: Interval): Interval = {

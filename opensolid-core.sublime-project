@@ -11,6 +11,7 @@
     "translate_tabs_to_spaces": true,
     "rulers": [100],
     "match_brackets_angle": false,
-    "ensure_newline_at_eof_on_save": true
+    "ensure_newline_at_eof_on_save": true,
+    "trim_trailing_white_space_on_save": true
   },
 }

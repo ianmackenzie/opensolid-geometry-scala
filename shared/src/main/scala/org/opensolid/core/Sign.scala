@@ -16,7 +16,7 @@ package org.opensolid.core
 
 final case class Sign(value: Int) extends AnyVal {
   def unary_- : Sign = Sign(-value)
-  
+
   def *(that: Sign): Sign = Sign(this.value * that.value)
 
   def *(value: Double): Double = this.value * value
@@ -30,7 +30,7 @@ final case class Sign(value: Int) extends AnyVal {
   def *(vector: Vector3d): Vector3d = vector * this
 
   def *(direction: Direction2d): Direction2d = direction * this
-  
+
   def *(direction: Direction3d): Direction3d = direction * this
 
   def *(vectorBox: VectorBox2d): VectorBox2d = vectorBox * this
