@@ -20,6 +20,30 @@ package object core {
 
     def isNotZero(tolerance: Double): Boolean = value < -tolerance || value > tolerance
 
+    def meters = value
+
+    def inMeters = value
+
+    def centimeters = value * 1e-2
+
+    def inCentimeters = value * 1e2
+
+    def millimeters = value * 1e-3
+
+    def inMillimeters = value * 1e3
+
+    def microns = value * 1e-6
+
+    def inMicrons = value * 1e6
+
+    def inches = value * 0.0254
+
+    def inInches = value / 0.0254
+
+    def feet = value * 0.3048
+
+    def inFeet = value / 0.3048
+
     def *(sign: Sign): Double = value * sign.value
 
     def +(interval: Interval): Interval = {
