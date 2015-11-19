@@ -22,41 +22,41 @@ package object core {
 
     def isNotZero(tolerance: Double): Boolean = value < -tolerance || value > tolerance
 
-    def meters = value
+    def meters: Double = value
 
-    def inMeters = value
+    def inMeters: Double = value
 
-    def centimeters = value * 1e-2
+    def centimeters: Double = value * 1e-2
 
-    def inCentimeters = value * 1e2
+    def inCentimeters: Double = value * 1e2
 
-    def millimeters = value * 1e-3
+    def millimeters: Double = value * 1e-3
 
-    def inMillimeters = value * 1e3
+    def inMillimeters: Double = value * 1e3
 
-    def microns = value * 1e-6
+    def microns: Double = value * 1e-6
 
-    def inMicrons = value * 1e6
+    def inMicrons: Double = value * 1e6
 
-    def inches = value * 0.0254
+    def inches: Double = value * 0.0254
 
-    def inInches = value / 0.0254
+    def inInches: Double = value / 0.0254
 
-    def feet = value * 0.3048
+    def feet: Double = value * 0.3048
 
-    def inFeet = value / 0.3048
+    def inFeet: Double = value / 0.3048
 
-    def thou = value * 0.0000254
+    def thou: Double = value * 0.0000254
 
-    def inThou = value / 0.0000254
+    def inThou: Double = value / 0.0000254
 
-    def radians = value
+    def radians: Double = value
 
-    def inRadians = value
+    def inRadians: Double = value
 
-    def degrees = math.toRadians(value)
+    def degrees: Double = math.toRadians(value)
 
-    def inDegrees = math.toDegrees(value)
+    def inDegrees: Double = math.toDegrees(value)
 
     def *(sign: Sign): Double = value * sign.value
 
