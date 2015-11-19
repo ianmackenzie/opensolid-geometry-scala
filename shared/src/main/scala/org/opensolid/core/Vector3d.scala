@@ -96,7 +96,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vector)
 
-  def orthogonalDirection: Direction3d = {
+  def normalDirection: Direction3d = {
     if (this == Vector3d.Zero) {
       Direction3d.None
     } else {

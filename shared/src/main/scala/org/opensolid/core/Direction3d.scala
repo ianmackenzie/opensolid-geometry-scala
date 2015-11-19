@@ -62,7 +62,7 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox)
 
-  def orthogonalDirection: Direction3d = vector.orthogonalDirection
+  def normalDirection: Direction3d = vector.normalDirection
 }
 
 object Direction3d {
