@@ -14,6 +14,8 @@
 
 package org.opensolid
 
+import scala.math
+
 package object core {
   implicit class Scalar(val value: Double) extends AnyVal {
     def isZero(tolerance: Double): Boolean = value >= -tolerance && value <= tolerance
@@ -47,6 +49,14 @@ package object core {
     def thou = value * 0.0000254
 
     def inThou = value / 0.0000254
+
+    def radians = value
+
+    def inRadians = value
+
+    def degrees = math.toRadians(value)
+
+    def inDegrees = math.toDegrees(value)
 
     def *(sign: Sign): Double = value * sign.value
 
