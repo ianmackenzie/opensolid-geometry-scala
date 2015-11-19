@@ -44,6 +44,10 @@ package object core {
 
     def inFeet = value / 0.3048
 
+    def thou = value * 0.0000254
+
+    def inThou = value / 0.0000254
+
     def *(sign: Sign): Double = value * sign.value
 
     def +(interval: Interval): Interval = {
