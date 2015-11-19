@@ -22,7 +22,7 @@ case class Axis3d(originPoint: Point3d, direction: Direction3d)
   def reversed: Axis3d = Axis3d(originPoint, -direction)
 
   def transformedBy(transformation: Transformation3d): Axis3d =
-    Axis3d(transformation(originPoint), transformation(direction))
+    Axis3d(originPoint.transformedBy(transformation), direction.transformedBy(transformation))
 
   def scaledAbout(point: Point3d, scale: Double): Axis3d = {
     require(scale > 0.0)

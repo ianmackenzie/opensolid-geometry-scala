@@ -29,7 +29,11 @@ case class Axis2d(
   def normalAxis: Axis2d = Axis2d(originPoint, normalDirection, handedness)
 
   def transformedBy(transformation: Transformation2d): Axis2d =
-    Axis2d(transformation(originPoint), transformation(direction), transformation(handedness))
+    Axis2d(
+      originPoint.transformedBy(transformation),
+      direction.transformedBy(transformation),
+      handedness.transformedBy(transformation)
+    )
 
   def scaledAbout(point: Point2d, scale: Double): Axis2d = {
     require(scale > 0.0)
