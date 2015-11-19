@@ -16,10 +16,10 @@ package org.opensolid.core
 
 case class Plane3d(
   originPoint: Point3d,
-  xDirection: Direction3d,
-  yDirection: Direction3d,
   normalDirection: Direction3d,
-  handedness: Handedness
+  handedness: Handedness,
+  xDirection: Direction3d,
+  yDirection: Direction3d
 ) extends Transformable3d[Plane3d] with Scalable3d[Plane3d] {
 
   require(handedness.sign == Sign.of(xDirection.cross(yDirection).dot(normalDirection)))
@@ -27,20 +27,20 @@ case class Plane3d(
   override def transformedBy(transformation: Transformation3d): Plane3d =
     Plane3d(
       originPoint.transformedBy(transformation),
-      xDirection.transformedBy(transformation),
-      yDirection.transformedBy(transformation),
       normalDirection.transformedBy(transformation),
-      handedness.transformedBy(transformation)
+      handedness.transformedBy(transformation),
+      xDirection.transformedBy(transformation),
+      yDirection.transformedBy(transformation)
     )
 
   override def scaledAbout(point: Point3d, scale: Double): Plane3d = {
     require(scale > 0.0)
     Plane3d(
       originPoint.scaledAbout(point, scale),
-      xDirection,
-      yDirection,
       normalDirection,
-      handedness
+      handedness,
+      xDirection,
+      yDirection
     )
   }
 }
@@ -53,13 +53,16 @@ object Plane3d {
     val xDirection = normalDirection.normalDirection
     val yDirection =
       handedness.sign * Direction3d.fromComponents(normalDirection.cross(xDirection).components)
-    Plane3d(originPoint, xDirection, yDirection, normalDirection, handedness)
+    Plane3d(originPoint, normalDirection, handedness, xDirection, yDirection)
   }
 
-  def apply(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d): Plane3d =
-    Plane3d(originPoint, xDirection, yDirection, Handedness.Right)
+  def fromBasisDirections(
+    originPoint: Point3d,
+    xDirection: Direction3d,
+    yDirection: Direction3d
+  ): Plane3d = Plane3d.fromBasisDirections(originPoint, xDirection, yDirection, Handedness.Right)
 
-  def apply(
+  def fromBasisDirections(
     originPoint: Point3d,
     xDirection: Direction3d,
     yDirection: Direction3d,
@@ -67,10 +70,10 @@ object Plane3d {
   ): Plane3d =
     Plane3d(
       originPoint,
-      xDirection,
-      yDirection,
       handedness.sign * Direction3d.fromComponents(xDirection.cross(yDirection).components),
-      handedness
+      handedness,
+      xDirection,
+      yDirection
     )
 
   def throughPoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d =
@@ -90,10 +93,10 @@ object Plane3d {
       Direction3d.fromComponents(rightHandedNormalDirection.cross(xDirection).components);
     Plane3d(
       firstPoint,
-      xDirection,
-      yDirection,
       handedness.sign * rightHandedNormalDirection,
-      handedness
+      handedness,
+      xDirection,
+      yDirection
     );
   }
 }
