@@ -32,8 +32,6 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def distanceTo(that: Point3d): Double = (this - that).length
 
-  def isOrigin: Boolean = x == 0.0 && y == 0.0 && z == 0.0
-
   def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
 
   def isEqualTo(that: Point3d, tolerance: Double): Boolean =

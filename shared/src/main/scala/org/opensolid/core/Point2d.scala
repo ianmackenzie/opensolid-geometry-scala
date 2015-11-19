@@ -33,8 +33,6 @@ final case class Point2d(x: Double, y: Double)
 
   def distanceTo(that: Point2d): Double = (this - that).length
 
-  def isOrigin: Boolean = x == 0.0 && y == 0.0
-
   def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
 
   def isEqualTo(that: Point2d, tolerance: Double): Boolean =
