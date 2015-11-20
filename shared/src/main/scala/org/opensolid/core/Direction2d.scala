@@ -60,7 +60,7 @@ object Direction2d {
     case _ => throw new IllegalArgumentException("Direction2d requires 2 components")
   }
 
-  def polar(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
+  def fromAngle(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
 
   def random: Direction2d = random(Random)
 
