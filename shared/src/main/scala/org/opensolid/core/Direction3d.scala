@@ -63,6 +63,8 @@ final case class Direction3d(x: Double, y: Double, z: Double)
   def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox)
 
   def normalDirection: Direction3d = vector.normalDirection
+
+  def angleTo(that: Direction3d): Double = math.acos(this.dot(that))
 }
 
 object Direction3d {

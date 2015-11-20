@@ -52,6 +52,9 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
   def dot(directionBox: DirectionBox2d): Interval = x * directionBox.x + y * directionBox.y
 
   def normalDirection: Direction2d = Direction2d(-y, x)
+
+  def angleTo(that: Direction2d): Double =
+    math.atan2(this.x * that.y - this.y * that.x, this.x * that.x + this.y * that.y)
 }
 
 object Direction2d {
