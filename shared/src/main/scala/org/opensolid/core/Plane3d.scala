@@ -100,8 +100,30 @@ object Plane3d {
     );
   }
 
-  def midplane(pointBelow: Point3d, pointAbove: Point3d): Plane3d = {
-    val displacementVector = pointAbove - pointBelow
-    Plane3d(pointBelow + 0.5 * displacementVector, displacementVector.direction)
+  def midplane(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
+    val displacementVector = upperPoint - lowerPoint
+    Plane3d(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
+  }
+
+  def midplane(lowerPlane: Plane3d, upperPlane: Plane3d): Plane3d = {
+    val displacementVector = upperPlane.originPoint - lowerPlane.originPoint
+
+    // Compute origin point equidistant from both planes
+    val aboveDistance = upperPlane.originPoint.distanceTo(lowerPlane).abs
+    val belowDistance = lowerPlane.originPoint.distanceTo(upperPlane).abs
+    val distanceSum = belowDistance + aboveDistance
+    val interpolationParameter =
+      if (distanceSum == 0.0) 0.5 else belowDistance / (aboveDistance + belowDistance)
+    val originPoint = lowerPlane.originPoint + interpolationParameter * displacementVector
+
+    // Compute normal direction from the average of the two inputs, in the
+    // direction lower -> upper
+    val dotProductSign: Sign = Sign.of(lowerPlane.normalDirection.dot(upperPlane.normalDirection))
+    val sumDirection =
+      (lowerPlane.normalDirection.vector + dotProductSign * upperPlane.normalDirection.vector).direction
+    val normalDirection =
+      if (sumDirection.dot(displacementVector) >= 0.0) sumDirection else -sumDirection
+
+    Plane3d(originPoint, normalDirection)
   }
 }
