@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.math
+
 final case class Point3d(x: Double, y: Double, z: Double)
   extends Bounded3d with Transformable3d[Point3d] with Scalable3d[Point3d] {
 
@@ -32,14 +34,37 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def distanceTo(that: Point3d): Double = (this - that).length
 
-  def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
-
   def isEqualTo(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+
+  def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
+
+  def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).dot(axis.direction)
+
+  def squaredDistanceTo(axis: Axis3d): Double = (this - this.projectedOnto(axis)).squaredLength
+
+  def distanceTo(axis: Axis3d): Double = math.sqrt(squaredDistanceTo(axis))
+
+  def isOn(axis: Axis3d, tolerance: Double): Boolean =
+    squaredDistanceTo(axis).isZero(tolerance * tolerance)
+
+  def distanceTo(plane: Plane3d): Double = (this - plane.originPoint).dot(plane.normalDirection)
+
+  def isOn(plane: Plane3d, tolerance: Double): Boolean = distanceTo(plane).isZero(tolerance)
 
   override def transformedBy(transformation: Transformation3d): Point3d = transformation(this)
 
   override def scaledAbout(point: Point3d, scale: Double): Point3d = point + scale * (this - point)
+
+  def projectedOnto(axis: Axis3d): Point3d = axis.originPoint + distanceAlong(axis) * axis.direction
+
+  def projectedOnto(plane: Plane3d): Point3d =
+    this - (this - plane.originPoint).dot(plane.normalDirection) * plane.normalDirection
+
+  def projectedInto(plane: Plane3d): Point2d = {
+    val displacement = this - plane.originPoint
+    Point2d(displacement.dot(plane.xDirection), displacement.dot(plane.yDirection))
+  }
 
   def +(vector: Vector3d): Point3d = Point3d(x + vector.x, y + vector.y, z + vector.z)
 

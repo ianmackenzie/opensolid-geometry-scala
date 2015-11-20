@@ -33,14 +33,25 @@ final case class Point2d(x: Double, y: Double)
 
   def distanceTo(that: Point2d): Double = (this - that).length
 
-  def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
-
   def isEqualTo(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+
+  def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
+
+  def distanceAlong(axis: Axis2d): Double = (this - axis.originPoint).dot(axis.direction)
+
+  def distanceTo(axis: Axis2d): Double = (this - axis.originPoint).dot(axis.normalDirection)
+
+  def isOn(axis: Axis2d, tolerance: Double): Boolean = distanceTo(axis).isZero(tolerance)
 
   override def transformedBy(transformation: Transformation2d): Point2d = transformation(this)
 
   override def scaledAbout(point: Point2d, scale: Double): Point2d = point + scale * (this - point)
+
+  def projectedOnto(axis: Axis2d): Point2d = axis.originPoint + distanceAlong(axis) * axis.direction
+
+  def placedOnto(plane: Plane3d): Point3d =
+    plane.originPoint + x * plane.xDirection + y * plane.yDirection
 
   def +(vector: Vector2d): Point2d = Point2d(x + vector.x, y + vector.y)
 
