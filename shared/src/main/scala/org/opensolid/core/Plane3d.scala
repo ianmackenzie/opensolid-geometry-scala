@@ -99,4 +99,9 @@ object Plane3d {
       yDirection
     );
   }
+
+  def midplane(pointBelow: Point3d, pointAbove: Point3d): Plane3d = {
+    val displacementVector = pointAbove - pointBelow
+    Plane3d(pointBelow + 0.5 * displacementVector, displacementVector.direction)
+  }
 }
