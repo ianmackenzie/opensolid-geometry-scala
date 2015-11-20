@@ -118,11 +118,16 @@ object Plane3d {
 
     // Compute normal direction from the average of the two inputs, in the
     // direction lower -> upper
-    val dotProductSign: Sign = Sign.of(lowerPlane.normalDirection.dot(upperPlane.normalDirection))
-    val sumDirection =
-      (lowerPlane.normalDirection.vector + dotProductSign * upperPlane.normalDirection.vector).direction
+    val dotProductSign = Sign.of(lowerPlane.normalDirection.dot(upperPlane.normalDirection))
+    val lowerNormalVector = lowerPlane.normalDirection.vector
+    val upperNormalVector = dotProductSign * upperPlane.normalDirection.vector
+    val normalVectorSum = lowerNormalVector + upperNormalVector
     val normalDirection =
-      if (sumDirection.dot(displacementVector) >= 0.0) sumDirection else -sumDirection
+      if (normalVectorSum.dot(displacementVector) >= 0.0) {
+        normalVectorSum.direction
+      } else {
+        -normalVectorSum.direction
+      }
 
     Plane3d(originPoint, normalDirection)
   }
