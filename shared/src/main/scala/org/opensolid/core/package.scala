@@ -38,6 +38,10 @@ package object core {
 
     def inMicrons: Double = value * 1e6
 
+    def kilometers: Double = value * 1e3
+
+    def inKilometers: Double = value * 1e-3
+
     def inches: Double = value * 0.0254
 
     def inInches: Double = value / 0.0254
@@ -49,6 +53,14 @@ package object core {
     def thou: Double = value * 0.0000254
 
     def inThou: Double = value / 0.0000254
+
+    def yards: Double = value * 0.9144
+
+    def inYards: Double = value / 0.9144
+
+    def miles: Double = value * 1609.344
+
+    def inMiles: Double = value / 1609.344
 
     def radians: Double = value
 
