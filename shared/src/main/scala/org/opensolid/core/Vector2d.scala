@@ -70,11 +70,11 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
 
-  def dot(direction: Direction2d): Double = x * direction.x + y * direction.y
+  def dot(direction: Direction2d): Double = dot(direction.vector)
 
   def dot(vectorBox: VectorBox2d): Interval = x * vectorBox.x + y * vectorBox.y
 
-  def dot(directionBox: DirectionBox2d): Interval = x * directionBox.x + y * directionBox.y
+  def dot(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
 }
 
 object Vector2d {

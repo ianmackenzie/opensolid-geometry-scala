@@ -14,49 +14,62 @@
 
 package org.opensolid.core
 
-final case class DirectionBox3d(x: Interval, y: Interval, z: Interval) {
-  def components: Array[Interval] = Array(x, y, z)
-
-  def component(index: Int): Interval = index match {
-    case 0 => x
-    case 1 => y
-    case 2 => z
-    case _ =>
-      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for DirectionBox3d")
+final class DirectionBox3d(val vectorBox: VectorBox3d) {
+  override def equals(other: Any): Boolean = other match {
+    case that: DirectionBox3d => this.vectorBox == that.vectorBox
+    case _ => false
   }
 
-  def vector: VectorBox3d = VectorBox3d(x, y, z)
+  override def hashCode: Int = vectorBox.hashCode
 
-  def unary_- : DirectionBox3d = DirectionBox3d(-x, -y, -z)
+  def x: Interval = vectorBox.x
 
-  def *(sign: Sign): DirectionBox3d = DirectionBox3d(x * sign, y * sign, z * sign)
+  def y: Interval = vectorBox.y
 
-  def *(value: Double): VectorBox3d = VectorBox3d(x * value, y * value, z * value)
+  def z: Interval = vectorBox.z
 
-  def *(interval: Interval): VectorBox3d = VectorBox3d(x * interval, y * interval, z * interval)
+  def components: Array[Interval] = vectorBox.components
 
-  def /(value: Double): VectorBox3d = VectorBox3d(x / value, y / value, z / value)
+  def component(index: Int): Interval = vectorBox.component(index)
 
-  def /(interval: Interval): VectorBox3d = VectorBox3d(x / interval, y / interval, z / interval)
+  def unary_- : DirectionBox3d = DirectionBox3d(-vectorBox)
 
-  def dot(vector: Vector3d): Interval = x * vector.x + y * vector.y + z * vector.z
+  def *(sign: Sign): DirectionBox3d = DirectionBox3d(vectorBox * sign)
 
-  def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
+  def *(value: Double): VectorBox3d = vectorBox * value
 
-  def dot(direction: Direction3d): Interval = x * direction.x + y * direction.y + z * direction.z
+  def *(interval: Interval): VectorBox3d = vectorBox * interval
 
-  def dot(that: DirectionBox3d): Interval = this.x * that.x + this.y * that.y + this.z * that.z
+  def /(value: Double): VectorBox3d = vectorBox / value
 
-  def cross(vector: Vector3d): VectorBox3d = this.vector.cross(vector)
+  def /(interval: Interval): VectorBox3d = vectorBox / interval
 
-  def cross(vectorBox: VectorBox3d): VectorBox3d = vector.cross(vectorBox)
+  def dot(vector: Vector3d): Interval = vectorBox.dot(vector)
 
-  def cross(direction: Direction3d): VectorBox3d = vector.cross(direction.vector)
+  def dot(vectorBox: VectorBox3d): Interval = this.vectorBox.dot(vectorBox)
 
-  def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox.vector)
+  def dot(direction: Direction3d): Interval = vectorBox.dot(direction.vector)
+
+  def dot(that: DirectionBox3d): Interval = this.vectorBox.dot(that.vectorBox)
+
+  def cross(vector: Vector3d): VectorBox3d = vectorBox.cross(vector)
+
+  def cross(vectorBox: VectorBox3d): VectorBox3d = this.vectorBox.cross(vectorBox)
+
+  def cross(direction: Direction3d): VectorBox3d = vectorBox.cross(direction.vector)
+
+  def cross(that: DirectionBox3d): VectorBox3d = this.vectorBox.cross(that.vectorBox)
 }
 
 object DirectionBox3d {
+  def apply(vectorBox: VectorBox3d): DirectionBox3d = new DirectionBox3d(vectorBox)
+
+  def apply(x: Interval, y: Interval, z: Interval): DirectionBox3d =
+    DirectionBox3d(VectorBox3d(x, y, z))
+
+  def unapply(directionBox: DirectionBox3d): Option[(Interval, Interval, Interval)] =
+    Some((directionBox.x, directionBox.y, directionBox.z))
+
   def apply(direction: Direction3d): DirectionBox3d =
     DirectionBox3d(Interval(direction.x), Interval(direction.y), Interval(direction.z))
 
@@ -65,5 +78,5 @@ object DirectionBox3d {
     case _ => throw new IllegalArgumentException("DirectionBox3d requires 3 components")
   }
 
-  val None = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
+  val Empty = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }

@@ -83,11 +83,11 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
 
   def length: Interval = Interval.sqrt(squaredLength)
 
-  def normalized: VectorBox3d = direction.vector
+  def normalized: VectorBox3d = directionBox.vectorBox
 
-  def direction: DirectionBox3d = {
+  def directionBox: DirectionBox3d = {
     if (this == VectorBox3d.Zero) {
-      DirectionBox3d.None
+      DirectionBox3d.Empty
     } else {
       val length = this.length
       DirectionBox3d(x / length, y / length, z / length)
@@ -118,12 +118,11 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
 
   def dot(vector: Vector3d): Interval = x * vector.x + y * vector.y + z * vector.z
 
-  def dot(direction: Direction3d): Interval = x * direction.x + y * direction.y + z * direction.z
+  def dot(direction: Direction3d): Interval = dot(direction.vector)
 
   def dot(that: VectorBox3d): Interval = this.x * that.x + this.y * that.y + this.z * that.z
 
-  def dot(directionBox: DirectionBox3d): Interval =
-    x * directionBox.x + y * directionBox.y + z * directionBox.z
+  def dot(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 
   def cross(vector: Vector3d): VectorBox3d =
     VectorBox3d(
@@ -141,7 +140,7 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
       this.x * that.y - this.y * that.x
     )
 
-  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vector)
+  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vectorBox)
 }
 
 object VectorBox3d {

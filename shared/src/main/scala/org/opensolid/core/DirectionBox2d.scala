@@ -14,40 +14,51 @@
 
 package org.opensolid.core
 
-final case class DirectionBox2d(x: Interval, y: Interval) {
-  def components: Array[Interval] = Array(x, y)
-
-  def component(index: Int): Interval = index match {
-    case 0 => x
-    case 1 => y
-    case _ =>
-      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for DirectionBox2d")
+final class DirectionBox2d(val vectorBox: VectorBox2d) {
+  override def equals(other: Any): Boolean = other match {
+    case that: DirectionBox2d => this.vectorBox == that.vectorBox
+    case _ => false
   }
 
-  def vector: VectorBox2d = VectorBox2d(x, y)
+  override def hashCode: Int = vectorBox.hashCode
 
-  def unary_- : DirectionBox2d = DirectionBox2d(-x, -y)
+  def x: Interval = vectorBox.x
 
-  def *(sign: Sign): DirectionBox2d = DirectionBox2d(x * sign, y * sign)
+  def y: Interval = vectorBox.y
 
-  def *(value: Double): VectorBox2d = VectorBox2d(x * value, y * value)
+  def components: Array[Interval] = vectorBox.components
 
-  def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)
+  def component(index: Int): Interval = vectorBox.component(index)
 
-  def /(value: Double): VectorBox2d = VectorBox2d(x / value, y / value)
+  def unary_- : DirectionBox2d = DirectionBox2d(-vectorBox)
 
-  def /(interval: Interval): VectorBox2d = VectorBox2d(x / interval, y / interval)
+  def *(sign: Sign): DirectionBox2d = DirectionBox2d(vectorBox * sign)
 
-  def dot(vector: Vector2d): Interval = x * vector.x + y * vector.y
+  def *(value: Double): VectorBox2d = vectorBox * value
 
-  def dot(vectorBox: VectorBox2d): Interval = x * vectorBox.x + y * vectorBox.y
+  def *(interval: Interval): VectorBox2d = vectorBox * interval
 
-  def dot(direction: Direction2d): Interval = x * direction.x + y * direction.y
+  def /(value: Double): VectorBox2d = vectorBox / value
 
-  def dot(that: DirectionBox2d): Interval = this.x * that.x + this.y * that.y
+  def /(interval: Interval): VectorBox2d = vectorBox / interval
+
+  def dot(vector: Vector2d): Interval = vectorBox.dot(vector)
+
+  def dot(vectorBox: VectorBox2d): Interval = this.vectorBox.dot(vectorBox)
+
+  def dot(direction: Direction2d): Interval = vectorBox.dot(direction.vector)
+
+  def dot(that: DirectionBox2d): Interval = this.vectorBox.dot(that.vectorBox)
 }
 
 object DirectionBox2d {
+  def apply(vectorBox: VectorBox2d): DirectionBox2d = new DirectionBox2d(vectorBox)
+
+  def apply(x: Interval, y: Interval): DirectionBox2d = DirectionBox2d(VectorBox2d(x, y))
+
+  def unapply(directionBox: DirectionBox2d): Option[(Interval, Interval)] =
+    Some((directionBox.x, directionBox.y))
+
   def apply(direction: Direction2d): DirectionBox2d =
     DirectionBox2d(Interval(direction.x), Interval(direction.y))
 
@@ -56,5 +67,5 @@ object DirectionBox2d {
     case _ => throw new IllegalArgumentException("DirectionBox2d requires 2 components")
   }
 
-  val None = DirectionBox2d(Interval.Empty, Interval.Empty)
+  val Empty = DirectionBox2d(Interval.Empty, Interval.Empty)
 }

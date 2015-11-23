@@ -69,11 +69,11 @@ final case class VectorBox2d(x: Interval, y: Interval) {
 
   def length: Interval = Interval.sqrt(squaredLength)
 
-  def normalized: VectorBox2d = direction.vector
+  def normalized: VectorBox2d = directionBox.vectorBox
 
-  def direction: DirectionBox2d = {
+  def directionBox: DirectionBox2d = {
     if (this == VectorBox2d.Zero) {
-      DirectionBox2d.None
+      DirectionBox2d.Empty
     } else {
       val length = this.length
       DirectionBox2d(x / length, y / length)
@@ -102,11 +102,11 @@ final case class VectorBox2d(x: Interval, y: Interval) {
 
   def dot(vector: Vector2d): Interval = x * vector.x + y * vector.y
 
-  def dot(direction: Direction2d): Interval = x * direction.x + y * direction.y
+  def dot(direction: Direction2d): Interval = dot(direction.vector)
 
   def dot(that: VectorBox2d): Interval = this.x * that.x + this.y * that.y
 
-  def dot(directionBox: DirectionBox2d): Interval = x * directionBox.x + y * directionBox.y
+  def dot(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
 }
 
 object VectorBox2d {

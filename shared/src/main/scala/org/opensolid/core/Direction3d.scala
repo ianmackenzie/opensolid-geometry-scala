@@ -18,41 +18,45 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final case class Direction3d(x: Double, y: Double, z: Double)
-  extends VectorTransformable3d[Direction3d] {
-
-  def components: Array[Double] = Array(x, y, z)
-
-  def component(index: Int): Double = index match {
-    case 0 => x
-    case 1 => y
-    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Direction3d")
+final class Direction3d(val vector: Vector3d) extends VectorTransformable3d[Direction3d] {
+  override def equals(other: Any): Boolean = other match {
+    case that: Direction3d => this.vector == that.vector
+    case _ => false
   }
 
-  def vector: Vector3d = Vector3d(x, y, z)
+  override def hashCode: Int = vector.hashCode
 
-  def unary_- : Direction3d = Direction3d(-x, -y, -z)
+  def x: Double = vector.x
 
-  def *(sign: Sign): Direction3d = Direction3d(x * sign, y * sign, z * sign)
+  def y: Double = vector.y
 
-  def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
+  def z: Double = vector.z
 
-  def *(interval: Interval): VectorBox3d = VectorBox3d(x * interval, y * interval, z * interval)
+  def components: Array[Double] = vector.components
 
-  def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
+  def component(index: Int): Double = vector.component(index)
 
-  def /(interval: Interval): VectorBox3d = VectorBox3d(x / interval, y / interval, z / interval)
+  def unary_- : Direction3d = Direction3d(-vector)
+
+  def *(sign: Sign): Direction3d = Direction3d(vector * sign)
+
+  def *(value: Double): Vector3d = vector * value
+
+  def *(interval: Interval): VectorBox3d = vector * interval
+
+  def /(value: Double): Vector3d = vector / value
+
+  def /(interval: Interval): VectorBox3d = vector / interval
 
   def transformedBy(transformation: Transformation3d): Direction3d = transformation(this)
 
-  def dot(vector: Vector3d): Double = x * vector.x + y * vector.y + z * vector.z
+  def dot(vector: Vector3d): Double = this.vector.dot(vector)
 
-  def dot(that: Direction3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
+  def dot(that: Direction3d): Double = this.vector.dot(that.vector)
 
-  def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
+  def dot(vectorBox: VectorBox3d): Interval = vector.dot(vectorBox)
 
-  def dot(directionBox: DirectionBox3d): Interval =
-    x * directionBox.x + y * directionBox.y + z * directionBox.z
+  def dot(directionBox: DirectionBox3d): Interval = vector.dot(directionBox)
 
   def cross(vector: Vector3d): Vector3d = this.vector.cross(vector)
 
@@ -60,7 +64,7 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def cross(vectorBox: VectorBox3d): VectorBox3d = vector.cross(vectorBox)
 
-  def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox)
+  def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox.vectorBox)
 
   def normalDirection: Direction3d = vector.normalDirection
 
@@ -68,6 +72,13 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 }
 
 object Direction3d {
+  def apply(vector: Vector3d): Direction3d = new Direction3d(vector)
+
+  def apply(x: Double, y: Double, z: Double): Direction3d = Direction3d(Vector3d(x, y, z))
+
+  def unapply(direction: Direction3d): Option[(Double, Double, Double)] =
+    Some((direction.x, direction.y, direction.z))
+
   def fromComponents[T <% Double](components: Seq[T]): Direction3d = components match {
     case Seq(x, y, z) => Direction3d(x, y, z)
     case _ => throw new IllegalArgumentException("Direction3d requires 3 components")

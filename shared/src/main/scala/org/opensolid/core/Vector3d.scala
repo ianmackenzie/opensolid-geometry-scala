@@ -71,12 +71,11 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 
-  def dot(direction: Direction3d): Double = x * direction.x + y * direction.y + z * direction.z
+  def dot(direction: Direction3d): Double = dot(direction.vector)
 
   def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
 
-  def dot(directionBox: DirectionBox3d): Interval =
-    x * directionBox.x + y * directionBox.y + z * directionBox.z
+  def dot(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -94,7 +93,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       x * vectorBox.y - y * vectorBox.x
     )
 
-  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vector)
+  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vectorBox)
 
   def normalDirection: Direction3d = {
     if (this == Vector3d.Zero) {

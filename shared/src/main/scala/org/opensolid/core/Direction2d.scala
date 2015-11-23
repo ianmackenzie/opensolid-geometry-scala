@@ -18,38 +18,43 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d[Direction2d] {
-  def components: Array[Double] = Array(x, y)
-
-  def component(index: Int): Double = index match {
-    case 0 => x
-    case 1 => y
-    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Direction2d")
+final class Direction2d(val vector: Vector2d) extends VectorTransformable2d[Direction2d] {
+  override def equals(other: Any): Boolean = other match {
+    case that: Direction2d => this.vector == that.vector
+    case _ => false
   }
 
-  def vector: Vector2d = Vector2d(x, y)
+  override def hashCode: Int = vector.hashCode
 
-  def unary_- : Direction2d = Direction2d(-x, -y)
+  def x: Double = vector.x
 
-  def *(sign: Sign): Direction2d = Direction2d(x * sign, y * sign)
+  def y: Double = vector.y
 
-  def *(value: Double): Vector2d = Vector2d(x * value, y * value)
+  def components: Array[Double] = vector.components
 
-  def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)
+  def component(index: Int): Double = vector.component(index)
 
-  def /(value: Double): Vector2d = Vector2d(x / value, y / value)
+  def unary_- : Direction2d = Direction2d(-vector)
 
-  def /(interval: Interval): VectorBox2d = VectorBox2d(x / interval, y / interval)
+  def *(sign: Sign): Direction2d = Direction2d(vector * sign)
+
+  def *(value: Double): Vector2d = vector * value
+
+  def *(interval: Interval): VectorBox2d = vector * interval
+
+  def /(value: Double): Vector2d = vector / value
+
+  def /(interval: Interval): VectorBox2d = vector / interval
 
   def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
 
-  def dot(vector: Vector2d): Double = x * vector.x + y * vector.y
+  def dot(vector: Vector2d): Double = this.vector.dot(vector)
 
-  def dot(that: Direction2d): Double = this.x * that.x + this.y * that.y
+  def dot(that: Direction2d): Double = this.vector.dot(that.vector)
 
-  def dot(vectorBox: VectorBox2d): Interval = x * vectorBox.x + y * vectorBox.y
+  def dot(vectorBox: VectorBox2d): Interval = vector.dot(vectorBox)
 
-  def dot(directionBox: DirectionBox2d): Interval = x * directionBox.x + y * directionBox.y
+  def dot(directionBox: DirectionBox2d): Interval = vector.dot(directionBox.vectorBox)
 
   def normalDirection: Direction2d = Direction2d(-y, x)
 
@@ -58,6 +63,13 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 }
 
 object Direction2d {
+  def apply(vector: Vector2d): Direction2d = new Direction2d(vector)
+
+  def apply(x: Double, y: Double): Direction2d = Direction2d(Vector2d(x, y))
+
+  def unapply(direction: Direction2d): Option[(Double, Double)] =
+    Some((direction.x, direction.y))
+
   def fromComponents[T <% Double](components: Seq[T]): Direction2d = components match {
     case Seq(x, y) => Direction2d(x, y)
     case _ => throw new IllegalArgumentException("Direction2d requires 2 components")
