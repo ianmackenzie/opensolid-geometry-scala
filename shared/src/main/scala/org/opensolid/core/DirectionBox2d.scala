@@ -14,14 +14,7 @@
 
 package org.opensolid.core
 
-final class DirectionBox2d(val vectorBox: VectorBox2d) {
-  override def equals(other: Any): Boolean = other match {
-    case that: DirectionBox2d => this.vectorBox == that.vectorBox
-    case _ => false
-  }
-
-  override def hashCode: Int = vectorBox.hashCode
-
+final case class DirectionBox2d(vectorBox: VectorBox2d) {
   def x: Interval = vectorBox.x
 
   def y: Interval = vectorBox.y
@@ -52,12 +45,7 @@ final class DirectionBox2d(val vectorBox: VectorBox2d) {
 }
 
 object DirectionBox2d {
-  def apply(vectorBox: VectorBox2d): DirectionBox2d = new DirectionBox2d(vectorBox)
-
   def apply(x: Interval, y: Interval): DirectionBox2d = DirectionBox2d(VectorBox2d(x, y))
-
-  def unapply(directionBox: DirectionBox2d): Option[(Interval, Interval)] =
-    Some((directionBox.x, directionBox.y))
 
   def apply(direction: Direction2d): DirectionBox2d =
     DirectionBox2d(Interval(direction.x), Interval(direction.y))

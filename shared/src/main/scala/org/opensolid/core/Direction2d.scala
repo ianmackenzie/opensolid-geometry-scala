@@ -18,14 +18,7 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final class Direction2d(val vector: Vector2d) extends VectorTransformable2d[Direction2d] {
-  override def equals(other: Any): Boolean = other match {
-    case that: Direction2d => this.vector == that.vector
-    case _ => false
-  }
-
-  override def hashCode: Int = vector.hashCode
-
+final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Direction2d] {
   def x: Double = vector.x
 
   def y: Double = vector.y
@@ -63,12 +56,7 @@ final class Direction2d(val vector: Vector2d) extends VectorTransformable2d[Dire
 }
 
 object Direction2d {
-  def apply(vector: Vector2d): Direction2d = new Direction2d(vector)
-
   def apply(x: Double, y: Double): Direction2d = Direction2d(Vector2d(x, y))
-
-  def unapply(direction: Direction2d): Option[(Double, Double)] =
-    Some((direction.x, direction.y))
 
   def fromComponents[T <% Double](components: Seq[T]): Direction2d = components match {
     case Seq(x, y) => Direction2d(x, y)

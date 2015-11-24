@@ -18,14 +18,7 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final class Direction3d(val vector: Vector3d) extends VectorTransformable3d[Direction3d] {
-  override def equals(other: Any): Boolean = other match {
-    case that: Direction3d => this.vector == that.vector
-    case _ => false
-  }
-
-  override def hashCode: Int = vector.hashCode
-
+final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Direction3d] {
   def x: Double = vector.x
 
   def y: Double = vector.y
@@ -72,12 +65,7 @@ final class Direction3d(val vector: Vector3d) extends VectorTransformable3d[Dire
 }
 
 object Direction3d {
-  def apply(vector: Vector3d): Direction3d = new Direction3d(vector)
-
   def apply(x: Double, y: Double, z: Double): Direction3d = Direction3d(Vector3d(x, y, z))
-
-  def unapply(direction: Direction3d): Option[(Double, Double, Double)] =
-    Some((direction.x, direction.y, direction.z))
 
   def fromComponents[T <% Double](components: Seq[T]): Direction3d = components match {
     case Seq(x, y, z) => Direction3d(x, y, z)
