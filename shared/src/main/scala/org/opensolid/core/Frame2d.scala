@@ -38,10 +38,10 @@ case class Frame2d(
   def placedOnto(plane: Plane3d): Plane3d =
     Plane3d(
       originPoint.placedOnto(plane),
-      handedness.sign * plane.normalDirection,
-      handedness,
       xDirection.placedOnto(plane),
-      yDirection.placedOnto(plane)
+      yDirection.placedOnto(plane),
+      handedness.sign * plane.normalDirection,
+      handedness
     )
 }
 

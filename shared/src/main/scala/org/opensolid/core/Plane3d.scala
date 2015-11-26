@@ -16,10 +16,10 @@ package org.opensolid.core
 
 case class Plane3d(
   originPoint: Point3d,
-  normalDirection: Direction3d,
-  handedness: Handedness,
   xDirection: Direction3d,
-  yDirection: Direction3d
+  yDirection: Direction3d,
+  normalDirection: Direction3d,
+  handedness: Handedness
 ) extends Transformable3d[Plane3d] {
 
   require(handedness.sign == Sign.of(xDirection.cross(yDirection).dot(normalDirection)))
@@ -27,10 +27,10 @@ case class Plane3d(
   override def transformedBy(transformation: Transformation3d): Plane3d =
     Plane3d(
       originPoint.transformedBy(transformation),
-      normalDirection.transformedBy(transformation),
-      handedness.transformedBy(transformation),
       xDirection.transformedBy(transformation),
-      yDirection.transformedBy(transformation)
+      yDirection.transformedBy(transformation),
+      normalDirection.transformedBy(transformation),
+      handedness.transformedBy(transformation)
     )
 }
 
@@ -42,7 +42,7 @@ object Plane3d {
     val xDirection = normalDirection.normalDirection
     val yDirection =
       handedness.sign * Direction3d.fromComponents(normalDirection.cross(xDirection).components)
-    Plane3d(originPoint, normalDirection, handedness, xDirection, yDirection)
+    Plane3d(originPoint, xDirection, yDirection, normalDirection, handedness)
   }
 
   def fromBasisDirections(
@@ -59,10 +59,10 @@ object Plane3d {
   ): Plane3d =
     Plane3d(
       originPoint,
-      handedness.sign * Direction3d.fromComponents(xDirection.cross(yDirection).components),
-      handedness,
       xDirection,
-      yDirection
+      yDirection,
+      handedness.sign * Direction3d.fromComponents(xDirection.cross(yDirection).components),
+      handedness
     )
 
   def throughPoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d =
@@ -82,10 +82,10 @@ object Plane3d {
       Direction3d.fromComponents(rightHandedNormalDirection.cross(xDirection).components);
     Plane3d(
       firstPoint,
-      handedness.sign * rightHandedNormalDirection,
-      handedness,
       xDirection,
-      yDirection
+      yDirection,
+      handedness.sign * rightHandedNormalDirection,
+      handedness
     );
   }
 
@@ -120,4 +120,16 @@ object Plane3d {
 
     Plane3d(originPoint, normalDirection)
   }
+
+  val XY: Plane3d = Frame3d.Global.xyPlane
+
+  val XZ: Plane3d = Frame3d.Global.xzPlane
+
+  val YX: Plane3d = Frame3d.Global.yxPlane
+
+  val YZ: Plane3d = Frame3d.Global.yzPlane
+
+  val ZX: Plane3d = Frame3d.Global.zxPlane
+
+  val ZY: Plane3d = Frame3d.Global.zyPlane
 }
