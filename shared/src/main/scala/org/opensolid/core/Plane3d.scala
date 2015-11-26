@@ -36,6 +36,8 @@ case class Plane3d(
   def offsetBy(distance: Double): Plane3d = translatedBy(distance * normalDirection)
 
   def flipped: Plane3d = Plane3d(originPoint, xDirection, yDirection, -normalDirection, -handedness)
+
+  def normalAxis: Axis3d = Axis3d(originPoint, normalDirection)
 }
 
 object Plane3d {
