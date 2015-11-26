@@ -28,6 +28,15 @@ case class Axis3d(originPoint: Point3d, direction: Direction3d)
     require(scale > 0.0)
     Axis3d(originPoint.scaledAbout(point, scale), direction)
   }
+
+  def projectedOnto(that: Axis3d): Axis3d =
+    Axis3d(this.originPoint.projectedOnto(that), this.direction.projectedOnto(that).direction)
+
+  def projectedOnto(plane: Plane3d): Axis3d =
+    Axis3d(originPoint.projectedOnto(plane), direction.projectedOnto(plane).direction)
+
+  def projectedInto(plane: Plane3d): Axis2d =
+    Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane).direction)
 }
 
 object Axis3d {
