@@ -14,16 +14,19 @@
 
 package org.opensolid.core
 
-trait VectorTransformable3d[T] {
-  def transformedBy(transformation: Transformation3d): T
+case class Globalization3d(frame: Frame3d) extends Transformation3d {
+  def apply(length: Double): Double = length
 
-  def rotatedAbout(direction: Direction3d, angle: Double): T =
-    rotatedAbout(Axis3d(Point3d.Origin, direction), angle)
+  def apply(handedness: Handedness): Handedness = frame.handedness * handedness
 
-  def rotatedAbout(axis: Axis3d, angle: Double): T =
-    transformedBy(Rotation3d(axis, angle))
+  def apply(point: Point3d): Point3d =
+    frame.originPoint +
+    point.x * frame.xDirection +
+    point.y * frame.yDirection +
+    point.z * frame.zDirection
 
-  def relativeTo(frame: Frame3d): T = transformedBy(Localization3d(frame))
+  def apply(vector: Vector3d): Vector3d =
+    vector.x * frame.xDirection + vector.y * frame.yDirection + vector.z * frame.zDirection
 
-  def placedIn(frame: Frame3d): T = transformedBy(Globalization3d(frame))
+  def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
 }
