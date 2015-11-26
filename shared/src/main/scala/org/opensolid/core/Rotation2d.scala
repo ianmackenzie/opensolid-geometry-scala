@@ -14,10 +14,20 @@
 
 package org.opensolid.core
 
-trait Transformable2d[T] {
-  def transformedBy(transformation: Transformation2d): T
+import scala.math
 
-  def translatedBy(vector: Vector2d): T = transformedBy(Translation2d(vector))
+case class Rotation2d(point: Point2d, angle: Double) extends Transformation2d {
+  private[this] val sinAngle = math.sin(angle)
+  private[this] val cosAngle = math.cos(angle)
 
-  def rotatedAbout(point: Point2d, angle: Double): T = transformedBy(Rotation2d(point, angle))
+  def apply(length: Double): Double = length
+
+  def apply(handedness: Handedness): Handedness = handedness
+
+  def apply(point: Point2d): Point2d = this.point + apply(point - this.point)
+
+  def apply(vector: Vector2d): Vector2d =
+    Vector2d(cosAngle * vector.x - sinAngle * vector.y, sinAngle * vector.x + cosAngle * vector.y)
+
+  def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
 }
