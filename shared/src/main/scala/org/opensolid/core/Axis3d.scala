@@ -14,20 +14,13 @@
 
 package org.opensolid.core
 
-case class Axis3d(originPoint: Point3d, direction: Direction3d)
-  extends Transformable3d[Axis3d] with Scalable3d[Axis3d] {
-
+case class Axis3d(originPoint: Point3d, direction: Direction3d) extends Transformable3d[Axis3d] {
   def pointAt(distance: Double): Point3d = originPoint + distance * direction
 
   def reversed: Axis3d = Axis3d(originPoint, -direction)
 
   def transformedBy(transformation: Transformation3d): Axis3d =
     Axis3d(originPoint.transformedBy(transformation), direction.transformedBy(transformation))
-
-  def scaledAbout(point: Point3d, scale: Double): Axis3d = {
-    require(scale > 0.0)
-    Axis3d(originPoint.scaledAbout(point, scale), direction)
-  }
 
   def projectedOnto(that: Axis3d): Axis3d =
     Axis3d(this.originPoint.projectedOnto(that), this.direction.projectedOnto(that).direction)

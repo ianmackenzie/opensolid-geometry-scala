@@ -20,7 +20,7 @@ case class Plane3d(
   handedness: Handedness,
   xDirection: Direction3d,
   yDirection: Direction3d
-) extends Transformable3d[Plane3d] with Scalable3d[Plane3d] {
+) extends Transformable3d[Plane3d] {
 
   require(handedness.sign == Sign.of(xDirection.cross(yDirection).dot(normalDirection)))
 
@@ -32,17 +32,6 @@ case class Plane3d(
       xDirection.transformedBy(transformation),
       yDirection.transformedBy(transformation)
     )
-
-  override def scaledAbout(point: Point3d, scale: Double): Plane3d = {
-    require(scale > 0.0)
-    Plane3d(
-      originPoint.scaledAbout(point, scale),
-      normalDirection,
-      handedness,
-      xDirection,
-      yDirection
-    )
-  }
 }
 
 object Plane3d {

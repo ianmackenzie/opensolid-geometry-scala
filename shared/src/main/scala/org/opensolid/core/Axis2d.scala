@@ -18,7 +18,7 @@ case class Axis2d(
   originPoint: Point2d,
   direction: Direction2d,
   handedness: Handedness = Handedness.Right
-) extends Transformable2d[Axis2d] with Scalable2d[Axis2d] {
+) extends Transformable2d[Axis2d] {
 
   def pointAt(distance: Double): Point2d = originPoint + distance * direction
 
@@ -34,11 +34,6 @@ case class Axis2d(
       direction.transformedBy(transformation),
       handedness.transformedBy(transformation)
     )
-
-  def scaledAbout(point: Point2d, scale: Double): Axis2d = {
-    require(scale > 0.0)
-    Axis2d(originPoint.scaledAbout(point, scale), direction, handedness)
-  }
 
   def projectedOnto(that: Axis2d): Axis2d =
     Axis2d(
