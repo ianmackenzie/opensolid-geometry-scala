@@ -34,6 +34,8 @@ case class Axis3d(originPoint: Point3d, direction: Direction3d) extends Transfor
 
 object Axis3d {
   val X = Axis3d(Point3d.Origin, Direction3d.X)
+
   val Y = Axis3d(Point3d.Origin, Direction3d.Y)
+
   val Z = Axis3d(Point3d.Origin, Direction3d.Z)
 }
