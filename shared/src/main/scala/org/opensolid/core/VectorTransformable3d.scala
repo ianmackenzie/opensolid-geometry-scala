@@ -16,4 +16,10 @@ package org.opensolid.core
 
 trait VectorTransformable3d[T] {
   def transformedBy(transformation: Transformation3d): T
+
+  def rotatedAbout(direction: Direction3d, angle: Double): T =
+    rotatedAbout(Axis3d(Point3d.Origin, direction), angle)
+
+  def rotatedAbout(axis: Axis3d, angle: Double): T =
+    transformedBy(Rotation3d(axis, angle))
 }
