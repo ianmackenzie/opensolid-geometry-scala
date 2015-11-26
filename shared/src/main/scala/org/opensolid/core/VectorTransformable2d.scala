@@ -22,4 +22,8 @@ trait VectorTransformable2d[T] {
   def relativeTo(frame: Frame2d): T = transformedBy(Localization2d(frame))
 
   def placedIn(frame: Frame2d): T = transformedBy(Globalization2d(frame))
+
+  def mirroredAlong(direction: Direction2d): T = transformedBy(Mirror2d(Point2d.Origin, direction))
+
+  def mirroredAbout(axis: Axis2d): T = transformedBy(Mirror2d(axis))
 }
