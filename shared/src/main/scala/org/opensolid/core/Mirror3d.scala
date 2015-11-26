@@ -14,19 +14,18 @@
 
 package org.opensolid.core
 
-trait Transformable3d[T] {
-  def transformedBy(transformation: Transformation3d): T
+case class Mirror3d(point: Point3d, direction: Direction3d) extends Transformation3d {
+  def apply(length: Double): Double = length
 
-  def translatedBy(vector: Vector3d): T = transformedBy(Translation3d(vector))
+  def apply(handedness: Handedness): Handedness = -handedness
 
-  def rotatedAbout(axis: Axis3d, angle: Double): T = transformedBy(Rotation3d(axis, angle))
+  def apply(point: Point3d): Point3d = point - 2 * (point - this.point).dot(direction) * direction
 
-  def relativeTo(frame: Frame3d): T = transformedBy(Localization3d(frame))
+  def apply(vector: Vector3d): Vector3d = vector - 2 * vector.dot(direction) * direction
 
-  def placedIn(frame: Frame3d): T = transformedBy(Globalization3d(frame))
+  def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
+}
 
-  def mirroredAbout(point: Point3d, direction: Direction3d): T =
-    transformedBy(Mirror3d(point, direction))
-
-  def mirroredAbout(plane: Plane3d): T = transformedBy(Mirror3d(plane))
+object Mirror3d {
+  def apply(plane: Plane3d): Mirror3d = Mirror3d(plane.originPoint, plane.normalDirection)
 }

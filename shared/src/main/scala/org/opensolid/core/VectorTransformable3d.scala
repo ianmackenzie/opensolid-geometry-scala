@@ -26,4 +26,8 @@ trait VectorTransformable3d[T] {
   def relativeTo(frame: Frame3d): T = transformedBy(Localization3d(frame))
 
   def placedIn(frame: Frame3d): T = transformedBy(Globalization3d(frame))
+
+  def mirroredAlong(direction: Direction3d): T = transformedBy(Mirror3d(Point3d.Origin, direction))
+
+  def mirroredAbout(plane: Plane3d): T = transformedBy(Mirror3d(plane))
 }
