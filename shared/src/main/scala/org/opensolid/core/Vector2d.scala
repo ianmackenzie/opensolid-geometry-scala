@@ -35,6 +35,10 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
 
+  def projectedOnto(axis: Axis2d): Vector2d = this.dot(axis.direction) * axis.direction
+
+  def placedOnto(plane: Plane3d): Vector3d = x * plane.xDirection + y * plane.yDirection
+
   def normalized: Vector2d = direction.vector
 
   def direction: Direction2d = {

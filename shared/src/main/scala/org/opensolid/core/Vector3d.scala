@@ -36,6 +36,14 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
+  def projectedOnto(axis: Axis3d): Vector3d = this.dot(axis.direction) * axis.direction
+
+  def projectedOnto(plane: Plane3d): Vector3d =
+    this - this.dot(plane.normalDirection) * plane.normalDirection
+
+  def projectedInto(plane: Plane3d): Vector2d =
+    Vector2d(this.dot(plane.xDirection), this.dot(plane.yDirection))
+
   def normalized: Vector3d = direction.vector
 
   def direction: Direction3d = {
