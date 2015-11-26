@@ -14,10 +14,18 @@
 
 package org.opensolid.core
 
-trait VectorTransformable2d[T] {
-  def transformedBy(transformation: Transformation2d): T
+case class Localization2d(frame: Frame2d) extends Transformation2d {
+  def apply(length: Double): Double = length
 
-  def rotatedBy(angle: Double): T = transformedBy(Rotation2d(Point2d.Origin, angle))
+  def apply(handedness: Handedness): Handedness = frame.handedness * handedness
 
-  def relativeTo(frame: Frame2d): T = transformedBy(Localization2d(frame))
+  def apply(point: Point2d): Point2d = {
+    val displacement = point - frame.originPoint
+    Point2d(displacement.dot(frame.xDirection), displacement.dot(frame.yDirection))
+  }
+
+  def apply(vector: Vector2d): Vector2d =
+    Vector2d(vector.dot(frame.xDirection), vector.dot(frame.yDirection))
+
+  def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
 }
