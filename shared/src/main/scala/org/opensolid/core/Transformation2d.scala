@@ -26,4 +26,6 @@ abstract class Transformation2d {
   def apply(direction: Direction2d): Direction2d
 
   def andThen(that: Transformation2d): Transformation2d = CompoundTransformation2d(this, that)
+
+  def compose(that: Transformation2d): Transformation2d = CompoundTransformation2d(that, this)
 }

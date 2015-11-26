@@ -26,4 +26,6 @@ abstract class Transformation3d {
   def apply(direction: Direction3d): Direction3d
 
   def andThen(that: Transformation3d): Transformation3d = CompoundTransformation3d(this, that)
+
+  def compose(that: Transformation3d): Transformation3d = CompoundTransformation3d(that, this)
 }
