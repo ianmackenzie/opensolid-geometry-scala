@@ -57,7 +57,7 @@ object Plane3d {
       numerics.normalDirectionFromThreePoints(firstPoint, secondPoint, thirdPoint)
     val xDirection = (secondPoint - firstPoint) match {
       case Vector3d.Zero => normalDirection.normalDirection
-      case nonZeroVector => nonZeroVector.direction
+      case nonZeroVector: Vector3d => nonZeroVector.direction
     }
     val yDirection = Direction3d(normalDirection.cross(xDirection))
     Plane3d(firstPoint, xDirection, yDirection, normalDirection, Handedness.Right)
@@ -75,7 +75,7 @@ object Plane3d {
     val crossProduct = xDirection.cross(point - axis.originPoint)
     val normalDirection = crossProduct match {
       case Vector3d.Zero => axis.normalDirection
-      case nonZeroVector => nonZeroVector.direction
+      case nonZeroVector: Vector3d => nonZeroVector.direction
     }
     val yDirection = Direction3d(normalDirection.cross(xDirection))
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection, Handedness.Right)
