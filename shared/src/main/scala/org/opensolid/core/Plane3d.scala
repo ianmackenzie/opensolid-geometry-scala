@@ -46,8 +46,7 @@ object Plane3d {
 
   def apply(originPoint: Point3d, normalDirection: Direction3d, handedness: Handedness): Plane3d = {
     val xDirection = normalDirection.normalDirection
-    val yDirection =
-      handedness.sign * Direction3d.fromComponents(normalDirection.cross(xDirection).components)
+    val yDirection = handedness.sign * Direction3d(normalDirection.cross(xDirection))
     Plane3d(originPoint, xDirection, yDirection, normalDirection, handedness)
   }
 
@@ -67,7 +66,7 @@ object Plane3d {
       originPoint,
       xDirection,
       yDirection,
-      handedness.sign * Direction3d.fromComponents(xDirection.cross(yDirection).components),
+      handedness.sign * Direction3d(xDirection.cross(yDirection)),
       handedness
     )
 
