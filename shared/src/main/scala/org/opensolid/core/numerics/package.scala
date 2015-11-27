@@ -20,12 +20,11 @@ package object numerics {
   def normalDirectionFromThreePoints(
     firstPoint: Point3d,
     secondPoint: Point3d,
-    thirdPoint: Point3d,
-    handedness: Handedness
+    thirdPoint: Point3d
   ): Direction3d = {
     val firstVector = secondPoint - firstPoint
     val secondVector = thirdPoint - firstPoint
-    val crossProduct = handedness.sign * firstVector.cross(secondVector)
+    val crossProduct = firstVector.cross(secondVector)
     val firstSquaredLength = firstVector.squaredLength
     val secondSquaredLength = secondVector.squaredLength
     val crossProductSquaredLength = crossProduct.squaredLength
