@@ -67,8 +67,6 @@ import scala.util.Random
   * }}}
   */
 final case class Interval(val lowerBound: Double, val upperBound: Double) extends Bounded1d {
-  def this(value: Double) = this(value, value)
-
   override def equals(other: Any): Boolean = other match {
     case that: Interval =>
       (this.lowerBound == that.lowerBound && this.upperBound == that.upperBound) ||
@@ -448,7 +446,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 }
 
 object Interval {
-  def apply(value: Double): Interval = new Interval(value)
+  def apply(value: Double): Interval = Interval(value, value)
 
   def hull(firstValue: Double, secondValue: Double): Interval =
     Interval(firstValue.min(secondValue), firstValue.max(secondValue))
