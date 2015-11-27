@@ -18,18 +18,18 @@ import scala.math
 
 package object numerics {
   def normalDirectionFromThreePoints(
-    point0: Point3d,
-    point1: Point3d,
-    point2: Point3d,
+    firstPoint: Point3d,
+    secondPoint: Point3d,
+    thirdPoint: Point3d,
     handedness: Handedness
   ): Direction3d = {
-    val vector1 = point1 - point0
-    val vector2 = point2 - point0
-    val crossProduct = handedness.sign * vector1.cross(vector2)
-    val squaredLength1 = vector1.squaredLength
-    val squaredLength2 = vector2.squaredLength
+    val firstVector = secondPoint - firstPoint
+    val secondVector = thirdPoint - firstPoint
+    val crossProduct = handedness.sign * firstVector.cross(secondVector)
+    val firstSquaredLength = firstVector.squaredLength
+    val secondSquaredLength = secondVector.squaredLength
     val crossProductSquaredLength = crossProduct.squaredLength
-    if (crossProductSquaredLength > math.ulp(squaredLength1 * squaredLength2)) {
+    if (crossProductSquaredLength > math.ulp(firstSquaredLength * secondSquaredLength)) {
       // Cross product is (reasonably) well conditioned - use it to compute the
       // normal direction
       Direction3d(crossProduct / math.sqrt(crossProductSquaredLength))
@@ -37,7 +37,11 @@ package object numerics {
       // Cross product is poorly conditioned (i.e., triangle is degenerate or
       // nearly so) - instead of using the cross product, compute a unit vector
       // perpendicular to the longest of the two edges
-      if (squaredLength1 >= squaredLength2) vector1.normalDirection else vector2.normalDirection
+      if (firstSquaredLength >= secondSquaredLength) {
+        firstVector.normalDirection
+      } else {
+        secondVector.normalDirection
+      }
     }
   }
 }
