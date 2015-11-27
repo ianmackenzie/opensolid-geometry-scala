@@ -79,19 +79,14 @@ object Plane3d {
     thirdPoint: Point3d,
     handedness: Handedness
   ): Plane3d = {
-    val firstLeg = secondPoint - firstPoint;
-    val secondLeg = thirdPoint - firstPoint;
-    val xDirection = firstLeg.direction;
-    val rightHandedNormalDirection = firstLeg.cross(secondLeg).direction;
-    val yDirection =
-      Direction3d.fromComponents(rightHandedNormalDirection.cross(xDirection).components);
-    Plane3d(
-      firstPoint,
-      xDirection,
-      yDirection,
-      handedness.sign * rightHandedNormalDirection,
-      handedness
-    );
+    val normalDirection =
+      numerics.normalDirectionFromThreePoints(firstPoint, secondPoint, thirdPoint, handedness)
+    val xDirection = (secondPoint - firstPoint) match {
+      case Vector3d.Zero => normalDirection.normalDirection
+      case nonZeroVector => nonZeroVector.direction
+    }
+    val yDirection = handedness.sign * Direction3d(normalDirection.cross(xDirection))
+    Plane3d(firstPoint, xDirection, yDirection, normalDirection, handedness)
   }
 
   def midplane(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
