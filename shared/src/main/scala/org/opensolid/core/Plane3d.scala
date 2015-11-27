@@ -89,6 +89,23 @@ object Plane3d {
     Plane3d(firstPoint, xDirection, yDirection, normalDirection, handedness)
   }
 
+  def throughAxis(axis: Axis3d): Plane3d = {
+    val xDirection = axis.direction
+    val yDirection = axis.normalDirection
+    val normalDirection = Direction3d(xDirection.cross(yDirection))
+    Plane3d(axis.originPoint, xDirection, yDirection, normalDirection, Handedness.Right)
+  }
+
+  def throughAxisAndPoint(axis: Axis3d, point: Point3d): Plane3d = {
+    val crossProduct = axis.direction.cross(point - axis.originPoint)
+    val normalDirection = crossProduct match {
+      case Vector3d.Zero => axis.normalDirection
+      case nonZeroVector => nonZeroVector.direction
+    }
+    val yDirection = Direction3d(normalDirection.cross(axis.direction))
+    Plane3d(axis.originPoint, axis.direction, yDirection, normalDirection, Handedness.Right)
+  }
+
   def midplane(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
     val displacementVector = upperPoint - lowerPoint
     Plane3d(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
