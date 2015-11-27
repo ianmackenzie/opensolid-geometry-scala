@@ -32,6 +32,8 @@ case class Axis3d(originPoint: Point3d, direction: Direction3d) extends Transfor
     Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane).direction)
 
   def normalPlane: Plane3d = Plane3d(originPoint, direction)
+
+  def normalDirection: Direction3d = direction.normalDirection
 }
 
 object Axis3d {
