@@ -64,5 +64,18 @@ public class IntervalTests {
     assertFalse(first.hull(second).contains(first, -1e-3));
     assertFalse(first.overlaps(second));
     assertTrue(first.overlaps(second, 2));
+
+    assertEquals(first.negated(), new Interval(-3, -2));
+    assertEquals(first.plus(2), second);
+    assertEquals(first.plus(second), new Interval(6, 8));
+    assertEquals(second.minus(2), first);
+    assertEquals(first.minus(second), new Interval(-3, -1));
+    assertEquals(first.multipliedBy(Sign.Negative()), first.negated());
+    assertEquals(first.multipliedBy(0.5), new Interval(1, 1.5));
+    assertEquals(first.multipliedBy(second), new Interval(8, 15));
+    assertEquals(second.dividedBy(2), new Interval(2, 2.5));
+    Interval quotient = second.dividedBy(first);
+    assertEquals(quotient.lowerBound(), 4.0 / 3.0, 1e-12);
+    assertEquals(quotient.upperBound(), 2.5, 1e-12);
   }
 }
