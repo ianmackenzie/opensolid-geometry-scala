@@ -77,5 +77,8 @@ public class IntervalTests {
     Interval quotient = second.dividedBy(first);
     assertEquals(quotient.lowerBound(), 4.0 / 3.0, 1e-12);
     assertEquals(quotient.upperBound(), 2.5, 1e-12);
+
+    assertEquals(first.minus(3).abs(), Interval.Unit());
+    assertEquals(first.squared(), new Interval(4, 9));
   }
 }
