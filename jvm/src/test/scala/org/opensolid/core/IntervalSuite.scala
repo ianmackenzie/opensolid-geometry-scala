@@ -147,20 +147,22 @@ class IntervalSuite extends TestSuite {
   }
 
   test("contains(value, tolerance)") {
-    forAll(randomInterval, minSuccessful(50)) {
+    forAll(minSuccessful(50)) {
       (interval: Interval) => {
-        val randomTolerance: Gen[Double] = for {
-          candidateTolerance <- Gen.chooseNum(-1e-3, 1e-3)
-          if interval.lowerBound - candidateTolerance <= interval.upperBound + candidateTolerance
-        } yield candidateTolerance
+        whenever (interval.width > 1e-3) {
+          val randomTolerance: Gen[Double] = for {
+            candidateTolerance <- Gen.chooseNum(-1e-3, 1e-3)
+            if interval.lowerBound - candidateTolerance <= interval.upperBound + candidateTolerance
+          } yield candidateTolerance
 
-        forAll(randomTolerance, minSuccessful(2)) {
-          (tolerance: Double) => {
-            val expandedInterval =
-              Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance)
-            forAll(valueWithin(expandedInterval), minSuccessful(5)) {
-              (value: Double) => {
-                assert(interval.contains(value, tolerance))
+          forAll(randomTolerance, minSuccessful(2)) {
+            (tolerance: Double) => {
+              val expandedInterval =
+                Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance)
+              forAll(valueWithin(expandedInterval), minSuccessful(5)) {
+                (value: Double) => {
+                  assert(interval.contains(value, tolerance))
+                }
               }
             }
           }
