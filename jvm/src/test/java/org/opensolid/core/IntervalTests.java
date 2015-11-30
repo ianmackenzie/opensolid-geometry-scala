@@ -26,6 +26,7 @@ public class IntervalTests {
   public void run() {
     Interval first = new Interval(2, 3);
     Interval second = new Interval(4, 5);
+    Interval singleton = new Interval(6);
     assertEquals(first.lowerBound(), 2.0, 1e-12);
     assertEquals(first.upperBound(), 3.0, 1e-12);
     assertEquals(first, new Interval(first.lowerBound(), first.upperBound()));
@@ -45,6 +46,7 @@ public class IntervalTests {
     assertTrue(randomValue <= first.upperBound() - 1e-12);
 
     assertFalse(first.isSingleton());
+    assertTrue(singleton.isSingleton());
 
     Tuple2<Interval, Interval> bisected = first.bisected();
     assertEquals(bisected._1(), new Interval(2, 2.5));
