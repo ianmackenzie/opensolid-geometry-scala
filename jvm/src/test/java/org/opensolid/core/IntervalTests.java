@@ -80,5 +80,10 @@ public class IntervalTests {
 
     assertEquals(first.minus(3).abs(), Interval.Unit());
     assertEquals(first.squared(), new Interval(4, 9));
+
+    assertEquals(
+      Interval.sqrt(first),
+      new Interval(Math.sqrt(first.lowerBound()), Math.sqrt(first.upperBound()))
+    );
   }
 }
