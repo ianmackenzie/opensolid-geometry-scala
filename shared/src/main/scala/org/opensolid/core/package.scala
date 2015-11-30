@@ -111,5 +111,9 @@ package object core {
     def *(direction: Direction2d): Vector2d = direction * value
 
     def *(direction: Direction3d): Vector3d = direction * value
+
+    def hull(that: Double): Interval = Interval(value.min(that), value.max(that))
+
+    def hull(interval: Interval): Interval = interval.hull(value)
   }
 }

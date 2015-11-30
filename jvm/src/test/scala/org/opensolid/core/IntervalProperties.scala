@@ -34,7 +34,7 @@ object IntervalProperties extends Properties("Interval") {
     for {
       firstValue <- valueWithin(expandedDomain)
       secondValue <- valueWithin(expandedDomain)
-      interval = Interval.hullOf(firstValue, secondValue)
+      interval = firstValue.hull(secondValue)
       if interval.overlaps(domain)
     } yield interval
   }
@@ -190,17 +190,6 @@ object IntervalProperties extends Properties("Interval") {
   property("abs") = unaryProperty(value => value.abs, interval => interval.abs)
 
   property("squared") = unaryProperty(value => value * value, interval => interval.squared)
-
-  property("hull(firstValue, secondValue)") = Prop.forAll(randomDouble, randomDouble) {
-    (firstValue: Double, secondValue: Double) => {
-      val interval = Interval.hullOf(firstValue, secondValue)
-      if (firstValue <= secondValue) {
-        interval.lowerBound == firstValue && interval.upperBound == secondValue
-      } else {
-        interval.lowerBound == secondValue && interval.upperBound == firstValue
-      }
-    }
-  }
 
   property("sqrt") =
     unaryProperty(
