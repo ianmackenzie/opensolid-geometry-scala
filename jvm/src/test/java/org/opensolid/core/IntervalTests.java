@@ -32,7 +32,7 @@ public class IntervalTests {
     assertEquals(first, new Interval(first.lowerBound(), first.upperBound()));
     assertNotEquals(first, second);
     assertNotEquals(first.hashCode(), second.hashCode());
-    assertNotEquals(first.toString(), second.toString());
+    assertEquals(first.toString(), "Interval(2.0, 3.0)");
 
     assertEquals(first.bounds(), first);
     assertFalse(first.isEmpty());
