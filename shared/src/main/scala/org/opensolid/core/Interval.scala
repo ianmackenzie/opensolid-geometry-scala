@@ -351,17 +351,29 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 
   def unary_- : Interval = Interval(-upperBound, -lowerBound)
 
+  def negated: Interval = -this
+
   def +(value: Double): Interval = Interval(lowerBound + value, upperBound + value)
+
+  def plus(value: Double): Interval = this + value;
 
   def +(that: Interval): Interval =
     Interval(lowerBound + that.lowerBound, upperBound + that.upperBound)
 
+  def plus(that: Interval): Interval = this + that
+
   def -(value: Double): Interval = Interval(lowerBound - value, upperBound - value)
+
+  def minus(value: Double): Interval = this - value
 
   def -(that: Interval): Interval =
     Interval(lowerBound - that.upperBound, upperBound - that.lowerBound)
 
+  def minus(that: Interval): Interval = this - that
+
   def *(sign: Sign): Interval = this * sign.value
+
+  def multipliedBy(sign: Sign): Interval = this * sign
 
   def *(value: Double): Interval = {
     val lowerProduct = value * lowerBound
@@ -375,6 +387,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       )
     }
   }
+
+  def multipliedBy(value: Double): Interval = this * value
 
   def *(that: Interval): Interval = {
     val ll = this.lowerBound * that.lowerBound
@@ -396,6 +410,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     }
   }
 
+  def multipliedBy(that: Interval): Interval = this * that
+
   def /(value: Double): Interval = {
     if (isSingleton) {
       Interval(lowerBound / value)
@@ -404,6 +420,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       Interval.hull(lowerBound * reciprocal, upperBound * reciprocal)
     }
   }
+
+  def dividedBy(value: Double): Interval = this / value
 
   def /(that: Interval): Interval = {
     if (isEmpty || that.isEmpty) {
@@ -417,6 +435,8 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       Interval.Whole
     }
   }
+
+  def dividedBy(that: Interval): Interval = this / that
 
   def abs: Interval = {
     if (isEmpty) {
