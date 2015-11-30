@@ -34,7 +34,7 @@ object IntervalProperties extends Properties("Interval") {
     for {
       firstValue <- valueWithin(expandedDomain)
       secondValue <- valueWithin(expandedDomain)
-      interval = Interval.hull(firstValue, secondValue)
+      interval = Interval.hullOf(firstValue, secondValue)
       if interval.overlaps(domain)
     } yield interval
   }
@@ -193,7 +193,7 @@ object IntervalProperties extends Properties("Interval") {
 
   property("hull(firstValue, secondValue)") = Prop.forAll(randomDouble, randomDouble) {
     (firstValue: Double, secondValue: Double) => {
-      val interval = Interval.hull(firstValue, secondValue)
+      val interval = Interval.hullOf(firstValue, secondValue)
       if (firstValue <= secondValue) {
         interval.lowerBound == firstValue && interval.upperBound == secondValue
       } else {

@@ -379,9 +379,9 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     val lowerProduct = value * lowerBound
     val upperProduct = value * upperBound
     if (!lowerProduct.isNaN && !upperProduct.isNaN) {
-      Interval.hull(lowerProduct, upperProduct)
+      Interval.hullOf(lowerProduct, upperProduct)
     } else {
-      Interval.hull(
+      Interval.hullOf(
         Interval.safeProduct(value, lowerBound),
         Interval.safeProduct(value, upperBound)
       )
@@ -417,7 +417,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
       Interval(lowerBound / value)
     } else {
       val reciprocal = 1.0 / value
-      Interval.hull(lowerBound * reciprocal, upperBound * reciprocal)
+      Interval.hullOf(lowerBound * reciprocal, upperBound * reciprocal)
     }
   }
 
@@ -470,7 +470,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 object Interval {
   def apply(value: Double): Interval = new Interval(value)
 
-  def hull(firstValue: Double, secondValue: Double): Interval =
+  def hullOf(firstValue: Double, secondValue: Double): Interval =
     Interval(firstValue.min(secondValue), firstValue.max(secondValue))
 
   def sqrt(interval: Interval): Interval = {
