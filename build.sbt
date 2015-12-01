@@ -17,7 +17,6 @@ lazy val core = crossProject.in(file(".")).
     libraryDependencies += "org.scalatest" %%% "scalatest" % "2.2.4" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
     compileOrder in Test := CompileOrder.ScalaThenJava,
-    testOptions in Test += Tests.Argument(TestFrameworks.ScalaCheck, "-minSuccessfulTests", "500"),
     logBuffered in Test := false
   ).
   jsSettings(scalaJSStage := FastOptStage)
