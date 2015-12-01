@@ -20,7 +20,7 @@ import org.scalatest._
 import org.scalatest.prop._
 import org.scalatest.matchers._
 
-class IntervalSuite extends TestSuite {
+class IntervalTests extends TestSuite {
   implicit override val generatorDrivenConfig =
     PropertyCheckConfig(minSuccessful = 500, maxDiscarded = 2500)
 
