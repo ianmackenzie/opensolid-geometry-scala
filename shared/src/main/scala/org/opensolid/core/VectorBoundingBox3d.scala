@@ -113,7 +113,11 @@ final case class VectorBoundingBox3d(x: Interval, y: Interval, z: Interval) {
   def -(that: VectorBoundingBox3d): VectorBoundingBox3d =
     VectorBoundingBox3d(this.x - that.x, this.y - that.y, this.z - that.z)
 
-  def *(sign: Sign): VectorBoundingBox3d = VectorBoundingBox3d(x * sign, y * sign, z * sign)
+  def *(sign: Sign): VectorBoundingBox3d = sign match {
+    case Sign.Positive => this
+    case Sign.Negative => -this
+    case _ => VectorBoundingBox3d.Empty
+  }
 
   def *(value: Double): VectorBoundingBox3d = VectorBoundingBox3d(x * value, y * value, z * value)
 

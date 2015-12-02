@@ -27,7 +27,11 @@ final case class DirectionBoundingBox3d(vectorBoundingBox: VectorBoundingBox3d) 
 
   def unary_- : DirectionBoundingBox3d = DirectionBoundingBox3d(-vectorBoundingBox)
 
-  def *(sign: Sign): DirectionBoundingBox3d = DirectionBoundingBox3d(vectorBoundingBox * sign)
+  def *(sign: Sign): DirectionBoundingBox3d = sign match {
+    case Sign.Positive => this
+    case Sign.Negative => -this
+    case _ => DirectionBoundingBox3d.Empty
+  }
 
   def *(value: Double): VectorBoundingBox3d = vectorBoundingBox * value
 

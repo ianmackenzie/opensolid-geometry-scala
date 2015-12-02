@@ -67,7 +67,11 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def -(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d =
     VectorBoundingBox3d(x - vectorBoundingBox.x, y - vectorBoundingBox.y, z - vectorBoundingBox.z)
 
-  def *(sign: Sign): Vector3d = Vector3d(x * sign, y * sign, z * sign)
+  def *(sign: Sign): Vector3d = sign match {
+    case Sign.Positive => this
+    case Sign.Negative => -this
+    case _ => Vector3d.Zero
+  }
 
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 

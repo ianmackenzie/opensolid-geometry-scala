@@ -29,7 +29,11 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def unary_- : Direction2d = Direction2d(-vector)
 
-  def *(sign: Sign): Direction2d = Direction2d(vector * sign)
+  def *(sign: Sign): Direction2d = sign match {
+    case Sign.Positive => this
+    case Sign.Negative => -this
+    case _ => Direction2d.None
+  }
 
   def *(value: Double): Vector2d = vector * value
 

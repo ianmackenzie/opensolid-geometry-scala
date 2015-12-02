@@ -371,7 +371,11 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
 
   def minus(that: Interval): Interval = this - that
 
-  def *(sign: Sign): Interval = this * sign.value
+  def *(sign: Sign): Interval = sign match {
+    case Sign.Positive => this
+    case Sign.Negative => -this
+    case _ => Interval.Empty
+  }
 
   def multipliedBy(sign: Sign): Interval = this * sign
 

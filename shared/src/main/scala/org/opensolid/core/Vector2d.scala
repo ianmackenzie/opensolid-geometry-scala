@@ -64,7 +64,11 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def -(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
     VectorBoundingBox2d(x - vectorBoundingBox.x, y - vectorBoundingBox.y)
 
-  def *(sign: Sign): Vector2d = Vector2d(x * sign, y * sign)
+  def *(sign: Sign): Vector2d = sign match {
+    case Sign.Positive => this
+    case Sign.Negative => -this
+    case _ => Vector2d.Zero
+  }
 
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
