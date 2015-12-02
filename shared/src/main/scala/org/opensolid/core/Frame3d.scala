@@ -22,7 +22,7 @@ case class Frame3d(
   handedness: Handedness
 ) extends Transformable3d[Frame3d] {
 
-  require(handedness == Handedness.fromSignOf(xDirection.cross(yDirection).dot(zDirection)))
+  require(handedness.sign == Sign.of(xDirection.cross(yDirection).dot(zDirection)))
 
   def transformedBy(transformation: Transformation3d): Frame3d =
     Frame3d(
@@ -68,7 +68,7 @@ object Frame3d {
     yDirection: Direction3d,
     zDirection: Direction3d
   ): Frame3d = {
-    val handedness = Handedness.fromSignOf(xDirection.cross(yDirection).dot(zDirection))
+    val handedness = Handedness(Sign.of(xDirection.cross(yDirection).dot(zDirection)))
     Frame3d(originPoint, xDirection, yDirection, zDirection, handedness)
   }
 
