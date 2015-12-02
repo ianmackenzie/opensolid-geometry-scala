@@ -15,5 +15,5 @@
 package org.opensolid.core
 
 trait Bounded3d {
-  def bounds: Box3d
+  def bounds: BoundingBox3d
 }

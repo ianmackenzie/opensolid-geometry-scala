@@ -33,13 +33,15 @@ final case class Sign(value: Int) extends AnyVal {
 
   def *(direction: Direction3d): Direction3d = direction * this
 
-  def *(vectorBox: VectorBox2d): VectorBox2d = vectorBox * this
+  def *(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = vectorBoundingBox * this
 
-  def *(vectorBox: VectorBox3d): VectorBox3d = vectorBox * this
+  def *(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d = vectorBoundingBox * this
 
-  def *(directionBox: DirectionBox2d): DirectionBox2d = directionBox * this
+  def *(directionBoundingBox: DirectionBoundingBox2d): DirectionBoundingBox2d =
+    directionBoundingBox * this
 
-  def *(directionBox: DirectionBox3d): DirectionBox3d = directionBox * this
+  def *(directionBoundingBox: DirectionBoundingBox3d): DirectionBoundingBox3d =
+    directionBoundingBox * this
 }
 
 object Sign {

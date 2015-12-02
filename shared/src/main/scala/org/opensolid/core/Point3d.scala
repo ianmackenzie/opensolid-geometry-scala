@@ -28,7 +28,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point3d")
   }
 
-  override def bounds: Box3d = Box3d(Interval(x), Interval(y), Interval(z))
+  override def bounds: BoundingBox3d = BoundingBox3d(Interval(x), Interval(y), Interval(z))
 
   def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
 
@@ -68,15 +68,18 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def +(vector: Vector3d): Point3d = Point3d(x + vector.x, y + vector.y, z + vector.z)
 
-  def +(vectorBox: VectorBox3d): Box3d = Box3d(x + vectorBox.x, y + vectorBox.y, z + vectorBox.z)
+  def +(vectorBoundingBox: VectorBoundingBox3d): BoundingBox3d =
+    BoundingBox3d(x + vectorBoundingBox.x, y + vectorBoundingBox.y, z + vectorBoundingBox.z)
 
   def -(vector: Vector3d): Point3d = Point3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -(vectorBox: VectorBox3d): Box3d = Box3d(x - vectorBox.x, y - vectorBox.y, z - vectorBox.z)
+  def -(vectorBoundingBox: VectorBoundingBox3d): BoundingBox3d =
+    BoundingBox3d(x - vectorBoundingBox.x, y - vectorBoundingBox.y, z - vectorBoundingBox.z)
 
   def -(that: Point3d): Vector3d = Vector3d(x - that.x, y - that.y, z - that.z)
 
-  def -(box: Box3d): VectorBox3d = VectorBox3d(x - box.x, y - box.y, z - box.z)
+  def -(boundingBox: BoundingBox3d): VectorBoundingBox3d =
+    VectorBoundingBox3d(x - boundingBox.x, y - boundingBox.y, z - boundingBox.z)
 }
 
 object Point3d {

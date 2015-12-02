@@ -56,29 +56,33 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)
 
-  def +(vectorBox: VectorBox2d): VectorBox2d = VectorBox2d(x + vectorBox.x, y + vectorBox.y)
+  def +(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
+    VectorBoundingBox2d(x + vectorBoundingBox.x, y + vectorBoundingBox.y)
 
   def -(that: Vector2d): Vector2d = Vector2d(this.x - that.x, this.y - that.y)
 
-  def -(vectorBox: VectorBox2d): VectorBox2d = VectorBox2d(x - vectorBox.x, y - vectorBox.y)
+  def -(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
+    VectorBoundingBox2d(x - vectorBoundingBox.x, y - vectorBoundingBox.y)
 
   def *(sign: Sign): Vector2d = Vector2d(x * sign, y * sign)
 
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
-  def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)
+  def *(interval: Interval): VectorBoundingBox2d = VectorBoundingBox2d(x * interval, y * interval)
 
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
 
-  def /(interval: Interval): VectorBox2d = VectorBox2d(x / interval, y / interval)
+  def /(interval: Interval): VectorBoundingBox2d = VectorBoundingBox2d(x / interval, y / interval)
 
   def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
 
   def dot(direction: Direction2d): Double = dot(direction.vector)
 
-  def dot(vectorBox: VectorBox2d): Interval = x * vectorBox.x + y * vectorBox.y
+  def dot(vectorBoundingBox: VectorBoundingBox2d): Interval =
+    x * vectorBoundingBox.x + y * vectorBoundingBox.y
 
-  def dot(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
+  def dot(directionBoundingBox: DirectionBoundingBox2d): Interval =
+    dot(directionBoundingBox.vectorBoundingBox)
 }
 
 object Vector2d {
