@@ -377,7 +377,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     case _ => Interval.Empty
   }
 
-  def multipliedBy(sign: Sign): Interval = this * sign
+  def times(sign: Sign): Interval = this * sign
 
   def *(value: Double): Interval = {
     val lowerProduct = value * lowerBound
@@ -389,7 +389,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     }
   }
 
-  def multipliedBy(value: Double): Interval = this * value
+  def times(value: Double): Interval = this * value
 
   def *(that: Interval): Interval = {
     val ll = this.lowerBound * that.lowerBound
@@ -411,7 +411,7 @@ final case class Interval(val lowerBound: Double, val upperBound: Double) extend
     }
   }
 
-  def multipliedBy(that: Interval): Interval = this * that
+  def times(that: Interval): Interval = this * that
 
   def /(value: Double): Interval = {
     if (isSingleton) {
