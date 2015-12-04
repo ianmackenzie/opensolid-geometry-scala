@@ -12,8 +12,7 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-package org.opensolid.core;
-
+import org.opensolid.core.*;
 import org.junit.Test;
 
 public class SignTests {
