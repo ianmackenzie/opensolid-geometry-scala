@@ -69,6 +69,10 @@ import scala.util.Random
 final case class Interval(lowerBound: Double, upperBound: Double) extends Bounded1d {
   def this(value: Double) = this(value, value)
 
+  def getLowerBound: Double = lowerBound
+
+  def getUpperBound: Double = upperBound
+
   override def equals(other: Any): Boolean = other match {
     case that: Interval =>
       (this.lowerBound == that.lowerBound && this.upperBound == that.upperBound) ||
@@ -108,6 +112,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
   /** Returns the width of this interval (the difference between the upper and lower bounds). */
   def width: Double = upperBound - lowerBound
 
+  def getWidth: Double = width
+
   /** Returns a value interpolated between the lower and upper bounds of this interval.
     *
     * Examples:
@@ -135,6 +141,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
 
   /** Returns a value halfway between the lower and upper bounds of this interval. */
   def median: Double = interpolated(0.5)
+
+  def getMedian: Double = median
 
   /** Returns a random value within this interval. */
   def randomValue: Double = randomValue(Random)
@@ -609,11 +617,19 @@ object Interval {
     */
   val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
+  def getEmpty: Interval = Interval.Empty
+
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
+
+  def getWhole: Interval = Interval.Whole
 
   val Unit: Interval = new Interval(0.0, 1.0)
 
+  def getUnit: Interval = Interval.Unit
+
   val Zero: Interval = new Interval(0.0, 0.0)
+
+  def getZero: Interval = Interval.Zero
 
   private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
     if (firstValue.isNaN || secondValue.isNaN) {

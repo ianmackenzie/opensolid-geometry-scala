@@ -15,6 +15,8 @@
 package org.opensolid.core
 
 final case class Sign private (value: Int) {
+  def getValue: Int = value
+
   def unary_- : Sign = this match {
     case Sign.Positive => Sign.Negative
     case Sign.Negative => Sign.Positive
@@ -89,7 +91,13 @@ object Sign {
 
   val Negative: Sign = Sign(-1)
 
+  def getNegative: Sign = Sign.Negative
+
   val None: Sign = Sign(0)
 
+  def getNone: Sign = Sign.None
+
   val Positive: Sign = Sign(1)
+
+  def getPositive: Sign = Sign.Positive
 }

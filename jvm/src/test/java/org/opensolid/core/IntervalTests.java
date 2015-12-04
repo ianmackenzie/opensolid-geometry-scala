@@ -23,23 +23,23 @@ public class IntervalTests {
     Interval interval = new Interval(1.0, 3.0);
     Interval other = new Interval(2.0, 4.0);
     Interval singleton = new Interval(5.0);
-    Interval empty = Interval.Empty();
-    Interval whole = Interval.Whole();
-    Interval unit = Interval.Unit();
-    Interval zero = Interval.Zero();
+    Interval empty = Interval.getEmpty();
+    Interval whole = Interval.getWhole();
+    Interval unit = Interval.getUnit();
+    Interval zero = Interval.getZero();
 
-    double lowerBound = interval.lowerBound();
-    double upperBound = interval.upperBound();
+    double lowerBound = interval.getLowerBound();
+    double upperBound = interval.getUpperBound();
     boolean equal = interval.equals(other);
     int hashCode = interval.hashCode();
     String string = interval.toString();
 
-    Interval bounds = interval.bounds();
+    Interval bounds = interval.getBounds();
     boolean isEmpty = interval.isEmpty();
     boolean isWhole = interval.isWhole();
-    double width = interval.width();
+    double width = interval.getWidth();
     double interpolated = interval.interpolated(0.5);
-    double median = interval.median();
+    double median = interval.getMedian();
     double randomValue = interval.randomValue();
     Random generator = new Random();
     double randomValueFromGenerator = interval.randomValue(generator);
