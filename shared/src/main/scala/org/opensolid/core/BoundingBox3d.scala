@@ -101,11 +101,6 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
 }
 
 object BoundingBox3d {
-  def fromComponents[T <% Interval](components: Seq[T]): BoundingBox3d = components match {
-    case Seq(x, y, z) => BoundingBox3d(x, y, z)
-    case _ => throw new IllegalArgumentException("BoundingBox3d requires 3 components")
-  }
-
   val Empty: BoundingBox3d = BoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
   val Whole: BoundingBox3d = BoundingBox3d(Interval.Whole, Interval.Whole, Interval.Whole)

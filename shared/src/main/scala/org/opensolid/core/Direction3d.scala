@@ -79,11 +79,6 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
 object Direction3d {
   def apply(x: Double, y: Double, z: Double): Direction3d = Direction3d(Vector3d(x, y, z))
 
-  def fromComponents[T <% Double](components: Seq[T]): Direction3d = components match {
-    case Seq(x, y, z) => Direction3d(x, y, z)
-    case _ => throw new IllegalArgumentException("Direction3d requires 3 components")
-  }
-
   def spherical(azimuth: Double, elevation: Double): Direction3d = {
     val cosElevation = math.cos(elevation)
     val sinElevation = math.sin(elevation)

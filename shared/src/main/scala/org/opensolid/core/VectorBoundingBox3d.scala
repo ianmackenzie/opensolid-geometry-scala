@@ -159,11 +159,6 @@ final case class VectorBoundingBox3d(x: Interval, y: Interval, z: Interval) {
 }
 
 object VectorBoundingBox3d {
-  def fromComponents(components: Seq[Interval]): VectorBoundingBox3d = components match {
-    case Seq(x, y, z) => VectorBoundingBox3d(x, y, z)
-    case _ => throw new IllegalArgumentException("VectorBoundingBox3d requires 3 components")
-  }
-
   val Empty: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 

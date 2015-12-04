@@ -70,11 +70,6 @@ final case class Point2d(x: Double, y: Double)
 }
 
 object Point2d {
-  def fromComponents[T <% Double](components: Seq[T]): Point2d = components match {
-    case Seq(x, y) => Point2d(x, y)
-    case _ => throw new IllegalArgumentException("Point2d requires 2 components")
-  }
-
   def polar(radius: Double, angle: Double): Point2d =
     Point2d(radius * math.cos(angle), radius * math.sin(angle))
 

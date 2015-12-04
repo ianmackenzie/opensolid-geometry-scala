@@ -90,11 +90,6 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 }
 
 object Vector2d {
-  def fromComponents[T <% Double](components: Seq[T]): Vector2d = components match {
-    case Seq(x, y) => Vector2d(x, y)
-    case _ => throw new IllegalArgumentException("Vector2d requires 2 components")
-  }
-
   def polar(radius: Double, angle: Double): Vector2d =
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
 

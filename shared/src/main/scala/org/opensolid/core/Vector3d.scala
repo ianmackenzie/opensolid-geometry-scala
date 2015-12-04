@@ -137,10 +137,5 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 }
 
 object Vector3d {
-  def fromComponents[T <% Double](components: Seq[T]): Vector3d = components match {
-    case Seq(x, y, z) => Vector3d(x, y, z)
-    case _ => throw new IllegalArgumentException("Vector3d requires 3 components")
-  }
-
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
 }

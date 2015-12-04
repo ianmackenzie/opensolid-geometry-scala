@@ -124,11 +124,6 @@ final case class VectorBoundingBox2d(x: Interval, y: Interval) {
 }
 
 object VectorBoundingBox2d {
-  def fromComponents(components: Seq[Interval]): VectorBoundingBox2d = components match {
-    case Seq(x, y) => VectorBoundingBox2d(x, y)
-    case _ => throw new IllegalArgumentException("VectorBoundingBox2d requires 2 components")
-  }
-
   val Empty: VectorBoundingBox2d = VectorBoundingBox2d(Interval.Empty, Interval.Empty)
 
   val Whole: VectorBoundingBox2d = VectorBoundingBox2d(Interval.Whole, Interval.Whole)

@@ -83,10 +83,5 @@ final case class Point3d(x: Double, y: Double, z: Double)
 }
 
 object Point3d {
-  def fromComponents[T <% Double](components: Seq[T]): Point3d = components match {
-    case Seq(x, y, z) => Point3d(x, y, z)
-    case _ => throw new IllegalArgumentException("Point3d requires 3 components")
-  }
-
   val Origin: Point3d = Point3d(0.0, 0.0, 0.0)
 }

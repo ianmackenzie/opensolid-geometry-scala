@@ -57,10 +57,5 @@ object DirectionBoundingBox2d {
   def apply(direction: Direction2d): DirectionBoundingBox2d =
     DirectionBoundingBox2d(Interval(direction.x), Interval(direction.y))
 
-  def fromComponents(components: Seq[Interval]): DirectionBoundingBox2d = components match {
-    case Seq(x, y) => DirectionBoundingBox2d(x, y)
-    case _ => throw new IllegalArgumentException("DirectionBoundingBox2d requires 2 components")
-  }
-
   val Empty = DirectionBoundingBox2d(Interval.Empty, Interval.Empty)
 }

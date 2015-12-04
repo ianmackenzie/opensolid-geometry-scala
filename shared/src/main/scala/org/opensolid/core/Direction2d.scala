@@ -67,11 +67,6 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 object Direction2d {
   def apply(x: Double, y: Double): Direction2d = Direction2d(Vector2d(x, y))
 
-  def fromComponents[T <% Double](components: Seq[T]): Direction2d = components match {
-    case Seq(x, y) => Direction2d(x, y)
-    case _ => throw new IllegalArgumentException("Direction2d requires 2 components")
-  }
-
   def fromAngle(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
 
   def random: Direction2d = random(Random)

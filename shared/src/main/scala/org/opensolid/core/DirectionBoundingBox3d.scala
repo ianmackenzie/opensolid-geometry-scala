@@ -69,10 +69,5 @@ object DirectionBoundingBox3d {
   def apply(direction: Direction3d): DirectionBoundingBox3d =
     DirectionBoundingBox3d(Interval(direction.x), Interval(direction.y), Interval(direction.z))
 
-  def fromComponents(components: Seq[Interval]): DirectionBoundingBox3d = components match {
-    case Seq(x, y, z) => DirectionBoundingBox3d(x, y, z)
-    case _ => throw new IllegalArgumentException("DirectionBoundingBox3d requires 3 components")
-  }
-
   val Empty = DirectionBoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }

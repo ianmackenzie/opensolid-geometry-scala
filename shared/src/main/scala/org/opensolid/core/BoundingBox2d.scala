@@ -87,11 +87,6 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 }
 
 object BoundingBox2d {
-  def fromComponents[T <% Interval](components: Seq[T]): BoundingBox2d = components match {
-    case Seq(x, y) => BoundingBox2d(x, y)
-    case _ => throw new IllegalArgumentException("BoundingBox2d requires 2 components")
-  }
-
   val Empty: BoundingBox2d = BoundingBox2d(Interval.Empty, Interval.Empty)
 
   val Whole: BoundingBox2d = BoundingBox2d(Interval.Whole, Interval.Whole)
