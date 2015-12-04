@@ -53,7 +53,7 @@ object Frame2d {
     Frame2d(originPoint, xDirection, xDirection.normalDirection, Handedness.Right)
 
   def apply(originPoint: Point2d, xDirection: Direction2d, yDirection: Direction2d): Frame2d = {
-    val handedness = Handedness(Sign.of(xDirection.normalDirection.dot(yDirection)))
+    val handedness = Handedness.fromSignOf(xDirection.normalDirection.dot(yDirection))
     Frame2d(originPoint, xDirection, yDirection, handedness)
   }
 

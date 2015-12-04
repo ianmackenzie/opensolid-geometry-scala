@@ -68,7 +68,7 @@ object Frame3d {
     yDirection: Direction3d,
     zDirection: Direction3d
   ): Frame3d = {
-    val handedness = Handedness(Sign.of(xDirection.cross(yDirection).dot(zDirection)))
+    val handedness = Handedness.fromSignOf(xDirection.cross(yDirection).dot(zDirection))
     Frame3d(originPoint, xDirection, yDirection, zDirection, handedness)
   }
 

@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-final case class Handedness(sign: Sign) {
+final case class Handedness private (sign: Sign) {
   def unary_- : Handedness = this match {
     case Handedness.Right => Handedness.Left
     case Handedness.Left => Handedness.Right
@@ -27,7 +27,11 @@ final case class Handedness(sign: Sign) {
     case _ => Handedness.None
   }
 
+  def times(sign: Sign): Handedness = this * sign
+
   def *(that: Handedness): Handedness = this * that.sign
+
+  def times(that: Handedness): Handedness = this * that
 
   def transformedBy(transformation: Transformation2d): Handedness = transformation(this)
 
@@ -35,6 +39,12 @@ final case class Handedness(sign: Sign) {
 }
 
 object Handedness {
+  def fromSignOf(value: Double): Handedness = value.signum match {
+    case 1 => Handedness.Right
+    case -1 => Handedness.Left
+    case _ => Handedness.None
+  }
+
   val Left: Handedness = Handedness(Sign.Negative)
 
   val None: Handedness = Handedness(Sign.None)
