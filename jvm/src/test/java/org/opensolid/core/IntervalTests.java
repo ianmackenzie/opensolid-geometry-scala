@@ -16,6 +16,7 @@ package org.opensolid.core;
 
 import org.junit.Test;
 import scala.Tuple2;
+import scala.util.Random;
 
 public class IntervalTests {
   @Test
@@ -40,6 +41,9 @@ public class IntervalTests {
     double interpolated = interval.interpolated(0.5);
     double median = interval.median();
     double randomValue = interval.randomValue();
+    Random generator = new Random();
+    double randomValueFromGenerator = interval.randomValue(generator);
+
     boolean isSingleton = interval.isSingleton();
 
     Tuple2<Interval, Interval> bisected = interval.bisected();
