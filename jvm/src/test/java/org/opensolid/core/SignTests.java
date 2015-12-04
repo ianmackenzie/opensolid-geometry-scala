@@ -18,12 +18,12 @@ import org.junit.Test;
 public class SignTests {
   @Test
   public void run() {
-    Sign positive = Sign.Positive();
-    Sign negative = Sign.Negative();
-    Sign none = Sign.None();
+    Sign positive = Sign.getPositive();
+    Sign negative = Sign.getNegative();
+    Sign none = Sign.getNone();
     Sign ofDouble = Sign.of(-3.0);
 
-    int value = positive.value();
+    int value = positive.getValue();
 
     Sign negated = positive.negated();
     Sign timesSign = positive.times(negative);
