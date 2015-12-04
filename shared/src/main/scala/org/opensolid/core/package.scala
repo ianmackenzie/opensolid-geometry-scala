@@ -17,7 +17,7 @@ package org.opensolid
 import scala.math
 
 package object core {
-  implicit class Scalar(val value: Double) extends AnyVal {
+  implicit class ImplicitScalar(val value: Double) extends AnyVal {
     def isZero(tolerance: Double): Boolean = value >= -tolerance && value <= tolerance
 
     def isNotZero(tolerance: Double): Boolean = value < -tolerance || value > tolerance
