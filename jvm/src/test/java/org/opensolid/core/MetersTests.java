@@ -15,14 +15,26 @@
 import org.opensolid.core.*;
 import org.junit.Test;
 
-public class ScalarTests {
+public class MetersTests {
   @Test
   public void run() {
-    double tolerance = 1e-3;
-    boolean isZero = Scalar.isZero(1e-4, tolerance);
-    boolean isNotZero = Scalar.isNotZero(1e-2, tolerance);
-    Interval difference = Scalar.difference(1.0, new Interval(2.0, 3.0));
-    Interval quotient = Scalar.quotient(1.0, new Interval(2.0, 3.0));
-    Interval hull = Scalar.hull(3.0, 2.0);
+    double fromCentimeters = Meters.fromCentimeters(1.0);
+    double toCentimeters = Meters.toCentimeters(1.0);
+    double fromMillimeters = Meters.fromMillimeters(1.0);
+    double toMillimeters = Meters.toMillimeters(1.0);
+    double fromMicrons = Meters.fromMicrons(1.0);
+    double toMicrons = Meters.toMicrons(1.0);
+    double fromKilometers = Meters.fromKilometers(1.0);
+    double fromToKilometers = Meters.fromToKilometers(1.0);
+    double fromInches = Meters.fromInches(1.0);
+    double toInches = Meters.toInches(1.0);
+    double fromFeet = Meters.fromFeet(1.0);
+    double toFeet = Meters.toFeet(1.0);
+    double fromThou = Meters.fromThou(1.0);
+    double toThou = Meters.toThou(1.0);
+    double fromYards = Meters.fromYards(1.0);
+    double toYards = Meters.toYards(1.0);
+    double fromMiles = Meters.fromMiles(1.0);
+    double toMiles = Meters.toMiles(1.0);
   }
 }

@@ -14,14 +14,40 @@
 
 package org.opensolid.core
 
-object Scalar {
-  def isZero(value: Double, tolerance: Double): Boolean = value.isZero(tolerance)
+object Meters {
+  def fromCentimeters(value: Double): Double = value.centimeters
 
-  def isNotZero(value: Double, tolerance: Double): Boolean = value.isNotZero(tolerance)
+  def toCentimeters(value: Double): Double = value.inCentimeters
 
-  def difference(value: Double, interval: Interval): Interval  = value - interval
+  def fromMillimeters(value: Double): Double = value.millimeters
 
-  def quotient(value: Double, interval: Interval): Interval = value / interval
+  def toMillimeters(value: Double): Double = value.inMillimeters
 
-  def hull(firstValue: Double, secondValue: Double): Interval = firstValue.hull(secondValue)
+  def fromMicrons(value: Double): Double = value.microns
+
+  def toMicrons(value: Double): Double = value.inMicrons
+
+  def fromKilometers(value: Double): Double = value.kilometers
+
+  def fromToKilometers(value: Double): Double = value.inKilometers
+
+  def fromInches(value: Double): Double = value.inches
+
+  def toInches(value: Double): Double = value.inInches
+
+  def fromFeet(value: Double): Double = value.feet
+
+  def toFeet(value: Double): Double = value.inFeet
+
+  def fromThou(value: Double): Double = value.thou
+
+  def toThou(value: Double): Double = value.inThou
+
+  def fromYards(value: Double): Double = value.yards
+
+  def toYards(value: Double): Double = value.inYards
+
+  def fromMiles(value: Double): Double = value.miles
+
+  def toMiles(value: Double): Double = value.inMiles
 }
