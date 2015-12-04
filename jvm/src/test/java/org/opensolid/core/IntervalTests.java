@@ -27,6 +27,7 @@ public class IntervalTests {
     Interval empty = Interval.Empty();
     Interval whole = Interval.Whole();
     Interval unit = Interval.Unit();
+    Interval zero = Interval.Zero();
 
     double lowerBound = interval.lowerBound();
     double upperBound = interval.upperBound();
