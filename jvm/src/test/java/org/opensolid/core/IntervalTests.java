@@ -68,6 +68,7 @@ public class IntervalTests {
     Interval plusInterval = interval.plus(other);
     Interval minusDouble = interval.minus(1.0);
     Interval minusInterval = interval.minus(other);
+    Interval timesSign = interval.times(Sign.Negative());
     Interval timesDouble = interval.times(2.0);
     Interval timesInterval = interval.times(other);
     Interval dividedByDouble = interval.dividedBy(2.0);
