@@ -23,6 +23,35 @@ case class Rotation3d(
   zDirection: Direction3d
 ) extends Transformation3d {
 
+  private[this] def this(point: Point3d, basis: (Direction3d, Direction3d, Direction3d)) =
+    this(point, basis._1, basis._2, basis._3)
+
+  def this(axis: Axis3d, angle: Double) =
+    this(
+      axis.originPoint,
+      {
+        val halfAngle = 0.5 * angle
+        val sinHalfAngle = math.sin(halfAngle)
+        val x = axis.direction.x * sinHalfAngle
+        val y = axis.direction.y * sinHalfAngle
+        val z = axis.direction.z * sinHalfAngle
+        val w = math.cos(halfAngle)
+        val wx = w * x
+        val wy = w * y
+        val wz = w * z
+        val xx = x * x
+        val xy = x * y
+        val xz = x * z
+        val yy = y * y
+        val yz = y * z
+        val zz = z * z
+        val xDirection = Direction3d(1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy))
+        val yDirection = Direction3d(2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx))
+        val zDirection = Direction3d(2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy))
+        (xDirection, yDirection, zDirection)
+      }
+    )
+
   def apply(length: Double): Double = length
 
   def apply(handedness: Handedness): Handedness = handedness
@@ -36,27 +65,7 @@ case class Rotation3d(
 }
 
 object Rotation3d {
-  def apply(axis: Axis3d, angle: Double): Rotation3d = {
-    val halfAngle = 0.5 * angle
-    val sinHalfAngle = math.sin(halfAngle)
-    val x = axis.direction.x * sinHalfAngle
-    val y = axis.direction.y * sinHalfAngle
-    val z = axis.direction.z * sinHalfAngle
-    val w = math.cos(halfAngle)
-    val wx = w * x
-    val wy = w * y
-    val wz = w * z
-    val xx = x * x
-    val xy = x * y
-    val xz = x * z
-    val yy = y * y
-    val yz = y * z
-    val zz = z * z
-    val xDirection = Direction3d(1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy))
-    val yDirection = Direction3d(2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx))
-    val zDirection = Direction3d(2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy))
-    Rotation3d(axis.originPoint, xDirection, yDirection, zDirection)
-  }
+  def apply(axis: Axis3d, angle: Double): Rotation3d = new Rotation3d(axis, angle)
 
   def aboutX(point: Point3d, angle: Double): Rotation3d = {
     val sinAngle = math.sin(angle)
