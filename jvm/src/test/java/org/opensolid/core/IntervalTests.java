@@ -46,7 +46,7 @@ public class IntervalTests {
 
     boolean isSingleton = interval.isSingleton();
 
-    Tuple2<Interval, Interval> bisected = interval.bisected();
+    Tuple2<Interval, Interval> bisected = interval.getBisected();
     Interval lowerHalf = bisected._1();
     Interval upperHalf = bisected._2();
 
@@ -73,8 +73,8 @@ public class IntervalTests {
     Interval dividedByDouble = interval.dividedBy(2.0);
     Interval dividedByInterval = interval.dividedBy(other);
 
-    Interval abs = interval.abs();
-    Interval squared = interval.squared();
+    Interval abs = interval.getAbs();
+    Interval squared = interval.getSquared();
 
     Interval sqrt = Interval.sqrt(interval);
     Interval sin = Interval.sin(interval);

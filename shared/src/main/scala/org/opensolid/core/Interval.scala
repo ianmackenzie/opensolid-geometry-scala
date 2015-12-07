@@ -209,6 +209,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
     }
   }
 
+  def getBisected: (Interval, Interval) = bisected
+
   /** Returns a new interval that contains both this interval and the given value. */
   def hull(value: Double): Interval = {
     if (isEmpty) {
@@ -461,6 +463,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
     }
   }
 
+  def getAbs: Interval = abs
+
   def squared: Interval = {
     if (isEmpty) {
       Interval.Empty
@@ -474,6 +478,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
       Interval(0.0, lowerBound * lowerBound)
     }
   }
+
+  def getSquared: Interval = squared
 }
 
 object Interval {
