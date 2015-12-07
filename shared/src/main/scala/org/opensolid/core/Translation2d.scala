@@ -33,5 +33,5 @@ final case class Translation2d(vector: Vector2d) extends Transformation2d {
 object Translation2d {
   def apply(x: Double, y: Double): Translation2d = new Translation2d(x, y)
 
-  def apply(axis: Axis2d, distance: Double) = new Translation2d(axis, distance)
+  def apply(axis: Axis2d, distance: Double): Translation2d = new Translation2d(axis, distance)
 }
