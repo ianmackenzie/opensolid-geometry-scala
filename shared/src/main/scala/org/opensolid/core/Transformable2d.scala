@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-trait Transformable2d[T] {
+abstract class Transformable2d[T] {
   def transformedBy(transformation: Transformation2d): T
 
   def translatedBy(vector: Vector2d): T = transformedBy(Translation2d(vector))

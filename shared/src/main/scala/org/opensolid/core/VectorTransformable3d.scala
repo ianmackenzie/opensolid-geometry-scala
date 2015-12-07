@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-trait VectorTransformable3d[T] {
+abstract class VectorTransformable3d[T] {
   def transformedBy(transformation: Transformation3d): T
 
   def rotatedAbout(direction: Direction3d, angle: Double): T =
