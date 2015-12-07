@@ -28,17 +28,17 @@ public class SignTests {
     Sign negated = positive.negated();
     Sign timesSign = positive.times(negative);
     double timesDouble = negative.times(3.0);
-    Interval timesInterval = positive.times(Interval.Unit());
-    Handedness timesHandedness = negative.times(Handedness.Left());
-    Vector2d timesVector2d = positive.times(Vector2d.Zero());
-    Vector3d timesVector3d = negative.times(Vector3d.Zero());
-    Direction2d timesDirection2d = positive.times(Direction2d.Y());
-    Direction3d timesDirection3d = negative.times(Direction3d.Z());
-    VectorBoundingBox2d timesVectorBoundingBox2d = positive.times(VectorBoundingBox2d.Empty());
-    VectorBoundingBox3d timesVectorBoundingBox3d = negative.times(VectorBoundingBox3d.Empty());
+    Interval timesInterval = positive.times(Interval.getUnit());
+    Handedness timesHandedness = negative.times(Handedness.getLeft());
+    Vector2d timesVector2d = positive.times(Vector2d.getZero());
+    Vector3d timesVector3d = negative.times(Vector3d.getZero());
+    Direction2d timesDirection2d = positive.times(Direction2d.getY());
+    Direction3d timesDirection3d = negative.times(Direction3d.getZ());
+    VectorBoundingBox2d timesVectorBoundingBox2d = positive.times(VectorBoundingBox2d.getEmpty());
+    VectorBoundingBox3d timesVectorBoundingBox3d = negative.times(VectorBoundingBox3d.getEmpty());
     DirectionBoundingBox2d timesDirectionBoundingBox2d =
-        positive.times(DirectionBoundingBox2d.Empty());
+        positive.times(DirectionBoundingBox2d.getEmpty());
     DirectionBoundingBox3d timesDirectionBoundingBox3d =
-        negative.times(DirectionBoundingBox3d.Empty());
+        negative.times(DirectionBoundingBox3d.getEmpty());
   }
 }
