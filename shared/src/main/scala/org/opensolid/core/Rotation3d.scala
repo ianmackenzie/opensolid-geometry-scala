@@ -20,30 +20,7 @@ case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Directio
   extends Transformation3d {
 
   def this(axis: Axis3d, angle: Double) =
-    this(
-      axis.originPoint,
-      {
-        val halfAngle = 0.5 * angle
-        val sinHalfAngle = math.sin(halfAngle)
-        val x = axis.direction.x * sinHalfAngle
-        val y = axis.direction.y * sinHalfAngle
-        val z = axis.direction.z * sinHalfAngle
-        val w = math.cos(halfAngle)
-        val wx = w * x
-        val wy = w * y
-        val wz = w * z
-        val xx = x * x
-        val xy = x * y
-        val xz = x * z
-        val yy = y * y
-        val yz = y * z
-        val zz = z * z
-        val xDirection = Direction3d(1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy))
-        val yDirection = Direction3d(2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx))
-        val zDirection = Direction3d(2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy))
-        (xDirection, yDirection, zDirection)
-      }
-    )
+    this(axis.originPoint, numerics.rotationBasis(axis.direction, angle))
 
   def apply(length: Double): Double = length
 

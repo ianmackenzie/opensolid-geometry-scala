@@ -43,4 +43,29 @@ package object numerics {
       }
     }
   }
+
+  def rotationBasis(
+    direction: Direction3d,
+    angle: Double
+  ): (Direction3d, Direction3d, Direction3d) = {
+    val halfAngle = 0.5 * angle
+    val sinHalfAngle = math.sin(halfAngle)
+    val x = direction.x * sinHalfAngle
+    val y = direction.y * sinHalfAngle
+    val z = direction.z * sinHalfAngle
+    val w = math.cos(halfAngle)
+    val wx = w * x
+    val wy = w * y
+    val wz = w * z
+    val xx = x * x
+    val xy = x * y
+    val xz = x * z
+    val yy = y * y
+    val yz = y * z
+    val zz = z * z
+    val xDirection = Direction3d(1 - 2 * (yy + zz), 2 * (xy + wz), 2 * (xz - wy))
+    val yDirection = Direction3d(2 * (xy - wz), 1 - 2 * (xx + zz), 2 * (yz + wx))
+    val zDirection = Direction3d(2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy))
+    (xDirection, yDirection, zDirection)
+  }
 }
