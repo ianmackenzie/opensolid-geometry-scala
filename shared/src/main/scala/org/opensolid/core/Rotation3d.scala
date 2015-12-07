@@ -16,15 +16,8 @@ package org.opensolid.core
 
 import scala.math
 
-case class Rotation3d(
-  point: Point3d,
-  xDirection: Direction3d,
-  yDirection: Direction3d,
-  zDirection: Direction3d
-) extends Transformation3d {
-
-  private[this] def this(point: Point3d, basis: (Direction3d, Direction3d, Direction3d)) =
-    this(point, basis._1, basis._2, basis._3)
+case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Direction3d))
+  extends Transformation3d {
 
   def this(axis: Axis3d, angle: Double) =
     this(
@@ -59,7 +52,7 @@ case class Rotation3d(
   def apply(point: Point3d): Point3d = this.point + apply(point - this.point)
 
   def apply(vector: Vector3d): Vector3d =
-    vector.x * xDirection + vector.y * yDirection + vector.z * zDirection
+    vector.x * basis._1 + vector.y * basis._2 + vector.z * basis._3
 
   def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
 }
@@ -72,7 +65,7 @@ object Rotation3d {
     val cosAngle = math.cos(angle)
     val yDirection = Direction3d(0.0, cosAngle, sinAngle)
     val zDirection = Direction3d(0.0, -sinAngle, cosAngle)
-    Rotation3d(point, Direction3d.X, yDirection, zDirection)
+    Rotation3d(point, (Direction3d.X, yDirection, zDirection))
   }
 
   def aboutY(point: Point3d, angle: Double): Rotation3d = {
@@ -80,7 +73,7 @@ object Rotation3d {
     val cosAngle = math.cos(angle)
     val xDirection = Direction3d(cosAngle, 0.0, -sinAngle)
     val zDirection = Direction3d(sinAngle, 0.0, cosAngle)
-    Rotation3d(point, xDirection, Direction3d.Y, zDirection)
+    Rotation3d(point, (xDirection, Direction3d.Y, zDirection))
   }
 
   def aboutZ(point: Point3d, angle: Double): Rotation3d = {
@@ -88,6 +81,6 @@ object Rotation3d {
     val cosAngle = math.cos(angle)
     val xDirection = Direction3d(cosAngle, sinAngle, 0.0)
     val yDirection = Direction3d(-sinAngle, cosAngle, 0.0)
-    Rotation3d(point, xDirection, yDirection, Direction3d.Z)
+    Rotation3d(point, (xDirection, yDirection, Direction3d.Z))
   }
 }

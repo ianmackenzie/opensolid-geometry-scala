@@ -14,22 +14,21 @@
 
 package org.opensolid.core
 
-case class Frame2d(
-  originPoint: Point2d,
-  xDirection: Direction2d,
-  yDirection: Direction2d,
-  handedness: Handedness
-) extends Transformable2d[Frame2d] {
+case class Frame2d(originPoint: Point2d, basis: (Direction2d, Direction2d), handedness: Handedness)
+  extends Transformable2d[Frame2d] {
 
-  require(handedness.sign == Sign.of(xDirection.normalDirection.dot(yDirection)))
+  require(handedness.sign == Sign.of(basis._1.normalDirection.dot(basis._2)))
 
   def transformedBy(transformation: Transformation2d): Frame2d =
     Frame2d(
       originPoint.transformedBy(transformation),
-      xDirection.transformedBy(transformation),
-      yDirection.transformedBy(transformation),
+      (xDirection.transformedBy(transformation), yDirection.transformedBy(transformation)),
       handedness.transformedBy(transformation)
     )
+
+  def xDirection: Direction2d = basis._1
+
+  def yDirection: Direction2d = basis._2
 
   def xAxis: Axis2d = Axis2d(originPoint, xDirection, handedness)
 
@@ -38,8 +37,7 @@ case class Frame2d(
   def placedOnto(plane: Plane3d): Plane3d =
     Plane3d(
       originPoint.placedOnto(plane),
-      xDirection.placedOnto(plane),
-      yDirection.placedOnto(plane),
+      (xDirection.placedOnto(plane), yDirection.placedOnto(plane)),
       handedness.sign * plane.normalDirection,
       handedness
     )
@@ -47,17 +45,17 @@ case class Frame2d(
 
 object Frame2d {
   def apply(originPoint: Point2d): Frame2d =
-    Frame2d(originPoint, Direction2d.X, Direction2d.Y, Handedness.Right)
+    Frame2d(originPoint, (Direction2d.X, Direction2d.Y), Handedness.Right)
 
   def apply(originPoint: Point2d, xDirection: Direction2d): Frame2d =
-    Frame2d(originPoint, xDirection, xDirection.normalDirection, Handedness.Right)
+    Frame2d(originPoint, (xDirection, xDirection.normalDirection), Handedness.Right)
 
-  def apply(originPoint: Point2d, xDirection: Direction2d, yDirection: Direction2d): Frame2d = {
-    val handedness = Handedness.fromSignOf(xDirection.normalDirection.dot(yDirection))
-    Frame2d(originPoint, xDirection, yDirection, handedness)
+  def apply(originPoint: Point2d, basis: (Direction2d, Direction2d)): Frame2d = {
+    val handedness = Handedness.fromSignOf(basis._1.normalDirection.dot(basis._2))
+    Frame2d(originPoint, basis, handedness)
   }
 
-  val Global: Frame2d = Frame2d(Point2d.Origin, Direction2d.X, Direction2d.Y, Handedness.Right)
+  val Global: Frame2d = Frame2d(Point2d.Origin, (Direction2d.X, Direction2d.Y), Handedness.Right)
 
   def getGlobal: Frame2d = Global
 }
