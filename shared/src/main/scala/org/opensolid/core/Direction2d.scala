@@ -23,8 +23,6 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def y: Double = vector.y
 
-  def components: Array[Double] = vector.components
-
   def component(index: Int): Double = vector.component(index)
 
   def unary_- : Direction2d = Direction2d(-vector)

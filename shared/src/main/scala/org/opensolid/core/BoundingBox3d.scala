@@ -17,8 +17,6 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bounded3d {
-  def components: Array[Interval] = Array(x, y, z)
-
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y

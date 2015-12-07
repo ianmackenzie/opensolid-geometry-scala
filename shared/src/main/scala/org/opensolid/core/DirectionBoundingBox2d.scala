@@ -19,8 +19,6 @@ final case class DirectionBoundingBox2d(vectorBoundingBox: VectorBoundingBox2d) 
 
   def y: Interval = vectorBoundingBox.y
 
-  def components: Array[Interval] = vectorBoundingBox.components
-
   def component(index: Int): Interval = vectorBoundingBox.component(index)
 
   def unary_- : DirectionBoundingBox2d = DirectionBoundingBox2d(-vectorBoundingBox)

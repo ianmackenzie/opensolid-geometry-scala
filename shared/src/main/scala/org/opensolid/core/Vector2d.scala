@@ -17,7 +17,6 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
-  def components: Array[Double] = Array(x, y)
 
   def component(index: Int): Double = index match {
     case 0 => x

@@ -17,8 +17,6 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class VectorBoundingBox2d(x: Interval, y: Interval) {
-  def components: Array[Interval] = Array(x, y)
-
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y

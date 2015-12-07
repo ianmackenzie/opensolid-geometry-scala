@@ -25,8 +25,6 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
 
   def z: Double = vector.z
 
-  def components: Array[Double] = vector.components
-
   def component(index: Int): Double = vector.component(index)
 
   def unary_- : Direction3d = Direction3d(-vector)
