@@ -17,6 +17,9 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
+  def getX: Double = x
+
+  def getY: Double = y
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -26,7 +29,11 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def squaredLength: Double = x * x + y * y
 
+  def getSquaredLength: Double = squaredLength
+
   def length: Double = math.sqrt(squaredLength)
+
+  def getLength: Double = length
 
   def isZero(tolerance: Double): Boolean = squaredLength.isZero(tolerance * tolerance)
 
@@ -40,6 +47,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def normalized: Vector2d = direction.vector
 
+  def getNormalized: Vector2d = normalized
+
   def direction: Direction2d = {
     if (this == Vector2d.Zero) {
       Direction2d.None
@@ -49,19 +58,33 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     }
   }
 
+  def getDirection: Direction2d = direction
+
   def normalDirection: Direction2d = direction.normalDirection
+
+  def getNormalDirection: Direction2d = normalDirection
 
   def unary_- : Vector2d = Vector2d(-x, -y)
 
+  def negated: Vector2d = -this
+
   def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)
+
+  def plus(that: Vector2d): Vector2d = this + that
 
   def +(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
     VectorBoundingBox2d(x + vectorBoundingBox.x, y + vectorBoundingBox.y)
 
+  def plus(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = this + vectorBoundingBox
+
   def -(that: Vector2d): Vector2d = Vector2d(this.x - that.x, this.y - that.y)
+
+  def minus(that: Vector2d): Vector2d = this - that
 
   def -(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
     VectorBoundingBox2d(x - vectorBoundingBox.x, y - vectorBoundingBox.y)
+
+  def minus(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = this - vectorBoundingBox
 
   def *(sign: Sign): Vector2d = sign match {
     case Sign.Positive => this
@@ -69,13 +92,23 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     case _ => Vector2d.Zero
   }
 
+  def times(sign: Sign): Vector2d = this * sign
+
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
+
+  def times(value: Double): Vector2d = this * value
 
   def *(interval: Interval): VectorBoundingBox2d = VectorBoundingBox2d(x * interval, y * interval)
 
+  def times(interval: Interval): VectorBoundingBox2d = this * interval
+
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
 
+  def dividedBy(value: Double): Vector2d = this / value
+
   def /(interval: Interval): VectorBoundingBox2d = VectorBoundingBox2d(x / interval, y / interval)
+
+  def dividedBy(interval: Interval): VectorBoundingBox2d = this / interval
 
   def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
 
