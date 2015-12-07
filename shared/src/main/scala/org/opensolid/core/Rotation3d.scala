@@ -58,7 +58,7 @@ object Rotation3d {
     Rotation3d(axis.originPoint, xDirection, yDirection, zDirection)
   }
 
-  def x(point: Point3d, angle: Double): Rotation3d = {
+  def aboutX(point: Point3d, angle: Double): Rotation3d = {
     val sinAngle = math.sin(angle)
     val cosAngle = math.cos(angle)
     val yDirection = Direction3d(0.0, cosAngle, sinAngle)
@@ -66,7 +66,7 @@ object Rotation3d {
     Rotation3d(point, Direction3d.X, yDirection, zDirection)
   }
 
-  def y(point: Point3d, angle: Double): Rotation3d = {
+  def aboutY(point: Point3d, angle: Double): Rotation3d = {
     val sinAngle = math.sin(angle)
     val cosAngle = math.cos(angle)
     val xDirection = Direction3d(cosAngle, 0.0, -sinAngle)
@@ -74,7 +74,7 @@ object Rotation3d {
     Rotation3d(point, xDirection, Direction3d.Y, zDirection)
   }
 
-  def z(point: Point3d, angle: Double): Rotation3d = {
+  def aboutZ(point: Point3d, angle: Double): Rotation3d = {
     val sinAngle = math.sin(angle)
     val cosAngle = math.cos(angle)
     val xDirection = Direction3d(cosAngle, sinAngle, 0.0)
