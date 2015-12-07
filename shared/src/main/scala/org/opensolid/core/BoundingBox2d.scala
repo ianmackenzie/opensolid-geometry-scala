@@ -34,6 +34,10 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 
   def center: Point2d = Point2d(x.median, y.median)
 
+  def minVertex: Point2d = Point2d(x.lowerBound, y.lowerBound)
+
+  def maxVertex: Point2d = Point2d(x.upperBound, y.upperBound)
+
   def interpolated(u: Double, v: Double): Point2d = Point2d(x.interpolated(u), y.interpolated(v))
 
   def randomPoint: Point2d = randomPoint(Random)

@@ -35,6 +35,10 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
 
   def center: Point3d = Point3d(x.median, y.median, z.median)
 
+  def minVertex: Point3d = Point3d(x.lowerBound, y.lowerBound, z.lowerBound)
+
+  def maxVertex: Point3d = Point3d(x.upperBound, y.upperBound, z.upperBound)
+
   def interpolated(u: Double, v: Double, w: Double): Point3d =
     Point3d(x.interpolated(u), y.interpolated(v), z.interpolated(w))
 
