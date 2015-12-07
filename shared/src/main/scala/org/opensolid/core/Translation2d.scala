@@ -17,6 +17,8 @@ package org.opensolid.core
 final case class Translation2d(vector: Vector2d) extends Transformation2d {
   def this(x: Double, y: Double) = this(Vector2d(x, y))
 
+  def this(axis: Axis2d, distance: Double) = this(distance * axis.direction)
+
   override def apply(length: Double): Double = length
 
   override def apply(handedness: Handedness): Handedness = handedness
@@ -30,4 +32,6 @@ final case class Translation2d(vector: Vector2d) extends Transformation2d {
 
 object Translation2d {
   def apply(x: Double, y: Double): Translation2d = new Translation2d(x, y)
+
+  def apply(axis: Axis2d, distance: Double) = new Translation2d(axis, distance)
 }

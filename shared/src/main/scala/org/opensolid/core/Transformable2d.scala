@@ -21,6 +21,9 @@ trait Transformable2d[T] {
 
   def translatedBy(x: Double, y: Double): T = transformedBy(Translation2d(x, y))
 
+  def translatedAlong(axis: Axis2d, distance: Double): T =
+    transformedBy(Translation2d(axis, distance))
+
   def rotatedAbout(point: Point2d, angle: Double): T = transformedBy(Rotation2d(point, angle))
 
   def relativeTo(frame: Frame2d): T = transformedBy(Localization2d(frame))

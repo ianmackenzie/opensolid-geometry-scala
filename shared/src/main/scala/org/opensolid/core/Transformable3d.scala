@@ -21,6 +21,9 @@ trait Transformable3d[T] {
 
   def translatedBy(x: Double, y: Double, z: Double): T = transformedBy(Translation3d(x, y, z))
 
+  def translatedAlong(axis: Axis3d, distance: Double): T =
+    transformedBy(Translation3d(axis, distance))
+
   def rotatedAbout(axis: Axis3d, angle: Double): T = transformedBy(Rotation3d(axis, angle))
 
   def relativeTo(frame: Frame3d): T = transformedBy(Localization3d(frame))

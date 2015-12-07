@@ -17,6 +17,8 @@ package org.opensolid.core
 final case class Translation3d(vector: Vector3d) extends Transformation3d {
   def this(x: Double, y: Double, z: Double) = this(Vector3d(x, y, z))
 
+  def this(axis: Axis3d, distance: Double) = this(distance * axis.direction)
+
   override def apply(length: Double): Double = length
 
   override def apply(handedness: Handedness): Handedness = handedness
@@ -30,4 +32,6 @@ final case class Translation3d(vector: Vector3d) extends Transformation3d {
 
 object Translation3d {
   def apply(x: Double, y: Double, z: Double): Translation3d = new Translation3d(x, y, z)
+
+  def apply(axis: Axis3d, distance: Double): Translation3d = new Translation3d(axis, distance)
 }
