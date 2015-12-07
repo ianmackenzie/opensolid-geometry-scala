@@ -58,4 +58,6 @@ object Frame2d {
   }
 
   val Global: Frame2d = Frame2d(Point2d.Origin, Direction2d.X, Direction2d.Y, Handedness.Right)
+
+  def getGlobal: Frame2d = Global
 }

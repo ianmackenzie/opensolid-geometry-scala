@@ -68,4 +68,6 @@ object Frame3d {
 
   val Global: Frame3d =
     Frame3d(Point3d.Origin, Direction3d.X, Direction3d.Y, Direction3d.Z, Handedness.Right)
+
+  def getGlobal: Frame3d = Global
 }
