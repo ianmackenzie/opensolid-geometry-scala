@@ -39,23 +39,17 @@ case class Frame3d(
 
   def zAxis: Axis3d = Axis3d(originPoint, zDirection)
 
-  def xyPlane: Plane3d =
-    Plane3d(originPoint, xDirection, yDirection, zDirection, handedness)
+  def xyPlane: Plane3d = Plane3d(originPoint, xDirection, yDirection, zDirection, handedness)
 
-  def xzPlane: Plane3d =
-    Plane3d(originPoint, xDirection, zDirection, -yDirection, handedness)
+  def xzPlane: Plane3d = Plane3d(originPoint, xDirection, zDirection, -yDirection, handedness)
 
-  def yxPlane: Plane3d =
-    Plane3d(originPoint, yDirection, xDirection, -zDirection, handedness)
+  def yxPlane: Plane3d = Plane3d(originPoint, yDirection, xDirection, -zDirection, handedness)
 
-  def yzPlane: Plane3d =
-    Plane3d(originPoint, yDirection, zDirection, xDirection, handedness)
+  def yzPlane: Plane3d = Plane3d(originPoint, yDirection, zDirection, xDirection, handedness)
 
-  def zxPlane: Plane3d =
-    Plane3d(originPoint, zDirection, xDirection, yDirection, handedness)
+  def zxPlane: Plane3d = Plane3d(originPoint, zDirection, xDirection, yDirection, handedness)
 
-  def zyPlane: Plane3d =
-    Plane3d(originPoint, zDirection, yDirection, -xDirection, handedness)
+  def zyPlane: Plane3d = Plane3d(originPoint, zDirection, yDirection, -xDirection, handedness)
 }
 
 object Frame3d {
