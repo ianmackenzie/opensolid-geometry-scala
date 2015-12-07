@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-trait Bounded1d {
+trait Bounded1d extends GeometricallyComparable {
   def bounds: Interval
 
   def getBounds: Interval = bounds

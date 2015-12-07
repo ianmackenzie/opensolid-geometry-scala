@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-trait Bounded3d {
+trait Bounded3d extends GeometricallyComparable {
   def bounds: BoundingBox3d
 
   def getBounds: BoundingBox3d = bounds

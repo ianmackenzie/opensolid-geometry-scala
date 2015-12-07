@@ -26,6 +26,13 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 
   override def bounds: BoundingBox2d = this
 
+  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
+    case that: BoundingBox2d =>
+      this.minVertex.isEqualTo(that.minVertex, tolerance) &&
+      this.maxVertex.isEqualTo(that.maxVertex, tolerance)
+    case _ => false
+  }
+
   def isEmpty: Boolean = x.isEmpty || y.isEmpty
 
   def isWhole: Boolean = x.isWhole && y.isWhole

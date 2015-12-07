@@ -95,6 +95,13 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
   /** Returns this interval (an interval is its own bounds). */
   override def bounds: Interval = this
 
+  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
+    case that: Interval =>
+      (this.lowerBound - that.lowerBound).isZero(tolerance) &&
+      (this.upperBound - that.upperBound).isZero(tolerance)
+    case _ => false
+  }
+
   /** Returns true if this is the empty interval (contains no values). Note that a singleton
     * interval (one with zero width) is not considered empty since it contains a single value.
     *

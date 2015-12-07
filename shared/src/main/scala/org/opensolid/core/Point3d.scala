@@ -28,12 +28,14 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   override def bounds: BoundingBox3d = BoundingBox3d(Interval(x), Interval(y), Interval(z))
 
+  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
+    case that: Point3d => this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+    case _ => false
+  }
+
   def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
 
   def distanceTo(that: Point3d): Double = (this - that).length
-
-  def isEqualTo(that: Point3d, tolerance: Double): Boolean =
-    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
 

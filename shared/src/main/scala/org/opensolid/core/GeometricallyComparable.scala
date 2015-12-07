@@ -14,8 +14,6 @@
 
 package org.opensolid.core
 
-trait Bounded2d extends GeometricallyComparable {
-  def bounds: BoundingBox2d
-
-  def getBounds: BoundingBox2d = bounds
+trait GeometricallyComparable {
+  def isEqualTo(other: Any, tolerance: Double): Boolean
 }

@@ -27,12 +27,14 @@ final case class Point2d(x: Double, y: Double)
 
   override def bounds: BoundingBox2d = BoundingBox2d(Interval(x), Interval(y))
 
+  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
+    case that: Point2d => this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+    case _ => false
+  }
+
   def squaredDistanceTo(that: Point2d): Double = (this - that).squaredLength
 
   def distanceTo(that: Point2d): Double = (this - that).length
-
-  def isEqualTo(that: Point2d, tolerance: Double): Boolean =
-    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
 

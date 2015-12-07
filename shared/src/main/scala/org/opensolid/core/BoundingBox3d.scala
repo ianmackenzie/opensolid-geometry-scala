@@ -27,6 +27,13 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
 
   override def bounds: BoundingBox3d = this
 
+  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
+    case that: BoundingBox3d =>
+      this.minVertex.isEqualTo(that.minVertex, tolerance) &&
+      this.maxVertex.isEqualTo(that.maxVertex, tolerance)
+    case _ => false
+  }
+
   def isEmpty: Boolean = x.isEmpty || y.isEmpty || z.isEmpty
 
   def isWhole: Boolean = x.isWhole && y.isWhole && z.isWhole
