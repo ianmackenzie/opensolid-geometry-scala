@@ -115,13 +115,25 @@ object Plane3d {
 
   val XY: Plane3d = Frame3d.Global.xyPlane
 
+  def getXY: Plane3d = XY
+
   val XZ: Plane3d = Frame3d.Global.xzPlane
+
+  def getXZ: Plane3d = XZ
 
   val YX: Plane3d = Frame3d.Global.yxPlane
 
+  def getYX: Plane3d = YX
+
   val YZ: Plane3d = Frame3d.Global.yzPlane
+
+  def getYZ: Plane3d = YZ
 
   val ZX: Plane3d = Frame3d.Global.zxPlane
 
+  def getZX: Plane3d = ZX
+
   val ZY: Plane3d = Frame3d.Global.zyPlane
+
+  def getZY: Plane3d = ZY
 }

@@ -47,7 +47,13 @@ object Handedness {
 
   val Left: Handedness = Handedness(Sign.Negative)
 
+  def getLeft: Handedness = Handedness.Left
+
   val None: Handedness = Handedness(Sign.None)
 
+  def getNone: Handedness = Handedness.None
+
   val Right: Handedness = Handedness(Sign.Positive)
+
+  def getRight: Handedness = Handedness.Right
 }

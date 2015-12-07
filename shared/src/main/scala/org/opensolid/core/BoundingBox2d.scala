@@ -89,7 +89,13 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 object BoundingBox2d {
   val Empty: BoundingBox2d = BoundingBox2d(Interval.Empty, Interval.Empty)
 
+  def getEmpty: BoundingBox2d = Empty
+
   val Whole: BoundingBox2d = BoundingBox2d(Interval.Whole, Interval.Whole)
 
+  def getWhole: BoundingBox2d = Whole
+
   val Unit: BoundingBox2d = BoundingBox2d(Interval.Unit, Interval.Unit)
+
+  def getUnit: BoundingBox2d = BoundingBox2d.Unit
 }

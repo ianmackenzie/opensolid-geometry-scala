@@ -84,4 +84,6 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
 object Point3d {
   val Origin: Point3d = Point3d(0.0, 0.0, 0.0)
+
+  def getOrigin: Point3d = Origin
 }

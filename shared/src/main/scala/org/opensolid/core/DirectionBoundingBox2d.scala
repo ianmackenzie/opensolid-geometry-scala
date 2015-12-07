@@ -58,4 +58,6 @@ object DirectionBoundingBox2d {
     DirectionBoundingBox2d(Interval(direction.x), Interval(direction.y))
 
   val Empty = DirectionBoundingBox2d(Interval.Empty, Interval.Empty)
+
+  def getEmpty: DirectionBoundingBox2d = DirectionBoundingBox2d.Empty
 }

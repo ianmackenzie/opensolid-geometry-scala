@@ -70,4 +70,6 @@ object DirectionBoundingBox3d {
     DirectionBoundingBox3d(Interval(direction.x), Interval(direction.y), Interval(direction.z))
 
   val Empty = DirectionBoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
+
+  def getEmpty: DirectionBoundingBox3d = DirectionBoundingBox3d.Empty
 }

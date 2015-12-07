@@ -49,5 +49,9 @@ case class Axis2d(
 object Axis2d {
   val X = Axis2d(Point2d.Origin, Direction2d.X)
 
+  def getX: Axis2d = X
+
   val Y = Axis2d(Point2d.Origin, Direction2d.Y)
+
+  def getY: Axis2d = Y
 }

@@ -74,4 +74,6 @@ object Point2d {
     Point2d(radius * math.cos(angle), radius * math.sin(angle))
 
   val Origin: Point2d = Point2d(0.0, 0.0)
+
+  def getOrigin: Point2d = Origin
 }

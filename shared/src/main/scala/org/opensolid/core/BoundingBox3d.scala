@@ -103,7 +103,13 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
 object BoundingBox3d {
   val Empty: BoundingBox3d = BoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
+  def getEmpty: BoundingBox3d = Empty
+
   val Whole: BoundingBox3d = BoundingBox3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
+  def getWhole: BoundingBox3d = Whole
+
   val Unit: BoundingBox3d = BoundingBox3d(Interval.Unit, Interval.Unit, Interval.Unit)
+
+  def getUnit: BoundingBox3d = BoundingBox3d.Unit
 }

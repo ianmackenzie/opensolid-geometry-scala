@@ -162,9 +162,15 @@ object VectorBoundingBox3d {
   val Empty: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
+  def getEmpty: VectorBoundingBox3d = Empty
+
   val Whole: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
+  def getWhole: VectorBoundingBox3d = Whole
+
   val Zero: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Zero, Interval.Zero, Interval.Zero)
+
+  def getZero: VectorBoundingBox3d = Zero
 }

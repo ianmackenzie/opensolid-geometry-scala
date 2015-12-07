@@ -108,9 +108,17 @@ object Direction3d {
 
   val None: Direction3d = Direction3d(0.0, 0.0, 0.0)
 
+  def getNone: Direction3d = Direction3d.None
+
   val X: Direction3d = Direction3d(1.0, 0.0, 0.0)
+
+  def getX: Direction3d = X
 
   val Y: Direction3d = Direction3d(0.0, 1.0, 0.0)
 
+  def getY: Direction3d = Y
+
   val Z: Direction3d = Direction3d(0.0, 0.0, 1.0)
+
+  def getZ: Direction3d = Z
 }

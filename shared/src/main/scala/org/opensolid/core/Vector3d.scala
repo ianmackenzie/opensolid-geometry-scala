@@ -138,4 +138,6 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
 object Vector3d {
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
+
+  def getZero: Vector3d = Zero
 }

@@ -94,4 +94,6 @@ object Vector2d {
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
 
   val Zero: Vector2d = Vector2d(0.0, 0.0)
+
+  def getZero: Vector2d = Zero
 }
