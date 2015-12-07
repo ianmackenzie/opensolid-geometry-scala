@@ -28,13 +28,12 @@ public class Vector2dTests {
     double length = vector.getLength();
     boolean isZero = vector.isZero(1e-3);
     boolean isNotZero = vector.isNotZero(1e-3);
-    Vector2d transformed =
-        vector.transformedBy(new Rotation2d(Point2d.getOrigin(), Math.toRadians(45)));
-    Vector2d rotated = (Vector2d) vector.rotatedBy(Math.PI / 4.0);
-    Vector2d relativeTo = (Vector2d) vector.relativeTo(Frame2d.getGlobal());
-    Vector2d placedIn = (Vector2d) vector.placedIn(Frame2d.getGlobal());
-    Vector2d mirroredAlong = (Vector2d) vector.mirroredAlong(Direction2d.getX());
-    Vector2d mirroredAbout = (Vector2d) vector.mirroredAbout(Axis2d.getY());
+    Vector2d transformed = vector.transformedBy(new Rotation2d(Point2d.getOrigin(), Math.PI / 4.0));
+    Vector2d rotated = vector.rotatedBy(Math.toRadians(60.0));
+    Vector2d relativeTo = vector.relativeTo(Frame2d.getGlobal());
+    Vector2d placedIn = vector.placedIn(Frame2d.getGlobal());
+    Vector2d mirroredAlong = vector.mirroredAlong(Direction2d.getX());
+    Vector2d mirroredAbout = vector.mirroredAbout(Axis2d.getY());
     Vector2d projected = vector.projectedOnto(Axis2d.getX());
     Vector3d placed = vector.placedOnto(Plane3d.getXY());
     Vector2d normalized = vector.getNormalized();
