@@ -19,7 +19,8 @@ package org.opensolid.core {
 
     def unary_- : CurveExpression1d = expressions.NegatedCurve1d(this)
 
-    def +(that: CurveExpression1d): CurveExpression1d = expressions.CurveSum1d(this, that)
+    def +(that: CurveExpression1d): CurveExpression1d =
+      if (this == that) 2 * this else expressions.CurveSum1d(this, that)
 
     def -(that: CurveExpression1d): CurveExpression1d = expressions.CurveDifference1d(this, that)
 
@@ -34,11 +35,13 @@ package org.opensolid.core {
   object CurveExpression1d {
     def apply(value: Double): CurveExpression1d = expressions.ConstantCurve1d(value)
 
-    val Zero = expressions.ConstantCurve1d(0.0)
+    val Zero = CurveExpression1d(0.0)
 
-    val One = expressions.ConstantCurve1d(1.0)
+    val One = CurveExpression1d(1.0)
+  }
 
-    val Parameter = expressions.Parameter1d
+  case object Parameter1d extends CurveExpression1d {
+    override def derivative: CurveExpression1d = CurveExpression1d.One
   }
 
   package expressions {
@@ -49,10 +52,6 @@ package org.opensolid.core {
       override def derivative: CurveExpression1d = CurveExpression1d.Zero
 
       override def unary_- : CurveExpression1d = ConstantCurve1d(-value)
-    }
-
-    case object Parameter1d extends CurveExpression1d {
-      override def derivative: CurveExpression1d = CurveExpression1d.One
     }
 
     case class NegatedCurve1d(argument: CurveExpression1d) extends CurveExpression1d {
