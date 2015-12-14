@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.util.Random
 
-final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
+final case class BoundingBox2d(x: Interval, y: Interval) extends Bounds[BoundingBox2d] {
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
@@ -54,7 +54,7 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 
   def hull(point: Point2d): BoundingBox2d = BoundingBox2d(x.hull(point.x), y.hull(point.y))
 
-  def hull(that: BoundingBox2d): BoundingBox2d =
+  override def hull(that: BoundingBox2d): BoundingBox2d =
     BoundingBox2d(this.x.hull(that.x), this.y.hull(that.y))
 
   def intersection(that: BoundingBox2d): BoundingBox2d = {
@@ -65,7 +65,7 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 
   def overlaps(that: BoundingBox2d): Boolean = this.x.overlaps(that.x) && this.y.overlaps(that.y)
 
-  def overlaps(that: BoundingBox2d, tolerance: Double): Boolean =
+  override def overlaps(that: BoundingBox2d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) && this.y.overlaps(that.y, tolerance)
 
   def contains(point: Point2d): Boolean = x.contains(point.x) && y.contains(point.y)
@@ -77,6 +77,16 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounded2d {
 
   def contains(that: BoundingBox2d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
+
+  override def bisected(dimensionIndex: Int): (BoundingBox2d, BoundingBox2d) = {
+    if (dimensionIndex % 2 == 0) {
+      val (xLower, xUpper) = x.bisected
+      (BoundingBox2d(xLower, y), BoundingBox2d(xUpper, y))
+    } else {
+      val (yLower, yUpper) = y.bisected
+      (BoundingBox2d(x, yLower), BoundingBox2d(x, yUpper))
+    }
+  }
 
   def +(vector: Vector2d): BoundingBox2d = BoundingBox2d(x + vector.x, y + vector.y)
 

@@ -14,8 +14,12 @@
 
 package org.opensolid.core
 
-trait Bounded2d extends GeometricallyComparable {
-  def bounds: BoundingBox2d
+abstract class Bounds[T <: Bounds[T]] extends Bounded[T] {
+  def overlaps(that: T, tolerance: Double): Boolean
 
-  def getBounds: BoundingBox2d = bounds
+  def contains(that: T, tolerance: Double): Boolean
+
+  def bisected(dimensionIndex: Int): (T, T)
+
+  def hull(that: T): T
 }

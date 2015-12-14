@@ -16,7 +16,9 @@ package org.opensolid.core
 
 import scala.util.Random
 
-final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bounded3d {
+final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
+  extends Bounds[BoundingBox3d] {
+
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
@@ -57,7 +59,7 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
   def hull(point: Point3d): BoundingBox3d =
     BoundingBox3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
-  def hull(that: BoundingBox3d): BoundingBox3d =
+  override def hull(that: BoundingBox3d): BoundingBox3d =
     BoundingBox3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
 
   def intersection(that: BoundingBox3d): BoundingBox3d = {
@@ -70,7 +72,7 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
   def overlaps(that: BoundingBox3d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
 
-  def overlaps(that: BoundingBox3d, tolerance: Double): Boolean =
+  override def overlaps(that: BoundingBox3d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) &&
     this.y.overlaps(that.y, tolerance) &&
     this.z.overlaps(that.z, tolerance)
@@ -86,10 +88,26 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval) extends Bo
   def contains(that: BoundingBox3d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
 
-  def contains(that: BoundingBox3d, tolerance: Double): Boolean =
+  override def contains(that: BoundingBox3d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) &&
     this.y.contains(that.y, tolerance) &&
     this.z.contains(that.z, tolerance)
+
+  override def bisected(dimensionIndex: Int): (BoundingBox3d, BoundingBox3d) =
+    (dimensionIndex % 3) match {
+      case 0 => {
+        val (xLower, xUpper) = x.bisected
+        (BoundingBox3d(xLower, y, z), BoundingBox3d(xUpper, y, z))
+      }
+      case 1 => {
+        val (yLower, yUpper) = y.bisected
+        (BoundingBox3d(x, yLower, z), BoundingBox3d(x, yUpper, z))
+      }
+      case _ => {
+        val (zLower, zUpper) = z.bisected
+        (BoundingBox3d(x, y, zLower), BoundingBox3d(x, y, zUpper))
+      }
+    }
 
   def +(vector: Vector3d): BoundingBox3d = BoundingBox3d(x + vector.x, y + vector.y, z + vector.z)
 

@@ -16,7 +16,9 @@ package org.opensolid.core
 
 import scala.math
 
-final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d] with Bounded2d {
+final case class Point2d(x: Double, y: Double)
+  extends Scalable2d[Point2d] with Bounded[BoundingBox2d] {
+
   def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y

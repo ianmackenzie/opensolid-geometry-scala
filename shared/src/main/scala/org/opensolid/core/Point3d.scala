@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Point3d(x: Double, y: Double, z: Double)
-  extends Scalable3d[Point3d] with Bounded3d {
+  extends Scalable3d[Point3d] with Bounded[BoundingBox3d] {
 
   def component(index: Int): Double = index match {
     case 0 => x

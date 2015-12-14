@@ -66,7 +66,7 @@ import scala.util.Random
   * res5: Double = 3.0
   * }}}
   */
-final case class Interval(lowerBound: Double, upperBound: Double) extends Bounded1d {
+final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds[Interval] {
   def this(value: Double) = this(value, value)
 
   def getLowerBound: Double = lowerBound
@@ -216,6 +216,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
     }
   }
 
+  override def bisected(dimensionIndex: Int): (Interval, Interval) = bisected
+
   def getBisected: (Interval, Interval) = bisected
 
   /** Returns a new interval that contains both this interval and the given value. */
@@ -228,7 +230,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
   }
 
   /** Returns a new interval that contains both this interval and the given interval. */
-  def hull(that: Interval): Interval = {
+  override def hull(that: Interval): Interval = {
     if (isEmpty) {
       that
     } else if (that.isEmpty) {
@@ -315,7 +317,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
     * res3: Boolean = false
     * }}}
     */
-  def contains(that: Interval, tolerance: Double): Boolean =
+  override def contains(that: Interval, tolerance: Double): Boolean =
     that.lowerBound >= this.lowerBound - tolerance && that.upperBound <= this.upperBound + tolerance
 
   /** Returns true if this interval overlaps the given interval.
@@ -363,7 +365,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounde
     * res3: Boolean = false
     * }}}
     */
-  def overlaps(that: Interval, tolerance: Double): Boolean =
+  override def overlaps(that: Interval, tolerance: Double): Boolean =
     that.lowerBound <= this.upperBound + tolerance && that.upperBound >= this.lowerBound - tolerance
 
   def unary_- : Interval = Interval(-upperBound, -lowerBound)
