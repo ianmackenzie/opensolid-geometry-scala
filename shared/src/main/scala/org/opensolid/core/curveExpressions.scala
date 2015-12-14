@@ -60,46 +60,39 @@ package org.opensolid.core {
       override def unary_- : CurveExpression1d = argument
     }
 
-    case class CurveSum1d(firstArgument: CurveExpression1d, secondArgument: CurveExpression1d)
+    case class CurveSum1d(first: CurveExpression1d, second: CurveExpression1d)
+      extends CurveExpression1d {
+
+      override def derivative: CurveExpression1d = first.derivative + second.derivative
+    }
+
+    case class CurveDifference1d(first: CurveExpression1d, second: CurveExpression1d)
+      extends CurveExpression1d {
+
+      override def derivative: CurveExpression1d = first.derivative - second.derivative
+
+      override def unary_- : CurveExpression1d = second - first
+    }
+
+    case class CurveProduct1d(first: CurveExpression1d, second: CurveExpression1d)
       extends CurveExpression1d {
 
       override def derivative: CurveExpression1d =
-        firstArgument.derivative + secondArgument.derivative
+        first.derivative * second + first * second.derivative
     }
 
-    case class CurveDifference1d(
-      firstArgument: CurveExpression1d,
-      secondArgument: CurveExpression1d
-    ) extends CurveExpression1d {
+    case class CurveQuotient1d(first: CurveExpression1d, second: CurveExpression1d)
+      extends CurveExpression1d {
 
       override def derivative: CurveExpression1d =
-        firstArgument.derivative - secondArgument.derivative
-
-      override def unary_- : CurveExpression1d = secondArgument - firstArgument
-    }
-
-    case class CurveProduct1d(
-      firstArgument: CurveExpression1d,
-      secondArgument: CurveExpression1d
-    ) extends CurveExpression1d {
-
-      override def derivative: CurveExpression1d =
-        firstArgument.derivative * secondArgument + firstArgument * secondArgument.derivative
-    }
-
-    case class CurveQuotient1d(
-      firstArgument: CurveExpression1d,
-      secondArgument: CurveExpression1d
-    ) extends CurveExpression1d {
-
-      override def derivative: CurveExpression1d =
-        (firstArgument.derivative * secondArgument - firstArgument * secondArgument.derivative) /
-        secondArgument.squared
+        (first.derivative * second - first * second.derivative) /
+        second.squared
     }
 
     case class SquaredCurve1d(argument: CurveExpression1d) extends CurveExpression1d {
       override def derivative = 2.0 * argument * argument.derivative
     }
+
   }
 
 }
