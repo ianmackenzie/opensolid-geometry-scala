@@ -112,6 +112,15 @@ package object core {
 
     def *(direction: Direction3d): Vector3d = direction * value
 
+    def +(expression: CurveExpression1d): CurveExpression1d =
+      CurveExpression1d(value) + expression
+
+    def *(expression: CurveExpression1d): CurveExpression1d =
+      CurveExpression1d(value) * expression
+
+    def /(expression: CurveExpression1d): CurveExpression1d =
+      CurveExpression1d(value) / expression
+
     def hull(that: Double): Interval = Interval(value.min(that), value.max(that))
 
     def hull(interval: Interval): Interval = interval.hull(value)
