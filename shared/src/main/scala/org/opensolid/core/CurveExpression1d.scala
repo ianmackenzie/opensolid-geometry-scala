@@ -23,7 +23,7 @@ package org.opensolid.core {
       case Constant(value) => Constant(-value)
       case Negated(expression) => expression
       case Difference(first, second) => second - first
-      case expression => Negated(expression)
+      case _ => Negated(this)
     }
 
     final def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
@@ -33,7 +33,7 @@ package org.opensolid.core {
       case (first, second) if (first == second) => 2 * first
       case (first, Negated(second)) => first - second
       case (Negated(first), second) => second - first
-      case (first, second) => Sum(first, second)
+      case _ => Sum(this, that)
     }
 
     final def -(that: CurveExpression1d): CurveExpression1d = (this, that) match {
@@ -42,7 +42,7 @@ package org.opensolid.core {
       case (Zero, second) => -second
       case (first, second) if (first == second) => Zero
       case (first, Negated(second)) => first + second
-      case (first, second) => Difference(first, second)
+      case _ => Difference(this, that)
     }
 
     final def *(that: CurveExpression1d): CurveExpression1d = (this, that) match {
@@ -54,7 +54,7 @@ package org.opensolid.core {
       case (first, NegativeOne) => -first
       case (NegativeOne, second) => -second
       case (first, second) if (first == second) => first.squared
-      case (first, second) => Product(first, second)
+      case _ => Product(this, that)
     }
 
     final def /(that: CurveExpression1d): CurveExpression1d = Quotient(this, that)
@@ -62,7 +62,7 @@ package org.opensolid.core {
     final def squared: CurveExpression1d = this match {
       case Constant(value) => Constant(value * value)
       case Negated(expression) => expression.squared
-      case expression => Squared(expression)
+      case _ => Squared(this)
     }
   }
 
