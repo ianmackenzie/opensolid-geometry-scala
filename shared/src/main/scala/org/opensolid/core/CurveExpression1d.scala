@@ -22,6 +22,7 @@ package org.opensolid.core {
     def unary_- : CurveExpression1d = Negated(this)
 
     def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+      case (Constant(first), Constant(second)) => Constant(first + second)
       case (first, Zero) => first
       case (Zero, second) => second
       case (first, second) if (first == second) => 2 * first
@@ -31,6 +32,7 @@ package org.opensolid.core {
     }
 
     def -(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+      case (Constant(first), Constant(second)) => Constant(first - second)
       case (first, Zero) => first
       case (Zero, second) => -second
       case (first, second) if (first == second) => Zero
@@ -39,6 +41,7 @@ package org.opensolid.core {
     }
 
     def *(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+      case (Constant(first), Constant(second)) => Constant(first * second)
       case (_, Zero) => Zero
       case (Zero, _) => Zero
       case (first, One) => first
