@@ -85,8 +85,8 @@ package org.opensolid.core {
       override def derivative: CurveExpression1d = CurveExpression1d.One
     }
 
-    case class Negated(argument: CurveExpression1d) extends CurveExpression1d {
-      override def derivative: CurveExpression1d = -argument.derivative
+    case class Negated(expression: CurveExpression1d) extends CurveExpression1d {
+      override def derivative: CurveExpression1d = -expression.derivative
     }
 
     case class Sum(first: CurveExpression1d, second: CurveExpression1d) extends CurveExpression1d {
@@ -114,8 +114,8 @@ package org.opensolid.core {
         second.squared
     }
 
-    case class Squared(argument: CurveExpression1d) extends CurveExpression1d {
-      override def derivative = 2.0 * argument * argument.derivative
+    case class Squared(expression: CurveExpression1d) extends CurveExpression1d {
+      override def derivative: CurveExpression1d = 2.0 * expression * expression.derivative
     }
   }
 }
