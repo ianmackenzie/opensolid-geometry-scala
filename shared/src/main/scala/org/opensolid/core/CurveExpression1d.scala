@@ -21,7 +21,7 @@ package org.opensolid.core {
 
     final def unary_- : CurveExpression1d = this match {
       case Constant(value) => Constant(-value)
-      case Negated(argument) => argument
+      case Negated(expression) => expression
       case Difference(first, second) => second - first
       case expression => Negated(expression)
     }
@@ -61,7 +61,7 @@ package org.opensolid.core {
 
     final def squared: CurveExpression1d = this match {
       case Constant(value) => Constant(value * value)
-      case Negated(argument) => argument.squared
+      case Negated(expression) => expression.squared
       case expression => Squared(expression)
     }
   }
