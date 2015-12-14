@@ -13,7 +13,7 @@ lazy val core = crossProject.in(file(".")).
     scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
   ).
   jvmSettings(
-    libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.12.2" % "test",
+    libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.12.5" % "test",
     libraryDependencies += "org.scalatest" %%% "scalatest" % "2.2.4" % "test",
     libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test",
     compileOrder in Test := CompileOrder.ScalaThenJava,
