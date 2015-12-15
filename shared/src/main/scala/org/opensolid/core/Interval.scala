@@ -372,6 +372,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
 
   def negated: Interval = -this
 
+  final def getNegated: Interval = negated
+
   def +(value: Double): Interval = Interval(lowerBound + value, upperBound + value)
 
   def plus(value: Double): Interval = this + value;

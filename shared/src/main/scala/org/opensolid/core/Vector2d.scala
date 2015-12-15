@@ -68,6 +68,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def negated: Vector2d = -this
 
+  final def getNegated: Vector2d = negated
+
   def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)
 
   def plus(that: Vector2d): Vector2d = this + that

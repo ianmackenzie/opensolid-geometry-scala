@@ -25,6 +25,8 @@ final case class Sign private (value: Int) {
 
   def negated: Sign = -this
 
+  final def getNegated: Sign = negated
+
   def *(that: Sign): Sign = that match {
     case Sign.Positive => this
     case Sign.Negative => -this
