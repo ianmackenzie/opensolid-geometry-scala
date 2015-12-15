@@ -54,6 +54,7 @@ package org.opensolid.core {
       case (expression, NegativeOne) => -expression
       case (NegativeOne, expression) => -expression
       case (first, second) if (first == second) => first.squared
+      case (Quotient(a, b), Quotient(c, d)) => (a * c) / (b * d)
       case _ => Product(this, that)
     }
 
