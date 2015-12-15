@@ -22,7 +22,7 @@ case class Frame3d(
   handedness: Handedness
 ) extends Transformable3d[Frame3d] {
 
-  require(handedness.sign == Sign.of(basis._1.cross(basis._2).dot(basis._3)))
+  require(handedness.sign == Sign.of(xDirection.cross(yDirection).dot(zDirection)))
 
   def transformedBy(transformation: Transformation3d): Frame3d =
     Frame3d(
@@ -35,11 +35,17 @@ case class Frame3d(
       handedness.transformedBy(transformation)
     )
 
-  def xDirection: Direction3d = basis._1
+  def xDirection: Direction3d = basis match {
+    case (xDirection, yDirection, zDirection) => xDirection
+  }
 
-  def yDirection: Direction3d = basis._2
+  def yDirection: Direction3d = basis match {
+    case (xDirection, yDirection, zDirection) => yDirection
+  }
 
-  def zDirection: Direction3d = basis._3
+  def zDirection: Direction3d = basis match {
+    case (xDirection, yDirection, zDirection) => zDirection
+  }
 
   def xAxis: Axis3d = Axis3d(originPoint, xDirection)
 
@@ -64,8 +70,10 @@ object Frame3d {
   def apply(originPoint: Point3d): Frame3d =
     Frame3d(originPoint, (Direction3d.X, Direction3d.Y, Direction3d.Z), Handedness.Right)
 
-  def apply(originPoint: Point3d, basis: (Direction3d, Direction3d, Direction3d)): Frame3d =
-    Frame3d(originPoint, basis, Handedness.fromSignOf(basis._1.cross(basis._2).dot(basis._3)))
+  def apply(originPoint: Point3d, basis: (Direction3d, Direction3d, Direction3d)): Frame3d = {
+    val (xDirection, yDirection, zDirection) = basis
+    Frame3d(originPoint, basis, Handedness.fromSignOf(xDirection.cross(yDirection).dot(zDirection)))
+  }
 
   @BeanProperty
   val Global: Frame3d =

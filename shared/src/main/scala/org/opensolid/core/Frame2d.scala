@@ -19,7 +19,7 @@ import scala.beans.BeanProperty
 case class Frame2d(originPoint: Point2d, basis: (Direction2d, Direction2d), handedness: Handedness)
   extends Transformable2d[Frame2d] {
 
-  require(handedness.sign == Sign.of(basis._1.normalDirection.dot(basis._2)))
+  require(handedness.sign == Sign.of(xDirection.normalDirection.dot(yDirection)))
 
   def transformedBy(transformation: Transformation2d): Frame2d =
     Frame2d(
@@ -28,9 +28,9 @@ case class Frame2d(originPoint: Point2d, basis: (Direction2d, Direction2d), hand
       handedness.transformedBy(transformation)
     )
 
-  def xDirection: Direction2d = basis._1
+  def xDirection: Direction2d = basis match {case (xDirection, yDirection) => xDirection}
 
-  def yDirection: Direction2d = basis._2
+  def yDirection: Direction2d = basis match {case (xDirection, yDirection) => yDirection}
 
   def xAxis: Axis2d = Axis2d(originPoint, xDirection, handedness)
 
@@ -53,7 +53,8 @@ object Frame2d {
     Frame2d(originPoint, (xDirection, xDirection.normalDirection), Handedness.Right)
 
   def apply(originPoint: Point2d, basis: (Direction2d, Direction2d)): Frame2d = {
-    val handedness = Handedness.fromSignOf(basis._1.normalDirection.dot(basis._2))
+    val (xDirection, yDirection) = basis
+    val handedness = Handedness.fromSignOf(xDirection.normalDirection.dot(yDirection))
     Frame2d(originPoint, basis, handedness)
   }
 

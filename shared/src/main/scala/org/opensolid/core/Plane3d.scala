@@ -33,9 +33,9 @@ case class Plane3d(
       handedness.transformedBy(transformation)
     )
 
-  def xDirection: Direction3d = basis._1
+  def xDirection: Direction3d = basis match {case (xDirection, yDirection) => xDirection}
 
-  def yDirection: Direction3d = basis._2
+  def yDirection: Direction3d = basis match {case (xDirection, yDirection) => yDirection}
 
   def offsetBy(distance: Double): Plane3d = translatedBy(distance * normalDirection)
 

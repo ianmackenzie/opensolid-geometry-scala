@@ -28,8 +28,10 @@ case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Directio
 
   def apply(point: Point3d): Point3d = this.point + apply(point - this.point)
 
-  def apply(vector: Vector3d): Vector3d =
-    vector.x * basis._1 + vector.y * basis._2 + vector.z * basis._3
+  def apply(vector: Vector3d): Vector3d = {
+    val (xDirection, yDirection, zDirection) = basis
+    vector.x * xDirection + vector.y * yDirection + vector.z * zDirection
+  }
 
   def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
 }
