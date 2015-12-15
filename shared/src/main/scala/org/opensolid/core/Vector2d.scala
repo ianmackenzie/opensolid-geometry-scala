@@ -17,10 +17,6 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
-  def getX: Double = x
-
-  def getY: Double = y
-
   def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y
@@ -29,11 +25,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def squaredLength: Double = x * x + y * y
 
-  def getSquaredLength: Double = squaredLength
-
   def length: Double = math.sqrt(squaredLength)
-
-  def getLength: Double = length
 
   def isZero(tolerance: Double): Boolean = squaredLength.isZero(tolerance * tolerance)
 
@@ -47,8 +39,6 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def normalized: Vector2d = direction.vector
 
-  def getNormalized: Vector2d = normalized
-
   def direction: Direction2d = {
     if (this == Vector2d.Zero) {
       Direction2d.None
@@ -58,17 +48,11 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     }
   }
 
-  def getDirection: Direction2d = direction
-
   def normalDirection: Direction2d = direction.normalDirection
-
-  def getNormalDirection: Direction2d = normalDirection
 
   def unary_- : Vector2d = Vector2d(-x, -y)
 
   def negated: Vector2d = -this
-
-  final def getNegated: Vector2d = negated
 
   def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)
 

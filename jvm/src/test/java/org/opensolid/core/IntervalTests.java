@@ -28,25 +28,25 @@ public class IntervalTests {
     Interval unit = Interval.getUnit();
     Interval zero = Interval.getZero();
 
-    double lowerBound = interval.getLowerBound();
-    double upperBound = interval.getUpperBound();
+    double lowerBound = interval.lowerBound();
+    double upperBound = interval.upperBound();
     boolean equal = interval.equals(other);
     int hashCode = interval.hashCode();
     String string = interval.toString();
 
-    Interval bounds = interval.getBounds();
+    Interval bounds = interval.bounds();
     boolean isEmpty = interval.isEmpty();
     boolean isWhole = interval.isWhole();
-    double width = interval.getWidth();
+    double width = interval.width();
     double interpolated = interval.interpolated(0.5);
-    double median = interval.getMedian();
+    double median = interval.median();
     double randomValue = interval.randomValue();
     Random generator = new Random();
     double randomValueFromGenerator = interval.randomValue(generator);
 
     boolean isSingleton = interval.isSingleton();
 
-    Tuple2<Interval, Interval> bisected = interval.getBisected();
+    Tuple2<Interval, Interval> bisected = interval.bisected();
     Interval lowerHalf = bisected._1();
     Interval upperHalf = bisected._2();
 
@@ -73,8 +73,8 @@ public class IntervalTests {
     Interval dividedByDouble = interval.dividedBy(2.0);
     Interval dividedByInterval = interval.dividedBy(other);
 
-    Interval abs = interval.getAbs();
-    Interval squared = interval.getSquared();
+    Interval abs = interval.abs();
+    Interval squared = interval.squared();
 
     Interval sqrt = Interval.sqrt(interval);
     Interval sin = Interval.sin(interval);

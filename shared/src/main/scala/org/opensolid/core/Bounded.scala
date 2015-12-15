@@ -16,6 +16,4 @@ package org.opensolid.core
 
 trait Bounded[T <: Bounds[T]] extends GeometricallyComparable {
   def bounds: T
-
-  def getBounds: T = bounds
 }

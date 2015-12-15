@@ -23,7 +23,7 @@ public class SignTests {
     Sign none = Sign.getNone();
     Sign ofDouble = Sign.of(-3.0);
 
-    int value = positive.getValue();
+    int value = positive.value();
 
     Sign negated = positive.negated();
     Sign timesSign = positive.times(negative);

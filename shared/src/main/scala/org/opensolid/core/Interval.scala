@@ -69,10 +69,6 @@ import scala.util.Random
 final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds[Interval] {
   def this(value: Double) = this(value, value)
 
-  def getLowerBound: Double = lowerBound
-
-  def getUpperBound: Double = upperBound
-
   override def equals(other: Any): Boolean = other match {
     case that: Interval =>
       (this.lowerBound == that.lowerBound && this.upperBound == that.upperBound) ||
@@ -119,8 +115,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   /** Returns the width of this interval (the difference between the upper and lower bounds). */
   def width: Double = upperBound - lowerBound
 
-  def getWidth: Double = width
-
   /** Returns a value interpolated between the lower and upper bounds of this interval.
     *
     * Examples:
@@ -148,8 +142,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
 
   /** Returns a value halfway between the lower and upper bounds of this interval. */
   def median: Double = interpolated(0.5)
-
-  def getMedian: Double = median
 
   /** Returns a random value within this interval. */
   def randomValue: Double = randomValue(Random)
@@ -217,8 +209,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   }
 
   override def bisected(dimensionIndex: Int): (Interval, Interval) = bisected
-
-  def getBisected: (Interval, Interval) = bisected
 
   /** Returns a new interval that contains both this interval and the given value. */
   def hull(value: Double): Interval = {
@@ -372,8 +362,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
 
   def negated: Interval = -this
 
-  final def getNegated: Interval = negated
-
   def +(value: Double): Interval = Interval(lowerBound + value, upperBound + value)
 
   def plus(value: Double): Interval = this + value;
@@ -474,8 +462,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     }
   }
 
-  def getAbs: Interval = abs
-
   def squared: Interval = {
     if (isEmpty) {
       Interval.Empty
@@ -489,8 +475,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
       Interval(0.0, lowerBound * lowerBound)
     }
   }
-
-  def getSquared: Interval = squared
 }
 
 object Interval {

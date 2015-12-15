@@ -19,8 +19,6 @@ package org.opensolid.core {
 
     def derivative: CurveExpression1d
 
-    final def getDerivative: CurveExpression1d = derivative
-
     final def unary_- : CurveExpression1d = this match {
       case Constant(value) => Constant(-value)
       case Negated(expression) => expression
@@ -29,8 +27,6 @@ package org.opensolid.core {
     }
 
     final def negated: CurveExpression1d = -this
-
-    final def getNegated: CurveExpression1d = negated
 
     final def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
       case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
@@ -88,8 +84,6 @@ package org.opensolid.core {
       case Negated(expression) => expression.squared
       case _ => Squared(this)
     }
-
-    final def getSquared: CurveExpression1d = squared
   }
 
   object CurveExpression1d {
