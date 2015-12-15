@@ -58,7 +58,16 @@ package org.opensolid.core {
       case _ => Product(this, that)
     }
 
-    final def /(that: CurveExpression1d): CurveExpression1d = Quotient(this, that)
+    final def /(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+      case (_, Zero) => throw new ArithmeticException("Division by constant zero expression")
+      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
+      case (Zero, _) => Zero
+      case (expression, One) => expression
+      case (expression, NegativeOne) => -expression
+      case (expression, Constant(value)) => (1.0 / value) * expression
+      case (expression, Quotient(numerator, denominator)) => expression * denominator / numerator
+      case _ => Quotient(this, that)
+    }
 
     final def squared: CurveExpression1d = this match {
       case Constant(value) => Constant(value * value)
