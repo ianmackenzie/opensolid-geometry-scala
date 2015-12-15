@@ -12,6 +12,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+package org.opensolid.junit;
+
 import org.opensolid.core.*;
 import org.junit.Test;
 import scala.Tuple2;
