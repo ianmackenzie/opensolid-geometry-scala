@@ -19,12 +19,18 @@ package org.opensolid.core {
 
     def derivative: CurveExpression1d
 
+    final def getDerivative: CurveExpression1d = derivative
+
     final def unary_- : CurveExpression1d = this match {
       case Constant(value) => Constant(-value)
       case Negated(expression) => expression
       case Difference(first, second) => second - first
       case _ => Negated(this)
     }
+
+    final def negated: CurveExpression1d = -this
+
+    final def getNegated: CurveExpression1d = negated
 
     final def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
       case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
@@ -36,6 +42,8 @@ package org.opensolid.core {
       case _ => Sum(this, that)
     }
 
+    final def plus(that: CurveExpression1d): CurveExpression1d = this + that
+
     final def -(that: CurveExpression1d): CurveExpression1d = (this, that) match {
       case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
       case (expression, Zero) => expression
@@ -44,6 +52,8 @@ package org.opensolid.core {
       case (first, Negated(second)) => first + second
       case _ => Difference(this, that)
     }
+
+    final def minus(that: CurveExpression1d): CurveExpression1d = this - that
 
     final def *(that: CurveExpression1d): CurveExpression1d = (this, that) match {
       case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
@@ -58,6 +68,8 @@ package org.opensolid.core {
       case _ => Product(this, that)
     }
 
+    final def times(that: CurveExpression1d): CurveExpression1d = this * that
+
     final def /(that: CurveExpression1d): CurveExpression1d = (this, that) match {
       case (_, Zero) => throw new ArithmeticException("Division by constant zero expression")
       case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
@@ -69,11 +81,15 @@ package org.opensolid.core {
       case _ => Quotient(this, that)
     }
 
+    final def dividedBy(that: CurveExpression1d): CurveExpression1d = this / that
+
     final def squared: CurveExpression1d = this match {
       case Constant(value) => Constant(value * value)
       case Negated(expression) => expression.squared
       case _ => Squared(this)
     }
+
+    final def getSquared: CurveExpression1d = squared
   }
 
   object CurveExpression1d {
@@ -81,11 +97,19 @@ package org.opensolid.core {
 
     val Zero: CurveExpression1d = Constant(0.0)
 
+    def getZero: CurveExpression1d = Zero
+
     val One: CurveExpression1d = Constant(1.0)
+
+    def getOne: CurveExpression1d = One
 
     val NegativeOne: CurveExpression1d = Constant(-1.0)
 
+    def getNegativeOne: CurveExpression1d = NegativeOne
+
     val Parameter: CurveExpression1d = Identity
+
+    def getParameter: CurveExpression1d = Parameter
 
     case class Constant(value: Double) extends CurveExpression1d {
       override def derivative: CurveExpression1d = Zero
@@ -94,6 +118,8 @@ package org.opensolid.core {
     case object Identity extends CurveExpression1d {
       override def derivative: CurveExpression1d = CurveExpression1d.One
     }
+
+    def getIdentity: CurveExpression1d = Identity
 
     case class Negated(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = -expression.derivative
