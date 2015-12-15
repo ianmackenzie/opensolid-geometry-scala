@@ -17,8 +17,8 @@ package org.opensolid.core
 import org.opensolid.core.IntervalGenerators._
 import org.scalacheck.Gen
 import org.scalatest._
-import org.scalatest.prop._
 import org.scalatest.matchers._
+import org.scalatest.prop._
 
 class IntervalTestSuite extends TestSuite {
   implicit override val generatorDrivenConfig =
