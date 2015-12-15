@@ -27,9 +27,9 @@ package org.opensolid.core {
     }
 
     final def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (Constant(first), Constant(second)) => Constant(first + second)
-      case (first, Zero) => first
-      case (Zero, second) => second
+      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
+      case (expression, Zero) => expression
+      case (Zero, expression) => expression
       case (first, second) if (first == second) => 2 * first
       case (first, Negated(second)) => first - second
       case (Negated(first), second) => second - first
@@ -37,22 +37,22 @@ package org.opensolid.core {
     }
 
     final def -(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (Constant(first), Constant(second)) => Constant(first - second)
-      case (first, Zero) => first
-      case (Zero, second) => -second
+      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
+      case (expression, Zero) => expression
+      case (Zero, expression) => -expression
       case (first, second) if (first == second) => Zero
       case (first, Negated(second)) => first + second
       case _ => Difference(this, that)
     }
 
     final def *(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (Constant(first), Constant(second)) => Constant(first * second)
+      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
       case (_, Zero) => Zero
       case (Zero, _) => Zero
-      case (first, One) => first
-      case (One, second) => second
-      case (first, NegativeOne) => -first
-      case (NegativeOne, second) => -second
+      case (expression, One) => expression
+      case (One, expression) => expression
+      case (expression, NegativeOne) => -expression
+      case (NegativeOne, expression) => -expression
       case (first, second) if (first == second) => first.squared
       case _ => Product(this, that)
     }
