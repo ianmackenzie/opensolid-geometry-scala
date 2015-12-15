@@ -14,6 +14,7 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
 import scala.util.Random
 
 final case class VectorBoundingBox3d(x: Interval, y: Interval, z: Interval) {
@@ -157,18 +158,15 @@ final case class VectorBoundingBox3d(x: Interval, y: Interval, z: Interval) {
 }
 
 object VectorBoundingBox3d {
+  @BeanProperty
   val Empty: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
-  def getEmpty: VectorBoundingBox3d = Empty
-
+  @BeanProperty
   val Whole: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
-  def getWhole: VectorBoundingBox3d = Whole
-
+  @BeanProperty
   val Zero: VectorBoundingBox3d =
     VectorBoundingBox3d(Interval.Zero, Interval.Zero, Interval.Zero)
-
-  def getZero: VectorBoundingBox3d = Zero
 }

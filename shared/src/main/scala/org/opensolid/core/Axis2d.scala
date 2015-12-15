@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
+
 case class Axis2d(
   originPoint: Point2d,
   direction: Direction2d,
@@ -47,11 +49,9 @@ case class Axis2d(
 }
 
 object Axis2d {
+  @BeanProperty
   val X = Axis2d(Point2d.Origin, Direction2d.X)
 
-  def getX: Axis2d = X
-
+  @BeanProperty
   val Y = Axis2d(Point2d.Origin, Direction2d.Y)
-
-  def getY: Axis2d = Y
 }

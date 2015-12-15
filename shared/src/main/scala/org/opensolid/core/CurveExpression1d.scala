@@ -12,6 +12,8 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
+import scala.beans.BeanProperty
+
 package org.opensolid.core {
 
   sealed abstract class CurveExpression1d {
@@ -89,31 +91,26 @@ package org.opensolid.core {
   object CurveExpression1d {
     def constant(value: Double): CurveExpression1d = Constant(value)
 
+    @BeanProperty
     val Zero: CurveExpression1d = Constant(0.0)
 
-    def getZero: CurveExpression1d = Zero
-
+    @BeanProperty
     val One: CurveExpression1d = Constant(1.0)
 
-    def getOne: CurveExpression1d = One
-
+    @BeanProperty
     val NegativeOne: CurveExpression1d = Constant(-1.0)
 
-    def getNegativeOne: CurveExpression1d = NegativeOne
-
+    @BeanProperty
     val Parameter: CurveExpression1d = Identity
-
-    def getParameter: CurveExpression1d = Parameter
 
     case class Constant(value: Double) extends CurveExpression1d {
       override def derivative: CurveExpression1d = Zero
     }
 
+    @BeanProperty
     case object Identity extends CurveExpression1d {
       override def derivative: CurveExpression1d = CurveExpression1d.One
     }
-
-    def getIdentity: CurveExpression1d = Identity
 
     case class Negated(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = -expression.derivative

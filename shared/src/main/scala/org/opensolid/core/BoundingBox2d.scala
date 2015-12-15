@@ -14,6 +14,7 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
 import scala.util.Random
 
 final case class BoundingBox2d(x: Interval, y: Interval) extends Bounds[BoundingBox2d] {
@@ -106,15 +107,12 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounds[Bounding
 }
 
 object BoundingBox2d {
+  @BeanProperty
   val Empty: BoundingBox2d = BoundingBox2d(Interval.Empty, Interval.Empty)
 
-  def getEmpty: BoundingBox2d = Empty
-
+  @BeanProperty
   val Whole: BoundingBox2d = BoundingBox2d(Interval.Whole, Interval.Whole)
 
-  def getWhole: BoundingBox2d = Whole
-
+  @BeanProperty
   val Unit: BoundingBox2d = BoundingBox2d(Interval.Unit, Interval.Unit)
-
-  def getUnit: BoundingBox2d = BoundingBox2d.Unit
 }

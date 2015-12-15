@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
+
 final case class Sign private (value: Int) {
   def unary_- : Sign = this match {
     case Sign.Positive => Sign.Negative
@@ -87,15 +89,12 @@ object Sign {
     case _ => Sign.None
   }
 
+  @BeanProperty
   val Negative: Sign = Sign(-1)
 
-  def getNegative: Sign = Sign.Negative
-
+  @BeanProperty
   val None: Sign = Sign(0)
 
-  def getNone: Sign = Sign.None
-
+  @BeanProperty
   val Positive: Sign = Sign(1)
-
-  def getPositive: Sign = Sign.Positive
 }

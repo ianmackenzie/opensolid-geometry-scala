@@ -14,6 +14,7 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
 import scala.math
 
 final case class Point2d(x: Double, y: Double)
@@ -73,7 +74,6 @@ object Point2d {
   def polar(radius: Double, angle: Double): Point2d =
     Point2d(radius * math.cos(angle), radius * math.sin(angle))
 
+  @BeanProperty
   val Origin: Point2d = Point2d(0.0, 0.0)
-
-  def getOrigin: Point2d = Origin
 }

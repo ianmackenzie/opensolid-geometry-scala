@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
+
 case class Frame3d(
   originPoint: Point3d,
   basis: (Direction3d, Direction3d, Direction3d),
@@ -65,8 +67,7 @@ object Frame3d {
   def apply(originPoint: Point3d, basis: (Direction3d, Direction3d, Direction3d)): Frame3d =
     Frame3d(originPoint, basis, Handedness.fromSignOf(basis._1.cross(basis._2).dot(basis._3)))
 
+  @BeanProperty
   val Global: Frame3d =
     Frame3d(Point3d.Origin, (Direction3d.X, Direction3d.Y, Direction3d.Z), Handedness.Right)
-
-  def getGlobal: Frame3d = Global
 }

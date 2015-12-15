@@ -14,6 +14,7 @@
 
 package org.opensolid.core
 
+import scala.beans.BeanProperty
 import scala.util.Random
 
 final case class VectorBoundingBox2d(x: Interval, y: Interval) {
@@ -122,15 +123,12 @@ final case class VectorBoundingBox2d(x: Interval, y: Interval) {
 }
 
 object VectorBoundingBox2d {
+  @BeanProperty
   val Empty: VectorBoundingBox2d = VectorBoundingBox2d(Interval.Empty, Interval.Empty)
 
-  def getEmpty: VectorBoundingBox2d = Empty
-
+  @BeanProperty
   val Whole: VectorBoundingBox2d = VectorBoundingBox2d(Interval.Whole, Interval.Whole)
 
-  def getWhole: VectorBoundingBox2d = Whole
-
+  @BeanProperty
   val Zero: VectorBoundingBox2d = VectorBoundingBox2d(Interval.Zero, Interval.Zero)
-
-  def getZero: VectorBoundingBox2d = Zero
 }
