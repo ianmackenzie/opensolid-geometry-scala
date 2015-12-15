@@ -67,7 +67,7 @@ package org.opensolid.core {
   }
 
   object CurveExpression1d {
-    def apply(value: Double): CurveExpression1d = Constant(value)
+    def constant(value: Double): CurveExpression1d = Constant(value)
 
     val Zero: CurveExpression1d = Constant(0.0)
 
