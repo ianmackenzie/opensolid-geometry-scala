@@ -23,9 +23,9 @@ package org.opensolid.core {
 
     final def unary_- : CurveExpression1d = this match {
       case Constant(value) => Constant(-value)
-      case Negated(expression) => expression
+      case Negation(expression) => expression
       case Difference(first, second) => second - first
-      case _ => Negated(this)
+      case _ => Negation(this)
     }
 
     final def negated: CurveExpression1d = -this
@@ -35,8 +35,8 @@ package org.opensolid.core {
       case (expression, Zero) => expression
       case (Zero, expression) => expression
       case (first, second) if (first == second) => 2 * first
-      case (first, Negated(second)) => first - second
-      case (Negated(first), second) => second - first
+      case (first, Negation(second)) => first - second
+      case (Negation(first), second) => second - first
       case _ => Sum(this, that)
     }
 
@@ -47,7 +47,7 @@ package org.opensolid.core {
       case (expression, Zero) => expression
       case (Zero, expression) => -expression
       case (first, second) if (first == second) => Zero
-      case (first, Negated(second)) => first + second
+      case (first, Negation(second)) => first + second
       case _ => Difference(this, that)
     }
 
@@ -83,8 +83,8 @@ package org.opensolid.core {
 
     final def squared: CurveExpression1d = this match {
       case Constant(value) => Constant(value * value)
-      case Negated(expression) => expression.squared
-      case _ => Squared(this)
+      case Negation(expression) => expression.squared
+      case _ => Square(this)
     }
   }
 
@@ -112,7 +112,7 @@ package org.opensolid.core {
       override def derivative: CurveExpression1d = CurveExpression1d.One
     }
 
-    case class Negated(expression: CurveExpression1d) extends CurveExpression1d {
+    case class Negation(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = -expression.derivative
     }
 
@@ -141,7 +141,7 @@ package org.opensolid.core {
         second.squared
     }
 
-    case class Squared(expression: CurveExpression1d) extends CurveExpression1d {
+    case class Square(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = 2.0 * expression * expression.derivative
     }
   }
