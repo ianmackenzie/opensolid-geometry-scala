@@ -14,12 +14,16 @@
 
 import scala.beans.BeanProperty
 
+import org.opensolid.core.codegen
+
 package org.opensolid.core {
 
   sealed abstract class CurveExpression1d {
     import CurveExpression1d._
 
     def derivative: CurveExpression1d
+
+    def evaluate(compiler: codegen.Compiler): codegen.Value
 
     final def unary_- : CurveExpression1d = this match {
       case Constant(value) => Constant(-value)
@@ -105,25 +109,38 @@ package org.opensolid.core {
 
     case class Constant(value: Double) extends CurveExpression1d {
       override def derivative: CurveExpression1d = Zero
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value = codegen.Constant(value)
     }
 
     @BeanProperty
     case object Identity extends CurveExpression1d {
       override def derivative: CurveExpression1d = CurveExpression1d.One
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value = codegen.Parameter(0)
     }
 
     case class Negation(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = -expression.derivative
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value =
+        compiler.negation(expression.evaluate(compiler))
     }
 
     case class Sum(first: CurveExpression1d, second: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = first.derivative + second.derivative
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value =
+        compiler.sum(first.evaluate(compiler), second.evaluate(compiler))
     }
 
     case class Difference(first: CurveExpression1d, second: CurveExpression1d)
       extends CurveExpression1d {
 
       override def derivative: CurveExpression1d = first.derivative - second.derivative
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value =
+        compiler.difference(first.evaluate(compiler), second.evaluate(compiler))
     }
 
     case class Product(first: CurveExpression1d, second: CurveExpression1d)
@@ -131,6 +148,9 @@ package org.opensolid.core {
 
       override def derivative: CurveExpression1d =
         first.derivative * second + first * second.derivative
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value =
+        compiler.product(first.evaluate(compiler), second.evaluate(compiler))
     }
 
     case class Quotient(first: CurveExpression1d, second: CurveExpression1d)
@@ -139,10 +159,16 @@ package org.opensolid.core {
       override def derivative: CurveExpression1d =
         (first.derivative * second - first * second.derivative) /
         second.squared
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value =
+        compiler.quotient(first.evaluate(compiler), second.evaluate(compiler))
     }
 
     case class Square(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = 2.0 * expression * expression.derivative
+
+      override def evaluate(compiler: codegen.Compiler): codegen.Value =
+        compiler.square(expression.evaluate(compiler))
     }
   }
 }
