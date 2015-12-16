@@ -10,7 +10,7 @@ lazy val core = crossProject.in(file(".")).
     name := "opensolid-core",
     version := "0.1.0-SNAPSHOT",
     scalaVersion := "2.11.7",
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature")
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
   ).
   jvmSettings(
     libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.12.5" % "test",
