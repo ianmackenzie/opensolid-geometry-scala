@@ -18,7 +18,7 @@ import scala.collection.mutable
 
 import org.opensolid.core._
 
-class Compiler {
+class Builder {
   private[this] var temporaryIndex = 0
 
   private[this] def newTemporary: Temporary = {
@@ -29,7 +29,7 @@ class Compiler {
 
   private[this] val cache = mutable.Map[Expression, Value]()
 
-  private[Compiler] val assignments = mutable.MutableList[Assignment]()
+  private[codegen] val assignments = mutable.MutableList[Assignment]()
 
   private[this] def evaluate(expression: Expression): Temporary = {
     val result = newTemporary
@@ -66,12 +66,4 @@ class Compiler {
   def sin(value: Value): Value = valueOf(Sine(value))
 
   def cos(value: Value): Value = valueOf(Cosine(value))
-}
-
-object Compiler {
-  def curveFunction1d(expression: CurveExpression1d): String = {
-    val compiler = new Compiler
-    val result = expression.evaluate(compiler)
-    Language.curveFunction1d(compiler.assignments, result)
-  }
 }

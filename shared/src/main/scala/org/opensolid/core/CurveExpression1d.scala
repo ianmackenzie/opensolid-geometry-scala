@@ -23,7 +23,7 @@ package org.opensolid.core {
 
     def derivative: CurveExpression1d
 
-    def evaluate(compiler: codegen.Compiler): codegen.Value
+    def build(builder: codegen.Builder): codegen.Value
 
     final def unary_- : CurveExpression1d = this match {
       case Constant(value) => Constant(-value)
@@ -110,28 +110,28 @@ package org.opensolid.core {
     case class Constant(value: Double) extends CurveExpression1d {
       override def derivative: CurveExpression1d = Zero
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value = codegen.Constant(value)
+      override def build(builder: codegen.Builder): codegen.Value = codegen.Constant(value)
     }
 
     @BeanProperty
     case object Identity extends CurveExpression1d {
       override def derivative: CurveExpression1d = CurveExpression1d.One
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value = codegen.Parameter(0)
+      override def build(builder: codegen.Builder): codegen.Value = codegen.Parameter(0)
     }
 
     case class Negation(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = -expression.derivative
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value =
-        compiler.negation(expression.evaluate(compiler))
+      override def build(builder: codegen.Builder): codegen.Value =
+        builder.negation(expression.build(builder))
     }
 
     case class Sum(first: CurveExpression1d, second: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = first.derivative + second.derivative
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value =
-        compiler.sum(first.evaluate(compiler), second.evaluate(compiler))
+      override def build(builder: codegen.Builder): codegen.Value =
+        builder.sum(first.build(builder), second.build(builder))
     }
 
     case class Difference(first: CurveExpression1d, second: CurveExpression1d)
@@ -139,8 +139,8 @@ package org.opensolid.core {
 
       override def derivative: CurveExpression1d = first.derivative - second.derivative
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value =
-        compiler.difference(first.evaluate(compiler), second.evaluate(compiler))
+      override def build(builder: codegen.Builder): codegen.Value =
+        builder.difference(first.build(builder), second.build(builder))
     }
 
     case class Product(first: CurveExpression1d, second: CurveExpression1d)
@@ -149,8 +149,8 @@ package org.opensolid.core {
       override def derivative: CurveExpression1d =
         first.derivative * second + first * second.derivative
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value =
-        compiler.product(first.evaluate(compiler), second.evaluate(compiler))
+      override def build(builder: codegen.Builder): codegen.Value =
+        builder.product(first.build(builder), second.build(builder))
     }
 
     case class Quotient(first: CurveExpression1d, second: CurveExpression1d)
@@ -160,15 +160,15 @@ package org.opensolid.core {
         (first.derivative * second - first * second.derivative) /
         second.squared
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value =
-        compiler.quotient(first.evaluate(compiler), second.evaluate(compiler))
+      override def build(builder: codegen.Builder): codegen.Value =
+        builder.quotient(first.build(builder), second.build(builder))
     }
 
     case class Square(expression: CurveExpression1d) extends CurveExpression1d {
       override def derivative: CurveExpression1d = 2.0 * expression * expression.derivative
 
-      override def evaluate(compiler: codegen.Compiler): codegen.Value =
-        compiler.square(expression.evaluate(compiler))
+      override def build(builder: codegen.Builder): codegen.Value =
+        builder.square(expression.build(builder))
     }
   }
 }
