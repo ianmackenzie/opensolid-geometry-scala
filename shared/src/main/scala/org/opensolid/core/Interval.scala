@@ -630,12 +630,15 @@ object Interval {
   val Zero: Interval = new Interval(0.0, 0.0)
 
   private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
-    if (firstValue.isNaN || secondValue.isNaN) {
+    val result = firstValue * secondValue
+    if (java.lang.Double.isFinite(result)) {
+      result
+    } else if (firstValue.isNaN || secondValue.isNaN) {
       Double.NaN
     } else if (firstValue == 0.0 || secondValue == 0.0) {
       0.0
     } else {
-      firstValue * secondValue
+      result
     }
   }
 }
