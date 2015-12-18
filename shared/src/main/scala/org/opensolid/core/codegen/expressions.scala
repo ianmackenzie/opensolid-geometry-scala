@@ -16,20 +16,39 @@ package org.opensolid.core.codegen
 
 sealed abstract class Expression
 
-case class Negation(argument: Value) extends Expression
+sealed abstract class UnaryExpression extends Expression {
+  def argument: Value
+}
 
-case class Sum(firstArgument: Value, secondArgument: Value) extends Expression
+object UnaryExpression {
+  def unapply(expression: UnaryExpression): Option[Value] =
+    Some(expression.argument)
+}
 
-case class Difference(firstArgument: Value, secondArgument: Value) extends Expression
+sealed abstract class BinaryExpression extends Expression {
+  def firstArgument: Value
+  def secondArgument: Value
+}
 
-case class Product(firstArgument: Value, secondArgument: Value) extends Expression
+object BinaryExpression {
+  def unapply(expression: BinaryExpression): Option[(Value, Value)] =
+    Some((expression.firstArgument, expression.secondArgument))
+}
 
-case class Quotient(firstArgument: Value, secondArgument: Value) extends Expression
+case class Negation(argument: Value) extends UnaryExpression
 
-case class Square(argument: Value) extends Expression
+case class Sum(firstArgument: Value, secondArgument: Value) extends BinaryExpression
 
-case class SquareRoot(argument: Value) extends Expression
+case class Difference(firstArgument: Value, secondArgument: Value) extends BinaryExpression
 
-case class Sine(argument: Value) extends Expression
+case class Product(firstArgument: Value, secondArgument: Value) extends BinaryExpression
 
-case class Cosine(argument: Value) extends Expression
+case class Quotient(firstArgument: Value, secondArgument: Value) extends BinaryExpression
+
+case class Square(argument: Value) extends UnaryExpression
+
+case class SquareRoot(argument: Value) extends UnaryExpression
+
+case class Sine(argument: Value) extends UnaryExpression
+
+case class Cosine(argument: Value) extends UnaryExpression

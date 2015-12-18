@@ -20,4 +20,6 @@ case class Constant(value: Double) extends Value
 
 case class Parameter(index: Int) extends Value
 
+case class Field private[codegen] (index: Int) extends Value
+
 case class Temporary private[codegen] (index: Int) extends Value

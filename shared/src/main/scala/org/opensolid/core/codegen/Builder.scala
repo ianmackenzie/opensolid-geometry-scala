@@ -19,23 +19,57 @@ import scala.collection.mutable
 import org.opensolid.core._
 
 class Builder {
-  private[this] var temporaryIndex = 0
+  import Builder._
+
+  private[this] var fieldCount = 0
+
+  private[this] val initArguments = mutable.MutableList[Double]()
+
+  private[this] val initAssignments = mutable.MutableList[FieldAssignment]()
+
+  private[this] def newField: Field = {
+    val result = Field(fieldCount)
+    fieldCount = fieldCount + 1
+    result
+  }
+
+  def variable(value: Double): Value = {
+    val result = newField
+    initAssignments += FieldAssignmentFromParameter(result, Parameter(initArguments.length))
+    initArguments += value
+    result
+  }
+
+  private[this] var temporaryCount = 0
 
   private[this] def newTemporary: Temporary = {
-    val result = Temporary(temporaryIndex)
-    temporaryIndex = temporaryIndex + 1
+    val result = Temporary(temporaryCount)
+    temporaryCount = temporaryCount + 1
     result
   }
 
   private[this] val cache = mutable.Map[Expression, Value]()
 
-  private[codegen] val assignments = mutable.MutableList[Assignment]()
+  private[this] val temporaryAssignments = mutable.MutableList[TemporaryAssignment]()
 
-  private[this] def evaluate(expression: Expression): Temporary = {
-    val result = newTemporary
-    assignments += Assignment(result, expression)
+  private[this] def evaluateField(expression: Expression): Field = {
+    val result = newField
+    initAssignments += FieldAssignmentFromExpression(result, expression)
     cache(expression) = result
     result
+  }
+
+  private[this] def evaluateTemporary(expression: Expression): Temporary = {
+    val result = newTemporary
+    temporaryAssignments += TemporaryAssignment(result, expression)
+    cache(expression) = result
+    result
+  }
+
+  private[this] def evaluate(expression: Expression): Value = expression match {
+    case UnaryExpression(Field(_)) => evaluateField(expression)
+    case BinaryExpression(Field(_), Field(_)) => evaluateField(expression)
+    case _ => evaluateTemporary(expression)
   }
 
   private[this] def cachedValueOf(expression: Expression): Option[Value] = expression match {
@@ -66,4 +100,14 @@ class Builder {
   def sin(value: Value): Value = valueOf(Sine(value))
 
   def cos(value: Value): Value = valueOf(Cosine(value))
+
+  def result: Result = Result(initArguments, initAssignments, temporaryAssignments)
+}
+
+object Builder {
+  case class Result(
+    initArguments: Seq[Double],
+    initAssignments: Seq[FieldAssignment],
+    temporaryAssignments: Seq[TemporaryAssignment]
+  )
 }

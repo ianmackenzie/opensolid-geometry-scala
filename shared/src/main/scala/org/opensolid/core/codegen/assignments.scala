@@ -14,4 +14,14 @@
 
 package org.opensolid.core.codegen
 
-case class Assignment(result: Temporary, expression: Expression)
+sealed abstract class FieldAssignment {
+  def result: Field
+}
+
+case class FieldAssignmentFromExpression(result: Field, expression: Expression)
+  extends FieldAssignment
+
+case class FieldAssignmentFromParameter(result: Field, parameter: Parameter)
+  extends FieldAssignment
+
+case class TemporaryAssignment(result: Temporary, expression: Expression)

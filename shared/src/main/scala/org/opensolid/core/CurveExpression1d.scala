@@ -38,7 +38,7 @@ package org.opensolid.core {
       case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
       case (expression, Zero) => expression
       case (Zero, expression) => expression
-      case (first, second) if (first == second) => 2 * first
+      case (first, second) if (first == second) => Constant(2) * first
       case (first, Negation(second)) => first - second
       case (Negation(first), second) => second - first
       case _ => Sum(this, that)
@@ -78,7 +78,7 @@ package org.opensolid.core {
       case (Zero, _) => Zero
       case (expression, One) => expression
       case (expression, NegativeOne) => -expression
-      case (expression, Constant(value)) => (1.0 / value) * expression
+      case (expression, Constant(value)) => Constant(1.0 / value) * expression
       case (expression, Quotient(numerator, denominator)) => expression * denominator / numerator
       case _ => Quotient(this, that)
     }
@@ -111,6 +111,12 @@ package org.opensolid.core {
       override def derivative: CurveExpression1d = Zero
 
       override def build(builder: codegen.Builder): codegen.Value = codegen.Constant(value)
+    }
+
+    case class Variable(value: Double) extends CurveExpression1d {
+      override def derivative: CurveExpression1d = Zero
+
+      override def build(builder: codegen.Builder): codegen.Value = builder.variable(value)
     }
 
     @BeanProperty
@@ -165,7 +171,8 @@ package org.opensolid.core {
     }
 
     case class Square(expression: CurveExpression1d) extends CurveExpression1d {
-      override def derivative: CurveExpression1d = 2.0 * expression * expression.derivative
+      override def derivative: CurveExpression1d =
+        Constant(2.0) * expression * expression.derivative
 
       override def build(builder: codegen.Builder): codegen.Value =
         builder.square(expression.build(builder))
