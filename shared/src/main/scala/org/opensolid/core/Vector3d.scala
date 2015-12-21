@@ -50,6 +50,29 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def direction: Direction3d = Direction3d(normalized)
 
+  def normalDirection: Direction3d = {
+    if (this == Vector3d.Zero) {
+      Direction3d.None
+    } else {
+      val absX = x.abs
+      val absY = y.abs
+      val absZ = z.abs
+      if (absX <= absY) {
+        if (absX <= absZ) {
+          Direction3d.X.cross(this).direction
+        } else {
+          Direction3d.Z.cross(this).direction
+        }
+      } else {
+        if (absY <= absZ) {
+          Direction3d.Y.cross(this).direction
+        } else {
+          Direction3d.Z.cross(this).direction
+        }
+      }
+    }
+  }
+
   def unary_- : Vector3d = Vector3d(-x, -y, -z)
 
   def +(that: Vector3d): Vector3d = Vector3d(this.x + that.x, this.y + that.y, this.z + that.z)
@@ -106,29 +129,6 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def cross(directionBoundingBox: DirectionBoundingBox3d): VectorBoundingBox3d =
     cross(directionBoundingBox.vectorBoundingBox)
-
-  def normalDirection: Direction3d = {
-    if (this == Vector3d.Zero) {
-      Direction3d.None
-    } else {
-      val absX = x.abs
-      val absY = y.abs
-      val absZ = z.abs
-      if (absX <= absY) {
-        if (absX <= absZ) {
-          Direction3d.X.cross(this).direction
-        } else {
-          Direction3d.Z.cross(this).direction
-        }
-      } else {
-        if (absY <= absZ) {
-          Direction3d.Y.cross(this).direction
-        } else {
-          Direction3d.Z.cross(this).direction
-        }
-      }
-    }
-  }
 }
 
 object Vector3d {
