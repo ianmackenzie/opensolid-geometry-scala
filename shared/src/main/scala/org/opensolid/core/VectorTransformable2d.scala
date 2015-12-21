@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-abstract class VectorTransformable2d[T] {
+trait VectorTransformable2d[T] {
   def transformedBy(transformation: Transformation2d): T
 
   def rotatedBy(angle: Double): T = transformedBy(Rotation2d(Point2d.Origin, angle))
