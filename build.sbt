@@ -10,7 +10,9 @@ lazy val core = crossProject.in(file(".")).
     name := "opensolid-core",
     version := "0.1.0-SNAPSHOT",
     scalaVersion := "2.11.7",
-    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings")
+    scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfatal-warnings"),
+    licenses += ("MPL-2.0", url("https://www.mozilla.org/en-US/MPL/2.0/")),
+    bintrayVcsUrl := Some("git@github.com:ianmackenzie/opensolid-core.git")
   ).
   jvmSettings(
     libraryDependencies += "org.scalacheck" %%% "scalacheck" % "1.12.5" % "test",
