@@ -116,4 +116,26 @@ package object core {
 
     def hull(interval: Interval): Interval = interval.hull(value)
   }
+
+  implicit class ImplicitPair[T](val tuple: (T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def map[U](function: (T) => U): (U, U) =(function(first), function(second))
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a pair")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
+  }
 }
