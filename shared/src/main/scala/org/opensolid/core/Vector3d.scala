@@ -75,15 +75,25 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def unary_- : Vector3d = Vector3d(-x, -y, -z)
 
+  def negated: Vector3d = -this
+
   def +(that: Vector3d): Vector3d = Vector3d(this.x + that.x, this.y + that.y, this.z + that.z)
+
+  def plus(that: Vector3d): Vector3d = this + that
 
   def +(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d =
     VectorBoundingBox3d(x + vectorBoundingBox.x, y + vectorBoundingBox.y, z + vectorBoundingBox.z)
 
+  def plus(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d = this + vectorBoundingBox
+
   def -(that: Vector3d): Vector3d = Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
+
+  def minus(that: Vector3d): Vector3d = this - that
 
   def -(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d =
     VectorBoundingBox3d(x - vectorBoundingBox.x, y - vectorBoundingBox.y, z - vectorBoundingBox.z)
+
+  def minus(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d = this - vectorBoundingBox
 
   def *(sign: Sign): Vector3d = sign match {
     case Sign.Positive => this
@@ -91,15 +101,25 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     case _ => Vector3d.Zero
   }
 
+  def times(sign: Sign): Vector3d = this * sign
+
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
+
+  def times(value: Double): Vector3d = this * value
 
   def *(interval: Interval): VectorBoundingBox3d =
     VectorBoundingBox3d(x * interval, y * interval, z * interval)
 
+  def times(interval: Interval): VectorBoundingBox3d = this * interval
+
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
+
+  def dividedBy(value: Double): Vector3d = this / value
 
   def /(interval: Interval): VectorBoundingBox3d =
     VectorBoundingBox3d(x / interval, y / interval, z / interval)
+
+  def dividedBy(interval: Interval): VectorBoundingBox3d = this / interval
 
   def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 
