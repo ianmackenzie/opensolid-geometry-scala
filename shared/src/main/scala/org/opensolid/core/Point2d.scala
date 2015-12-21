@@ -18,7 +18,7 @@ import scala.beans.BeanProperty
 import scala.math
 
 final case class Point2d(x: Double, y: Double)
-  extends Scalable2d[Point2d] with Bounded[BoundingBox2d] {
+  extends Scalable2d[Point2d] with Bounded[BoundingBox2d] with GeometricallyComparable[Point2d] {
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -28,10 +28,8 @@ final case class Point2d(x: Double, y: Double)
 
   override def bounds: BoundingBox2d = BoundingBox2d(Interval(x), Interval(y))
 
-  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
-    case that: Point2d => this.squaredDistanceTo(that).isZero(tolerance * tolerance)
-    case _ => false
-  }
+  override def isEqualTo(that: Point2d, tolerance: Double): Boolean =
+    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point2d): Double = (this - that).squaredLength
 

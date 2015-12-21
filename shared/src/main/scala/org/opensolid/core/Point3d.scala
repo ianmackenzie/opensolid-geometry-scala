@@ -18,7 +18,7 @@ import scala.beans.BeanProperty
 import scala.math
 
 final case class Point3d(x: Double, y: Double, z: Double)
-  extends Scalable3d[Point3d] with Bounded[BoundingBox3d] {
+  extends Scalable3d[Point3d] with Bounded[BoundingBox3d] with GeometricallyComparable[Point3d] {
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -29,10 +29,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   override def bounds: BoundingBox3d = BoundingBox3d(Interval(x), Interval(y), Interval(z))
 
-  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
-    case that: Point3d => this.squaredDistanceTo(that).isZero(tolerance * tolerance)
-    case _ => false
-  }
+  override def isEqualTo(that: Point3d, tolerance: Double): Boolean =
+    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
 

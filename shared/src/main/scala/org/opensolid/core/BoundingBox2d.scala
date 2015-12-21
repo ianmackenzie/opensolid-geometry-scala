@@ -17,7 +17,9 @@ package org.opensolid.core
 import scala.beans.BeanProperty
 import scala.util.Random
 
-final case class BoundingBox2d(x: Interval, y: Interval) extends Bounds[BoundingBox2d] {
+final case class BoundingBox2d(x: Interval, y: Interval)
+  extends Bounds[BoundingBox2d] with GeometricallyComparable[BoundingBox2d] {
+
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
@@ -27,12 +29,9 @@ final case class BoundingBox2d(x: Interval, y: Interval) extends Bounds[Bounding
 
   override def bounds: BoundingBox2d = this
 
-  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
-    case that: BoundingBox2d =>
-      this.minVertex.isEqualTo(that.minVertex, tolerance) &&
-      this.maxVertex.isEqualTo(that.maxVertex, tolerance)
-    case _ => false
-  }
+  override def isEqualTo(that: BoundingBox2d, tolerance: Double): Boolean =
+    this.minVertex.isEqualTo(that.minVertex, tolerance) &&
+    this.maxVertex.isEqualTo(that.maxVertex, tolerance)
 
   def isEmpty: Boolean = x.isEmpty || y.isEmpty
 

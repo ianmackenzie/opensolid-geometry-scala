@@ -14,6 +14,6 @@
 
 package org.opensolid.core
 
-trait Bounded[T <: Bounds[T]] extends GeometricallyComparable {
+trait Bounded[T <: Bounds[T]] {
   def bounds: T
 }

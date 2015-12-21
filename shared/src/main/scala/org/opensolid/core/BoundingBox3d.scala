@@ -18,7 +18,7 @@ import scala.beans.BeanProperty
 import scala.util.Random
 
 final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
-  extends Bounds[BoundingBox3d] {
+  extends Bounds[BoundingBox3d] with GeometricallyComparable[BoundingBox3d] {
 
   def component(index: Int): Interval = index match {
     case 0 => x
@@ -30,12 +30,9 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
 
   override def bounds: BoundingBox3d = this
 
-  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
-    case that: BoundingBox3d =>
-      this.minVertex.isEqualTo(that.minVertex, tolerance) &&
-      this.maxVertex.isEqualTo(that.maxVertex, tolerance)
-    case _ => false
-  }
+  override def isEqualTo(that: BoundingBox3d, tolerance: Double): Boolean =
+    this.minVertex.isEqualTo(that.minVertex, tolerance) &&
+    this.maxVertex.isEqualTo(that.maxVertex, tolerance)
 
   def isEmpty: Boolean = x.isEmpty || y.isEmpty || z.isEmpty
 

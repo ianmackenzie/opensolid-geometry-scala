@@ -67,7 +67,9 @@ import scala.util.Random
   * res5: Double = 3.0
   * }}}
   */
-final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds[Interval] {
+final case class Interval(lowerBound: Double, upperBound: Double)
+  extends Bounds[Interval] with GeometricallyComparable[Interval] {
+
   def this(value: Double) = this(value, value)
 
   override def equals(other: Any): Boolean = other match {
@@ -92,12 +94,9 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   /** Returns this interval (an interval is its own bounds). */
   override def bounds: Interval = this
 
-  override def isEqualTo(other: Any, tolerance: Double): Boolean = other match {
-    case that: Interval =>
-      (this.lowerBound - that.lowerBound).isZero(tolerance) &&
-      (this.upperBound - that.upperBound).isZero(tolerance)
-    case _ => false
-  }
+  override def isEqualTo(that: Interval, tolerance: Double): Boolean =
+    (this.lowerBound - that.lowerBound).isZero(tolerance) &&
+    (this.upperBound - that.upperBound).isZero(tolerance)
 
   /** Returns true if this is the empty interval (contains no values). Note that a singleton
     * interval (one with zero width) is not considered empty since it contains a single value.
