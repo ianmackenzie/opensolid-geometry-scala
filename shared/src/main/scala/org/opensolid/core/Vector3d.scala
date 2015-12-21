@@ -43,16 +43,12 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def projectedInto(plane: Plane3d): Vector2d =
     Vector2d(this.dot(plane.xDirection), this.dot(plane.yDirection))
 
-  def normalized: Vector3d = direction.vector
-
-  def direction: Direction3d = {
-    if (this == Vector3d.Zero) {
-      Direction3d.None
-    } else {
-      val length = this.length
-      Direction3d(x / length, y / length, z / length)
-    }
+  def normalized: Vector3d = this match {
+    case Vector3d.Zero => this
+    case _ => this / length
   }
+
+  def direction: Direction3d = Direction3d(normalized)
 
   def unary_- : Vector3d = Vector3d(-x, -y, -z)
 

@@ -38,16 +38,12 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def placedOnto(plane: Plane3d): Vector3d = x * plane.xDirection + y * plane.yDirection
 
-  def normalized: Vector2d = direction.vector
-
-  def direction: Direction2d = {
-    if (this == Vector2d.Zero) {
-      Direction2d.None
-    } else {
-      val length = this.length
-      Direction2d(x / length, y / length)
-    }
+  def normalized: Vector2d = this match {
+    case Vector2d.Zero => this
+    case _ => this / length
   }
+
+  def direction: Direction2d = Direction2d(normalized)
 
   def normalDirection: Direction2d = direction.normalDirection
 
