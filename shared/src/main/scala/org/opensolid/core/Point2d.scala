@@ -52,6 +52,12 @@ final case class Point2d(x: Double, y: Double)
   def placedOnto(plane: Plane3d): Point3d =
     plane.originPoint + x * plane.xDirection + y * plane.yDirection
 
+  def hull(that: Point2d): BoundingBox2d =
+    BoundingBox2d(this.x.hull(that.x), this.y.hull(that.y))
+
+  def hull(boundingBox: BoundingBox2d): BoundingBox2d =
+    BoundingBox2d(x.hull(boundingBox.x), y.hull(boundingBox.y))
+
   def +(vector: Vector2d): Point2d = Point2d(x + vector.x, y + vector.y)
 
   def +(vectorBoundingBox: VectorBoundingBox2d): BoundingBox2d =

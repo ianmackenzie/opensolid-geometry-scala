@@ -65,6 +65,12 @@ final case class Point3d(x: Double, y: Double, z: Double)
     Point2d(displacement.dot(plane.xDirection), displacement.dot(plane.yDirection))
   }
 
+  def hull(that: Point3d): BoundingBox3d =
+    BoundingBox3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
+
+  def hull(boundingBox: BoundingBox3d): BoundingBox3d =
+    BoundingBox3d(x.hull(boundingBox.x), y.hull(boundingBox.y), z.hull(boundingBox.z))
+
   def +(vector: Vector3d): Point3d = Point3d(x + vector.x, y + vector.y, z + vector.z)
 
   def +(vectorBoundingBox: VectorBoundingBox3d): BoundingBox3d =
