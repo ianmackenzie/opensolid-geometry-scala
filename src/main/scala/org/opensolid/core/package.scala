@@ -137,6 +137,8 @@ package object core {
 
     def count (function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U = function(first, second)
   }
 
   implicit class ImplicitTriple[T](val tuple: (T, T, T)) extends AnyVal {
@@ -166,6 +168,8 @@ package object core {
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U = function(function(first, second), third)
   }
 
   implicit class ImplicitQuadruple[T](val tuple: (T, T, T, T)) extends AnyVal {
@@ -201,6 +205,9 @@ package object core {
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0) +
       (if (function(fourth)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U =
+      function(function(function(first, second), third), fourth)
   }
 
   implicit class ImplicitQuintuple[T](val tuple: (T, T, T, T, T)) extends AnyVal {
@@ -241,6 +248,9 @@ package object core {
       (if (function(third)) 1 else 0) +
       (if (function(fourth)) 1 else 0) +
       (if (function(fifth)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U =
+      function(function(function(function(first, second), third), fourth), fifth)
   }
 
   implicit class ImplicitHextuple[T](val tuple: (T, T, T, T, T, T)) extends AnyVal {
@@ -293,6 +303,9 @@ package object core {
       (if (function(fourth)) 1 else 0) +
       (if (function(fifth)) 1 else 0) +
       (if (function(sixth)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U =
+      function(function(function(function(function(first, second), third), fourth), fifth), sixth)
   }
 
   implicit class ImplicitSeptuple[T](val tuple: (T, T, T, T, T, T, T)) extends AnyVal {
@@ -351,6 +364,27 @@ package object core {
       (if (function(fifth)) 1 else 0) +
       (if (function(sixth)) 1 else 0) +
       (if (function(seventh)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U =
+      function(
+        function(
+          function(
+            function(
+              function(
+                function(
+                  first,
+                  second
+                ),
+                third
+              ),
+              fourth
+            ),
+            fifth
+          ),
+          sixth
+        ),
+        seventh
+      )
   }
 
   implicit class ImplicitOctuple[T](val tuple: (T, T, T, T, T, T, T, T)) extends AnyVal {
@@ -415,5 +449,29 @@ package object core {
       (if (function(sixth)) 1 else 0) +
       (if (function(seventh)) 1 else 0) +
       (if (function(eigth)) 1 else 0)
+
+    def reduce[U >: T](function: (U, U) => U): U =
+      function(
+        function(
+          function(
+            function(
+              function(
+                function(
+                  function(
+                    first,
+                    second
+                  ),
+                  third
+                ),
+                fourth
+              ),
+              fifth
+            ),
+            sixth
+          ),
+          seventh
+        ),
+        eigth
+      )
   }
 }
