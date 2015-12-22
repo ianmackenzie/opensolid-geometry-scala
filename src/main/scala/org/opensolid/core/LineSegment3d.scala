@@ -64,3 +64,7 @@ case class LineSegment3d(firstEndpoint: Point3d, secondEndpoint: Point3d)
   def projectedInto(plane: Plane3d): LineSegment2d =
     LineSegment2d(firstEndpoint.projectedInto(plane), secondEndpoint.projectedInto(plane))
 }
+
+object LineSegment3d {
+  def apply(endpoints: (Point3d, Point3d)): LineSegment3d = new LineSegment3d(endpoints)
+}
