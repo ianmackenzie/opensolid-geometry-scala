@@ -480,6 +480,44 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 object Interval {
   def apply(value: Double): Interval = new Interval(value)
 
+  def hull(values: (Double, Double)): Interval = values.first.hull(values.second)
+
+  def hull(values: (Double, Double, Double)): Interval =
+    values.first.hull(values.second).hull(values.third)
+
+  def hull(values: (Double, Double, Double, Double)): Interval =
+    values.first.hull(values.second).hull(values.third).hull(values.fourth)
+
+  def hull(values: (Double, Double, Double, Double, Double)): Interval =
+    values.first.hull(values.second).hull(values.third).hull(values.fourth).hull(values.fifth)
+
+  def hull(values: (Double, Double, Double, Double, Double, Double)): Interval =
+    values.first.
+      hull(values.second).
+      hull(values.third).
+      hull(values.fourth).
+      hull(values.fifth).
+      hull(values.sixth)
+
+  def hull(values: (Double, Double, Double, Double, Double, Double, Double)): Interval =
+    values.first.
+      hull(values.second).
+      hull(values.third).
+      hull(values.fourth).
+      hull(values.fifth).
+      hull(values.sixth).
+      hull(values.seventh)
+
+  def hull(values: (Double, Double, Double, Double, Double, Double, Double, Double)): Interval =
+    values.first.
+      hull(values.second).
+      hull(values.third).
+      hull(values.fourth).
+      hull(values.fifth).
+      hull(values.sixth).
+      hull(values.seventh).
+      hull(values.eigth)
+
   def sqrt(interval: Interval): Interval = {
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
