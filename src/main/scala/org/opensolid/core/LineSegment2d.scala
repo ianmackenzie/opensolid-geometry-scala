@@ -76,11 +76,10 @@ case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d, handed
 
 object LineSegment2d {
   def apply(firstEndpoint: Point2d, secondEndpoint: Point2d): LineSegment2d =
-    new LineSegment2d(firstEndpoint, secondEndpoint, Handedness.Right)
+    new LineSegment2d(firstEndpoint, secondEndpoint)
 
   def apply(endpoints: (Point2d, Point2d), handedness: Handedness): LineSegment2d =
-    new LineSegment2d(endpoints.first, endpoints.second, handedness)
+    new LineSegment2d(endpoints, handedness)
 
-  def apply(endpoints: (Point2d, Point2d)): LineSegment2d =
-    new LineSegment2d(endpoints.first, endpoints.second, Handedness.Right)
+  def apply(endpoints: (Point2d, Point2d)): LineSegment2d = new LineSegment2d(endpoints)
 }
