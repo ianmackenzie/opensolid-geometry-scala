@@ -18,6 +18,11 @@ import scala.beans.BeanProperty
 import scala.math
 
 final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransformable3d[Vector3d] {
+  def this(components: (Double, Double, Double)) =
+    this(components.first, components.second, components.third)
+
+  def components: (Double, Double, Double) = (x, y, z)
+
   def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y
@@ -152,6 +157,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 }
 
 object Vector3d {
+  def apply(components: (Double, Double, Double)): Vector3d = new Vector3d(components)
+
   @BeanProperty
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
 }
