@@ -14,6 +14,8 @@
 
 package org.opensolid.core
 
+import scala.runtime.AbstractFunction1
+
 abstract class Transformation3d {
   def apply(length: Double): Double
 
@@ -28,4 +30,20 @@ abstract class Transformation3d {
   def andThen(that: Transformation3d): Transformation3d = CompoundTransformation3d(this, that)
 
   def compose(that: Transformation3d): Transformation3d = CompoundTransformation3d(that, this)
+}
+
+object Transformation3d {
+  implicit class TransformationFunction3d[T <: Transformable3d[T]](
+    transformation: Transformation3d
+  ) extends AbstractFunction1[T, T] {
+
+    def apply(transformable: T): T = transformable.transformedBy(transformation)
+  }
+
+  implicit class VectorTransformationFunction3d[T <: VectorTransformable3d[T]](
+    transformation: Transformation3d
+  ) extends AbstractFunction1[T, T] {
+
+    def apply(transformable: T): T = transformable.transformedBy(transformation)
+  }
 }
