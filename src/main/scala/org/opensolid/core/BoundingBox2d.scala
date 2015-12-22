@@ -113,7 +113,6 @@ final case class BoundingBox2d(x: Interval, y: Interval)
 
   def -(that: BoundingBox2d): VectorBoundingBox2d =
     VectorBoundingBox2d(this.x - that.x, this.y - that.y)
-
 }
 
 object BoundingBox2d {
