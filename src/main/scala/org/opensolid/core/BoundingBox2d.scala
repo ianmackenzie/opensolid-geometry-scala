@@ -119,6 +119,48 @@ final case class BoundingBox2d(x: Interval, y: Interval)
 object BoundingBox2d {
   def apply(components: (Interval, Interval)): BoundingBox2d = new BoundingBox2d(components)
 
+  def hullOf(points: (Point2d, Point2d)): BoundingBox2d = points.first.hull(points.second)
+
+  def hullOf(points: (Point2d, Point2d, Point2d)): BoundingBox2d =
+    points.first.hull(points.second).hull(points.third)
+
+  def hullOf(points: (Point2d, Point2d, Point2d, Point2d)): BoundingBox2d =
+    points.first.hull(points.second).hull(points.third).hull(points.fourth)
+
+  def hullOf(points: (Point2d, Point2d, Point2d, Point2d, Point2d)): BoundingBox2d =
+    points.first.hull(points.second).hull(points.third).hull(points.fourth).hull(points.fifth)
+
+  def hullOf(points: (Point2d, Point2d, Point2d, Point2d, Point2d, Point2d)): BoundingBox2d =
+    points.first.
+      hull(points.second).
+      hull(points.third).
+      hull(points.fourth).
+      hull(points.fifth).
+      hull(points.sixth)
+
+  def hullOf(
+    points: (Point2d, Point2d, Point2d, Point2d, Point2d, Point2d, Point2d)
+  ): BoundingBox2d =
+    points.first.
+      hull(points.second).
+      hull(points.third).
+      hull(points.fourth).
+      hull(points.fifth).
+      hull(points.sixth).
+      hull(points.seventh)
+
+  def hullOf(
+    points: (Point2d, Point2d, Point2d, Point2d, Point2d, Point2d, Point2d, Point2d)
+  ): BoundingBox2d =
+    points.first.
+      hull(points.second).
+      hull(points.third).
+      hull(points.fourth).
+      hull(points.fifth).
+      hull(points.sixth).
+      hull(points.seventh).
+      hull(points.eigth)
+
   @BeanProperty
   val Empty: BoundingBox2d = BoundingBox2d(Interval.Empty, Interval.Empty)
 
