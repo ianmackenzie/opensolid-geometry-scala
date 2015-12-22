@@ -167,4 +167,253 @@ package object core {
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0)
   }
+
+  implicit class ImplicitQuadruple[T](val tuple: (T, T, T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def third: T = tuple._3
+
+    def fourth: T = tuple._4
+
+    def map[U](function: (T) => U): (U, U, U, U) =
+      (function(first), function(second), function(third), function(fourth))
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+      function(third)
+      function(fourth)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case 2 => third
+      case 3 => fourth
+      case _ =>
+        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a quadruple")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) +
+      (if (function(second)) 1 else 0) +
+      (if (function(third)) 1 else 0) +
+      (if (function(fourth)) 1 else 0)
+  }
+
+  implicit class ImplicitQuintuple[T](val tuple: (T, T, T, T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def third: T = tuple._3
+
+    def fourth: T = tuple._4
+
+    def fifth: T = tuple._5
+
+    def map[U](function: (T) => U): (U, U, U, U, U) =
+      (function(first), function(second), function(third), function(fourth), function(fifth))
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+      function(third)
+      function(fourth)
+      function(fifth)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case 2 => third
+      case 3 => fourth
+      case 4 => fifth
+      case _ =>
+        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a quintuple")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) +
+      (if (function(second)) 1 else 0) +
+      (if (function(third)) 1 else 0) +
+      (if (function(fourth)) 1 else 0) +
+      (if (function(fifth)) 1 else 0)
+  }
+
+  implicit class ImplicitHextuple[T](val tuple: (T, T, T, T, T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def third: T = tuple._3
+
+    def fourth: T = tuple._4
+
+    def fifth: T = tuple._5
+
+    def sixth: T = tuple._6
+
+    def map[U](function: (T) => U): (U, U, U, U, U, U) =
+      (
+        function(first),
+        function(second),
+        function(third),
+        function(fourth),
+        function(fifth),
+        function(sixth)
+      )
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+      function(third)
+      function(fourth)
+      function(fifth)
+      function(sixth)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case 2 => third
+      case 3 => fourth
+      case 4 => fifth
+      case 5 => sixth
+      case _ =>
+        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a hextuple")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) +
+      (if (function(second)) 1 else 0) +
+      (if (function(third)) 1 else 0) +
+      (if (function(fourth)) 1 else 0) +
+      (if (function(fifth)) 1 else 0) +
+      (if (function(sixth)) 1 else 0)
+  }
+
+  implicit class ImplicitSeptuple[T](val tuple: (T, T, T, T, T, T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def third: T = tuple._3
+
+    def fourth: T = tuple._4
+
+    def fifth: T = tuple._5
+
+    def sixth: T = tuple._6
+
+    def seventh: T = tuple._7
+
+    def map[U](function: (T) => U): (U, U, U, U, U, U, U) =
+      (
+        function(first),
+        function(second),
+        function(third),
+        function(fourth),
+        function(fifth),
+        function(sixth),
+        function(seventh)
+      )
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+      function(third)
+      function(fourth)
+      function(fifth)
+      function(sixth)
+      function(seventh)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case 2 => third
+      case 3 => fourth
+      case 4 => fifth
+      case 5 => sixth
+      case 6 => seventh
+      case _ =>
+        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a septuple")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) +
+      (if (function(second)) 1 else 0) +
+      (if (function(third)) 1 else 0) +
+      (if (function(fourth)) 1 else 0) +
+      (if (function(fifth)) 1 else 0) +
+      (if (function(sixth)) 1 else 0) +
+      (if (function(seventh)) 1 else 0)
+  }
+
+  implicit class ImplicitOctuple[T](val tuple: (T, T, T, T, T, T, T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def third: T = tuple._3
+
+    def fourth: T = tuple._4
+
+    def fifth: T = tuple._5
+
+    def sixth: T = tuple._6
+
+    def seventh: T = tuple._7
+
+    def eigth: T = tuple._8
+
+    def map[U](function: (T) => U): (U, U, U, U, U, U, U, U) =
+      (
+        function(first),
+        function(second),
+        function(third),
+        function(fourth),
+        function(fifth),
+        function(sixth),
+        function(seventh),
+        function(eigth)
+      )
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+      function(third)
+      function(fourth)
+      function(fifth)
+      function(sixth)
+      function(seventh)
+      function(eigth)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case 2 => third
+      case 3 => fourth
+      case 4 => fifth
+      case 5 => sixth
+      case 6 => seventh
+      case 7 => eigth
+      case _ =>
+        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for an octuple")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) +
+      (if (function(second)) 1 else 0) +
+      (if (function(third)) 1 else 0) +
+      (if (function(fourth)) 1 else 0) +
+      (if (function(fifth)) 1 else 0) +
+      (if (function(sixth)) 1 else 0) +
+      (if (function(seventh)) 1 else 0) +
+      (if (function(eigth)) 1 else 0)
+  }
 }
