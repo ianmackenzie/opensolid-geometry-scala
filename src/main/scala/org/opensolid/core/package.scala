@@ -122,7 +122,7 @@ package object core {
 
     def second: T = tuple._2
 
-    def map[U](function: (T) => U): (U, U) =(function(first), function(second))
+    def map[U](function: (T) => U): (U, U) = (function(first), function(second))
 
     def foreach(function: (T) => Unit): Unit = {
       function(first)
