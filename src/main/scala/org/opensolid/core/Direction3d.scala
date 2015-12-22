@@ -20,11 +20,17 @@ import scala.math
 import scala.util.Random
 
 final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Direction3d] {
+  def this(x: Double, y: Double, z: Double) = this(Vector3d(x, y, z))
+
+  def this(components: (Double, Double, Double)) = this(Vector3d(components))
+
   def x: Double = vector.x
 
   def y: Double = vector.y
 
   def z: Double = vector.z
+
+  def components: (Double, Double, Double) = vector.components
 
   def component(index: Int): Double = vector.component(index)
 
@@ -76,7 +82,9 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
 }
 
 object Direction3d {
-  def apply(x: Double, y: Double, z: Double): Direction3d = Direction3d(Vector3d(x, y, z))
+  def apply(x: Double, y: Double, z: Double): Direction3d = new Direction3d(x, y, z)
+
+  def apply(components: (Double, Double, Double)): Direction3d = new Direction3d(components)
 
   def spherical(azimuth: Double, elevation: Double): Direction3d = {
     val cosElevation = math.cos(elevation)

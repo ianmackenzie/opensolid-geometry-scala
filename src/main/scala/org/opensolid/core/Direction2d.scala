@@ -20,9 +20,15 @@ import scala.math
 import scala.util.Random
 
 final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Direction2d] {
+  def this(x: Double, y: Double) = this(Vector2d(x, y))
+
+  def this(components: (Double, Double)) = this(Vector2d(components))
+
   def x: Double = vector.x
 
   def y: Double = vector.y
+
+  def components: (Double, Double) = vector.components
 
   def component(index: Int): Double = vector.component(index)
 
@@ -64,7 +70,9 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 }
 
 object Direction2d {
-  def apply(x: Double, y: Double): Direction2d = Direction2d(Vector2d(x, y))
+  def apply(x: Double, y: Double): Direction2d = new Direction2d(x, y)
+
+  def apply(components: (Double, Double)): Direction2d = new Direction2d(components)
 
   def fromAngle(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
 
