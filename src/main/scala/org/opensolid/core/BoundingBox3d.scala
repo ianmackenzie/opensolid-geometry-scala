@@ -20,6 +20,11 @@ import scala.util.Random
 final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
   extends Bounds[BoundingBox3d] with GeometricallyComparable[BoundingBox3d] {
 
+  def this(components: (Interval, Interval, Interval)) =
+    this(components.first, components.second, components.third)
+
+  def components: (Interval, Interval, Interval) = (x, y, z)
+
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
@@ -45,6 +50,17 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
   def minVertex: Point3d = Point3d(x.lowerBound, y.lowerBound, z.lowerBound)
 
   def maxVertex: Point3d = Point3d(x.upperBound, y.upperBound, z.upperBound)
+
+  def vertices: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d) = (
+    Point3d(x.lowerBound, y.lowerBound, z.lowerBound),
+    Point3d(x.upperBound, y.lowerBound, z.lowerBound),
+    Point3d(x.lowerBound, y.upperBound, z.lowerBound),
+    Point3d(x.upperBound, y.upperBound, z.lowerBound),
+    Point3d(x.lowerBound, y.lowerBound, z.upperBound),
+    Point3d(x.upperBound, y.lowerBound, z.upperBound),
+    Point3d(x.lowerBound, y.upperBound, z.upperBound),
+    Point3d(x.upperBound, y.upperBound, z.upperBound)
+  )
 
   def interpolated(u: Double, v: Double, w: Double): Point3d =
     Point3d(x.interpolated(u), y.interpolated(v), z.interpolated(w))
@@ -126,6 +142,51 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
 }
 
 object BoundingBox3d {
+  def apply(components: (Interval, Interval, Interval)): BoundingBox3d =
+    new BoundingBox3d(components)
+
+  def hullOf(points: (Point3d, Point3d)): BoundingBox3d = points.first.hull(points.second)
+
+  def hullOf(points: (Point3d, Point3d, Point3d)): BoundingBox3d =
+    points.first.hull(points.second).hull(points.third)
+
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d)): BoundingBox3d =
+    points.first.hull(points.second).hull(points.third).hull(points.fourth)
+
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d)): BoundingBox3d =
+    points.first.hull(points.second).hull(points.third).hull(points.fourth).hull(points.fifth)
+
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)): BoundingBox3d =
+    points.first.
+      hull(points.second).
+      hull(points.third).
+      hull(points.fourth).
+      hull(points.fifth).
+      hull(points.sixth)
+
+  def hullOf(
+    points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)
+  ): BoundingBox3d =
+    points.first.
+      hull(points.second).
+      hull(points.third).
+      hull(points.fourth).
+      hull(points.fifth).
+      hull(points.sixth).
+      hull(points.seventh)
+
+  def hullOf(
+    points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)
+  ): BoundingBox3d =
+    points.first.
+      hull(points.second).
+      hull(points.third).
+      hull(points.fourth).
+      hull(points.fifth).
+      hull(points.sixth).
+      hull(points.seventh).
+      hull(points.eigth)
+
   @BeanProperty
   val Empty: BoundingBox3d = BoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
