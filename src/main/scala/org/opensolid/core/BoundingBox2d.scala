@@ -49,6 +49,13 @@ final case class BoundingBox2d(x: Interval, y: Interval)
 
   def maxVertex: Point2d = Point2d(x.upperBound, y.upperBound)
 
+  def vertices: (Point2d, Point2d, Point2d, Point2d) = (
+    Point2d(x.lowerBound, y.lowerBound),
+    Point2d(x.upperBound, y.lowerBound),
+    Point2d(x.lowerBound, y.upperBound),
+    Point2d(x.upperBound, y.upperBound)
+  )
+
   def interpolated(u: Double, v: Double): Point2d = Point2d(x.interpolated(u), y.interpolated(v))
 
   def randomPoint: Point2d = randomPoint(Random)
