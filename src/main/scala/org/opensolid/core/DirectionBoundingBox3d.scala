@@ -17,6 +17,8 @@ package org.opensolid.core
 import scala.beans.BeanProperty
 
 final case class DirectionBoundingBox3d(vectorBoundingBox: VectorBoundingBox3d) {
+  def this(x: Interval, y: Interval, z: Interval) = this(VectorBoundingBox3d(x, y, z))
+
   def x: Interval = vectorBoundingBox.x
 
   def y: Interval = vectorBoundingBox.y
@@ -64,7 +66,7 @@ final case class DirectionBoundingBox3d(vectorBoundingBox: VectorBoundingBox3d) 
 
 object DirectionBoundingBox3d {
   def apply(x: Interval, y: Interval, z: Interval): DirectionBoundingBox3d =
-    DirectionBoundingBox3d(VectorBoundingBox3d(x, y, z))
+    new DirectionBoundingBox3d(x, y, z)
 
   def apply(direction: Direction3d): DirectionBoundingBox3d =
     DirectionBoundingBox3d(Interval(direction.x), Interval(direction.y), Interval(direction.z))
