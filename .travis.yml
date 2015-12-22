@@ -8,6 +8,13 @@ scala:
 
 script:
   - sbt clean coverage test
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 
 after_success:
-  - pip install --user codecov && codecov
+  - sbt coverageReport && sbt codacyCoverage
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/
