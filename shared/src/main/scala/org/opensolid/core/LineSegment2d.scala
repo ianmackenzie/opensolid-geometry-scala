@@ -14,13 +14,21 @@
 
 package org.opensolid.core
 
-case class LineSegment2d(
-  firstEndpoint: Point2d,
-  secondEndpoint: Point2d,
-  handedness: Handedness = Handedness.Right
-) extends Scalable2d[LineSegment2d]
+case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d, handedness: Handedness)
+  extends Scalable2d[LineSegment2d]
   with Bounded[BoundingBox2d]
   with GeometricallyComparable[LineSegment2d] {
+
+  def this(firstEndpoint: Point2d, secondEndpoint: Point2d) =
+    this(firstEndpoint, secondEndpoint, Handedness.Right)
+
+  def this(endpoints: (Point2d, Point2d), handedness: Handedness) =
+    this(endpoints.first, endpoints.second, handedness)
+
+  def this(endpoints: (Point2d, Point2d)) =
+    this(endpoints.first, endpoints.second, Handedness.Right)
+
+  def endpoints: (Point2d, Point2d) = (firstEndpoint, secondEndpoint)
 
   def vector: Vector2d = secondEndpoint - firstEndpoint
 
@@ -64,4 +72,15 @@ case class LineSegment2d(
 
   def placedOnto(plane: Plane3d): LineSegment3d =
     LineSegment3d(firstEndpoint.placedOnto(plane), secondEndpoint.placedOnto(plane))
+}
+
+object LineSegment2d {
+  def apply(firstEndpoint: Point2d, secondEndpoint: Point2d): LineSegment2d =
+    new LineSegment2d(firstEndpoint, secondEndpoint, Handedness.Right)
+
+  def apply(endpoints: (Point2d, Point2d), handedness: Handedness): LineSegment2d =
+    new LineSegment2d(endpoints.first, endpoints.second, handedness)
+
+  def apply(endpoints: (Point2d, Point2d)): LineSegment2d =
+    new LineSegment2d(endpoints.first, endpoints.second, Handedness.Right)
 }

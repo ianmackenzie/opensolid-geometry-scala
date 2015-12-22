@@ -19,6 +19,10 @@ case class LineSegment3d(firstEndpoint: Point3d, secondEndpoint: Point3d)
   with Bounded[BoundingBox3d]
   with GeometricallyComparable[LineSegment3d] {
 
+  def this(endpoints: (Point3d, Point3d)) = this(endpoints.first, endpoints.second)
+
+  def endpoints: (Point3d, Point3d) = (firstEndpoint, secondEndpoint)
+
   def vector: Vector3d = secondEndpoint - firstEndpoint
 
   def direction: Direction3d = vector.direction
