@@ -138,4 +138,33 @@ package object core {
     def count (function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
   }
+
+  implicit class ImplicitTriple[T](val tuple: (T, T, T)) extends AnyVal {
+    def first: T = tuple._1
+
+    def second: T = tuple._2
+
+    def third: T = tuple._3
+
+    def map[U](function: (T) => U): (U, U, U) =
+      (function(first), function(second), function(third))
+
+    def foreach(function: (T) => Unit): Unit = {
+      function(first)
+      function(second)
+      function(third)
+    }
+
+    def apply(index: Int): T = index match {
+      case 0 => first
+      case 1 => second
+      case 2 => third
+      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a triple")
+    }
+
+    def count (function: (T) => Boolean): Int =
+      (if (function(first)) 1 else 0) +
+      (if (function(second)) 1 else 0) +
+      (if (function(third)) 1 else 0)
+  }
 }
