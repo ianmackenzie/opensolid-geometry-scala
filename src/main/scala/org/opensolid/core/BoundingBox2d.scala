@@ -20,6 +20,10 @@ import scala.util.Random
 final case class BoundingBox2d(x: Interval, y: Interval)
   extends Bounds[BoundingBox2d] with GeometricallyComparable[BoundingBox2d] {
 
+  def this(components: (Interval, Interval)) = this(components.first, components.second)
+
+  def components: (Interval, Interval) = (x, y)
+
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
@@ -106,6 +110,8 @@ final case class BoundingBox2d(x: Interval, y: Interval)
 }
 
 object BoundingBox2d {
+  def apply(components: (Interval, Interval)): BoundingBox2d = new BoundingBox2d(components)
+
   @BeanProperty
   val Empty: BoundingBox2d = BoundingBox2d(Interval.Empty, Interval.Empty)
 
