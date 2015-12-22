@@ -1,1 +1,0 @@
-curl -X POST https://api.codacy.com/2.0/coverage/$TRAVIS_COMMIT/scala -d `cat "target/scala-2.11/coverage-report/codacy-coverage.json"` --header "Content-Type: application/json" --header "project_token: $CODACY_PROJECT_TOKEN"

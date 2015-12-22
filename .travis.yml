@@ -13,7 +13,6 @@ script:
 
 after_success:
   - pip install --user codecov && codecov
-  - bash upload_codacy_coverage.sh
 
 cache:
   directories:
