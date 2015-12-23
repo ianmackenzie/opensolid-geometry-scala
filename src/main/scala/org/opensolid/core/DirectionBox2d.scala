@@ -43,13 +43,11 @@ final case class DirectionBox2d(vectorBox: VectorBox2d) {
 
   def dot(vector: Vector2d): Interval = vectorBox.dot(vector)
 
-  def dot(vectorBox: VectorBox2d): Interval =
-    this.vectorBox.dot(vectorBox)
+  def dot(vectorBox: VectorBox2d): Interval = this.vectorBox.dot(vectorBox)
 
   def dot(direction: Direction2d): Interval = vectorBox.dot(direction.vector)
 
-  def dot(that: DirectionBox2d): Interval =
-    this.vectorBox.dot(that.vectorBox)
+  def dot(that: DirectionBox2d): Interval = this.vectorBox.dot(that.vectorBox)
 }
 
 object DirectionBox2d {
