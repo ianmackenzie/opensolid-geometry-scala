@@ -17,6 +17,10 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class VectorBox2d(x: Interval, y: Interval) {
+  def this(components: (Interval, Interval)) = this(components.first, components.second)
+
+  def components: (Interval, Interval) = (x, y)
+
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
@@ -114,6 +118,8 @@ final case class VectorBox2d(x: Interval, y: Interval) {
 }
 
 object VectorBox2d {
+  def apply(components: (Interval, Interval)): VectorBox2d = new VectorBox2d(components)
+
   val Empty: VectorBox2d = VectorBox2d(Interval.Empty, Interval.Empty)
 
   val Whole: VectorBox2d = VectorBox2d(Interval.Whole, Interval.Whole)
