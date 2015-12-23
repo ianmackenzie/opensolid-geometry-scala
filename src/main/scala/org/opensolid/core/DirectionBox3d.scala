@@ -61,8 +61,6 @@ final case class DirectionBox3d(vectorBox: VectorBox3d) {
 object DirectionBox3d {
   def apply(x: Interval, y: Interval, z: Interval): DirectionBox3d = new DirectionBox3d(x, y, z)
 
-  def apply(direction: Direction3d): DirectionBox3d =
-    DirectionBox3d(Interval(direction.x), Interval(direction.y), Interval(direction.z))
 
   val Empty = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }

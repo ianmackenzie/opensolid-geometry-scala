@@ -51,8 +51,6 @@ final case class DirectionBox2d(vectorBox: VectorBox2d) {
 object DirectionBox2d {
   def apply(x: Interval, y: Interval): DirectionBox2d = new DirectionBox2d(x, y)
 
-  def apply(direction: Direction2d): DirectionBox2d =
-    DirectionBox2d(Interval(direction.x), Interval(direction.y))
 
   val Empty = DirectionBox2d(Interval.Empty, Interval.Empty)
 }
