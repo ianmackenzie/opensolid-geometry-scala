@@ -26,8 +26,7 @@ final case class Box2d(x: Interval, y: Interval)
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
-    case _ =>
-      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Box2d")
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Box2d")
   }
 
   override def isEqualTo(that: Box2d, tolerance: Double): Boolean =
@@ -62,8 +61,7 @@ final case class Box2d(x: Interval, y: Interval)
 
   def hull(point: Point2d): Box2d = Box2d(x.hull(point.x), y.hull(point.y))
 
-  override def hull(that: Box2d): Box2d =
-    Box2d(this.x.hull(that.x), this.y.hull(that.y))
+  override def hull(that: Box2d): Box2d = Box2d(this.x.hull(that.x), this.y.hull(that.y))
 
   def intersection(that: Box2d): Box2d = {
     val x = this.x.intersection(that.x)
@@ -98,18 +96,15 @@ final case class Box2d(x: Interval, y: Interval)
 
   def +(vector: Vector2d): Box2d = Box2d(x + vector.x, y + vector.y)
 
-  def +(vectorBox: VectorBox2d): Box2d =
-    Box2d(x + vectorBox.x, y + vectorBox.y)
+  def +(vectorBox: VectorBox2d): Box2d = Box2d(x + vectorBox.x, y + vectorBox.y)
 
   def -(vector: Vector2d): Box2d = Box2d(x - vector.x, y - vector.y)
 
-  def -(vectorBox: VectorBox2d): Box2d =
-    Box2d(x - vectorBox.x, y - vectorBox.y)
+  def -(vectorBox: VectorBox2d): Box2d = Box2d(x - vectorBox.x, y - vectorBox.y)
 
   def -(point: Point2d): VectorBox2d = VectorBox2d(x - point.x, y - point.y)
 
-  def -(that: Box2d): VectorBox2d =
-    VectorBox2d(this.x - that.x, this.y - that.y)
+  def -(that: Box2d): VectorBox2d = VectorBox2d(this.x - that.x, this.y - that.y)
 }
 
 object Box2d {

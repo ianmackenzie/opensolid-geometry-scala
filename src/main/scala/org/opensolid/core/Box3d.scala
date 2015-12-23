@@ -66,8 +66,7 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
   def randomPoint(generator: Random): Point3d =
     interpolated(generator.nextDouble, generator.nextDouble, generator.nextDouble)
 
-  def hull(point: Point3d): Box3d =
-    Box3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
+  def hull(point: Point3d): Box3d = Box3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
   override def hull(that: Box3d): Box3d =
     Box3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
