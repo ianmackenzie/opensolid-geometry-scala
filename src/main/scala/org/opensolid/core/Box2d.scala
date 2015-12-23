@@ -31,8 +31,6 @@ final case class Box2d(x: Interval, y: Interval)
       throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Box2d")
   }
 
-  override def bounds: Box2d = this
-
   override def isEqualTo(that: Box2d, tolerance: Double): Boolean =
     this.minVertex.isEqualTo(that.minVertex, tolerance) &&
     this.maxVertex.isEqualTo(that.maxVertex, tolerance)

@@ -14,7 +14,9 @@
 
 package org.opensolid.core
 
-abstract class Bounds[T <: Bounds[T]] extends Bounded[T] {
+abstract class Bounds[T <: Bounds[T]] extends Bounded[T] { this: T =>
+  override def bounds: T = this
+
   def overlaps(that: T, tolerance: Double): Boolean
 
   def contains(that: T, tolerance: Double): Boolean

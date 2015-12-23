@@ -91,9 +91,6 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
-  /** Returns this interval (an interval is its own bounds). */
-  override def bounds: Interval = this
-
   override def isEqualTo(that: Interval, tolerance: Double): Boolean =
     (this.lowerBound - that.lowerBound).isZero(tolerance) &&
     (this.upperBound - that.upperBound).isZero(tolerance)
