@@ -23,10 +23,9 @@ case class Axis2d(originPoint: Point2d, direction: Direction2d) extends Transfor
 
   def normalDirection(handedness: Handedness): Direction2d = direction.normalDirection(handedness)
 
-  def normalAxis: Axis2d = Axis2d(originPoint, direction.normalDirection)
+  def normalAxis: Axis2d = Axis2d(originPoint, normalDirection)
 
-  def normalAxis(handedness: Handedness): Axis2d =
-    Axis2d(originPoint, direction.normalDirection(handedness))
+  def normalAxis(handedness: Handedness): Axis2d = Axis2d(originPoint, normalDirection(handedness))
 
   def reversed: Axis2d = Axis2d(originPoint, -direction)
 
