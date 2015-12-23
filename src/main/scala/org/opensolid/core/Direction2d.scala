@@ -64,7 +64,7 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def normalDirection: Direction2d = Direction2d(-y, x)
 
-  def normalDirection(handedness: Handedness) = handedness match {
+  def normalDirection(handedness: Handedness): Direction2d = handedness match {
     case Handedness.Right => Direction2d(-y, x)
     case Handedness.Left => Direction2d(y, -x)
     case _ => Direction2d.None
