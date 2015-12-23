@@ -61,25 +61,25 @@ final case class Sign private (value: Int) {
 
   def times(direction: Direction3d): Direction3d = this * direction
 
-  def *(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = vectorBoundingBox * this
+  def *(vectorBox: VectorBox2d): VectorBox2d = vectorBox * this
 
-  def times(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = this * vectorBoundingBox
+  def times(vectorBox: VectorBox2d): VectorBox2d = this * vectorBox
 
-  def *(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d = vectorBoundingBox * this
+  def *(vectorBox: VectorBox3d): VectorBox3d = vectorBox * this
 
-  def times(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d = this * vectorBoundingBox
+  def times(vectorBox: VectorBox3d): VectorBox3d = this * vectorBox
 
-  def *(directionBoundingBox: DirectionBoundingBox2d): DirectionBoundingBox2d =
-    directionBoundingBox * this
+  def *(directionBox: DirectionBox2d): DirectionBox2d =
+    directionBox * this
 
-  def times(directionBoundingBox: DirectionBoundingBox2d): DirectionBoundingBox2d =
-    this * directionBoundingBox
+  def times(directionBox: DirectionBox2d): DirectionBox2d =
+    this * directionBox
 
-  def *(directionBoundingBox: DirectionBoundingBox3d): DirectionBoundingBox3d =
-    directionBoundingBox * this
+  def *(directionBox: DirectionBox3d): DirectionBox3d =
+    directionBox * this
 
-  def times(directionBoundingBox: DirectionBoundingBox3d): DirectionBoundingBox3d =
-    this * directionBoundingBox
+  def times(directionBox: DirectionBox3d): DirectionBox3d =
+    this * directionBox
 }
 
 object Sign {

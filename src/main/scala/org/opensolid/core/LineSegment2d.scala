@@ -16,7 +16,7 @@ package org.opensolid.core
 
 case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d, handedness: Handedness)
   extends Scalable2d[LineSegment2d]
-  with Bounded[BoundingBox2d]
+  with Bounded[Box2d]
   with GeometricallyComparable[LineSegment2d] {
 
   def this(firstEndpoint: Point2d, secondEndpoint: Point2d) =
@@ -44,7 +44,7 @@ case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d, handed
 
   def midpoint: Point2d = firstEndpoint + 0.5 * vector
 
-  override def bounds: BoundingBox2d = firstEndpoint.hull(secondEndpoint)
+  override def bounds: Box2d = firstEndpoint.hull(secondEndpoint)
 
   override def isEqualTo(that: LineSegment2d, tolerance: Double): Boolean =
     this.firstEndpoint.isEqualTo(that.firstEndpoint, tolerance) &&

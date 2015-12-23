@@ -44,11 +44,11 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
 
   def *(value: Double): Vector3d = vector * value
 
-  def *(interval: Interval): VectorBoundingBox3d = vector * interval
+  def *(interval: Interval): VectorBox3d = vector * interval
 
   def /(value: Double): Vector3d = vector / value
 
-  def /(interval: Interval): VectorBoundingBox3d = vector / interval
+  def /(interval: Interval): VectorBox3d = vector / interval
 
   def transformedBy(transformation: Transformation3d): Direction3d = transformation(this)
 
@@ -62,19 +62,17 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
 
   def dot(that: Direction3d): Double = this.vector.dot(that.vector)
 
-  def dot(vectorBoundingBox: VectorBoundingBox3d): Interval = vector.dot(vectorBoundingBox)
+  def dot(vectorBox: VectorBox3d): Interval = vector.dot(vectorBox)
 
-  def dot(directionBoundingBox: DirectionBoundingBox3d): Interval = vector.dot(directionBoundingBox)
+  def dot(directionBox: DirectionBox3d): Interval = vector.dot(directionBox)
 
   def cross(vector: Vector3d): Vector3d = this.vector.cross(vector)
 
   def cross(that: Direction3d): Vector3d = this.vector.cross(that.vector)
 
-  def cross(vectorBoundingBox: VectorBoundingBox3d): VectorBoundingBox3d =
-    vector.cross(vectorBoundingBox)
+  def cross(vectorBox: VectorBox3d): VectorBox3d = vector.cross(vectorBox)
 
-  def cross(directionBoundingBox: DirectionBoundingBox3d): VectorBoundingBox3d =
-    vector.cross(directionBoundingBox.vectorBoundingBox)
+  def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox.vectorBox)
 
   def normalDirection: Direction3d = vector.normalDirection
 

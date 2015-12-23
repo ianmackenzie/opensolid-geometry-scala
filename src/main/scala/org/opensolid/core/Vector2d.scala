@@ -59,19 +59,17 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def plus(that: Vector2d): Vector2d = this + that
 
-  def +(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
-    VectorBoundingBox2d(x + vectorBoundingBox.x, y + vectorBoundingBox.y)
+  def +(vectorBox: VectorBox2d): VectorBox2d = VectorBox2d(x + vectorBox.x, y + vectorBox.y)
 
-  def plus(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = this + vectorBoundingBox
+  def plus(vectorBox: VectorBox2d): VectorBox2d = this + vectorBox
 
   def -(that: Vector2d): Vector2d = Vector2d(this.x - that.x, this.y - that.y)
 
   def minus(that: Vector2d): Vector2d = this - that
 
-  def -(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d =
-    VectorBoundingBox2d(x - vectorBoundingBox.x, y - vectorBoundingBox.y)
+  def -(vectorBox: VectorBox2d): VectorBox2d = VectorBox2d(x - vectorBox.x, y - vectorBox.y)
 
-  def minus(vectorBoundingBox: VectorBoundingBox2d): VectorBoundingBox2d = this - vectorBoundingBox
+  def minus(vectorBox: VectorBox2d): VectorBox2d = this - vectorBox
 
   def *(sign: Sign): Vector2d = sign match {
     case Sign.Positive => this
@@ -85,27 +83,25 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def times(value: Double): Vector2d = this * value
 
-  def *(interval: Interval): VectorBoundingBox2d = VectorBoundingBox2d(x * interval, y * interval)
+  def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)
 
-  def times(interval: Interval): VectorBoundingBox2d = this * interval
+  def times(interval: Interval): VectorBox2d = this * interval
 
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
 
   def dividedBy(value: Double): Vector2d = this / value
 
-  def /(interval: Interval): VectorBoundingBox2d = VectorBoundingBox2d(x / interval, y / interval)
+  def /(interval: Interval): VectorBox2d = VectorBox2d(x / interval, y / interval)
 
-  def dividedBy(interval: Interval): VectorBoundingBox2d = this / interval
+  def dividedBy(interval: Interval): VectorBox2d = this / interval
 
   def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
 
   def dot(direction: Direction2d): Double = dot(direction.vector)
 
-  def dot(vectorBoundingBox: VectorBoundingBox2d): Interval =
-    x * vectorBoundingBox.x + y * vectorBoundingBox.y
+  def dot(vectorBox: VectorBox2d): Interval = x * vectorBox.x + y * vectorBox.y
 
-  def dot(directionBoundingBox: DirectionBoundingBox2d): Interval =
-    dot(directionBoundingBox.vectorBoundingBox)
+  def dot(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
 }
 
 object Vector2d {

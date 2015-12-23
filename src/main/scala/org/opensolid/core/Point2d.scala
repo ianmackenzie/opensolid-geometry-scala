@@ -18,7 +18,7 @@ import scala.beans.BeanProperty
 import scala.math
 
 final case class Point2d(x: Double, y: Double)
-  extends Scalable2d[Point2d] with Bounded[BoundingBox2d] with GeometricallyComparable[Point2d] {
+  extends Scalable2d[Point2d] with Bounded[Box2d] with GeometricallyComparable[Point2d] {
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -26,7 +26,7 @@ final case class Point2d(x: Double, y: Double)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point2d")
   }
 
-  override def bounds: BoundingBox2d = BoundingBox2d(Interval(x), Interval(y))
+  override def bounds: Box2d = Box2d(Interval(x), Interval(y))
 
   override def isEqualTo(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
@@ -52,26 +52,21 @@ final case class Point2d(x: Double, y: Double)
   def placedOnto(plane: Plane3d): Point3d =
     plane.originPoint + x * plane.xDirection + y * plane.yDirection
 
-  def hull(that: Point2d): BoundingBox2d =
-    BoundingBox2d(this.x.hull(that.x), this.y.hull(that.y))
+  def hull(that: Point2d): Box2d = Box2d(this.x.hull(that.x), this.y.hull(that.y))
 
-  def hull(boundingBox: BoundingBox2d): BoundingBox2d =
-    BoundingBox2d(x.hull(boundingBox.x), y.hull(boundingBox.y))
+  def hull(box: Box2d): Box2d = Box2d(x.hull(box.x), y.hull(box.y))
 
   def +(vector: Vector2d): Point2d = Point2d(x + vector.x, y + vector.y)
 
-  def +(vectorBoundingBox: VectorBoundingBox2d): BoundingBox2d =
-    BoundingBox2d(x + vectorBoundingBox.x, y + vectorBoundingBox.y)
+  def +(vectorBox: VectorBox2d): Box2d = Box2d(x + vectorBox.x, y + vectorBox.y)
 
   def -(vector: Vector2d): Point2d = Point2d(x - vector.x, y - vector.y)
 
-  def -(vectorBoundingBox: VectorBoundingBox2d): BoundingBox2d =
-    BoundingBox2d(x - vectorBoundingBox.x, y - vectorBoundingBox.y)
+  def -(vectorBox: VectorBox2d): Box2d = Box2d(x - vectorBox.x, y - vectorBox.y)
 
   def -(that: Point2d): Vector2d = Vector2d(x - that.x, y - that.y)
 
-  def -(boundingBox: BoundingBox2d): VectorBoundingBox2d =
-    VectorBoundingBox2d(x - boundingBox.x, y - boundingBox.y)
+  def -(box: Box2d): VectorBox2d = VectorBox2d(x - box.x, y - box.y)
 }
 
 object Point2d {

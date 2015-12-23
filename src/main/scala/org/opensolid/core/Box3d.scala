@@ -17,8 +17,8 @@ package org.opensolid.core
 import scala.beans.BeanProperty
 import scala.util.Random
 
-final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
-  extends Bounds[BoundingBox3d] with GeometricallyComparable[BoundingBox3d] {
+final case class Box3d(x: Interval, y: Interval, z: Interval)
+  extends Bounds[Box3d] with GeometricallyComparable[Box3d] {
 
   def this(components: (Interval, Interval, Interval)) =
     this(components.first, components.second, components.third)
@@ -29,13 +29,12 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
     case 0 => x
     case 1 => y
     case 2 => z
-    case _ =>
-      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for BoundingBox3d")
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Box3d")
   }
 
-  override def bounds: BoundingBox3d = this
+  override def bounds: Box3d = this
 
-  override def isEqualTo(that: BoundingBox3d, tolerance: Double): Boolean =
+  override def isEqualTo(that: Box3d, tolerance: Double): Boolean =
     this.minVertex.isEqualTo(that.minVertex, tolerance) &&
     this.maxVertex.isEqualTo(that.maxVertex, tolerance)
 
@@ -70,23 +69,23 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
   def randomPoint(generator: Random): Point3d =
     interpolated(generator.nextDouble, generator.nextDouble, generator.nextDouble)
 
-  def hull(point: Point3d): BoundingBox3d =
-    BoundingBox3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
+  def hull(point: Point3d): Box3d =
+    Box3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
-  override def hull(that: BoundingBox3d): BoundingBox3d =
-    BoundingBox3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
+  override def hull(that: Box3d): Box3d =
+    Box3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
 
-  def intersection(that: BoundingBox3d): BoundingBox3d = {
+  def intersection(that: Box3d): Box3d = {
     val x = this.x.intersection(that.x)
     val y = this.y.intersection(that.y)
     val z = this.z.intersection(that.z)
-    if (x.isEmpty || y.isEmpty || z.isEmpty) BoundingBox3d.Empty else BoundingBox3d(x, y, z)
+    if (x.isEmpty || y.isEmpty || z.isEmpty) Box3d.Empty else Box3d(x, y, z)
   }
 
-  def overlaps(that: BoundingBox3d): Boolean =
+  def overlaps(that: Box3d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
 
-  override def overlaps(that: BoundingBox3d, tolerance: Double): Boolean =
+  override def overlaps(that: Box3d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) &&
     this.y.overlaps(that.y, tolerance) &&
     this.z.overlaps(that.z, tolerance)
@@ -99,64 +98,58 @@ final case class BoundingBox3d(x: Interval, y: Interval, z: Interval)
     y.contains(point.y, tolerance) &&
     z.contains(point.z, tolerance)
 
-  def contains(that: BoundingBox3d): Boolean =
+  def contains(that: Box3d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
 
-  override def contains(that: BoundingBox3d, tolerance: Double): Boolean =
+  override def contains(that: Box3d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) &&
     this.y.contains(that.y, tolerance) &&
     this.z.contains(that.z, tolerance)
 
-  override def bisected(dimensionIndex: Int): (BoundingBox3d, BoundingBox3d) =
+  override def bisected(dimensionIndex: Int): (Box3d, Box3d) =
     (dimensionIndex % 3) match {
       case 0 => {
         val (xLower, xUpper) = x.bisected
-        (BoundingBox3d(xLower, y, z), BoundingBox3d(xUpper, y, z))
+        (Box3d(xLower, y, z), Box3d(xUpper, y, z))
       }
       case 1 => {
         val (yLower, yUpper) = y.bisected
-        (BoundingBox3d(x, yLower, z), BoundingBox3d(x, yUpper, z))
+        (Box3d(x, yLower, z), Box3d(x, yUpper, z))
       }
       case _ => {
         val (zLower, zUpper) = z.bisected
-        (BoundingBox3d(x, y, zLower), BoundingBox3d(x, y, zUpper))
+        (Box3d(x, y, zLower), Box3d(x, y, zUpper))
       }
     }
 
-  def +(vector: Vector3d): BoundingBox3d = BoundingBox3d(x + vector.x, y + vector.y, z + vector.z)
+  def +(vector: Vector3d): Box3d = Box3d(x + vector.x, y + vector.y, z + vector.z)
 
-  def +(vectorBoundingBox: VectorBoundingBox3d): BoundingBox3d =
-    BoundingBox3d(x + vectorBoundingBox.x, y + vectorBoundingBox.y, z + vectorBoundingBox.z)
+  def +(vectorBox: VectorBox3d): Box3d = Box3d(x + vectorBox.x, y + vectorBox.y, z + vectorBox.z)
 
-  def -(vector: Vector3d): BoundingBox3d =
-    BoundingBox3d(x - vector.x, y - vector.y, z - vector.z)
+  def -(vector: Vector3d): Box3d = Box3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -(vectorBoundingBox: VectorBoundingBox3d): BoundingBox3d =
-    BoundingBox3d(x - vectorBoundingBox.x, y - vectorBoundingBox.y, z - vectorBoundingBox.z)
+  def -(vectorBox: VectorBox3d): Box3d = Box3d(x - vectorBox.x, y - vectorBox.y, z - vectorBox.z)
 
-  def -(point: Point3d): VectorBoundingBox3d =
-    VectorBoundingBox3d(x - point.x, y - point.y, z - point.z)
+  def -(point: Point3d): VectorBox3d = VectorBox3d(x - point.x, y - point.y, z - point.z)
 
-  def -(that: BoundingBox3d): VectorBoundingBox3d =
-    VectorBoundingBox3d(this.x - that.x, this.y - that.y, this.z - that.z)
+  def -(that: Box3d): VectorBox3d = VectorBox3d(this.x - that.x, this.y - that.y, this.z - that.z)
 }
 
-object BoundingBox3d {
-  def apply(components: (Interval, Interval, Interval)): BoundingBox3d =
-    new BoundingBox3d(components)
+object Box3d {
+  def apply(components: (Interval, Interval, Interval)): Box3d = new Box3d(components)
 
-  def hullOf(points: (Point3d, Point3d)): BoundingBox3d = points.first.hull(points.second)
+  def hullOf(points: (Point3d, Point3d)): Box3d = points.first.hull(points.second)
 
-  def hullOf(points: (Point3d, Point3d, Point3d)): BoundingBox3d =
+  def hullOf(points: (Point3d, Point3d, Point3d)): Box3d =
     points.first.hull(points.second).hull(points.third)
 
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d)): BoundingBox3d =
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d)): Box3d =
     points.first.hull(points.second).hull(points.third).hull(points.fourth)
 
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d)): BoundingBox3d =
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d)): Box3d =
     points.first.hull(points.second).hull(points.third).hull(points.fourth).hull(points.fifth)
 
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)): BoundingBox3d =
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)): Box3d =
     points.first.
       hull(points.second).
       hull(points.third).
@@ -164,9 +157,7 @@ object BoundingBox3d {
       hull(points.fifth).
       hull(points.sixth)
 
-  def hullOf(
-    points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)
-  ): BoundingBox3d =
+  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)): Box3d =
     points.first.
       hull(points.second).
       hull(points.third).
@@ -177,7 +168,7 @@ object BoundingBox3d {
 
   def hullOf(
     points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)
-  ): BoundingBox3d =
+  ): Box3d =
     points.first.
       hull(points.second).
       hull(points.third).
@@ -188,11 +179,11 @@ object BoundingBox3d {
       hull(points.eigth)
 
   @BeanProperty
-  val Empty: BoundingBox3d = BoundingBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
+  val Empty: Box3d = Box3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
   @BeanProperty
-  val Whole: BoundingBox3d = BoundingBox3d(Interval.Whole, Interval.Whole, Interval.Whole)
+  val Whole: Box3d = Box3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
   @BeanProperty
-  val Unit: BoundingBox3d = BoundingBox3d(Interval.Unit, Interval.Unit, Interval.Unit)
+  val Unit: Box3d = Box3d(Interval.Unit, Interval.Unit, Interval.Unit)
 }

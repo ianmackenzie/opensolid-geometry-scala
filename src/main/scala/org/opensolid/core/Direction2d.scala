@@ -42,11 +42,11 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def *(value: Double): Vector2d = vector * value
 
-  def *(interval: Interval): VectorBoundingBox2d = vector * interval
+  def *(interval: Interval): VectorBox2d = vector * interval
 
   def /(value: Double): Vector2d = vector / value
 
-  def /(interval: Interval): VectorBoundingBox2d = vector / interval
+  def /(interval: Interval): VectorBox2d = vector / interval
 
   def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
 
@@ -58,10 +58,9 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def dot(that: Direction2d): Double = this.vector.dot(that.vector)
 
-  def dot(vectorBoundingBox: VectorBoundingBox2d): Interval = vector.dot(vectorBoundingBox)
+  def dot(vectorBox: VectorBox2d): Interval = vector.dot(vectorBox)
 
-  def dot(directionBoundingBox: DirectionBoundingBox2d): Interval =
-    vector.dot(directionBoundingBox.vectorBoundingBox)
+  def dot(directionBox: DirectionBox2d): Interval = vector.dot(directionBox.vectorBox)
 
   def normalDirection: Direction2d = Direction2d(-y, x)
 
