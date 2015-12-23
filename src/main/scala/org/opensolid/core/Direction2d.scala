@@ -64,6 +64,12 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def normalDirection: Direction2d = Direction2d(-y, x)
 
+  def normalDirection(handedness: Handedness) = handedness match {
+    case Handedness.Right => Direction2d(-y, x)
+    case Handedness.Left => Direction2d(y, -x)
+    case _ => Direction2d.None
+  }
+
   def angleTo(that: Direction2d): Double =
     math.atan2(this.x * that.y - this.y * that.x, this.x * that.x + this.y * that.y)
 }

@@ -16,48 +16,37 @@ package org.opensolid.core
 
 import scala.beans.BeanProperty
 
-case class Frame2d(originPoint: Point2d, basis: (Direction2d, Direction2d), handedness: Handedness)
+case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirection: Direction2d)
   extends Transformable2d[Frame2d] {
-
-  require(handedness.sign == Sign.of(xDirection.normalDirection.dot(yDirection)))
 
   def transformedBy(transformation: Transformation2d): Frame2d =
     Frame2d(
       originPoint.transformedBy(transformation),
-      (xDirection.transformedBy(transformation), yDirection.transformedBy(transformation)),
-      handedness.transformedBy(transformation)
+      xDirection.transformedBy(transformation),
+      yDirection.transformedBy(transformation)
     )
 
-  def xDirection: Direction2d = basis match {case (xDirection, yDirection) => xDirection}
+  def xAxis: Axis2d = Axis2d(originPoint, xDirection)
 
-  def yDirection: Direction2d = basis match {case (xDirection, yDirection) => yDirection}
+  def yAxis: Axis2d = Axis2d(originPoint, yDirection)
 
-  def xAxis: Axis2d = Axis2d(originPoint, xDirection, handedness)
-
-  def yAxis: Axis2d = Axis2d(originPoint, yDirection, handedness)
+  def handedness: Handedness =
+    Handedness.fromSignOf(xDirection.x * yDirection.y - xDirection.y * yDirection.x)
 
   def placedOnto(plane: Plane3d): Plane3d =
     Plane3d(
       originPoint.placedOnto(plane),
-      (xDirection.placedOnto(plane), yDirection.placedOnto(plane)),
-      handedness.sign * plane.normalDirection,
-      handedness
+      xDirection.placedOnto(plane),
+      yDirection.placedOnto(plane)
     )
 }
 
 object Frame2d {
-  def apply(originPoint: Point2d): Frame2d =
-    Frame2d(originPoint, (Direction2d.X, Direction2d.Y), Handedness.Right)
+  def apply(originPoint: Point2d): Frame2d = Frame2d(originPoint, Direction2d.X, Direction2d.Y)
 
   def apply(originPoint: Point2d, xDirection: Direction2d): Frame2d =
-    Frame2d(originPoint, (xDirection, xDirection.normalDirection), Handedness.Right)
-
-  def apply(originPoint: Point2d, basis: (Direction2d, Direction2d)): Frame2d = {
-    val (xDirection, yDirection) = basis
-    val handedness = Handedness.fromSignOf(xDirection.normalDirection.dot(yDirection))
-    Frame2d(originPoint, basis, handedness)
-  }
+    Frame2d(originPoint, xDirection, xDirection.normalDirection)
 
   @BeanProperty
-  val Global: Frame2d = Frame2d(Point2d.Origin, (Direction2d.X, Direction2d.Y), Handedness.Right)
+  val Global: Frame2d = Frame2d(Point2d.Origin, Direction2d.X, Direction2d.Y)
 }

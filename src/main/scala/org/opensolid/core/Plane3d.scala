@@ -18,44 +18,38 @@ import scala.beans.BeanProperty
 
 case class Plane3d(
   originPoint: Point3d,
-  basis: (Direction3d, Direction3d),
-  normalDirection: Direction3d,
-  handedness: Handedness
+  xDirection: Direction3d,
+  yDirection: Direction3d,
+  normalDirection: Direction3d
 ) extends Transformable3d[Plane3d] {
-
-  require(handedness.sign == Sign.of(xDirection.cross(yDirection).dot(normalDirection)))
 
   override def transformedBy(transformation: Transformation3d): Plane3d =
     Plane3d(
       originPoint.transformedBy(transformation),
-      (xDirection.transformedBy(transformation), yDirection.transformedBy(transformation)),
-      normalDirection.transformedBy(transformation),
-      handedness.transformedBy(transformation)
+      xDirection.transformedBy(transformation),
+      yDirection.transformedBy(transformation),
+      normalDirection.transformedBy(transformation)
     )
-
-  def xDirection: Direction3d = basis match {case (xDirection, yDirection) => xDirection}
-
-  def yDirection: Direction3d = basis match {case (xDirection, yDirection) => yDirection}
 
   def offsetBy(distance: Double): Plane3d = translatedBy(distance * normalDirection)
 
-  def flipped: Plane3d =
-    Plane3d(originPoint, (xDirection, yDirection), -normalDirection, -handedness)
+  def flipped: Plane3d = Plane3d(originPoint, xDirection, yDirection, -normalDirection)
 
   def normalAxis: Axis3d = Axis3d(originPoint, normalDirection)
+
+  def handedness: Handedness =
+    Handedness.fromSignOf(xDirection.cross(yDirection).dot(normalDirection))
 }
 
 object Plane3d {
   def apply(originPoint: Point3d, normalDirection: Direction3d): Plane3d = {
     val xDirection = normalDirection.normalDirection
     val yDirection = Direction3d(normalDirection.cross(xDirection))
-    Plane3d(originPoint, (xDirection, yDirection), normalDirection, Handedness.Right)
+    Plane3d(originPoint, xDirection, yDirection, normalDirection)
   }
 
-  def apply(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d): Plane3d = {
-    val normalDirection = Direction3d(xDirection.cross(yDirection))
-    Plane3d(originPoint, (xDirection, yDirection), normalDirection, Handedness.Right)
-  }
+  def apply(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d): Plane3d =
+    Plane3d(originPoint, xDirection, yDirection, Direction3d(xDirection.cross(yDirection)))
 
   def through(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
     val normalDirection =
@@ -65,14 +59,14 @@ object Plane3d {
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
     val yDirection = Direction3d(normalDirection.cross(xDirection))
-    Plane3d(firstPoint, (xDirection, yDirection), normalDirection, Handedness.Right)
+    Plane3d(firstPoint, xDirection, yDirection, normalDirection)
   }
 
   def through(axis: Axis3d): Plane3d = {
     val xDirection = axis.direction
     val yDirection = axis.normalDirection
     val normalDirection = Direction3d(xDirection.cross(yDirection))
-    Plane3d(axis.originPoint, (xDirection, yDirection), normalDirection, Handedness.Right)
+    Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
   def through(axis: Axis3d, point: Point3d): Plane3d = {
@@ -83,7 +77,7 @@ object Plane3d {
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
     val yDirection = Direction3d(normalDirection.cross(xDirection))
-    Plane3d(axis.originPoint, (xDirection, yDirection), normalDirection, Handedness.Right)
+    Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
   def midplane(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
