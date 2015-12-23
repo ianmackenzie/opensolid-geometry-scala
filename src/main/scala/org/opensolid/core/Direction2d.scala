@@ -15,7 +15,6 @@
 package org.opensolid.core
 
 import scala.annotation.tailrec
-import scala.beans.BeanProperty
 import scala.math
 import scala.util.Random
 
@@ -99,12 +98,9 @@ object Direction2d {
     generate
   }
 
-  @BeanProperty
   val None: Direction2d = Direction2d(0.0, 0.0)
 
-  @BeanProperty
   val X: Direction2d = Direction2d(1.0, 0.0)
 
-  @BeanProperty
   val Y: Direction2d = Direction2d(0.0, 1.0)
 }

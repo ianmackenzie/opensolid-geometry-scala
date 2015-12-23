@@ -14,7 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
 import scala.util.Random
 
 final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
@@ -153,12 +152,9 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
 }
 
 object VectorBox3d {
-  @BeanProperty
   val Empty: VectorBox3d = VectorBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
-  @BeanProperty
   val Whole: VectorBox3d = VectorBox3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
-  @BeanProperty
   val Zero: VectorBox3d = VectorBox3d(Interval.Zero, Interval.Zero, Interval.Zero)
 }

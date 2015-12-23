@@ -14,8 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
-
 case class Axis3d(originPoint: Point3d, direction: Direction3d) extends Transformable3d[Axis3d] {
   def pointAt(distance: Double): Point3d = originPoint + distance * direction
 
@@ -39,12 +37,9 @@ case class Axis3d(originPoint: Point3d, direction: Direction3d) extends Transfor
 }
 
 object Axis3d {
-  @BeanProperty
   val X = Axis3d(Point3d.Origin, Direction3d.X)
 
-  @BeanProperty
   val Y = Axis3d(Point3d.Origin, Direction3d.Y)
 
-  @BeanProperty
   val Z = Axis3d(Point3d.Origin, Direction3d.Z)
 }

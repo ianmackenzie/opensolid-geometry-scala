@@ -14,7 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
 import scala.util.Random
 
 final case class Box3d(x: Interval, y: Interval, z: Interval)
@@ -176,12 +175,9 @@ object Box3d {
       hull(points.seventh).
       hull(points.eigth)
 
-  @BeanProperty
   val Empty: Box3d = Box3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
-  @BeanProperty
   val Whole: Box3d = Box3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
-  @BeanProperty
   val Unit: Box3d = Box3d(Interval.Unit, Interval.Unit, Interval.Unit)
 }

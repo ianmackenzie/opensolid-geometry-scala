@@ -14,8 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
-
 case class Plane3d(
   originPoint: Point3d,
   xDirection: Direction3d,
@@ -112,21 +110,15 @@ object Plane3d {
     Plane3d(originPoint, normalDirection)
   }
 
-  @BeanProperty
   val XY: Plane3d = Frame3d.Global.xyPlane
 
-  @BeanProperty
   val XZ: Plane3d = Frame3d.Global.xzPlane
 
-  @BeanProperty
   val YX: Plane3d = Frame3d.Global.yxPlane
 
-  @BeanProperty
   val YZ: Plane3d = Frame3d.Global.yzPlane
 
-  @BeanProperty
   val ZX: Plane3d = Frame3d.Global.zxPlane
 
-  @BeanProperty
   val ZY: Plane3d = Frame3d.Global.zyPlane
 }

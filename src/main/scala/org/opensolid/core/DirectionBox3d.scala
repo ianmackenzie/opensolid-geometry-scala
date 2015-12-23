@@ -14,8 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
-
 final case class DirectionBox3d(vectorBox: VectorBox3d) {
   def this(x: Interval, y: Interval, z: Interval) = this(VectorBox3d(x, y, z))
 
@@ -66,6 +64,5 @@ object DirectionBox3d {
   def apply(direction: Direction3d): DirectionBox3d =
     DirectionBox3d(Interval(direction.x), Interval(direction.y), Interval(direction.z))
 
-  @BeanProperty
   val Empty = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }

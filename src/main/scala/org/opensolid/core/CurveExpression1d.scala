@@ -12,8 +12,6 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-import scala.beans.BeanProperty
-
 import org.opensolid.core.codegen
 
 package org.opensolid.core {
@@ -95,16 +93,12 @@ package org.opensolid.core {
   object CurveExpression1d {
     def constant(value: Double): CurveExpression1d = Constant(value)
 
-    @BeanProperty
     val Zero: CurveExpression1d = Constant(0.0)
 
-    @BeanProperty
     val One: CurveExpression1d = Constant(1.0)
 
-    @BeanProperty
     val NegativeOne: CurveExpression1d = Constant(-1.0)
 
-    @BeanProperty
     val Parameter: CurveExpression1d = Identity
 
     case class Constant(value: Double) extends CurveExpression1d {
@@ -119,7 +113,6 @@ package org.opensolid.core {
       override def build(builder: codegen.Builder): codegen.Value = builder.variable(value)
     }
 
-    @BeanProperty
     case object Identity extends CurveExpression1d {
       override def derivative: CurveExpression1d = CurveExpression1d.One
 

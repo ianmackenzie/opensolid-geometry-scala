@@ -14,7 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
 import scala.math
 
 final case class Point3d(x: Double, y: Double, z: Double)
@@ -85,6 +84,5 @@ final case class Point3d(x: Double, y: Double, z: Double)
 }
 
 object Point3d {
-  @BeanProperty
   val Origin: Point3d = Point3d(0.0, 0.0, 0.0)
 }

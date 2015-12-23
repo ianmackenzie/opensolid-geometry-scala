@@ -14,7 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
 import scala.math
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
@@ -110,6 +109,5 @@ object Vector2d {
   def polar(radius: Double, angle: Double): Vector2d =
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
 
-  @BeanProperty
   val Zero: Vector2d = Vector2d(0.0, 0.0)
 }

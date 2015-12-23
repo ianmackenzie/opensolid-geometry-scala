@@ -14,7 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
 import scala.math
 import scala.util.Random
 
@@ -651,16 +650,12 @@ object Interval {
     * square root of an interval containing only negative values, or the sum of the empty interval
     * and any other interval.
     */
-  @BeanProperty
   val Empty: Interval = new Interval(Double.NaN, Double.NaN)
 
-  @BeanProperty
   val Whole: Interval = new Interval(Double.NegativeInfinity, Double.PositiveInfinity)
 
-  @BeanProperty
   val Unit: Interval = new Interval(0.0, 1.0)
 
-  @BeanProperty
   val Zero: Interval = new Interval(0.0, 0.0)
 
   private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {

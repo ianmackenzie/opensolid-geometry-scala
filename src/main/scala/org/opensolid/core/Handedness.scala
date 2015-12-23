@@ -14,8 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
-
 final case class Handedness private (sign: Sign) {
   def unary_- : Handedness = this match {
     case Handedness.Right => Handedness.Left
@@ -47,12 +45,9 @@ object Handedness {
     case _ => Handedness.None
   }
 
-  @BeanProperty
   val Left: Handedness = Handedness(Sign.Negative)
 
-  @BeanProperty
   val None: Handedness = Handedness(Sign.None)
 
-  @BeanProperty
   val Right: Handedness = Handedness(Sign.Positive)
 }

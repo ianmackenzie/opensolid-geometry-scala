@@ -14,8 +14,6 @@
 
 package org.opensolid.core
 
-import scala.beans.BeanProperty
-
 case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirection: Direction2d)
   extends Transformable2d[Frame2d] {
 
@@ -47,6 +45,5 @@ object Frame2d {
   def apply(originPoint: Point2d, xDirection: Direction2d): Frame2d =
     Frame2d(originPoint, xDirection, xDirection.normalDirection)
 
-  @BeanProperty
   val Global: Frame2d = Frame2d(Point2d.Origin, Direction2d.X, Direction2d.Y)
 }
