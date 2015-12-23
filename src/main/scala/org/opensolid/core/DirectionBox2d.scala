@@ -17,9 +17,13 @@ package org.opensolid.core
 final case class DirectionBox2d(vectorBox: VectorBox2d) {
   def this(x: Interval, y: Interval) = this(VectorBox2d(x, y))
 
+  def this(components: (Interval, Interval)) = this(components.first, components.second)
+
   def x: Interval = vectorBox.x
 
   def y: Interval = vectorBox.y
+
+  def components: (Interval, Interval) = vectorBox.components
 
   def component(index: Int): Interval = vectorBox.component(index)
 
@@ -51,6 +55,7 @@ final case class DirectionBox2d(vectorBox: VectorBox2d) {
 object DirectionBox2d {
   def apply(x: Interval, y: Interval): DirectionBox2d = new DirectionBox2d(x, y)
 
+  def apply(components: (Interval, Interval)): DirectionBox2d = new DirectionBox2d(components)
 
   val Empty = DirectionBox2d(Interval.Empty, Interval.Empty)
 }

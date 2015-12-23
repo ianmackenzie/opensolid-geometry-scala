@@ -17,11 +17,16 @@ package org.opensolid.core
 final case class DirectionBox3d(vectorBox: VectorBox3d) {
   def this(x: Interval, y: Interval, z: Interval) = this(VectorBox3d(x, y, z))
 
+  def this(components: (Interval, Interval, Interval)) =
+    this(components.first, components.second, components.third)
+
   def x: Interval = vectorBox.x
 
   def y: Interval = vectorBox.y
 
   def z: Interval = vectorBox.z
+
+  def components: (Interval, Interval, Interval) = vectorBox.components
 
   def component(index: Int): Interval = vectorBox.component(index)
 
@@ -61,6 +66,8 @@ final case class DirectionBox3d(vectorBox: VectorBox3d) {
 object DirectionBox3d {
   def apply(x: Interval, y: Interval, z: Interval): DirectionBox3d = new DirectionBox3d(x, y, z)
 
+  def apply(components: (Interval, Interval, Interval)): DirectionBox3d =
+    new DirectionBox3d(components)
 
   val Empty = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }
