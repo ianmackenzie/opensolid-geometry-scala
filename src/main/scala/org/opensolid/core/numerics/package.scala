@@ -68,4 +68,10 @@ package object numerics {
     val zDirection = Direction3d(2 * (xz + wy), 2 * (yz - wx), 1 - 2 * (xx + yy))
     (xDirection, yDirection, zDirection)
   }
+
+  def normalBasis(direction: Direction3d): (Direction3d, Direction3d) = {
+    val xDirection = direction.normalDirection
+    val yDirection = Direction3d(direction.cross(xDirection))
+    (xDirection, yDirection)
+  }
 }
