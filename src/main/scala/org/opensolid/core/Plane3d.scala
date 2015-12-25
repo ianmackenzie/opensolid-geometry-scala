@@ -36,6 +36,8 @@ case class Plane3d(
   def this(originPoint: Point3d, normalDirection: Direction3d) =
     this(originPoint, numerics.normalBasis(normalDirection), normalDirection)
 
+  def basisDirections: (Direction3d, Direction3d) = (xDirection, yDirection)
+
   override def transformedBy(transformation: Transformation3d): Plane3d =
     Plane3d(
       originPoint.transformedBy(transformation),
