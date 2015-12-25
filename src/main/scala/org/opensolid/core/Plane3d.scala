@@ -21,6 +21,21 @@ case class Plane3d(
   normalDirection: Direction3d
 ) extends Transformable3d[Plane3d] {
 
+  def this(
+    originPoint: Point3d,
+    basisDirections: (Direction3d, Direction3d),
+    normalDirection: Direction3d
+  ) = this(originPoint, basisDirections.first, basisDirections.second, normalDirection)
+
+  def this(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d) =
+    this(originPoint, xDirection, yDirection, Direction3d(xDirection.cross(yDirection)))
+
+  def this(originPoint: Point3d, basisDirections: (Direction3d, Direction3d)) =
+    this(originPoint, basisDirections.first, basisDirections.second)
+
+  def this(originPoint: Point3d, normalDirection: Direction3d) =
+    this(originPoint, numerics.normalBasis(normalDirection), normalDirection)
+
   override def transformedBy(transformation: Transformation3d): Plane3d =
     Plane3d(
       originPoint.transformedBy(transformation),
@@ -40,14 +55,20 @@ case class Plane3d(
 }
 
 object Plane3d {
-  def apply(originPoint: Point3d, normalDirection: Direction3d): Plane3d = {
-    val xDirection = normalDirection.normalDirection
-    val yDirection = Direction3d(normalDirection.cross(xDirection))
-    Plane3d(originPoint, xDirection, yDirection, normalDirection)
-  }
+  def apply(
+    originPoint: Point3d,
+    basisDirections: (Direction3d, Direction3d),
+    normalDirection: Direction3d
+  ): Plane3d = new Plane3d(originPoint, basisDirections, normalDirection)
 
   def apply(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d): Plane3d =
-    Plane3d(originPoint, xDirection, yDirection, Direction3d(xDirection.cross(yDirection)))
+    new Plane3d(originPoint, xDirection, yDirection)
+
+  def apply(originPoint: Point3d, basisDirections: (Direction3d, Direction3d)): Plane3d =
+    new Plane3d(originPoint, basisDirections)
+
+  def apply(originPoint: Point3d, normalDirection: Direction3d): Plane3d =
+    new Plane3d(originPoint, normalDirection)
 
   def through(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
     val normalDirection =
