@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirection: Direction2d)
+final case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirection: Direction2d)
   extends Transformable2d[Frame2d] {
 
   def transformedBy(transformation: Transformation2d): Frame2d =

@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.math
 
-case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Direction3d))
+final case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Direction3d))
   extends Transformation3d {
 
   def this(axis: Axis3d, angle: Double) =

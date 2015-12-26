@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
+final case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
   extends Scalable2d[LineSegment2d]
   with Bounded[Box2d]
   with GeometricallyComparable[LineSegment2d] {

@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.math
 
-case class Rotation2d(point: Point2d, angle: Double) extends Transformation2d {
+final case class Rotation2d(point: Point2d, angle: Double) extends Transformation2d {
   private[this] val sinAngle = math.sin(angle)
   private[this] val cosAngle = math.cos(angle)
 

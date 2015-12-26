@@ -14,7 +14,9 @@
 
 package org.opensolid.core
 
-case class Axis2d(originPoint: Point2d, direction: Direction2d) extends Transformable2d[Axis2d] {
+final case class Axis2d(originPoint: Point2d, direction: Direction2d)
+  extends Transformable2d[Axis2d] {
+
   def pointAt(distance: Double): Point2d = originPoint + distance * direction
 
   def normalDirection: Direction2d = direction.normalDirection

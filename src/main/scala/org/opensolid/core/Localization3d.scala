@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-case class Localization3d(frame: Frame3d) extends Transformation3d {
+final case class Localization3d(frame: Frame3d) extends Transformation3d {
   def apply(length: Double): Double = length
 
   def apply(handedness: Handedness): Handedness = frame.handedness * handedness

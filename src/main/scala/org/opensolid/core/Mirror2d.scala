@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-case class Mirror2d(point: Point2d, direction: Direction2d) extends Transformation2d {
+final case class Mirror2d(point: Point2d, direction: Direction2d) extends Transformation2d {
   def apply(length: Double): Double = length
 
   def apply(handedness: Handedness): Handedness = -handedness

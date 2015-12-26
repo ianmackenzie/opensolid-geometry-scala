@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-case class Frame3d(
+final case class Frame3d(
   originPoint: Point3d,
   xDirection: Direction3d,
   yDirection: Direction3d,

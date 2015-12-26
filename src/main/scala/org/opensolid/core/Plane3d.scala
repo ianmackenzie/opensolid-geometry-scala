@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-case class Plane3d(
+final case class Plane3d(
   originPoint: Point3d,
   xDirection: Direction3d,
   yDirection: Direction3d,
