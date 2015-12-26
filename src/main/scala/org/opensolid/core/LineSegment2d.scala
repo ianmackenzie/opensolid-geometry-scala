@@ -31,6 +31,8 @@ case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
 
   def axis: Axis2d = Axis2d(firstEndpoint, direction)
 
+  def reversed: LineSegment2d = LineSegment2d(secondEndpoint, firstEndpoint)
+
   def length: Double = vector.length
 
   def squaredLength: Double = vector.squaredLength
