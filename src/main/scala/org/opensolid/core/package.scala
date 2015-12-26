@@ -292,8 +292,7 @@ package object core {
       case 3 => fourth
       case 4 => fifth
       case 5 => sixth
-      case _ =>
-        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a hextuple")
+      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a hextuple")
     }
 
     def count(function: (T) => Boolean): Int =
@@ -352,8 +351,7 @@ package object core {
       case 4 => fifth
       case 5 => sixth
       case 6 => seventh
-      case _ =>
-        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a septuple")
+      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a septuple")
     }
 
     def count(function: (T) => Boolean): Int =
@@ -436,8 +434,7 @@ package object core {
       case 5 => sixth
       case 6 => seventh
       case 7 => eigth
-      case _ =>
-        throw new IndexOutOfBoundsException(s"Index $index is out of bounds for an octuple")
+      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for an octuple")
     }
 
     def count(function: (T) => Boolean): Int =
