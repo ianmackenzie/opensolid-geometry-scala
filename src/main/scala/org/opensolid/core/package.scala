@@ -135,7 +135,7 @@ package object core {
       case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a pair")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
 
     def reduce[U >: T](function: (U, U) => U): U = function(first, second)
@@ -164,7 +164,7 @@ package object core {
       case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a triple")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0)
@@ -200,7 +200,7 @@ package object core {
         throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a quadruple")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0) +
@@ -242,7 +242,7 @@ package object core {
         throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a quintuple")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0) +
@@ -296,7 +296,7 @@ package object core {
         throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a hextuple")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0) +
@@ -356,7 +356,7 @@ package object core {
         throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a septuple")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0) +
@@ -440,7 +440,7 @@ package object core {
         throw new IndexOutOfBoundsException(s"Index $index is out of bounds for an octuple")
     }
 
-    def count (function: (T) => Boolean): Int =
+    def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) +
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0) +
