@@ -29,8 +29,6 @@ case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
 
   def normalDirection: Direction2d = direction.normalDirection
 
-  def normalDirection(handedness: Handedness): Direction2d = direction.normalDirection(handedness)
-
   def axis: Axis2d = Axis2d(firstEndpoint, direction)
 
   def length: Double = vector.length
