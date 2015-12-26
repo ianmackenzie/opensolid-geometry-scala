@@ -69,7 +69,11 @@ import scala.util.Random
 final case class Interval(lowerBound: Double, upperBound: Double)
   extends Bounds[Interval] with GeometricallyComparable[Interval] {
 
+  def this(endpoints: (Double, Double)) = this(endpoints.first, endpoints.second)
+
   def this(value: Double) = this(value, value)
+
+  def endpoints: (Double, Double) = (lowerBound, upperBound)
 
   override def equals(other: Any): Boolean = other match {
     case that: Interval =>
@@ -475,6 +479,8 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 
 object Interval {
   def apply(value: Double): Interval = new Interval(value)
+
+  def apply(endpoints: (Double, Double)): Interval = new Interval(endpoints)
 
   def hullOf(values: (Double, Double)): Interval = values.first.hull(values.second)
 
