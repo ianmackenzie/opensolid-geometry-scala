@@ -22,6 +22,29 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
 
   def vertices: (Point2d, Point2d, Point2d) = (firstVertex, secondVertex, thirdVertex)
 
+  def vertex(index: Int): Point2d = index match {
+    case 0 => firstVertex
+    case 1 => secondVertex
+    case 2 => thirdVertex
+    case _ =>
+      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a triangle vertex")
+  }
+
+  def edges: (LineSegment2d, LineSegment2d, LineSegment2d) =
+    (
+      LineSegment2d(thirdVertex, secondVertex),
+      LineSegment2d(firstVertex, thirdVertex),
+      LineSegment2d(secondVertex, firstVertex)
+    )
+
+  def edge(index: Int): LineSegment2d = index match {
+    case 0 => LineSegment2d(thirdVertex, secondVertex)
+    case 1 => LineSegment2d(firstVertex, thirdVertex)
+    case 2 => LineSegment2d(secondVertex, firstVertex)
+    case _ =>
+      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a triangle edge")
+  }
+
   override def transformedBy(transformation: Transformation2d): Triangle2d =
     Triangle2d(
       firstVertex.transformedBy(transformation),
@@ -37,4 +60,29 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
     this.thirdVertex.isEqualTo(that.thirdVertex, tolerance)
 
   def area: Double = 0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex)
+
+  def centroid: Point2d =
+    firstVertex + ((secondVertex - firstVertex) + (thirdVertex - firstVertex)) / 3.0
+
+  def contains(point: Point2d): Boolean = {
+    val firstProduct = (secondVertex - firstVertex).cross(point - firstVertex)
+    val secondProduct = (thirdVertex - secondVertex).cross(point - secondVertex)
+    val thirdProduct = (firstVertex - thirdVertex).cross(point - thirdVertex)
+
+    (firstProduct >= 0 && secondProduct >= 0 && thirdProduct >= 0) ||
+    (firstProduct <= 0 && secondProduct <= 0 && thirdProduct <= 0)
+  }
+
+  def placedOnto(plane: Plane3d): Triangle3d =
+    Triangle3d(
+      firstVertex.placedOnto(plane),
+      secondVertex.placedOnto(plane),
+      thirdVertex.placedOnto(plane)
+    )
+}
+
+object Triangle2d {
+  def apply(vertices: (Point2d, Point2d, Point2d)): Triangle2d = new Triangle2d(vertices)
+
+  val Unit: Triangle2d = Triangle2d(Point2d.Origin, Point2d(1, 0), Point2d(0, 1))
 }
