@@ -61,6 +61,14 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def dot(directionBox: DirectionBox2d): Interval = vector.dot(directionBox.vectorBox)
 
+  def cross(vector: Vector2d): Double = this.vector.cross(vector)
+
+  def cross(that: Direction2d): Double = this.vector.cross(that.vector)
+
+  def cross(vectorBox: VectorBox2d): Interval = vector.cross(vectorBox)
+
+  def cross(directionBox: DirectionBox2d): Interval = vector.cross(directionBox.vectorBox)
+
   def normalDirection: Direction2d = Direction2d(-y, x)
 
   def angleTo(that: Direction2d): Double =

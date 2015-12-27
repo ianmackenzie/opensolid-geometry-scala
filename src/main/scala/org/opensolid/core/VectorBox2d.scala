@@ -115,6 +115,14 @@ final case class VectorBox2d(x: Interval, y: Interval) {
   def dot(that: VectorBox2d): Interval = this.x * that.x + this.y * that.y
 
   def dot(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
+
+  def cross(vector: Vector2d): Interval = x * vector.y - y * vector.x
+
+  def cross(direction: Direction2d): Interval = cross(direction.vector)
+
+  def cross(that: VectorBox2d): Interval = this.x * that.y - this.y * that.x
+
+  def cross(directionBox: DirectionBox2d): Interval = cross(directionBox.vectorBox)
 }
 
 object VectorBox2d {
