@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVertex: Point2d)
-  extends Transformable2d[Triangle2d] with Bounded[Box2d] with GeometricallyComparable[Triangle2d] {
+  extends Scalable2d[Triangle2d] with Bounded[Box2d] with GeometricallyComparable[Triangle2d] {
 
   def this(vertices: (Point2d, Point2d, Point2d)) =
     this(vertices.first, vertices.second, vertices.third)
@@ -50,6 +50,13 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
       firstVertex.transformedBy(transformation),
       secondVertex.transformedBy(transformation),
       thirdVertex.transformedBy(transformation)
+    )
+
+  override def scaledAbout(point: Point2d, scale: Double): Triangle2d =
+    Triangle2d(
+      firstVertex.scaledAbout(point, scale),
+      secondVertex.scaledAbout(point, scale),
+      thirdVertex.scaledAbout(point, scale)
     )
 
   override def bounds: Box2d = firstVertex.hull(secondVertex).hull(thirdVertex)
