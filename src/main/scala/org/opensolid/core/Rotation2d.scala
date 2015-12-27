@@ -20,12 +20,12 @@ final case class Rotation2d(point: Point2d, angle: Double) extends Transformatio
   private[this] val sinAngle = math.sin(angle)
   private[this] val cosAngle = math.cos(angle)
 
-  def apply(handedness: Handedness): Handedness = handedness
+  override def apply(handedness: Handedness): Handedness = handedness
 
-  def apply(point: Point2d): Point2d = this.point + apply(point - this.point)
+  override def apply(point: Point2d): Point2d = this.point + apply(point - this.point)
 
-  def apply(vector: Vector2d): Vector2d =
+  override def apply(vector: Vector2d): Vector2d =
     Vector2d(cosAngle * vector.x - sinAngle * vector.y, sinAngle * vector.x + cosAngle * vector.y)
 
-  def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
+  override def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
 }

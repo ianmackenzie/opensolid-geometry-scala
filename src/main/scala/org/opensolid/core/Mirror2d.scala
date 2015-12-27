@@ -15,13 +15,14 @@
 package org.opensolid.core
 
 final case class Mirror2d(point: Point2d, direction: Direction2d) extends Transformation2d {
-  def apply(handedness: Handedness): Handedness = -handedness
+  override def apply(handedness: Handedness): Handedness = -handedness
 
-  def apply(point: Point2d): Point2d = point - 2 * (point - this.point).dot(direction) * direction
+  override def apply(point: Point2d): Point2d =
+    point - 2 * (point - this.point).dot(direction) * direction
 
-  def apply(vector: Vector2d): Vector2d = vector - 2 * vector.dot(direction) * direction
+  override def apply(vector: Vector2d): Vector2d = vector - 2 * vector.dot(direction) * direction
 
-  def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
+  override def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
 }
 
 object Mirror2d {

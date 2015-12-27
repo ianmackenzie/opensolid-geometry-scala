@@ -17,11 +17,11 @@ package org.opensolid.core
 final case class CompoundTransformation3d(first: Transformation3d, second: Transformation3d)
   extends Transformation3d {
 
-  def apply(handedness: Handedness): Handedness = second(first(handedness))
+  override def apply(handedness: Handedness): Handedness = second(first(handedness))
 
-  def apply(point: Point3d): Point3d = second(first(point))
+  override def apply(point: Point3d): Point3d = second(first(point))
 
-  def apply(vector: Vector3d): Vector3d = second(first(vector))
+  override def apply(vector: Vector3d): Vector3d = second(first(vector))
 
-  def apply(direction: Direction3d): Direction3d = second(first(direction))
+  override def apply(direction: Direction3d): Direction3d = second(first(direction))
 }
