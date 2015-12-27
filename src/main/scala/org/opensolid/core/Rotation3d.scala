@@ -22,8 +22,6 @@ final case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Di
   def this(axis: Axis3d, angle: Double) =
     this(axis.originPoint, numerics.rotationBasis(axis.direction, angle))
 
-  def apply(length: Double): Double = length
-
   def apply(handedness: Handedness): Handedness = handedness
 
   def apply(point: Point3d): Point3d = this.point + apply(point - this.point)
