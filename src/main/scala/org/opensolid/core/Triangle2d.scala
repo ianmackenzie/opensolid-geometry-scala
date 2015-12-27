@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVertex: Point2d)
-  extends Transformable2d[Triangle2d] with Bounded[Box2d] {
+  extends Transformable2d[Triangle2d] with Bounded[Box2d] with GeometricallyComparable[Triangle2d] {
 
   def this(vertices: (Point2d, Point2d, Point2d)) =
     this(vertices.first, vertices.second, vertices.third)
@@ -30,6 +30,11 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
     )
 
   override def bounds: Box2d = firstVertex.hull(secondVertex).hull(thirdVertex)
+
+  override def isEqualTo(that: Triangle2d, tolerance: Double): Boolean =
+    this.firstVertex.isEqualTo(that.firstVertex, tolerance) &&
+    this.secondVertex.isEqualTo(that.secondVertex, tolerance) &&
+    this.thirdVertex.isEqualTo(that.thirdVertex, tolerance)
 
   def area: Double = 0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex)
 }
