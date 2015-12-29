@@ -74,48 +74,4 @@ package object numerics {
     val yDirection = Direction3d(direction.cross(xDirection))
     (xDirection, yDirection)
   }
-
-  def centerPoint(
-    radius: Double,
-    firstPoint: Point2d,
-    secondPoint: Point2d,
-    direction: Handedness
-  ): Point2d = {
-    require(radius >= 0.0)
-    val displacementVector = secondPoint - firstPoint
-    val halfDistance = displacementVector.length / 2.0
-    val sidewaysDirection = direction.sign * displacementVector.normalDirection
-    val sidewaysDistance = math.sqrt((halfDistance * halfDistance - radius * radius).max(0.0))
-    firstPoint + displacementVector / 2.0 + sidewaysDistance * sidewaysDirection
-  }
-
-  def circleThroughPoints(
-    firstPoint: Point2d,
-    secondPoint: Point2d,
-    thirdPoint: Point2d
-  ): Circle2d = {
-    val a = (secondPoint - firstPoint).length
-    val b = (thirdPoint - secondPoint).length
-    val c = (firstPoint - thirdPoint).length
-    val a2 = a * a
-    val b2 = b * b
-    val c2 = c * c
-    val t1 = a2 * (b2 + c2 - a2)
-    val t2 = b2 * (c2 + a2 - b2)
-    val t3 = c2 * (a2 + b2 - c2)
-    val sum = t1 + t2 + t3
-    val sumInverse = 1.0 / sum
-    val w1 = t1 * sumInverse
-    val w3 = t3 * sumInverse
-
-    val centerPoint = firstPoint + w1 * (thirdPoint - firstPoint) + w3 * (secondPoint - firstPoint)
-
-    val firstRadius = (firstPoint - centerPoint).length
-    val secondRadius = (secondPoint - centerPoint).length
-    val thirdRadius = (thirdPoint - centerPoint).length
-
-    val radius = (firstRadius + secondRadius + thirdRadius) / 3.0;
-
-    Circle2d(centerPoint, radius)
-  }
 }
