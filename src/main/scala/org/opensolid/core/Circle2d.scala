@@ -37,6 +37,8 @@ final case class Circle2d(centerPoint: Point2d, radius: Double)
     (centerDistance + radiusDifference).isZero(tolerance)
   }
 
+  def contains(point: Point2d): Boolean = point.squaredDistanceTo(centerPoint) <= radius * radius
+
   def projectedOnto(axis: Axis2d): LineSegment2d = {
     val projectedCenter = centerPoint.projectedOnto(axis)
     val offset = radius * axis.direction
