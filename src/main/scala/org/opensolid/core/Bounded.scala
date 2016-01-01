@@ -14,6 +14,6 @@
 
 package org.opensolid.core
 
-trait Bounded[T <: Bounds[T]] {
+trait Bounded[T] {
   def bounds: T
 }

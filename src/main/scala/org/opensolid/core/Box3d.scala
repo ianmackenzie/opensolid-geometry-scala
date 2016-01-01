@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class Box3d(x: Interval, y: Interval, z: Interval)
-  extends Bounds[Box3d] with GeometricallyComparable[Box3d] {
+  extends Bounded[Box3d] with GeometricallyComparable[Box3d] {
 
   def this(components: (Interval, Interval, Interval)) =
     this(components.first, components.second, components.third)
@@ -34,6 +34,8 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
   override def isEqualTo(that: Box3d, tolerance: Double): Boolean =
     this.minVertex.isEqualTo(that.minVertex, tolerance) &&
     this.maxVertex.isEqualTo(that.maxVertex, tolerance)
+
+  override def bounds: Box3d = this
 
   def isEmpty: Boolean = x.isEmpty || y.isEmpty || z.isEmpty
 
@@ -68,7 +70,7 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
 
   def hull(point: Point3d): Box3d = Box3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
-  override def hull(that: Box3d): Box3d =
+  def hull(that: Box3d): Box3d =
     Box3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
 
   def intersection(that: Box3d): Box3d = {
@@ -81,7 +83,7 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
   def overlaps(that: Box3d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
 
-  override def overlaps(that: Box3d, tolerance: Double): Boolean =
+  def overlaps(that: Box3d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) &&
     this.y.overlaps(that.y, tolerance) &&
     this.z.overlaps(that.z, tolerance)
@@ -97,13 +99,13 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
   def contains(that: Box3d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
 
-  override def contains(that: Box3d, tolerance: Double): Boolean =
+  def contains(that: Box3d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) &&
     this.y.contains(that.y, tolerance) &&
     this.z.contains(that.z, tolerance)
 
-  override def bisected(dimensionIndex: Int): (Box3d, Box3d) =
-    (dimensionIndex % 3) match {
+  def bisected(index: Int): (Box3d, Box3d) =
+    (index % 3) match {
       case 0 => {
         val (xLower, xUpper) = x.bisected
         (Box3d(xLower, y, z), Box3d(xUpper, y, z))
@@ -179,4 +181,22 @@ object Box3d {
   val Whole: Box3d = Box3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
   val Unit: Box3d = Box3d(Interval.Unit, Interval.Unit, Interval.Unit)
+
+  implicit val Traits: Bounds[Box3d] = new Bounds[Box3d] {
+    override def component(box: Box3d, index: Int): Interval = box.component(index)
+
+    override def overlaps(firstBox: Box3d, secondBox: Box3d, tolerance: Double): Boolean =
+      firstBox.overlaps(secondBox, tolerance)
+
+    override def contains(firstBox: Box3d, secondBox: Box3d, tolerance: Double): Boolean =
+      firstBox.contains(secondBox, tolerance)
+
+    override def bisected(box: Box3d, index: Int): (Box3d, Box3d) = box.bisected(index)
+
+    override def hull(firstBox: Box3d, secondBox: Box3d): Box3d = firstBox.hull(secondBox)
+
+    override val NumDimensions: Int = 3
+
+    override val Empty: Box3d = Box3d.Empty
+  }
 }

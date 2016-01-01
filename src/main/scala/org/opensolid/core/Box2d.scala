@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class Box2d(x: Interval, y: Interval)
-  extends Bounds[Box2d] with GeometricallyComparable[Box2d] {
+  extends Bounded[Box2d] with GeometricallyComparable[Box2d] {
 
   def this(components: (Interval, Interval)) = this(components.first, components.second)
 
@@ -32,6 +32,8 @@ final case class Box2d(x: Interval, y: Interval)
   override def isEqualTo(that: Box2d, tolerance: Double): Boolean =
     this.minVertex.isEqualTo(that.minVertex, tolerance) &&
     this.maxVertex.isEqualTo(that.maxVertex, tolerance)
+
+  override def bounds: Box2d = this
 
   def isEmpty: Boolean = x.isEmpty || y.isEmpty
 
@@ -61,7 +63,7 @@ final case class Box2d(x: Interval, y: Interval)
 
   def hull(point: Point2d): Box2d = Box2d(x.hull(point.x), y.hull(point.y))
 
-  override def hull(that: Box2d): Box2d = Box2d(this.x.hull(that.x), this.y.hull(that.y))
+  def hull(that: Box2d): Box2d = Box2d(this.x.hull(that.x), this.y.hull(that.y))
 
   def intersection(that: Box2d): Box2d = {
     val x = this.x.intersection(that.x)
@@ -71,7 +73,7 @@ final case class Box2d(x: Interval, y: Interval)
 
   def overlaps(that: Box2d): Boolean = this.x.overlaps(that.x) && this.y.overlaps(that.y)
 
-  override def overlaps(that: Box2d, tolerance: Double): Boolean =
+  def overlaps(that: Box2d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) && this.y.overlaps(that.y, tolerance)
 
   def contains(point: Point2d): Boolean = x.contains(point.x) && y.contains(point.y)
@@ -84,8 +86,8 @@ final case class Box2d(x: Interval, y: Interval)
   def contains(that: Box2d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
 
-  override def bisected(dimensionIndex: Int): (Box2d, Box2d) = {
-    if (dimensionIndex % 2 == 0) {
+  def bisected(index: Int): (Box2d, Box2d) = {
+    if (index % 2 == 0) {
       val (xLower, xUpper) = x.bisected
       (Box2d(xLower, y), Box2d(xUpper, y))
     } else {
@@ -157,4 +159,22 @@ object Box2d {
   val Whole: Box2d = Box2d(Interval.Whole, Interval.Whole)
 
   val Unit: Box2d = Box2d(Interval.Unit, Interval.Unit)
+
+  implicit val Traits: Bounds[Box2d] = new Bounds[Box2d] {
+    override def component(box: Box2d, index: Int): Interval = box.component(index)
+
+    override def overlaps(firstBox: Box2d, secondBox: Box2d, tolerance: Double): Boolean =
+      firstBox.overlaps(secondBox, tolerance)
+
+    override def contains(firstBox: Box2d, secondBox: Box2d, tolerance: Double): Boolean =
+      firstBox.contains(secondBox, tolerance)
+
+    override def bisected(box: Box2d, index: Int): (Box2d, Box2d) = box.bisected(index)
+
+    override def hull(firstBox: Box2d, secondBox: Box2d): Box2d = firstBox.hull(secondBox)
+
+    override val NumDimensions: Int = 2
+
+    override val Empty: Box2d = Box2d.Empty
+  }
 }

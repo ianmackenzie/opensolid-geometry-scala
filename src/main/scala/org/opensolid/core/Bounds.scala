@@ -14,14 +14,33 @@
 
 package org.opensolid.core
 
-abstract class Bounds[T <: Bounds[T]] extends Bounded[T] { this: T =>
-  override def bounds: T = this
+abstract class Bounds[T] {
+  def component(bounds: T, index: Int): Interval
 
-  def overlaps(that: T, tolerance: Double): Boolean
+  def overlaps(firstBounds: T, secondBounds: T, tolerance: Double): Boolean
 
-  def contains(that: T, tolerance: Double): Boolean
+  def contains(firstBounds: T, secondBounds: T, tolerance: Double): Boolean
 
-  def bisected(dimensionIndex: Int): (T, T)
+  def bisected(bounds: T, index: Int): (T, T)
 
-  def hull(that: T): T
+  def hull(firstBounds: T, secondBounds: T): T
+
+  def hasLesserMedian(firstBounds: T, secondBounds: T, index: Int): Boolean = {
+    val difference = component(firstBounds, index) - component(secondBounds, index)
+    difference.upperBound < -difference.lowerBound
+  }
+
+  def hasEqualMedian(firstBounds: T, secondBounds: T, index: Int): Boolean = {
+    val difference = component(firstBounds, index) - component(secondBounds, index)
+    difference.upperBound == -difference.lowerBound
+  }
+
+  def hasGreaterMedian(firstBounds: T, secondBounds: T, index: Int): Boolean = {
+    val difference = component(firstBounds, index) - component(secondBounds, index)
+    difference.upperBound > -difference.lowerBound
+  }
+
+  val NumDimensions: Int
+
+  val Empty: T
 }
