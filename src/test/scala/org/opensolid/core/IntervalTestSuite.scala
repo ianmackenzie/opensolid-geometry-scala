@@ -14,6 +14,7 @@
 
 package org.opensolid.core
 
+import org.opensolid.core.DoubleGenerators._
 import org.opensolid.core.IntervalGenerators._
 import org.scalacheck.Gen
 import org.scalatest._
