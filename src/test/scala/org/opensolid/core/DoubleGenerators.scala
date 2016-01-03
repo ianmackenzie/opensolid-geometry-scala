@@ -20,8 +20,8 @@ object DoubleGenerators {
   val randomDouble: Gen[Double] =
     for {
       x <- Gen.chooseNum(-1.0, 1.0)
-      y <- Gen.chooseNum(0.0, math.log(1e8))
-    } yield x * math.exp(y)
+      y <- Gen.frequency(64 -> 1e0, 32 -> 1e1, 16 -> 1e2, 8 -> 1e3, 4 -> 1e4, 2 -> 1e5, 1 -> 1e6)
+    } yield x * y
 
   implicit val arbitraryDouble: Arbitrary[Double] = Arbitrary(randomDouble)
 
