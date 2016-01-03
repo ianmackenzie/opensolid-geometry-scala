@@ -191,8 +191,8 @@ class IntervalTestSuite extends TestSuite {
   }
 
   test("equals(other)") {
-    forAll {(interval: Interval) => interval shouldBe (interval)}
-    forAll {(interval: Interval, value: Double) => interval should not be (value)}
+    forAll { (interval: Interval) => interval shouldBe (interval) }
+    forAll { (interval: Interval, value: Double) => interval should not be (value) }
   }
 
   test("toString") {

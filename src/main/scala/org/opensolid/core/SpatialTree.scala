@@ -125,14 +125,14 @@ object SpatialTree {
       val pivotIndex = medianIndex(leaves, beginIndex, endIndex, traits, dimensionIndex)
       val pivotBounds = leaves(pivotIndex).bounds
       var lesserEndIndex = beginIndex
-      for (index <- beginIndex.until(endIndex)) {
+      for { index <- beginIndex.until(endIndex) } {
         if (traits.hasLesserMedian(leaves(index).bounds, pivotBounds, dimensionIndex)) {
           swap(leaves, index, lesserEndIndex)
           lesserEndIndex += 1
         }
       }
       var equalEndIndex = lesserEndIndex
-      for (index <- equalEndIndex.until(endIndex)) {
+      for { index <- equalEndIndex.until(endIndex) } {
         if (traits.hasEqualMedian(leaves(index).bounds, pivotBounds, dimensionIndex)) {
           swap(leaves, index, equalEndIndex)
           equalEndIndex += 1
