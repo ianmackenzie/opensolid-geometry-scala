@@ -108,7 +108,7 @@ object SpatialTree {
     } else if (midIndex > equalEndIndex) {
       bisect(leaves, equalEndIndex, midIndex, endIndex, traits, dimensionIndex)
     } else {
-      return
+      () // Leaves are bisected, return
     }
   }
 
