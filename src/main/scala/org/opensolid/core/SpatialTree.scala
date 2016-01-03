@@ -142,16 +142,12 @@ object SpatialTree {
     }
   }
 
-  private[this] def swap[T <: Bounded[B], B : Bounds](
-    leaves: Array[Leaf[T, B]],
-    firstIndex: Int,
-    secondIndex: Int
-  ): Unit = {
+  private[this] def swap[T](array: Array[T], firstIndex: Int, secondIndex: Int): Unit = {
     if (firstIndex != secondIndex) {
-      val firstLeaf = leaves(firstIndex)
-      val secondLeaf = leaves(secondIndex)
-      leaves(firstIndex) = secondLeaf
-      leaves(secondIndex) = firstLeaf
+      val firstItem = array(firstIndex)
+      val secondItem = array(secondIndex)
+      array(firstIndex) = secondItem
+      array(secondIndex) = firstItem
     }
   }
 
