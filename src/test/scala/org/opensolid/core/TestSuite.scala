@@ -17,4 +17,5 @@ package org.opensolid.core
 import org.scalatest._
 import org.scalatest.prop._
 
-abstract class TestSuite extends FunSuite with Matchers with PropertyChecks with DoubleMatchers
+abstract class TestSuite
+  extends FunSuite with Matchers with PropertyChecks with DoubleMatchers with DoubleGenerators

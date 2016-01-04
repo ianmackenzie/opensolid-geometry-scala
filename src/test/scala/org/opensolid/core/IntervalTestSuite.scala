@@ -14,14 +14,12 @@
 
 package org.opensolid.core
 
-import org.opensolid.core.DoubleGenerators._
-import org.opensolid.core.IntervalGenerators._
 import org.scalacheck.Gen
 import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.prop._
 
-class IntervalTestSuite extends TestSuite {
+class IntervalTestSuite extends TestSuite with IntervalGenerators {
   implicit override val generatorDrivenConfig =
     PropertyCheckConfig(minSuccessful = 500, maxDiscarded = 2500)
 
