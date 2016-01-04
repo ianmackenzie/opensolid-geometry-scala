@@ -23,6 +23,8 @@ abstract class TestSuite
   import TestSuite._
 
   def eps(value: Double): Double = math.ulp(value).max(minEps)
+
+  def eps(interval: Interval): Double = Interval.ulp(interval).max(minEps)
 }
 
 object TestSuite {
