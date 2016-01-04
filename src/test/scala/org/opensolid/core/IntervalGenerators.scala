@@ -18,7 +18,7 @@ import org.scalacheck._
 
 import org.opensolid.core.DoubleGenerators._
 
-object IntervalGenerators {
+trait IntervalGenerators {
   val singletonInterval: Gen[Interval] = randomDouble.map(Interval(_))
 
   val randomInterval: Gen[Interval] =
@@ -61,3 +61,5 @@ object IntervalGenerators {
       )
     )
 }
+
+object IntervalGenerators extends IntervalGenerators

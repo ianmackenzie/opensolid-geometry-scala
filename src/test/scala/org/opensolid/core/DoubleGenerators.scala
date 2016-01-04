@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import org.scalacheck._
 
-object DoubleGenerators {
+trait DoubleGenerators {
   val randomDouble: Gen[Double] =
     for {
       x <- Gen.chooseNum(-1.0, 1.0)
@@ -28,3 +28,5 @@ object DoubleGenerators {
   def sortedValues(count: Integer): Gen[List[Double]] =
     Gen.listOfN[Double](count, randomDouble).map(list => list.sorted).suchThat(_.length == count)
 }
+
+object DoubleGenerators extends DoubleGenerators
