@@ -44,7 +44,7 @@ trait IntervalGenerators {
   val closedInterval: Gen[Interval] =
     Gen.frequency(1 -> oneUlpInterval, 1 -> twoUlpInterval, 10 -> randomWidthInterval)
 
-  var randomInterval: Gen[Interval] =
+  val randomInterval: Gen[Interval] =
     Gen.frequency(
       1 -> Interval.Empty,
       1 -> Interval.Whole,
