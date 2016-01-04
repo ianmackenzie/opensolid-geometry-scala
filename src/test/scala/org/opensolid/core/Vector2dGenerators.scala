@@ -14,9 +14,8 @@
 
 package org.opensolid.core
 
-import org.scalacheck._
-
 import org.opensolid.core.DoubleGenerators._
+import org.scalacheck._
 
 trait Vector2dGenerators {
   val randomVector2d: Gen[Vector2d] =
