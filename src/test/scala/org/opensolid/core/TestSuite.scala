@@ -18,4 +18,13 @@ import org.scalatest._
 import org.scalatest.prop._
 
 abstract class TestSuite
-  extends FunSuite with Matchers with PropertyChecks with DoubleMatchers with DoubleGenerators
+  extends FunSuite with Matchers with PropertyChecks with DoubleMatchers with DoubleGenerators {
+
+  import TestSuite._
+
+  def eps(value: Double): Double = math.ulp(value).max(minEps)
+}
+
+object TestSuite {
+  val minEps: Double = math.ulp(1.0)
+}

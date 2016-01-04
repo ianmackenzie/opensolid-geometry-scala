@@ -26,8 +26,8 @@ class Vector2dTestSuite
     forAll {
       (vector: Vector2d, scale: Double) => {
         val scaledLength = vector.length * scale.abs
-        val tolerance = 2.ulps(scaledLength)
-        (vector * scale).length should approximatelyEqual(scaledLength, tolerance)
+        val tolerance = 2 * eps(scaledLength)
+        (vector * scale).length should beEqualTo(scaledLength, tolerance)
       }
     }
   }
@@ -35,8 +35,8 @@ class Vector2dTestSuite
   test("squaredLength") {
     forAll {
       (vector: Vector2d) => {
-        val tolerance = 2.ulps(vector.squaredLength)
-        vector.squaredLength should approximatelyEqual(vector.length * vector.length, tolerance)
+        val tolerance = 2 * eps(vector.squaredLength)
+        vector.squaredLength should beEqualTo(vector.length * vector.length, tolerance)
       }
     }
   }
@@ -45,10 +45,10 @@ class Vector2dTestSuite
     forAll {
       (vector: Vector2d, axis: Axis2d) => {
         val projected = vector.projectedOnto(axis)
-        val tolerance = 3.ulps(vector.length)
-        projected.length should approximatelyEqual(vector.dot(axis.direction).abs, tolerance)
-        projected.cross(axis.direction) should approximatelyEqual(0.0, tolerance)
-        projected.projectedOnto(axis) should approximatelyEqual(projected, tolerance)
+        val tolerance = 3 * eps(vector.length)
+        projected.length should beEqualTo(vector.dot(axis.direction).abs, tolerance)
+        projected.cross(axis.direction) should beEqualTo(0.0, tolerance)
+        projected.projectedOnto(axis) should beEqualTo(projected, tolerance)
       }
     }
   }
@@ -60,10 +60,10 @@ class Vector2dTestSuite
         if (vector == Vector2d.Zero) {
           normalized shouldBe Vector2d.Zero
         } else {
-          normalized.length should approximatelyEqual(1.0, 2.ulps(1.0))
-          val tolerance = 2.ulps(vector.length)
-          vector.dot(normalized) should approximatelyEqual(vector.length, tolerance)
-          (normalized * vector.length) should approximatelyEqual(vector, tolerance)
+          normalized.length should beEqualTo(1.0, 2 * eps(1.0))
+          val tolerance = 2 * eps(vector.length)
+          vector.dot(normalized) should beEqualTo(vector.length, tolerance)
+          (normalized * vector.length) should beEqualTo(vector, tolerance)
         }
       }
     }

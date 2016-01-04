@@ -29,8 +29,8 @@ class ApproximatelyEqualMatcher[T](
     val error = difference(actual, expected)
     MatchResult(
       error <= tolerance,
-      s"$actual is not approximately equal to $expected to within $tolerance (error: $error)",
-      s"$actual is approximately equal to $expected to within $tolerance (error: $error)"
+      s"$actual is not equal to $expected to within $tolerance (error: $error)",
+      s"$actual is equal to $expected to within $tolerance (error: $error)"
     )
   }
 }

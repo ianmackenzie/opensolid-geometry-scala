@@ -20,16 +20,42 @@ import org.scalatest._
 import org.scalatest.matchers._
 
 trait DoubleMatchers {
-  implicit class DoubleExtensions(value: Double) {
-    def ulps(nominal: Double): Double = value.abs * math.ulp(nominal).max(math.ulp(1.0))
-  }
+  import DoubleMatchers._
 
-  def approximatelyEqual(expected: Double, tolerance: Double): ApproximatelyEqualMatcher[Double] =
+  def beEqualTo(expected: Double, tolerance: Double): Matcher[Double] =
     new ApproximatelyEqualMatcher[Double](
       expected,
       tolerance,
       (firstValue: Double, secondValue: Double) => (firstValue - secondValue).abs
     )
+
+  def beLessThanOrEqualTo(expected: Double, tolerance: Double): Matcher[Double] =
+    new LessThanOrEqualToMatcher(expected, tolerance)
+
+  def beGreaterThanOrEqualTo(expected: Double, tolerance: Double): Matcher[Double] =
+    new GreaterThanOrEqualToMatcher(expected, tolerance)
 }
 
-object DoubleMatchers extends DoubleMatchers
+object DoubleMatchers extends DoubleMatchers {
+  class LessThanOrEqualToMatcher(expected: Double, tolerance: Double) extends Matcher[Double] {
+    def apply(actual: Double): MatchResult = {
+      val delta = actual - expected
+      MatchResult(
+        delta <= tolerance,
+        s"$actual is greater than $expected by more than $tolerance (difference: $delta)",
+        s"$actual is less than or equal to $expected to within $tolerance (difference: $delta)"
+      )
+    }
+  }
+
+  class GreaterThanOrEqualToMatcher(expected: Double, tolerance: Double) extends Matcher[Double] {
+    def apply(actual: Double): MatchResult = {
+      val delta = actual - expected
+      MatchResult(
+        delta >= -tolerance,
+        s"$actual is less than $expected by more than $tolerance (difference: $delta)",
+        s"$actual is greater than or equal to $expected to within $tolerance (difference: $delta)"
+      )
+    }
+  }
+}
