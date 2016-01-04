@@ -20,23 +20,16 @@ import org.scalatest._
 import org.scalatest.matchers._
 
 trait DoubleMatchers {
-  case class Ulps(count: Int)
-
-  implicit class IntExtensions(value: Int) {
-    def ulps: Ulps = Ulps(value)
+  implicit class DoubleExtensions(value: Double) {
+    def ulps(nominal: Double): Double = value.abs * math.ulp(nominal).max(math.ulp(1.0))
   }
 
-  class ApproximatelyEqualMatcher(expected: Double, tolerance: Ulps) extends Matcher[Double] {
-    def apply(value: Double): MatchResult =
-      MatchResult(
-        (value - expected).abs <= tolerance.count * math.ulp(expected).max(math.ulp(1.0)),
-        s"$value did not equal $expected to within ${tolerance.count} ulps",
-        s"$value equalled $expected to within ${tolerance.count} ulps"
-      )
-  }
-
-  def approximatelyEqual(expected: Double, tolerance: Ulps) =
-    new ApproximatelyEqualMatcher(expected, tolerance)
+  def approximatelyEqual(expected: Double, tolerance: Double) =
+    new ApproximatelyEqualMatcher[Double](
+      expected,
+      tolerance,
+      (firstValue: Double, secondValue: Double) => (firstValue - secondValue).abs
+    )
 }
 
 object DoubleMatchers extends DoubleMatchers
