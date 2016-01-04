@@ -211,7 +211,7 @@ class IntervalTestSuite extends TestSuite {
     }
   }
 
-  test("randomValue()") {
+  test("randomValue") {
     forAll(closedInterval) {
       (interval: Interval) => {
         val randomValue = interval.randomValue
