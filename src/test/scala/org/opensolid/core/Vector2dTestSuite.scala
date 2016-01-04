@@ -40,4 +40,32 @@ class Vector2dTestSuite
       }
     }
   }
+
+  test("projectedOnto(axis)") {
+    forAll {
+      (vector: Vector2d, axis: Axis2d) => {
+        val projected = vector.projectedOnto(axis)
+        val tolerance = 3.ulps(vector.length)
+        projected.length should approximatelyEqual(vector.dot(axis.direction).abs, tolerance)
+        projected.cross(axis.direction) should approximatelyEqual(0.0, tolerance)
+        projected.projectedOnto(axis) should approximatelyEqual(projected, tolerance)
+      }
+    }
+  }
+
+  test("normalized") {
+    forAll {
+      (vector: Vector2d) => {
+        val normalized = vector.normalized
+        if (vector == Vector2d.Zero) {
+          normalized shouldBe Vector2d.Zero
+        } else {
+          normalized.length should approximatelyEqual(1.0, 2.ulps(1.0))
+          val tolerance = 2.ulps(vector.length)
+          vector.dot(normalized) should approximatelyEqual(vector.length, tolerance)
+          (normalized * vector.length) should approximatelyEqual(vector, tolerance)
+        }
+      }
+    }
+  }
 }
