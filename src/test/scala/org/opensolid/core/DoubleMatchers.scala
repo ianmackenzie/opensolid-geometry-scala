@@ -24,7 +24,7 @@ trait DoubleMatchers {
     def ulps(nominal: Double): Double = value.abs * math.ulp(nominal).max(math.ulp(1.0))
   }
 
-  def approximatelyEqual(expected: Double, tolerance: Double) =
+  def approximatelyEqual(expected: Double, tolerance: Double): ApproximatelyEqualMatcher[Double] =
     new ApproximatelyEqualMatcher[Double](
       expected,
       tolerance,

@@ -21,7 +21,10 @@ import org.scalatest._
 import org.scalatest.matchers._
 
 trait Vector2dMatchers extends DoubleMatchers {
-  def approximatelyEqual(expected: Vector2d, tolerance: Double) =
+  def approximatelyEqual(
+    expected: Vector2d,
+    tolerance: Double
+  ): ApproximatelyEqualMatcher[Vector2d] =
     new ApproximatelyEqualMatcher[Vector2d](
       expected,
       tolerance,
