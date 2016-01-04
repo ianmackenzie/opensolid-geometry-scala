@@ -27,7 +27,7 @@ class Vector2dTestSuite
       (vector: Vector2d, scale: Double) => {
         val scaledLength = vector.length * scale.abs
         val tolerance = 2 * eps(scaledLength)
-        (vector * scale).length should beEqualTo(scaledLength, tolerance)
+        (vector * scale).length.should(beEqualTo(scaledLength, tolerance))
       }
     }
   }
@@ -36,7 +36,7 @@ class Vector2dTestSuite
     forAll {
       (vector: Vector2d) => {
         val tolerance = 2 * eps(vector.squaredLength)
-        vector.squaredLength should beEqualTo(vector.length * vector.length, tolerance)
+        vector.squaredLength.should(beEqualTo(vector.length * vector.length, tolerance))
       }
     }
   }
@@ -46,9 +46,9 @@ class Vector2dTestSuite
       (vector: Vector2d, axis: Axis2d) => {
         val projected = vector.projectedOnto(axis)
         val tolerance = 3 * eps(vector.length)
-        projected.length should beEqualTo(vector.dot(axis.direction).abs, tolerance)
-        projected.cross(axis.direction) should beEqualTo(0.0, tolerance)
-        projected.projectedOnto(axis) should beEqualTo(projected, tolerance)
+        projected.length.should(beEqualTo(vector.dot(axis.direction).abs, tolerance))
+        projected.cross(axis.direction).should(beEqualTo(0.0, tolerance))
+        projected.projectedOnto(axis).should(beEqualTo(projected, tolerance))
       }
     }
   }
@@ -58,19 +58,19 @@ class Vector2dTestSuite
       (vector: Vector2d) => {
         val normalized = vector.normalized
         if (vector == Vector2d.Zero) {
-          normalized shouldBe Vector2d.Zero
+          normalized.shouldBe(Vector2d.Zero)
         } else {
-          normalized.length should beEqualTo(1.0, 2 * eps(1.0))
+          normalized.length.should(beEqualTo(1.0, 2 * eps(1.0)))
           val tolerance = 2 * eps(vector.length)
-          vector.dot(normalized) should beEqualTo(vector.length, tolerance)
-          (normalized * vector.length) should beEqualTo(vector, tolerance)
+          vector.dot(normalized).should(beEqualTo(vector.length, tolerance))
+          (normalized * vector.length).should(beEqualTo(vector, tolerance))
         }
       }
     }
   }
 
   test("direction") {
-    forAll { (vector: Vector2d) => vector.direction.vector shouldBe vector.normalized }
+    forAll { (vector: Vector2d) => vector.direction.vector.shouldBe(vector.normalized) }
   }
 
   test("dot(that)") {
@@ -81,7 +81,7 @@ class Vector2dTestSuite
         val secondLength = secondVector.length
         val maxLength = firstLength.max(secondLength)
         val tolerance = maxLength * 2 * eps(maxLength)
-        dotProduct should beLessThanOrEqualTo(firstLength * secondLength, tolerance)
+        dotProduct.should(beLessThanOrEqualTo(firstLength * secondLength, tolerance))
       }
     }
   }

@@ -73,9 +73,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
   def approximatelyContain(value: Double): Matcher[Interval] = new Matcher[Interval] {
     def apply(interval: Interval): MatchResult = {
       val result =
-        interval.contains(value) ||
-        interval.contains(value, 2 * Interval.ulp(interval).max(math.ulp(1.0))) ||
-        value.isNaN
+        interval.contains(value) || interval.contains(value, 2 * eps(interval)) || value.isNaN
       MatchResult(result, s"$interval does not contain $value", s"$interval contains $value")
     }
   }
@@ -89,9 +87,9 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
       (xInterval: Interval) => {
         val yInterval = intervalFunction(xInterval)
         if (xInterval.isEmpty) {
-          yInterval shouldBe empty
+          yInterval.shouldBe(empty)
         } else if (xInterval.isSingleton) {
-          yInterval should approximatelyContain(scalarFunction(xInterval.lowerBound))
+          yInterval.should(approximatelyContain(scalarFunction(xInterval.lowerBound)))
         } else if (yInterval.isEmpty) {
           forAll(valueWithin(xInterval.intersection(domain)), minSuccessful(10)) {
             (xValue: Double) => {
@@ -102,9 +100,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
         } else {
           val yValues = evaluateWithin(xInterval.intersection(domain), scalarFunction)
           forAll(yValues, minSuccessful(10)) {
-            (yValue: Double) => {
-              yInterval should approximatelyContain(yValue)
-            }
+            (yValue: Double) => yInterval.should(approximatelyContain(yValue))
           }
         }
       }
@@ -121,9 +117,9 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
       (xInterval: Interval, yValue: Double) => {
         val zInterval = intervalFunction(xInterval, yValue)
         if (xInterval.isEmpty) {
-          zInterval shouldBe empty
+          zInterval.shouldBe(empty)
         } else if (xInterval.isSingleton) {
-          zInterval should approximatelyContain(scalarFunction(xInterval.lowerBound, yValue))
+          zInterval.should(approximatelyContain(scalarFunction(xInterval.lowerBound, yValue)))
         } else if (zInterval.isEmpty) {
           forAll(valueWithin(xInterval.intersection(xDomain)), minSuccessful(10)) {
             (xValue: Double) => {
@@ -138,9 +134,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
               xValue => scalarFunction(xValue, yValue)
             )
           forAll(zValues, minSuccessful(10)) {
-            (zValue: Double) => {
-              zInterval should approximatelyContain(zValue)
-            }
+            (zValue: Double) => zInterval.should(approximatelyContain(zValue))
           }
         }
       }
@@ -157,10 +151,10 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
       (xInterval: Interval, yInterval: Interval) => {
         val zInterval = intervalFunction(xInterval, yInterval)
         if (xInterval.isEmpty || yInterval.isEmpty) {
-          zInterval shouldBe empty
+          zInterval.shouldBe(empty)
         } else if (xInterval.isSingleton && yInterval.isSingleton) {
           val zValue = scalarFunction(xInterval.lowerBound, yInterval.lowerBound)
-          zInterval should approximatelyContain(zValue)
+          zInterval.should(approximatelyContain(zValue))
         } else if (zInterval.isEmpty) {
           forAll(
             valueWithin(xInterval.intersection(xDomain)),
@@ -180,9 +174,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
               scalarFunction
             )
           forAll(zValues, minSuccessful(10)) {
-            (zValue: Double) => {
-              zInterval should approximatelyContain(zValue)
-            }
+            (zValue: Double) => zInterval.should(approximatelyContain(zValue))
           }
         }
       }
@@ -190,21 +182,21 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
   }
 
   test("equals(other)") {
-    forAll { (interval: Interval) => interval shouldBe (interval) }
-    forAll { (interval: Interval, value: Double) => interval should not be (value) }
+    forAll { (interval: Interval) => interval.shouldBe(interval) }
+    forAll { (interval: Interval, value: Double) => interval.should(not(be(value))) }
   }
 
   test("toString") {
-    Interval.Empty.toString shouldBe ("Interval.Empty")
-    Interval.Whole.toString shouldBe ("Interval.Whole")
-    Interval(2, 3).toString shouldBe ("Interval(2.0, 3.0)")
+    Interval.Empty.toString.shouldBe("Interval.Empty")
+    Interval.Whole.toString.shouldBe("Interval.Whole")
+    Interval(2, 3).toString.shouldBe("Interval(2.0, 3.0)")
   }
 
   test("interpolated(value)") {
     forAll(closedInterval, Gen.chooseNum(0.0, 1.0), minSuccessful(500)) {
       (interval: Interval, value: Double) => {
         val interpolated = interval.interpolated(value)
-        assert(interval.contains(interpolated, 2.0 * Interval.ulp(interval)))
+        assert(interval.contains(interpolated, 2 * eps(interval)))
       }
     }
   }
@@ -213,7 +205,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
     forAll(closedInterval) {
       (interval: Interval) => {
         val randomValue = interval.randomValue
-        assert(interval.contains(randomValue, 2.0 * Interval.ulp(interval)))
+        assert(interval.contains(randomValue, 2 * eps(interval)))
       }
     }
   }
@@ -223,22 +215,22 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
       (interval: Interval) => {
         val (lower, upper) = interval.bisected
         if (interval.isEmpty) {
-          lower shouldBe empty
-          upper shouldBe empty
+          lower.shouldBe(empty)
+          upper.shouldBe(empty)
         } else {
-          lower.upperBound shouldBe (upper.lowerBound)
-          lower.lowerBound shouldBe (interval.lowerBound)
-          upper.upperBound shouldBe (interval.upperBound)
+          lower.upperBound.shouldBe(upper.lowerBound)
+          lower.lowerBound.shouldBe(interval.lowerBound)
+          upper.upperBound.shouldBe(interval.upperBound)
 
           val mid = lower.upperBound
           if (interval.lowerBound + math.ulp(interval.lowerBound) < interval.upperBound) {
             // There is enough room for a bisection point distinct from both lower and upper bounds
-            mid shouldBe > (interval.lowerBound)
-            mid shouldBe < (interval.upperBound)
+            assert(mid > interval.lowerBound)
+            assert(mid < interval.upperBound)
           } else {
             // Very small interval - bisection point may be equal to lower and/or upper bounds
-            mid shouldBe >= (interval.lowerBound)
-            mid shouldBe <= (interval.upperBound)
+            assert(mid >= interval.lowerBound)
+            assert(mid <= interval.upperBound)
           }
         }
       }
@@ -251,7 +243,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
         val hull = interval.hull(value)
         if (interval.isEmpty) {
           assert(hull.isSingleton)
-          hull.lowerBound shouldBe (value)
+          hull.lowerBound.shouldBe(value)
         } else {
           assert(hull.contains(interval))
           assert(hull.contains(value))
@@ -265,9 +257,9 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
       (firstInterval: Interval, secondInterval: Interval) => {
         val hull = firstInterval.hull(secondInterval)
         if (firstInterval.isEmpty) {
-          hull shouldBe (secondInterval)
+          hull.shouldBe(secondInterval)
         } else if (secondInterval.isEmpty) {
-          hull shouldBe (firstInterval)
+          hull.shouldBe(firstInterval)
         } else {
           assert(hull.contains(firstInterval))
           assert(hull.contains(secondInterval))
@@ -281,17 +273,17 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
       (firstInterval: Interval, secondInterval: Interval) => {
         val intersection = firstInterval.intersection(secondInterval)
         if (firstInterval.isEmpty || secondInterval.isEmpty) {
-          intersection shouldBe empty
+          intersection.shouldBe(empty)
         } else {
           val firstValues = Gen.chooseNum(firstInterval.lowerBound, firstInterval.upperBound)
           forAll(firstValues, minSuccessful(10)) {
             firstValue =>
-              intersection.contains(firstValue) shouldBe (secondInterval.contains(firstValue))
+              intersection.contains(firstValue).shouldBe(secondInterval.contains(firstValue))
           }
           val secondValues = Gen.chooseNum(secondInterval.lowerBound, secondInterval.upperBound)
           forAll(secondValues, minSuccessful(10)) {
             secondValue =>
-              intersection.contains(secondValue) shouldBe (firstInterval.contains(secondValue))
+              intersection.contains(secondValue).shouldBe(firstInterval.contains(secondValue))
           }
         }
       }
@@ -308,7 +300,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
   test("contains(value, tolerance)") {
     forAll(minSuccessful(50)) {
       (interval: Interval) => {
-        whenever (interval.width > 1e-3) {
+        whenever(interval.width > 1e-3) {
           val randomTolerance: Gen[Double] = for {
             candidateTolerance <- Gen.chooseNum(-1e-3, 1e-3)
             if interval.lowerBound - candidateTolerance <= interval.upperBound + candidateTolerance
@@ -319,9 +311,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
               val expandedInterval =
                 Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance)
               forAll(valueWithin(expandedInterval), minSuccessful(5)) {
-                (value: Double) => {
-                  assert(interval.contains(value, tolerance))
-                }
+                (value: Double) => assert(interval.contains(value, tolerance))
               }
             }
           }
