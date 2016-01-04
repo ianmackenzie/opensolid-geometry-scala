@@ -82,6 +82,14 @@ class Vector2dTestSuite
         val maxLength = firstLength.max(secondLength)
         val tolerance = maxLength * 2 * eps(maxLength)
         dotProduct.should(beLessThanOrEqualTo(firstLength * secondLength, tolerance))
+        firstVector.dot(-secondVector).shouldBe(-dotProduct)
+      }
+    }
+    forAll {
+      (vector: Vector2d) => {
+        val tolerance = 2 * eps(vector.length)
+        vector.dot(vector.normalDirection).should(beEqualTo(0.0, tolerance))
+        vector.dot(vector.direction).should(beEqualTo(vector.length, tolerance))
       }
     }
   }
