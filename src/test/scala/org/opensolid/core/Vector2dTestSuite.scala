@@ -14,19 +14,20 @@
 
 package org.opensolid.core
 
-import org.opensolid.core.DoubleGenerators._
-import org.opensolid.core.IntervalGenerators._
-import org.opensolid.core.Vector2dGenerators._
 import org.scalacheck.Gen
 import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.prop._
 
-class Vector2dTestSuite extends TestSuite {
+class Vector2dTestSuite
+  extends TestSuite with Vector2dGenerators with Axis2dGenerators with Vector2dMatchers {
+
   test("length") {
     forAll {
       (vector: Vector2d, scale: Double) => {
-        (vector * scale).length should approximatelyEqual(vector.length * scale.abs, 2.ulps)
+        val scaledLength = vector.length * scale.abs
+        val tolerance = 2.ulps(scaledLength)
+        (vector * scale).length should approximatelyEqual(scaledLength, tolerance)
       }
     }
   }
@@ -34,7 +35,8 @@ class Vector2dTestSuite extends TestSuite {
   test("squaredLength") {
     forAll {
       (vector: Vector2d) => {
-        vector.squaredLength should approximatelyEqual(vector.length * vector.length, 2.ulps)
+        val tolerance = 2.ulps(vector.squaredLength)
+        vector.squaredLength should approximatelyEqual(vector.length * vector.length, tolerance)
       }
     }
   }
