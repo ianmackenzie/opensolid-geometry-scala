@@ -72,4 +72,17 @@ class Vector2dTestSuite
   test("direction") {
     forAll { (vector: Vector2d) => vector.direction.vector shouldBe vector.normalized }
   }
+
+  test("dot(that)") {
+    forAll {
+      (firstVector: Vector2d, secondVector: Vector2d) => {
+        val dotProduct = firstVector.dot(secondVector)
+        val firstLength = firstVector.length
+        val secondLength = secondVector.length
+        val maxLength = firstLength.max(secondLength)
+        val tolerance = maxLength * 2 * eps(maxLength)
+        dotProduct should beLessThanOrEqualTo(firstLength * secondLength, tolerance)
+      }
+    }
+  }
 }
