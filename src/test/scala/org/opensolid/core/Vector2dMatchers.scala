@@ -20,7 +20,7 @@ import org.opensolid.core.DoubleMatchers._
 import org.scalatest._
 import org.scalatest.matchers._
 
-trait Vector2dMatchers extends DoubleMatchers {
+trait Vector2dMatchers {
   def beEqualTo(expected: Vector2d, tolerance: Double): Matcher[Vector2d] =
     new ApproximatelyEqualMatcher[Vector2d](
       expected,
