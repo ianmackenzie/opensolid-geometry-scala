@@ -50,6 +50,7 @@ class Vector2dTestSuite
         projected.cross(axis.direction).should(beEqualTo(0.0, tolerance))
         val projectedTolerance = 8 * eps(projected.length)
         projected.projectedOnto(axis).should(beEqualTo(projected, tolerance))
+        (vector - projected).dot(axis.direction).should(beEqualTo(0.0, tolerance))
       }
     }
   }
