@@ -14,8 +14,8 @@
 
 package org.opensolid.core
 
-import org.opensolid.core.Point2dGenerators._
 import org.opensolid.core.Direction2dGenerators._
+import org.opensolid.core.Point2dGenerators._
 import org.scalacheck._
 
 trait Axis2dGenerators {
