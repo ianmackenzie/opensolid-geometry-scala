@@ -277,7 +277,7 @@ class IntervalTestSuite extends TestSuite with IntervalGenerators {
   }
 
   test("intersection(that)") {
-    forAll(randomInterval, randomInterval, minSuccessful(50)) {
+    forAll(randomWidthInterval, randomWidthInterval, minSuccessful(50)) {
       (firstInterval: Interval, secondInterval: Interval) => {
         val intersection = firstInterval.intersection(secondInterval)
         if (firstInterval.isEmpty || secondInterval.isEmpty) {
