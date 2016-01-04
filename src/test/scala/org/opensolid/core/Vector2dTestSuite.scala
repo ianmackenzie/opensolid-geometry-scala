@@ -68,4 +68,8 @@ class Vector2dTestSuite
       }
     }
   }
+
+  test("direction") {
+    forAll { (vector: Vector2d) => vector.direction.vector shouldBe vector.normalized }
+  }
 }
