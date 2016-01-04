@@ -8,6 +8,6 @@ lazy val root = project.in(file(".")).
     libraryDependencies += "org.scalacheck" %% "scalacheck" % "1.12.5" % "test",
     libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test",
     libraryDependencies += "net.bytebuddy" % "byte-buddy" % "0.7.7",
-    logBuffered in Test := false,
+    logBuffered in Test := true,
     bintrayVcsUrl := Some("git@github.com:ianmackenzie/opensolid-core.git")
   )
