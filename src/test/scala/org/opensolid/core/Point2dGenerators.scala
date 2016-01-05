@@ -25,6 +25,12 @@ trait Point2dGenerators {
     } yield Point2d(x, y)
 
   implicit val arbitraryPoint2d: Arbitrary[Point2d] = Arbitrary(randomPoint2d)
+
+  def pointWithin(box: Box2d): Gen[Point2d] =
+    for {
+      x <- valueWithin(box.x)
+      y <- valueWithin(box.y)
+    } yield Point2d(x, y)
 }
 
 object Point2dGenerators extends Point2dGenerators
