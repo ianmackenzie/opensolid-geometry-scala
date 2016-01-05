@@ -25,6 +25,12 @@ trait VectorBox2dGenerators {
     } yield VectorBox2d(x, y)
 
   implicit val arbitraryVectorBox2d: Arbitrary[VectorBox2d] = Arbitrary(randomVectorBox2d)
+
+  val closedVectorBox2d: Gen[VectorBox2d] =
+    for {
+      x <- closedInterval
+      y <- closedInterval
+    } yield VectorBox2d(x, y)
 }
 
 object VectorBox2dGenerators extends VectorBox2dGenerators
