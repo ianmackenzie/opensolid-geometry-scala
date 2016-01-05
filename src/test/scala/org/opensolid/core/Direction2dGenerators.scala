@@ -17,13 +17,16 @@ package org.opensolid.core
 import scala.util.Random
 
 import org.opensolid.core.DoubleGenerators._
+import org.opensolid.core.Vector2dGenerators._
 import org.scalacheck._
 
 trait Direction2dGenerators {
   val randomDirection2d: Gen[Direction2d] =
     for {
-      seed <- Gen.choose(Int.MinValue, Int.MaxValue)
-    } yield Direction2d.random(new Random(seed))
+      vector <- vectorWithin(VectorBox2d(Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
+      squaredLength = vector.squaredLength
+      if squaredLength >= 0.25 && squaredLength <= 1.0
+    } yield vector.direction
 
   implicit val arbitraryVector2d: Arbitrary[Direction2d] =
     Arbitrary(
