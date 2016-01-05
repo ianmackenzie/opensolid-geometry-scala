@@ -25,6 +25,12 @@ trait Vector2dGenerators {
     } yield Vector2d(x, y)
 
   implicit val arbitraryVector2d: Arbitrary[Vector2d] = Arbitrary(randomVector2d)
+
+  val vectorWithin(vectorBox: VectorBox2d): Gen[Vector2d] =
+    for {
+      x <- valueWithin(vectorBox.x)
+      y <- valueWithin(vectorBox.y)
+    } yield Vector2d(x, y)
 }
 
 object Vector2dGenerators extends Vector2dGenerators
