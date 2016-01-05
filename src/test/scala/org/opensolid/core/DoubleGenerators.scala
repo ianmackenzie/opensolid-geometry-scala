@@ -27,6 +27,13 @@ trait DoubleGenerators {
 
   def sortedValues(count: Integer): Gen[List[Double]] =
     Gen.listOfN[Double](count, randomDouble).map(list => list.sorted).suchThat(_.length == count)
+
+  def valueWithin(interval: Interval): Gen[Double] = interval match {
+    case Interval.Whole => randomDouble
+    case Interval(Double.NegativeInfinity, upper) => randomDouble.map(upper - _.abs)
+    case Interval(lower, Double.PositiveInfinity) => randomDouble.map(lower + _.abs)
+    case _ => Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
+  }
 }
 
 object DoubleGenerators extends DoubleGenerators
