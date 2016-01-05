@@ -20,7 +20,11 @@ import org.scalatest.matchers._
 import org.scalatest.prop._
 
 class Vector2dTestSuite
-  extends TestSuite with Vector2dGenerators with Axis2dGenerators with Vector2dMatchers {
+  extends TestSuite
+  with Vector2dGenerators
+  with Axis2dGenerators
+  with Plane3dGenerators
+  with Vector2dMatchers {
 
   test("length") {
     forAll {
@@ -51,6 +55,18 @@ class Vector2dTestSuite
         val projectedTolerance = 8 * eps(projected.length)
         projected.projectedOnto(axis).should(beEqualTo(projected, tolerance))
         (vector - projected).dot(axis.direction).should(beEqualTo(0.0, tolerance))
+      }
+    }
+  }
+
+  test("placedOnto(plane)") {
+    forAll {
+      (vector: Vector2d, plane: Plane3d) => {
+        val tolerance = 8 * eps(vector.length)
+        val placed = vector.placedOnto(plane)
+        placed.length.should(beEqualTo(vector.length, tolerance))
+        val projected = placed.projectedInto(plane)
+        projected.should(beEqualTo(vector, tolerance))
       }
     }
   }
