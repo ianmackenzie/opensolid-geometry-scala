@@ -26,7 +26,7 @@ trait Vector2dGenerators {
 
   implicit val arbitraryVector2d: Arbitrary[Vector2d] = Arbitrary(randomVector2d)
 
-  val vectorWithin(vectorBox: VectorBox2d): Gen[Vector2d] =
+  def vectorWithin(vectorBox: VectorBox2d): Gen[Vector2d] =
     for {
       x <- valueWithin(vectorBox.x)
       y <- valueWithin(vectorBox.y)
