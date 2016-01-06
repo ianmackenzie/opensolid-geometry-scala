@@ -35,7 +35,7 @@ class SpatialSet[T <: Bounded[B] with GeometricallyComparable[T], B : Bounds](it
   def contains(argument: T, tolerance: Double): Boolean = {
     val argumentBounds = argument.bounds
     val boundsFilter = (itemBounds: B) => traits.overlaps(itemBounds, argumentBounds, tolerance)
-    withBoundsFilter(boundsFilter).exists(item => item.isEqualTo(argument, tolerance))
+    withBoundsFilter(boundsFilter).exists(item => item.equals(argument, tolerance))
   }
 }
 

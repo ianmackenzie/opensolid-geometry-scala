@@ -34,7 +34,7 @@ final case class Sphere3d(centerPoint: Point3d, radius: Double)
       Interval(centerPoint.z - radius, centerPoint.z + radius)
     )
 
-  override def isEqualTo(that: Sphere3d, tolerance: Double): Boolean = {
+  override def equals(that: Sphere3d, tolerance: Double): Boolean = {
     val centerDistance = this.centerPoint.distanceTo(that.centerPoint)
     val radiusDifference = (this.radius - that.radius).abs
     (centerDistance + radiusDifference).isZero(tolerance)

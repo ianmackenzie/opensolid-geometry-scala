@@ -31,9 +31,9 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Box3d")
   }
 
-  override def isEqualTo(that: Box3d, tolerance: Double): Boolean =
-    this.minVertex.isEqualTo(that.minVertex, tolerance) &&
-    this.maxVertex.isEqualTo(that.maxVertex, tolerance)
+  override def equals(that: Box3d, tolerance: Double): Boolean =
+    this.minVertex.equals(that.minVertex, tolerance) &&
+    this.maxVertex.equals(that.maxVertex, tolerance)
 
   override def bounds: Box3d = this
 

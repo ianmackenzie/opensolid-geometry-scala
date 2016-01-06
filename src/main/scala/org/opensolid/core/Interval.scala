@@ -96,7 +96,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
-  override def isEqualTo(that: Interval, tolerance: Double): Boolean =
+  override def equals(that: Interval, tolerance: Double): Boolean =
     (this.lowerBound - that.lowerBound).isZero(tolerance) &&
     (this.upperBound - that.upperBound).isZero(tolerance)
 

@@ -41,9 +41,9 @@ final case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
 
   override def bounds: Box2d = firstEndpoint.hull(secondEndpoint)
 
-  override def isEqualTo(that: LineSegment2d, tolerance: Double): Boolean =
-    this.firstEndpoint.isEqualTo(that.firstEndpoint, tolerance) &&
-    this.secondEndpoint.isEqualTo(that.secondEndpoint, tolerance)
+  override def equals(that: LineSegment2d, tolerance: Double): Boolean =
+    this.firstEndpoint.equals(that.firstEndpoint, tolerance) &&
+    this.secondEndpoint.equals(that.secondEndpoint, tolerance)
 
   override def scaledAbout(point: Point2d, scale: Double): LineSegment2d = {
     require(scale > 0.0)

@@ -27,7 +27,7 @@ final case class Point2d(x: Double, y: Double)
 
   override def bounds: Box2d = Box2d(Interval(x), Interval(y))
 
-  override def isEqualTo(that: Point2d, tolerance: Double): Boolean =
+  override def equals(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point2d): Double = (this - that).squaredLength

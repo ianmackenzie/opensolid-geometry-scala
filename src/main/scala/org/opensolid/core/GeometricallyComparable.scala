@@ -15,5 +15,5 @@
 package org.opensolid.core
 
 trait GeometricallyComparable[T] {
-  def isEqualTo(that: T, tolerance: Double): Boolean
+  def equals(that: T, tolerance: Double): Boolean
 }

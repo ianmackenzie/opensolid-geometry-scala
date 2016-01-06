@@ -39,9 +39,9 @@ final case class LineSegment3d(firstEndpoint: Point3d, secondEndpoint: Point3d)
 
   override def bounds: Box3d = firstEndpoint.hull(secondEndpoint)
 
-  override def isEqualTo(that: LineSegment3d, tolerance: Double): Boolean =
-    this.firstEndpoint.isEqualTo(that.firstEndpoint, tolerance) &&
-    this.secondEndpoint.isEqualTo(that.secondEndpoint, tolerance)
+  override def equals(that: LineSegment3d, tolerance: Double): Boolean =
+    this.firstEndpoint.equals(that.firstEndpoint, tolerance) &&
+    this.secondEndpoint.equals(that.secondEndpoint, tolerance)
 
   override def scaledAbout(point: Point3d, scale: Double): LineSegment3d =
     LineSegment3d(

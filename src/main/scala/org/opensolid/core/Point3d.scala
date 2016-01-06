@@ -28,7 +28,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   override def bounds: Box3d = Box3d(Interval(x), Interval(y), Interval(z))
 
-  override def isEqualTo(that: Point3d, tolerance: Double): Boolean =
+  override def equals(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
