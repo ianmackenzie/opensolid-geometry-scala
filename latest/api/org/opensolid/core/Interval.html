@@ -443,19 +443,24 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       <p class="shortcomment cmt">Returns a pair of intervals equal to this interval split into two halves.</p><div class="fullcomment"><div class="comment cmt"><p>Returns a pair of intervals equal to this interval split into two halves.</p><p>If this interval has finite width, then the split point is this interval's median and the two
 returned intervals are <code>Interval(lowerBound, median)</code> and <code>Interval(median, upperBound)</code>.
 Otherwise, a set of heuristics is used to find a reasonable split point.</p><p>Examples:</p><pre>scala&gt; Interval(<span class="num">2.0</span>, <span class="num">3.0</span>).bisected
-res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(<span class="num">2.0</span>, <span class="num">2.5</span>),Interval(<span class="num">2.5</span>, <span class="num">3.0</span>))
+res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+  (Interval(<span class="num">2.0</span>, <span class="num">2.5</span>),Interval(<span class="num">2.5</span>, <span class="num">3.0</span>))
 
 scala&gt; Interval.Whole.bisected
-res1: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, <span class="num">0.0</span>),Interval(<span class="num">0.0</span>, Infinity))
+res1: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+  (Interval(-Infinity, <span class="num">0.0</span>),Interval(<span class="num">0.0</span>, Infinity))
 
 scala&gt; Interval(<span class="num">0.0</span>, <span class="std">Double</span>.PositiveInfinity).bisected
-res2: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(<span class="num">0.0</span>, <span class="num">1.0</span>),Interval(<span class="num">1.0</span>, Infinity))
+res2: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+  (Interval(<span class="num">0.0</span>, <span class="num">1.0</span>),Interval(<span class="num">1.0</span>, Infinity))
 
 scala&gt; Interval(<span class="std">Double</span>.NegativeInfinity, -<span class="num">10.0</span>).bisected
-res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, -<span class="num">20.0</span>),Interval(-<span class="num">20.0</span>, -<span class="num">10.0</span>))
+res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+  (Interval(-Infinity, -<span class="num">20.0</span>),Interval(-<span class="num">20.0</span>, -<span class="num">10.0</span>))
 
 scala&gt; Interval.Empty.bisected
-res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval.Empty,Interval.Empty)</pre></div></div>
+res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+  (Interval.Empty,Interval.Empty)</pre></div></div>
     </li><li name="org.opensolid.core.Interval#bounds" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="bounds:org.opensolid.core.Interval"></a>
       <a id="bounds:Interval"></a>
@@ -653,7 +658,7 @@ res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
+      <p class="shortcomment cmt">Returns a tuple containing the lower and upper bounds of this interval.</p>
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -687,7 +692,9 @@ res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a></dd></dl></div>
+      <p class="shortcomment cmt">Performs a tolerant equality check.</p><div class="fullcomment"><div class="comment cmt"><p>Performs a tolerant equality check.</p><p>Returns true if each endpoint of this interval is equal the corresponding endpoint of the
+other interval, to within the given tolerance.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(other:Any):Boolean"></a>
       <a id="equals(Any):Boolean"></a>
