@@ -171,19 +171,24 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     * Examples:
     * {{{
     * scala> Interval(2.0, 3.0).bisected
-    * res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(2.0, 2.5),Interval(2.5, 3.0))
+    * res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+    *   (Interval(2.0, 2.5),Interval(2.5, 3.0))
     *
     * scala> Interval.Whole.bisected
-    * res1: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, 0.0),Interval(0.0, Infinity))
+    * res1: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+    *   (Interval(-Infinity, 0.0),Interval(0.0, Infinity))
     *
     * scala> Interval(0.0, Double.PositiveInfinity).bisected
-    * res2: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(0.0, 1.0),Interval(1.0, Infinity))
+    * res2: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+    *   (Interval(0.0, 1.0),Interval(1.0, Infinity))
     *
     * scala> Interval(Double.NegativeInfinity, -10.0).bisected
-    * res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval(-Infinity, -20.0),Interval(-20.0, -10.0))
+    * res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+    *   (Interval(-Infinity, -20.0),Interval(-20.0, -10.0))
     *
     * scala> Interval.Empty.bisected
-    * res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) = (Interval.Empty,Interval.Empty)
+    * res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
+    *   (Interval.Empty,Interval.Empty)
     * }}}
     */
   def bisected: (Interval, Interval) = {
