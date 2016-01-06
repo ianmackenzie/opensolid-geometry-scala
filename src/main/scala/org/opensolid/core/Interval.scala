@@ -73,6 +73,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 
   def this(value: Double) = this(value, value)
 
+  /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) = (lowerBound, upperBound)
 
   override def equals(other: Any): Boolean = other match {
@@ -96,6 +97,11 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
+  /** Performs a tolerant equality check.
+    *
+    * Returns true if each endpoint of this interval is equal the corresponding endpoint of the
+    * other interval, to within the given tolerance.
+    */
   override def equals(that: Interval, tolerance: Double): Boolean =
     (this.lowerBound - that.lowerBound).isZero(tolerance) &&
     (this.upperBound - that.upperBound).isZero(tolerance)
