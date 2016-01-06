@@ -1,3 +1,4 @@
+// Set up project
 lazy val root = project.in(file(".")).
   settings(
     name := "opensolid-core",
@@ -12,10 +13,8 @@ lazy val root = project.in(file(".")).
     bintrayVcsUrl := Some("git@github.com:ianmackenzie/opensolid-core.git")
   )
 
+// Set up publishing of generated ScalaDoc to GitHub Pages
 site.settings
-
-site.includeScaladoc()
-
 ghpages.settings
-
+site.includeScaladoc()
 git.remoteRepo := "https://github.com/ianmackenzie/opensolid-core.git"
