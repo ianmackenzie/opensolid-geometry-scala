@@ -11,3 +11,11 @@ lazy val root = project.in(file(".")).
     logBuffered in Test := true,
     bintrayVcsUrl := Some("git@github.com:ianmackenzie/opensolid-core.git")
   )
+
+site.settings
+
+site.includeScaladoc()
+
+ghpages.settings
+
+git.remoteRepo := "https://github.com/ianmackenzie/opensolid-core.git"
