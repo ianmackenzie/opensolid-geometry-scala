@@ -39,8 +39,5 @@ trait Transformable3d[T] {
 
   def placedIn(frame: Frame3d): T = transformedBy(Globalization3d(frame))
 
-  def mirroredAbout(point: Point3d, direction: Direction3d): T =
-    transformedBy(Mirror3d(point, direction))
-
   def mirroredAbout(plane: Plane3d): T = transformedBy(Mirror3d(plane))
 }
