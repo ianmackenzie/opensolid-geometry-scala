@@ -30,6 +30,4 @@ final case class Localization3d(frame: Frame3d) extends Transformation3d {
       vector.dot(frame.yDirection),
       vector.dot(frame.zDirection)
     )
-
-  def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
 }

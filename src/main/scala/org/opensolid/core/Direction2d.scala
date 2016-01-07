@@ -47,7 +47,8 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def /(interval: Interval): VectorBox2d = vector / interval
 
-  def transformedBy(transformation: Transformation2d): Direction2d = transformation(this)
+  def transformedBy(transformation: Transformation2d): Direction2d =
+    Direction2d(vector.transformedBy(transformation))
 
   def projectedOnto(axis: Axis2d): Vector2d = vector.projectedOnto(axis)
 

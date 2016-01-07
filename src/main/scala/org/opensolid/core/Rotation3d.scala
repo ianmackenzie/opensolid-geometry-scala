@@ -28,8 +28,6 @@ final case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Di
     val (xDirection, yDirection, zDirection) = basis
     vector.x * xDirection + vector.y * yDirection + vector.z * zDirection
   }
-
-  override def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
 }
 
 object Rotation3d {

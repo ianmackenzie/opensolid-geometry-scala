@@ -20,6 +20,4 @@ final case class CompoundTransformation3d(first: Transformation3d, second: Trans
   override def apply(point: Point3d): Point3d = second(first(point))
 
   override def apply(vector: Vector3d): Vector3d = second(first(vector))
-
-  override def apply(direction: Direction3d): Direction3d = second(first(direction))
 }

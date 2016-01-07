@@ -21,8 +21,6 @@ final case class Mirror3d(point: Point3d, direction: Direction3d) extends Transf
     point - 2 * (point - this.point).dot(direction) * direction
 
   override def apply(vector: Vector3d): Vector3d = vector - 2 * vector.dot(direction) * direction
-
-  override def apply(direction: Direction3d): Direction3d = Direction3d(apply(direction.vector))
 }
 
 object Mirror3d {

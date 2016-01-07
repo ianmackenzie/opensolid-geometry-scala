@@ -21,6 +21,4 @@ final case class Mirror2d(axis: Axis2d) extends Transformation2d {
     point - 2 * (point - axis.originPoint).dot(direction) * direction
 
   override def apply(vector: Vector2d): Vector2d = vector - 2 * vector.dot(direction) * direction
-
-  override def apply(direction: Direction2d): Direction2d = Direction2d(apply(direction.vector))
 }
