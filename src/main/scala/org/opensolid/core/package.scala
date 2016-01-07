@@ -16,6 +16,72 @@ package org.opensolid
 
 import scala.math
 
+/** OpenSolid is a 2D/3D geometry library for working with objects such as points, triangles,
+  * curves, surfaces and solid bodies. It provides support for operations such as geometric
+  * transformations, spatial searches, intersection calculations and meshing.
+  *
+  * All OpenSolid objects are immutable pure values; all transformations result in a copy of the
+  * original object. All functions are pure (no side effects) and thread safe.
+  *
+  * === Units handling ===
+  *
+  * OpenSolid has no explicit tracking of units; in general it is assumed that all numbers are in
+  * meters or radians. A variety of extensions have been added to the `Double` class to provide
+  * convenient unit conversions; function names starting with 'in' provide conversions from a value
+  * in meters (or radians) to one in another unit, and function names not starting with 'in' convert
+  * from some unit to meters (or radians). Note that this means `meters` and `inMeters` (and
+  * `radians` and `inRadians`) are no-ops, but are provided to make some expressions more clear.
+  * For example:
+  * {{{
+  * 1.millimeters // 0.001
+  * 1.millimeters.inMeters // 0.001
+  * 1.meters // 1.0
+  * 1.meters.inMillimeters // 1000.0
+  * 1.feet // 0.3048
+  * 1.feet.inMeters // 0.3048
+  * 1.inFeet // 3.281
+  * 1.meters.inFeet // 3.281
+  * 180.degrees // 3.142, Pi radians
+  * 1.radians.inDegrees // 57.296
+  * }}}
+  * In general, use an expression such as `2.5.feet` at the very beginning of a calculation to
+  * convert into meters, do all calculations in meters, then use `result.inFeet` to convert back to
+  * feet at the end for output. Use expressions such as `45.degrees` to pass fixed rotation angles
+  * to functions expecting values in radians.
+  *
+  * === Naming conventions ===
+  *
+  * OpenSolid uses standard Scala naming conventions: values and functions are camelCase, types and
+  * constants (such as `Point3d.Origin`) are PascalCase. Other than well-established function names
+  * such as `equals` and `contains` (and, for symmetry, `overlaps`), functions returning Boolean
+  * results start with 'is' or 'has' (e.g. `point.isOn(plane, tolerance)`).
+  *
+  * Functions transforming an object usually belong to the object being transformed, so for example
+  * one uses `point.projectedOnto(plane)` instead of something like `plane.project(point)`.
+  * In general, names have been chosen to make entire expressions read as naturally as possible as
+  * 'noun phrases', for example `if (box.contains(lineSegment.rotatedAbout(axis, angle)) ...`.
+  *
+  * === Transformations framework ===
+  *
+  * Many OpenSolid classes inherit from the `Transformable2d` or `Transformable3d` traits (or for
+  * vector-like classes, `VectorTransformable2d` or `VectorTransformable3d`). These provide support
+  * for the common transformations such as translations, rotations, and mirrors, as well as
+  * transformations between local and global coordinates.
+  *
+  * TODO
+  *
+  * === Bounds types ===
+  *
+  * TODO
+  *
+  * === Operators ===
+  *
+  * TODO (mention Java-friendly versions)
+  *
+  * === Tuples ===
+  *
+  * TODO
+  */
 package object core {
   implicit class ImplicitScalar(val value: Double) extends AnyVal {
     def isZero(tolerance: Double): Boolean = value >= -tolerance && value <= tolerance
