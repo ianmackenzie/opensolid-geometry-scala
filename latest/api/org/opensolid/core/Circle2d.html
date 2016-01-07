@@ -365,24 +365,17 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
-    </li><li name="org.opensolid.core.Transformable2d#mirroredAbout" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="mirroredAbout(point:org.opensolid.core.Point2d,direction:org.opensolid.core.Direction2d):T"></a>
-      <a id="mirroredAbout(Point2d,Direction2d):Circle2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">mirroredAbout</span><span class="params">(<span name="point">point: <a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>, <span name="direction">direction: <a href="Direction2d.html" class="extype" name="org.opensolid.core.Direction2d">Direction2d</a></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Circle2d">Circle2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Circle2d@mirroredAbout(point:org.opensolid.core.Point2d,direction:org.opensolid.core.Direction2d):T" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Returns this object mirrored about the given axis.</p><div class="fullcomment"><div class="comment cmt"><p>Returns this object mirrored about the given axis.</p><p>Note that care must be taken since several methods on various types of objects are defined
+to behave in a right-handed sense, and will continue to do so even for mirrored objects with
+potentially surprising results.</p><p>For instance, the normal direction of a 2D line segment is defined to point to the left of the
+line segment. Consider a closed polygon defined by a list of line segments where the normal
+direction of each line segment points outwards. If each line segment in that list is mirrored
+about some axis, the resulting closed polygon will have the correct mirrored shape but all
+normal directions will now point inwards. This may mean that in addition to mirroring, all of
+the mirrored line segments should be flipped back-to-front to restore the outwards-pointing
+normals property (and perhaps the list itself should be reversed so that all line segments
+continue to touch head-to-tail).
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a>
       <a id="ne(AnyRef):Boolean"></a>
@@ -450,7 +443,13 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Local-to-global transformation: returns this object in global coordinates, assuming it is
+currently defined relative to the given reference frame.</p><div class="fullcomment"><div class="comment cmt"><p>Local-to-global transformation: returns this object in global coordinates, assuming it is
+currently defined relative to the given reference frame.</p><p>For example:</p><pre><span class="kw">val</span> frame = Frame2d(Point2d(<span class="num">3</span>, <span class="num">4</span>), Direction2d.X, Direction2d.Y)
+<span class="kw">val</span> point = Point2d(<span class="num">1</span>, <span class="num">1</span>).placedIn(frame) <span class="cmt">// Point2d(4, 5)</span></pre><p>Slightly more complex: take the point (1, 0) (a distance of 1 along the X axis) and place it
+in a rotated frame. The result is a point a distance of 1 along the rotated frame's X axis, in
+global coordinates:</p><pre><span class="kw">val</span> frame = Frame2d.Global.rotatedAbout(Point2d.Origin, <span class="num">45.</span>degrees)
+<span class="kw">val</span> point = Point2d(<span class="num">1</span>, <span class="num">0</span>).placedIn(frame) <span class="cmt">// Point2d(0.707, 0.707)</span></pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Circle2d#placedOnto" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="placedOnto(plane:org.opensolid.core.Plane3d):org.opensolid.core.Circle3d"></a>
       <a id="placedOnto(Plane3d):Circle3d"></a>
@@ -518,7 +517,12 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Global-to-local transformation: returns this object as expressed relative to the given
+reference frame, assuming it is currently defined in global coordinates.</p><div class="fullcomment"><div class="comment cmt"><p>Global-to-local transformation: returns this object as expressed relative to the given
+reference frame, assuming it is currently defined in global coordinates.</p><p>For instance, the expression <code>curve.relativeTo(frame)</code> assumes that both <code>curve</code> and <code>frame</code>
+are themselves defined in global coordinates, and returns a copy of <code>curve</code> expressed in local
+coordinates relative to <code>frame</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Transformable2d#rotatedAbout" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="rotatedAbout(point:org.opensolid.core.Point2d,angle:Double):T"></a>
       <a id="rotatedAbout(Point2d,Double):Circle2d"></a>
@@ -535,7 +539,7 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Returns this object rotated about the given point by the given angle (in radians).</p><div class="fullcomment"><div class="comment cmt"><p>Returns this object rotated about the given point by the given angle (in radians).</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Circle2d#scaledAbout" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="scaledAbout(point:org.opensolid.core.Point2d,scale:Double):org.opensolid.core.Circle2d"></a>
       <a id="scaledAbout(Point2d,Double):Circle2d"></a>
@@ -586,7 +590,20 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Circle2d">Circle2d</a> → <a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Returns this object transformed by an arbitrary transformation.</p><div class="fullcomment"><div class="comment cmt"><p>Returns this object transformed by an arbitrary transformation.</p><p>All other transformation functions simply call this function with the appropriate
+<code>Transformation2d</code> object. For instance, <code>point.translatedBy(x, y)</code> is equivalent to (and
+implemented as) <code>point.transformedBy(Translation2d(x, y))</code>.</p><p>In most cases it is easier to use the other transformation functions directly. However,
+using <code>transformedBy</code> is more efficient if the same transformation is applied to many objects,
+especially for transformations such as rotations which involve non-trivial initialization. For
+instance, the following are equivalent but the second version is faster as it only creates a
+single rotation transformation object instead of implicitly creating one for each point in the
+list:</p><pre><span class="kw">val</span> points: <span class="std">List</span>[Point2d] = ???
+
+<span class="kw">val</span> rotated1 = points.map(_.rotatedAbout(Point2d.Origin, <span class="num">45.</span>degrees))
+
+<span class="kw">val</span> rotation = Rotation2d(Point2d.Origin, <span class="num">45.</span>degrees)
+<span class="kw">val</span> rotated2 = points.map(_.transformedBy(rotation))</pre><p>In this case, however, it would be simpler to exploit the fact that Transformation2d objects
+can be used as functions:</p><pre><span class="kw">val</span> rotated3 = points.map(rotation)</pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Circle2d">Circle2d</a> → <a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Transformable2d#translatedAlong" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="translatedAlong(axis:org.opensolid.core.Axis2d,distance:Double):T"></a>
       <a id="translatedAlong(Axis2d,Double):Circle2d"></a>
@@ -603,7 +620,8 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Returns this object translated along the given axis by the given distance.</p><div class="fullcomment"><div class="comment cmt"><p>Returns this object translated along the given axis by the given distance.</p><p>Equivalent to <code>translatedBy(distance * axis.direction)</code>.
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Transformable2d#translatedBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="translatedBy(x:Double,y:Double):T"></a>
       <a id="translatedBy(Double,Double):Circle2d"></a>
@@ -620,7 +638,7 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Returns this object translated by the given x and y components.</p><div class="fullcomment"><div class="comment cmt"><p>Returns this object translated by the given x and y components.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Transformable2d#translatedBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="translatedBy(vector:org.opensolid.core.Vector2d):T"></a>
       <a id="translatedBy(Vector2d):Circle2d"></a>
@@ -637,7 +655,7 @@
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
+      <p class="shortcomment cmt">Returns this object translated by the given vector.</p><div class="fullcomment"><div class="comment cmt"><p>Returns this object translated by the given vector.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <a id="wait():Unit"></a>
