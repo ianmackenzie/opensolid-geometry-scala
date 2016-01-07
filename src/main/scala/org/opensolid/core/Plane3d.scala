@@ -51,9 +51,6 @@ final case class Plane3d(
   def flipped: Plane3d = Plane3d(originPoint, xDirection, yDirection, -normalDirection)
 
   def normalAxis: Axis3d = Axis3d(originPoint, normalDirection)
-
-  def handedness: Handedness =
-    Handedness.fromSignOf(xDirection.cross(yDirection).dot(normalDirection))
 }
 
 object Plane3d {

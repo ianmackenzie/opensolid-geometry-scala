@@ -39,10 +39,6 @@ final case class Sign private (value: Int) {
 
   def times(interval: Interval): Interval = this * interval
 
-  def *(handedness: Handedness): Handedness = handedness * this
-
-  def times(handedness: Handedness): Handedness = this * handedness
-
   def *(vector: Vector2d): Vector2d = vector * this
 
   def times(vector: Vector2d): Vector2d = this * vector

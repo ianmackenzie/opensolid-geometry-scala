@@ -15,8 +15,6 @@
 package org.opensolid.core
 
 final case class Globalization2d(frame: Frame2d) extends Transformation2d {
-  override def apply(handedness: Handedness): Handedness = frame.handedness * handedness
-
   override def apply(point: Point2d): Point2d =
     frame.originPoint + point.x * frame.xDirection + point.y * frame.yDirection
 

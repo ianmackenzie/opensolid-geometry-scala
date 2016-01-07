@@ -17,8 +17,6 @@ package org.opensolid.core
 final case class CompoundTransformation2d(first: Transformation2d, second: Transformation2d)
   extends Transformation2d {
 
-  override def apply(handedness: Handedness): Handedness = second(first(handedness))
-
   override def apply(point: Point2d): Point2d = second(first(point))
 
   override def apply(vector: Vector2d): Vector2d = second(first(vector))

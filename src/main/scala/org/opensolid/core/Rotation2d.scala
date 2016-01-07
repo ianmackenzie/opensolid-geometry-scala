@@ -20,8 +20,6 @@ final case class Rotation2d(point: Point2d, angle: Double) extends Transformatio
   private[this] val sinAngle = math.sin(angle)
   private[this] val cosAngle = math.cos(angle)
 
-  override def apply(handedness: Handedness): Handedness = handedness
-
   override def apply(point: Point2d): Point2d = this.point + apply(point - this.point)
 
   override def apply(vector: Vector2d): Vector2d =

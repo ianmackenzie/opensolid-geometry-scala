@@ -15,8 +15,6 @@
 package org.opensolid.core
 
 final case class Globalization3d(frame: Frame3d) extends Transformation3d {
-  override def apply(handedness: Handedness): Handedness = frame.handedness * handedness
-
   override def apply(point: Point3d): Point3d =
     frame.originPoint +
     point.x * frame.xDirection +

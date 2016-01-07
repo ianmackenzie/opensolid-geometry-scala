@@ -19,8 +19,6 @@ final case class Translation2d(vector: Vector2d) extends Transformation2d {
 
   def this(axis: Axis2d, distance: Double) = this(distance * axis.direction)
 
-  override def apply(handedness: Handedness): Handedness = handedness
-
   override def apply(point: Point2d): Point2d = point + vector
 
   override def apply(vector: Vector2d): Vector2d = vector

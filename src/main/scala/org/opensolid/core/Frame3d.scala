@@ -46,8 +46,6 @@ final case class Frame3d(
   def zxPlane: Plane3d = Plane3d(originPoint, zDirection, xDirection, yDirection)
 
   def zyPlane: Plane3d = Plane3d(originPoint, zDirection, yDirection, -xDirection)
-
-  def handedness: Handedness = Handedness.fromSignOf(xDirection.cross(yDirection).dot(zDirection))
 }
 
 object Frame3d {

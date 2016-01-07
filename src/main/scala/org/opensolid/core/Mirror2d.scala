@@ -17,8 +17,6 @@ package org.opensolid.core
 final case class Mirror2d(axis: Axis2d) extends Transformation2d {
   private[this] val direction = axis.normalDirection
 
-  override def apply(handedness: Handedness): Handedness = -handedness
-
   override def apply(point: Point2d): Point2d =
     point - 2 * (point - axis.originPoint).dot(direction) * direction
 

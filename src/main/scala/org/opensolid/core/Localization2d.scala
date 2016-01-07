@@ -15,8 +15,6 @@
 package org.opensolid.core
 
 final case class Localization2d(frame: Frame2d) extends Transformation2d {
-  def apply(handedness: Handedness): Handedness = frame.handedness * handedness
-
   def apply(point: Point2d): Point2d = {
     val displacement = point - frame.originPoint
     Point2d(displacement.dot(frame.xDirection), displacement.dot(frame.yDirection))

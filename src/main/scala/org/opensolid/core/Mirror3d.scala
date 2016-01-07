@@ -17,8 +17,6 @@ package org.opensolid.core
 final case class Mirror3d(point: Point3d, direction: Direction3d) extends Transformation3d {
   def this(plane: Plane3d) = this(plane.originPoint, plane.normalDirection)
 
-  override def apply(handedness: Handedness): Handedness = -handedness
-
   override def apply(point: Point3d): Point3d =
     point - 2 * (point - this.point).dot(direction) * direction
 
