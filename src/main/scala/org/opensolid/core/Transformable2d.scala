@@ -59,8 +59,5 @@ trait Transformable2d[T] {
 
   def placedIn(frame: Frame2d): T = transformedBy(Globalization2d(frame))
 
-  def mirroredAbout(point: Point2d, direction: Direction2d): T =
-    transformedBy(Mirror2d(point, direction))
-
   def mirroredAbout(axis: Axis2d): T = transformedBy(Mirror2d(axis))
 }
