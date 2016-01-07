@@ -47,8 +47,38 @@
       </span>
       </h4>
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>General notes:</p><ul><li>all objects are immutable/pure values</li><li>other than equals/overlaps/contains, all checks start with 'is' (isZero, isOn)</li><li>transformable framework</li><li>main classes</li><li>intervals/boxes</li><li>use of operators</li><li>units handling
-</li></ul></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>OpenSolid is a 2D/3D geometry library for working with objects such as points, triangles,
+curves, surfaces and solid bodies. It provides support for operations such as geometric
+transformations, spatial searches, intersection calculations and meshing.</p><p>All OpenSolid objects are immutable pure values; all transformations result in a copy of the
+original object. All functions are pure (no side effects) and thread safe.</p><h5> Units handling </h5><p>OpenSolid has no explicit tracking of units; in general it is assumed that all numbers are in
+meters or radians. A variety of extensions have been added to the <code>Double</code> class to provide
+convenient unit conversions; function names starting with 'in' provide conversions from a value
+in meters (or radians) to one in another unit, and function names not starting with 'in' convert
+from some unit to meters (or radians). Note that this means <code>meters</code> and <code>inMeters</code> (and
+<code>radians</code> and <code>inRadians</code>) are no-ops, but are provided to make some expressions more clear.
+For example:</p><pre><span class="num">1.</span>millimeters <span class="cmt">// 0.001</span>
+<span class="num">1.</span>millimeters.inMeters <span class="cmt">// 0.001</span>
+<span class="num">1.</span>meters <span class="cmt">// 1.0</span>
+<span class="num">1.</span>meters.inMillimeters <span class="cmt">// 1000.0</span>
+<span class="num">1.</span>feet <span class="cmt">// 0.3048</span>
+<span class="num">1.</span>feet.inMeters <span class="cmt">// 0.3048</span>
+<span class="num">1.</span>inFeet <span class="cmt">// 3.281</span>
+<span class="num">1.</span>meters.inFeet <span class="cmt">// 3.281</span>
+<span class="num">180.</span>degrees <span class="cmt">// 3.142, Pi radians</span>
+<span class="num">1.</span>radians.inDegrees <span class="cmt">// 57.296</span></pre><p>In general, use an expression such as <code>2.5.feet</code> at the very beginning of a calculation to
+convert into meters, do all calculations in meters, then use <code>result.inFeet</code> to convert back to
+feet at the end for output. Use expressions such as <code>45.degrees</code> to pass fixed rotation angles
+to functions expecting values in radians.</p><h5> Naming conventions </h5><p>OpenSolid uses standard Scala naming conventions: values and functions are camelCase, types and
+constants (such as <code>Point3d.Origin</code>) are PascalCase. Other than well-established function names
+such as <code>equals</code> and <code>contains</code> (and, for symmetry, <code>overlaps</code>), functions returning Boolean
+results start with 'is' or 'has' (e.g. <code>point.isOn(plane, tolerance)</code>).</p><p>Functions transforming an object usually belong to the object being transformed, so for example
+one uses <code>point.projectedOnto(plane)</code> instead of something like <code>plane.project(point)</code>.
+In general, names have been chosen to make entire expressions read as naturally as possible as
+'noun phrases', for example <code>if (box.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
+vector-like classes, <code>VectorTransformable2d</code> or <code>VectorTransformable3d</code>). These provide support
+for the common transformations such as translations, rotations, and mirrors, as well as
+transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds types </h5><p>TODO</p><h5> Operators </h5><p>TODO (mention Java-friendly versions)</p><h5> Tuples </h5><p>TODO
+</p></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
@@ -463,23 +493,6 @@
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Handedness" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="HandednessextendsProductwithSerializable"></a>
-      <a id="Handedness:Handedness"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a href="Handedness.html"><span class="name">Handedness</span></a><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@HandednessextendsProductwithSerializable" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="org.opensolid.core.ImplicitHextuple" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="ImplicitHextuple[T]extendsAnyVal"></a>
       <a id="ImplicitHextuple[T]:ImplicitHextuple[T]"></a>
@@ -763,7 +776,7 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Mirror3d.html"><span class="name">Mirror3d</span></a><span class="params">(<span name="point">point: <a href="Point3d.html" class="extype" name="org.opensolid.core.Point3d">Point3d</a></span>, <span name="direction">direction: <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a></span>)</span><span class="result"> extends <a href="Transformation3d.html" class="extype" name="org.opensolid.core.Transformation3d">Transformation3d</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Mirror3d.html"><span class="name">Mirror3d</span></a><span class="params">(<span name="plane">plane: <a href="Plane3d.html" class="extype" name="org.opensolid.core.Plane3d">Plane3d</a></span>)</span><span class="result"> extends <a href="Transformation3d.html" class="extype" name="org.opensolid.core.Transformation3d">Transformation3d</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.package@Mirror3dextendsTransformation3dwithProductwithSerializable" title="Permalink" target="_top">
@@ -1427,23 +1440,6 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Handedness" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Handedness"></a>
-      <a id="Handedness:Handedness"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="Handedness$.html"><span class="name">Handedness</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Handedness" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="org.opensolid.core.Interval" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Interval"></a>
       <a id="Interval:Interval"></a>
@@ -1508,23 +1504,6 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.package@Meters" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Mirror3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Mirror3d"></a>
-      <a id="Mirror3d:Mirror3d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="Mirror3d$.html"><span class="name">Mirror3d</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Mirror3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
