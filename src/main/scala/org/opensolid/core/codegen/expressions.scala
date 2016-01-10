@@ -16,39 +16,52 @@ package org.opensolid.core.codegen
 
 sealed abstract class Expression
 
+case class Constant(value: Double) extends Expression
+
+class Variable(val value: Double) extends Expression
+
+case class Parameter(index: Int) extends Expression
+
+case class Field(index: Int) extends Expression
+
+case class Temporary(index: Int) extends Expression
+
 sealed abstract class UnaryExpression extends Expression {
-  def argument: Value
+  def argument: Expression
 }
 
 object UnaryExpression {
-  def unapply(expression: UnaryExpression): Option[Value] =
-    Some(expression.argument)
+  def unapply(expression: UnaryExpression): Option[Expression] = Some(expression.argument)
 }
 
 sealed abstract class BinaryExpression extends Expression {
-  def firstArgument: Value
-  def secondArgument: Value
+  def firstArgument: Expression
+  def secondArgument: Expression
 }
 
 object BinaryExpression {
-  def unapply(expression: BinaryExpression): Option[(Value, Value)] =
+  def unapply(expression: BinaryExpression): Option[(Expression, Expression)] =
     Some((expression.firstArgument, expression.secondArgument))
 }
 
-case class Negation(argument: Value) extends UnaryExpression
+case class Negation(argument: Expression) extends UnaryExpression
 
-case class Sum(firstArgument: Value, secondArgument: Value) extends BinaryExpression
+case class Sum(firstArgument: Expression, secondArgument: Expression)
+  extends BinaryExpression
 
-case class Difference(firstArgument: Value, secondArgument: Value) extends BinaryExpression
+case class Difference(firstArgument: Expression, secondArgument: Expression)
+  extends BinaryExpression
 
-case class Product(firstArgument: Value, secondArgument: Value) extends BinaryExpression
+case class Product(firstArgument: Expression, secondArgument: Expression)
+  extends BinaryExpression
 
-case class Quotient(firstArgument: Value, secondArgument: Value) extends BinaryExpression
+case class Quotient(firstArgument: Expression, secondArgument: Expression)
+  extends BinaryExpression
 
-case class Square(argument: Value) extends UnaryExpression
+case class Square(argument: Expression) extends UnaryExpression
 
-case class SquareRoot(argument: Value) extends UnaryExpression
+case class SquareRoot(argument: Expression) extends UnaryExpression
 
-case class Sine(argument: Value) extends UnaryExpression
+case class Sine(argument: Expression) extends UnaryExpression
 
-case class Cosine(argument: Value) extends UnaryExpression
+case class Cosine(argument: Expression) extends UnaryExpression

@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //                                                                            //
 //  OpenSolid is a generic library for the representation and manipulation    //
 //  of geometric objects such as points, curves, surfaces, and volumes.       //
@@ -14,14 +14,12 @@
 
 package org.opensolid.core.codegen
 
-sealed abstract class Value
+import scala.runtime.AbstractFunction1
 
-case class Constant(value: Double) extends Value
+abstract class GeneratedFunction(fields: Array[Double])
+  extends AbstractFunction1[Array[Double], Array[Double]] {
 
-case class Variable(value: Double) extends Value
+  override def apply(arguments: Array[Double]): Array[Double] = evaluate(fields, arguments)
 
-case class Parameter(index: Int) extends Value
-
-case class Field private[codegen] (index: Int) extends Value
-
-case class Temporary private[codegen] (index: Int) extends Value
+  def evaluate(fields: Array[Double], arguments: Array[Double]): Array[Double]
+}

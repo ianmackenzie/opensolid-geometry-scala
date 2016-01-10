@@ -23,9 +23,9 @@ class Builder {
 
   private[this] var fieldCount = 0
 
-  private[this] val initArguments = mutable.MutableList[Double]()
+  private[this] val constructorArguments = mutable.MutableList[Double]()
 
-  private[this] val initAssignments = mutable.MutableList[FieldAssignment]()
+  private[this] val constructorAssignments = mutable.MutableList[FieldAssignment]()
 
   private[this] def newField: Field = {
     val result = Field(fieldCount)
@@ -35,8 +35,8 @@ class Builder {
 
   def variable(value: Double): Value = {
     val result = newField
-    initAssignments += FieldAssignmentFromParameter(result, Parameter(initArguments.length))
-    initArguments += value
+    constructorAssignments += FieldAssignmentFromParameter(result, Parameter(initArguments.length))
+    constructorArguments += value
     result
   }
 

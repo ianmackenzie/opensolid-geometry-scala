@@ -1,4 +1,4 @@
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //                                                                            //
 //  OpenSolid is a generic library for the representation and manipulation    //
 //  of geometric objects such as points, curves, surfaces, and volumes.       //
@@ -14,14 +14,4 @@
 
 package org.opensolid.core.codegen
 
-sealed abstract class Value
-
-case class Constant(value: Double) extends Value
-
-case class Variable(value: Double) extends Value
-
-case class Parameter(index: Int) extends Value
-
-case class Field private[codegen] (index: Int) extends Value
-
-case class Temporary private[codegen] (index: Int) extends Value
+case class ExpressionTree(results: Vector[Expression])
