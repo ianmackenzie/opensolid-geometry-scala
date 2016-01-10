@@ -12,163 +12,134 @@
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-import org.opensolid.core.codegen
+package org.opensolid.core
 
-package org.opensolid.core {
+sealed abstract class CurveExpression1d {
+  import CurveExpression1d._
 
-  sealed abstract class CurveExpression1d {
-    import CurveExpression1d._
+  def derivative: CurveExpression1d
 
-    def derivative: CurveExpression1d
-
-    def build(builder: codegen.Builder): codegen.Value
-
-    final def unary_- : CurveExpression1d = this match {
-      case Constant(value) => Constant(-value)
-      case Negation(expression) => expression
-      case Difference(first, second) => second - first
-      case _ => Negation(this)
-    }
-
-    final def negated: CurveExpression1d = -this
-
-    final def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
-      case (expression, Zero) => expression
-      case (Zero, expression) => expression
-      case (first, second) if (first == second) => Constant(2) * first
-      case (first, Negation(second)) => first - second
-      case (Negation(first), second) => second - first
-      case _ => Sum(this, that)
-    }
-
-    final def plus(that: CurveExpression1d): CurveExpression1d = this + that
-
-    final def -(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
-      case (expression, Zero) => expression
-      case (Zero, expression) => -expression
-      case (first, second) if (first == second) => Zero
-      case (first, Negation(second)) => first + second
-      case _ => Difference(this, that)
-    }
-
-    final def minus(that: CurveExpression1d): CurveExpression1d = this - that
-
-    final def *(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
-      case (_, Zero) => Zero
-      case (Zero, _) => Zero
-      case (expression, One) => expression
-      case (One, expression) => expression
-      case (expression, NegativeOne) => -expression
-      case (NegativeOne, expression) => -expression
-      case (first, second) if (first == second) => first.squared
-      case (Quotient(a, b), Quotient(c, d)) => (a * c) / (b * d)
-      case _ => Product(this, that)
-    }
-
-    final def times(that: CurveExpression1d): CurveExpression1d = this * that
-
-    final def /(that: CurveExpression1d): CurveExpression1d = (this, that) match {
-      case (_, Zero) => throw new ArithmeticException("Division by constant zero expression")
-      case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
-      case (Zero, _) => Zero
-      case (expression, One) => expression
-      case (expression, NegativeOne) => -expression
-      case (expression, Constant(value)) => Constant(1.0 / value) * expression
-      case (expression, Quotient(numerator, denominator)) => expression * denominator / numerator
-      case _ => Quotient(this, that)
-    }
-
-    final def dividedBy(that: CurveExpression1d): CurveExpression1d = this / that
-
-    final def squared: CurveExpression1d = this match {
-      case Constant(value) => Constant(value * value)
-      case Negation(expression) => expression.squared
-      case _ => Square(this)
-    }
+  final def unary_- : CurveExpression1d = this match {
+    case Constant(value) => Constant(-value)
+    case Negation(expression) => expression
+    case Difference(first, second) => second - first
+    case _ => Negation(this)
   }
 
-  object CurveExpression1d {
-    def constant(value: Double): CurveExpression1d = Constant(value)
+  final def negated: CurveExpression1d = -this
 
-    val Zero: CurveExpression1d = Constant(0.0)
+  final def +(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
+    case (expression, Zero) => expression
+    case (Zero, expression) => expression
+    case (first, second) if (first == second) => Constant(2) * first
+    case (first, Negation(second)) => first - second
+    case (Negation(first), second) => second - first
+    case _ => Sum(this, that)
+  }
 
-    val One: CurveExpression1d = Constant(1.0)
+  final def plus(that: CurveExpression1d): CurveExpression1d = this + that
 
-    val NegativeOne: CurveExpression1d = Constant(-1.0)
+  final def -(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
+    case (expression, Zero) => expression
+    case (Zero, expression) => -expression
+    case (first, second) if (first == second) => Zero
+    case (first, Negation(second)) => first + second
+    case _ => Difference(this, that)
+  }
 
-    val Parameter: CurveExpression1d = Identity
+  final def minus(that: CurveExpression1d): CurveExpression1d = this - that
 
-    case class Constant(value: Double) extends CurveExpression1d {
-      override def derivative: CurveExpression1d = Zero
+  final def *(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
+    case (_, Zero) => Zero
+    case (Zero, _) => Zero
+    case (expression, One) => expression
+    case (One, expression) => expression
+    case (expression, NegativeOne) => -expression
+    case (NegativeOne, expression) => -expression
+    case (first, second) if (first == second) => first.squared
+    case (Quotient(a, b), Quotient(c, d)) => (a * c) / (b * d)
+    case _ => Product(this, that)
+  }
 
-      override def build(builder: codegen.Builder): codegen.Value = codegen.Constant(value)
-    }
+  final def times(that: CurveExpression1d): CurveExpression1d = this * that
 
-    case class Variable(value: Double) extends CurveExpression1d {
-      override def derivative: CurveExpression1d = Zero
+  final def /(that: CurveExpression1d): CurveExpression1d = (this, that) match {
+    case (_, Zero) => throw new ArithmeticException("Division by constant zero expression")
+    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
+    case (Zero, _) => Zero
+    case (expression, One) => expression
+    case (expression, NegativeOne) => -expression
+    case (expression, Constant(value)) => Constant(1.0 / value) * expression
+    case (expression, Quotient(numerator, denominator)) => expression * denominator / numerator
+    case _ => Quotient(this, that)
+  }
 
-      override def build(builder: codegen.Builder): codegen.Value = builder.variable(value)
-    }
+  final def dividedBy(that: CurveExpression1d): CurveExpression1d = this / that
 
-    case object Identity extends CurveExpression1d {
-      override def derivative: CurveExpression1d = CurveExpression1d.One
+  final def squared: CurveExpression1d = this match {
+    case Constant(value) => Constant(value * value)
+    case Negation(expression) => expression.squared
+    case _ => Square(this)
+  }
+}
 
-      override def build(builder: codegen.Builder): codegen.Value = codegen.Parameter(0)
-    }
+object CurveExpression1d {
+  def constant(value: Double): CurveExpression1d = Constant(value)
 
-    case class Negation(expression: CurveExpression1d) extends CurveExpression1d {
-      override def derivative: CurveExpression1d = -expression.derivative
+  val Zero: CurveExpression1d = Constant(0.0)
 
-      override def build(builder: codegen.Builder): codegen.Value =
-        builder.negation(expression.build(builder))
-    }
+  val One: CurveExpression1d = Constant(1.0)
 
-    case class Sum(first: CurveExpression1d, second: CurveExpression1d) extends CurveExpression1d {
-      override def derivative: CurveExpression1d = first.derivative + second.derivative
+  val NegativeOne: CurveExpression1d = Constant(-1.0)
 
-      override def build(builder: codegen.Builder): codegen.Value =
-        builder.sum(first.build(builder), second.build(builder))
-    }
+  val Parameter: CurveExpression1d = Identity
 
-    case class Difference(first: CurveExpression1d, second: CurveExpression1d)
-      extends CurveExpression1d {
+  case class Constant(value: Double) extends CurveExpression1d {
+    override def derivative: CurveExpression1d = Zero
+  }
 
-      override def derivative: CurveExpression1d = first.derivative - second.derivative
+  case class Variable(value: Double) extends CurveExpression1d {
+    override def derivative: CurveExpression1d = Zero
+  }
 
-      override def build(builder: codegen.Builder): codegen.Value =
-        builder.difference(first.build(builder), second.build(builder))
-    }
+  case object Identity extends CurveExpression1d {
+    override def derivative: CurveExpression1d = CurveExpression1d.One
+  }
 
-    case class Product(first: CurveExpression1d, second: CurveExpression1d)
-      extends CurveExpression1d {
+  case class Negation(expression: CurveExpression1d) extends CurveExpression1d {
+    override def derivative: CurveExpression1d = -expression.derivative
+  }
 
-      override def derivative: CurveExpression1d =
-        first.derivative * second + first * second.derivative
+  case class Sum(first: CurveExpression1d, second: CurveExpression1d) extends CurveExpression1d {
+    override def derivative: CurveExpression1d = first.derivative + second.derivative
+  }
 
-      override def build(builder: codegen.Builder): codegen.Value =
-        builder.product(first.build(builder), second.build(builder))
-    }
+  case class Difference(first: CurveExpression1d, second: CurveExpression1d)
+    extends CurveExpression1d {
 
-    case class Quotient(first: CurveExpression1d, second: CurveExpression1d)
-      extends CurveExpression1d {
+    override def derivative: CurveExpression1d = first.derivative - second.derivative
+  }
 
-      override def derivative: CurveExpression1d =
-        (first.derivative * second - first * second.derivative) /
-        second.squared
+  case class Product(first: CurveExpression1d, second: CurveExpression1d)
+    extends CurveExpression1d {
 
-      override def build(builder: codegen.Builder): codegen.Value =
-        builder.quotient(first.build(builder), second.build(builder))
-    }
+    override def derivative: CurveExpression1d =
+      first.derivative * second + first * second.derivative
+  }
 
-    case class Square(expression: CurveExpression1d) extends CurveExpression1d {
-      override def derivative: CurveExpression1d =
-        Constant(2.0) * expression * expression.derivative
+  case class Quotient(first: CurveExpression1d, second: CurveExpression1d)
+    extends CurveExpression1d {
 
-      override def build(builder: codegen.Builder): codegen.Value =
-        builder.square(expression.build(builder))
-    }
+    override def derivative: CurveExpression1d =
+      (first.derivative * second - first * second.derivative) /
+      second.squared
+  }
+
+  case class Square(expression: CurveExpression1d) extends CurveExpression1d {
+    override def derivative: CurveExpression1d =
+      Constant(2.0) * expression * expression.derivative
   }
 }
