@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-sealed abstract class CurveExpression1d {
+abstract class CurveExpression1d {
   import CurveExpression1d._
 
   def derivative: CurveExpression1d
