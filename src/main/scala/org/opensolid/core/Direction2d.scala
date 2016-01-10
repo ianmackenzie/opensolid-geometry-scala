@@ -81,7 +81,7 @@ object Direction2d {
 
   def apply(components: (Double, Double)): Direction2d = new Direction2d(components)
 
-  def fromAngle(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
+  def polar(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
 
   def random: Direction2d = random(Random)
 
