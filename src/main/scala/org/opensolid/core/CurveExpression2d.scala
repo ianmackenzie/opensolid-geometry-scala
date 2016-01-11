@@ -50,14 +50,14 @@ object CurveExpression2d {
   }
 
   case class XComponent(expression: CurveExpression2d) extends ScalarCurveExpression {
-    def evaluate(parameterValue: Double) = expression.evaluate(parameterValue).x
+    def evaluate(parameterValue: Double): Double = expression.evaluate(parameterValue).x
 
-    def bounds(parameterBounds: Interval) = expression.bounds(parameterBounds).x
+    def bounds(parameterBounds: Interval): Interval = expression.bounds(parameterBounds).x
   }
 
   case class YComponent(expression: CurveExpression2d) extends ScalarCurveExpression {
-    def evaluate(parameterValue: Double) = expression.evaluate(parameterValue).y
+    def evaluate(parameterValue: Double): Double = expression.evaluate(parameterValue).y
 
-    def bounds(parameterBounds: Interval) = expression.bounds(parameterBounds).y
+    def bounds(parameterBounds: Interval): Interval = expression.bounds(parameterBounds).y
   }
 }
