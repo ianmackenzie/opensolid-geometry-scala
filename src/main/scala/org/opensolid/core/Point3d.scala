@@ -19,6 +19,8 @@ import scala.math
 final case class Point3d(x: Double, y: Double, z: Double)
   extends Scalable3d[Point3d] with Bounded[Box3d] with GeometricallyComparable[Point3d] {
 
+  def components: (Double, Double, Double) = (x, y, z)
+
   def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y

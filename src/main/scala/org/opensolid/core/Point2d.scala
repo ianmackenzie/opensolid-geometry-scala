@@ -19,6 +19,8 @@ import scala.math
 final case class Point2d(x: Double, y: Double)
   extends Scalable2d[Point2d] with Bounded[Box2d] with GeometricallyComparable[Point2d] {
 
+  def components: (Double, Double) = (x, y)
+
   def component(index: Int): Double = index match {
     case 0 => x
     case 1 => y
