@@ -19,8 +19,6 @@ abstract class CurveExpression1d {
 
   def evaluate(t: Double): Double
 
-  def derivative: CurveExpression1d
-
   def unary_- : CurveExpression1d = Negation(this)
 
   final def negated: CurveExpression1d = -this
@@ -91,8 +89,6 @@ object CurveExpression1d {
   case class Constant(value: Double) extends CurveExpression1d {
     override def evaluate(t: Double): Double = value
 
-    override def derivative: CurveExpression1d = Zero
-
     override def unary_- : CurveExpression1d = Constant(-value)
 
     override def squared: CurveExpression1d = Constant(value * value)
@@ -100,14 +96,10 @@ object CurveExpression1d {
 
   case object Identity extends CurveExpression1d {
     override def evaluate(t: Double): Double = t
-
-    override def derivative: CurveExpression1d = CurveExpression1d.One
   }
 
   case class Negation(expression: CurveExpression1d) extends CurveExpression1d {
     override def evaluate(t: Double): Double = -expression.evaluate(t)
-
-    override def derivative: CurveExpression1d = -expression.derivative
 
     override def unary_- : CurveExpression1d = expression
 
@@ -119,9 +111,6 @@ object CurveExpression1d {
 
     override def evaluate(t: Double): Double =
       firstExpression.evaluate(t) + secondExpression.evaluate(t)
-
-    override def derivative: CurveExpression1d =
-      firstExpression.derivative + secondExpression.derivative
   }
 
   case class Difference(firstExpression: CurveExpression1d, secondExpression: CurveExpression1d)
@@ -129,9 +118,6 @@ object CurveExpression1d {
 
     override def evaluate(t: Double): Double =
       firstExpression.evaluate(t) - secondExpression.evaluate(t)
-
-    override def derivative: CurveExpression1d =
-      firstExpression.derivative - secondExpression.derivative
 
     override def unary_- : CurveExpression1d = Difference(secondExpression, firstExpression)
   }
@@ -141,9 +127,6 @@ object CurveExpression1d {
 
     override def evaluate(t: Double): Double =
       firstExpression.evaluate(t) * secondExpression.evaluate(t)
-
-    override def derivative: CurveExpression1d =
-      firstExpression.derivative * secondExpression + firstExpression * secondExpression.derivative
   }
 
   case class Quotient(firstExpression: CurveExpression1d, secondExpression: CurveExpression1d)
@@ -151,12 +134,6 @@ object CurveExpression1d {
 
     override def evaluate(t: Double): Double =
       firstExpression.evaluate(t) / secondExpression.evaluate(t)
-
-    override def derivative: CurveExpression1d =
-      (
-        firstExpression.derivative * secondExpression -
-        firstExpression * secondExpression.derivative
-      ) / secondExpression.squared
   }
 
   case class Square(expression: CurveExpression1d) extends CurveExpression1d {
@@ -164,7 +141,5 @@ object CurveExpression1d {
       val temp = expression.evaluate(t)
       temp * temp
     }
-
-    override def derivative: CurveExpression1d = Constant(2.0) * expression * expression.derivative
   }
 }
