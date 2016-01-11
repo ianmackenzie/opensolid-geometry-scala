@@ -14,14 +14,12 @@
 
 package org.opensolid.core
 
-abstract class DirectionCurve2d {
-  def domain: Interval
-
+abstract class DirectionCurveExpression2d {
   def evaluate(t: Double): Direction2d
 }
 
-object DirectionCurve2d {
-  case class Constant(direction: Direction2d) extends DirectionCurve2d {
+object DirectionCurveExpression2d {
+  case class Constant(direction: Direction2d) extends DirectionCurveExpression2d {
     def domain: Interval = Interval.Whole
 
     def evaluate(t: Double): Direction2d = direction

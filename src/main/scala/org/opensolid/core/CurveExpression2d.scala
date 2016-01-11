@@ -14,28 +14,28 @@
 
 package org.opensolid.core
 
-abstract class Curve2d {
-  def domain: Interval
-
+abstract class CurveExpression2d {
   def evaluate(t: Double): Point2d
 
-  def tangentDirection: DirectionCurve2d
+  def tangentDirection: DirectionCurveExpression2d
 
-  def normalDirection: DirectionCurve2d
+  def normalDirection: DirectionCurveExpression2d
 
-  def curvature: Curve1d
+  def curvature: CurveExpression1d
 }
 
-object Curve2d {
-  case class Constant(point: Point2d) extends Curve2d {
+object CurveExpression2d {
+  case class Constant(point: Point2d) extends CurveExpression2d {
     def domain: Interval = Interval.Whole
 
     def evaluate(t: Double): Point2d = point
 
-    def tangentDirection: DirectionCurve2d = DirectionCurve2d.Constant(Direction2d.None)
+    def tangentDirection: DirectionCurveExpression2d =
+      DirectionCurveExpression2d.Constant(Direction2d.None)
 
-    def normalDirection: DirectionCurve2d = DirectionCurve2d.Constant(Direction2d.None)
+    def normalDirection: DirectionCurveExpression2d =
+      DirectionCurveExpression2d.Constant(Direction2d.None)
 
-    def curvature: Curve1d = Curve1d.Constant(0.0)
+    def curvature: CurveExpression1d = CurveExpression1d.Constant(0.0)
   }
 }
