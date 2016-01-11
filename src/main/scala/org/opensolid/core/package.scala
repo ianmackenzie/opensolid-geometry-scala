@@ -136,8 +136,6 @@ package object core {
 
     def inDegrees: Double = math.toDegrees(value)
 
-    def *(sign: Sign): Double = value * sign.value
-
     def +(interval: Interval): Interval = {
       Interval(value + interval.lowerBound, value + interval.upperBound)
     }

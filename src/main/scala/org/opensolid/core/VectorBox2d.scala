@@ -94,12 +94,6 @@ final case class VectorBox2d(x: Interval, y: Interval) {
 
   def -(that: VectorBox2d): VectorBox2d = VectorBox2d(this.x - that.x, this.y - that.y)
 
-  def *(sign: Sign): VectorBox2d = sign match {
-    case Sign.Positive => this
-    case Sign.Negative => -this
-    case _ => VectorBox2d.Empty
-  }
-
   def *(value: Double): VectorBox2d = VectorBox2d(x * value, y * value)
 
   def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)

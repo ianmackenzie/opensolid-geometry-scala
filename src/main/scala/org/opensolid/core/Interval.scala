@@ -391,14 +391,6 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 
   def minus(that: Interval): Interval = this - that
 
-  def *(sign: Sign): Interval = sign match {
-    case Sign.Positive => this
-    case Sign.Negative => -this
-    case _ => Interval.Empty
-  }
-
-  def times(sign: Sign): Interval = this * sign
-
   def *(value: Double): Interval = {
     val lowerProduct = value * lowerBound
     val upperProduct = value * upperBound

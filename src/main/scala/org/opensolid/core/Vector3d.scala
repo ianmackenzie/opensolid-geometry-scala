@@ -99,14 +99,6 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def minus(vectorBox: VectorBox3d): VectorBox3d = this - vectorBox
 
-  def *(sign: Sign): Vector3d = sign match {
-    case Sign.Positive => this
-    case Sign.Negative => -this
-    case _ => Vector3d.Zero
-  }
-
-  def times(sign: Sign): Vector3d = this * sign
-
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
   def times(value: Double): Vector3d = this * value

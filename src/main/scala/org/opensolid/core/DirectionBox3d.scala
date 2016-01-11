@@ -32,12 +32,6 @@ final case class DirectionBox3d(vectorBox: VectorBox3d) {
 
   def unary_- : DirectionBox3d = DirectionBox3d(-vectorBox)
 
-  def *(sign: Sign): DirectionBox3d = sign match {
-    case Sign.Positive => this
-    case Sign.Negative => -this
-    case _ => DirectionBox3d.Empty
-  }
-
   def *(value: Double): VectorBox3d = vectorBox * value
 
   def *(interval: Interval): VectorBox3d = vectorBox * interval

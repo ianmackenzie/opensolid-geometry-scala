@@ -35,12 +35,6 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
 
   def unary_- : Direction3d = Direction3d(-vector)
 
-  def *(sign: Sign): Direction3d = sign match {
-    case Sign.Positive => this
-    case Sign.Negative => -this
-    case _ => Direction3d.None
-  }
-
   def *(value: Double): Vector3d = vector * value
 
   def *(interval: Interval): VectorBox3d = vector * interval
