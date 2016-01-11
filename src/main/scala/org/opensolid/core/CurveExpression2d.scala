@@ -15,20 +15,26 @@
 package org.opensolid.core
 
 abstract class CurveExpression2d {
-  def evaluate(t: Double): Point2d
+  import CurveExpression2d._
+
+  def evaluate(parameterValue: Double): Point2d
+
+  def bounds(parameterBounds: Interval): Box2d
 
   def tangentDirection: DirectionCurveExpression2d
 
   def normalDirection: DirectionCurveExpression2d
 
-  def curvature: CurveExpression1d
+  def curvature: ScalarCurveExpression
 }
 
 object CurveExpression2d {
   case class Constant(point: Point2d) extends CurveExpression2d {
-    def domain: Interval = Interval.Whole
+    private[this] def box = Box2d(point.components.map(Interval(_)))
 
-    def evaluate(t: Double): Point2d = point
+    def evaluate(parameterValue: Double): Point2d = point
+
+    def bounds(parameterBounds: Interval): Box2d = box
 
     def tangentDirection: DirectionCurveExpression2d =
       DirectionCurveExpression2d.Constant(Direction2d.None)
@@ -36,6 +42,6 @@ object CurveExpression2d {
     def normalDirection: DirectionCurveExpression2d =
       DirectionCurveExpression2d.Constant(Direction2d.None)
 
-    def curvature: CurveExpression1d = CurveExpression1d.Constant(0.0)
+    def curvature: ScalarCurveExpression = ScalarCurveExpression.constant(0.0)
   }
 }
