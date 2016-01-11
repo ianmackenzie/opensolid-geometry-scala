@@ -26,6 +26,10 @@ abstract class CurveExpression2d {
   def normalDirection: DirectionCurveExpression2d
 
   def curvature: ScalarCurveExpression
+
+  def x: ScalarCurveExpression = XComponent(this)
+
+  def y: ScalarCurveExpression = YComponent(this)
 }
 
 object CurveExpression2d {
@@ -43,5 +47,17 @@ object CurveExpression2d {
       DirectionCurveExpression2d.Constant(Direction2d.None)
 
     def curvature: ScalarCurveExpression = ScalarCurveExpression.constant(0.0)
+  }
+
+  case class XComponent(expression: CurveExpression2d) extends ScalarCurveExpression {
+    def evaluate(parameterValue: Double) = expression.evaluate(parameterValue).x
+
+    def bounds(parameterBounds: Interval) = expression.bounds(parameterBounds).x
+  }
+
+  case class YComponent(expression: CurveExpression2d) extends ScalarCurveExpression {
+    def evaluate(parameterValue: Double) = expression.evaluate(parameterValue).y
+
+    def bounds(parameterBounds: Interval) = expression.bounds(parameterBounds).y
   }
 }
