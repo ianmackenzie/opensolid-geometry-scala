@@ -181,27 +181,6 @@ package object core {
     def hull(interval: Interval): Interval = interval.hull(value)
   }
 
-  type ScalarCurveExpression = ScalarExpression[Double, Interval]
-
-  object ScalarCurveExpression {
-    def constant(value: Double): ScalarCurveExpression =
-      ScalarExpression.Constant[Double, Interval](value)
-  }
-
-  type ScalarSurfaceExpression = ScalarExpression[Point2d, Box2d]
-
-  object ScalarSurfaceExpression {
-    def constant(value: Double): ScalarSurfaceExpression =
-      ScalarExpression.Constant[Point2d, Box2d](value)
-  }
-
-  type ScalarVolumeExpression = ScalarExpression[Point3d, Box3d]
-
-  object ScalarVolumeExpression {
-    def constant(value: Double): ScalarVolumeExpression =
-      ScalarExpression.Constant[Point3d, Box3d](value)
-  }
-
   implicit class ImplicitPair[T](val tuple: (T, T)) extends AnyVal {
     def first: T = tuple._1
 
