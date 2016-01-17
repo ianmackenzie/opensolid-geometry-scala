@@ -41,7 +41,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).dot(axis.direction)
 
-  def squaredDistanceTo(axis: Axis3d): Double = (this - this.projectedOnto(axis)).squaredLength
+  def squaredDistanceTo(axis: Axis3d): Double =
+    (this - axis.originPoint).cross(axis.direction).squaredLength
 
   def distanceTo(axis: Axis3d): Double = math.sqrt(squaredDistanceTo(axis))
 
