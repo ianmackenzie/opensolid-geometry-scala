@@ -79,7 +79,7 @@ class Vector2dTestSuite
           normalized.shouldBe(Vector2d.Zero)
         } else {
           normalized.length.should(beEqualTo(1.0, 2 * eps(1.0)))
-          val tolerance = 2 * eps(vector.length)
+          val tolerance = 4 * eps(vector.length)
           vector.dot(normalized).should(beEqualTo(vector.length, tolerance))
           (normalized * vector.length).should(beEqualTo(vector, tolerance))
         }
