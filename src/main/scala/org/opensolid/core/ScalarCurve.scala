@@ -23,7 +23,7 @@ abstract class ScalarCurve {
 }
 
 object ScalarCurve {
-  type Expression = Expression1d[Expression1d.Parameter1d]
+  type Expression = Expression1d[Double]
 
   case class Constant(value: Double) extends ScalarCurve {
     def expression: Expression = Expression1d.Constant(value)

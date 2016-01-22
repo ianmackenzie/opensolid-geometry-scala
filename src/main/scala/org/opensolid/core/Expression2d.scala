@@ -83,9 +83,7 @@ sealed abstract class Expression2d[T] {
 }
 
 object Expression2d {
-  case class Parameter2d() extends Expression2d[Parameter2d]
-
-  object Parameter2d extends Parameter2d
+  object Parameter2d extends Expression2d[Point2d]
 
   case class Constant[T](val value: Vector2d) extends Expression2d[T] {
     override def unary_- : Expression2d[T] = Constant(-value)
