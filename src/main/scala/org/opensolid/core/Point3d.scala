@@ -28,7 +28,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point3d")
   }
 
-  override def bounds: Box3d = Box3d(Interval(x), Interval(y), Interval(z))
+  override def bounds: Box3d =
+    Box3d(Interval.singleton(x), Interval.singleton(y), Interval.singleton(z))
 
   override def equals(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)

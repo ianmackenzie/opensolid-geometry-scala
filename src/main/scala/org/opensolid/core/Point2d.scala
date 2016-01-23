@@ -27,7 +27,7 @@ final case class Point2d(x: Double, y: Double)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point2d")
   }
 
-  override def bounds: Box2d = Box2d(Interval(x), Interval(y))
+  override def bounds: Box2d = Box2d(Interval.singleton(x), Interval.singleton(y))
 
   override def equals(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)

@@ -71,8 +71,6 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 
   def this(endpoints: (Double, Double)) = this(endpoints.first, endpoints.second)
 
-  def this(value: Double) = this(value, value)
-
   /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) = (lowerBound, upperBound)
 
@@ -224,7 +222,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
   /** Returns a new interval that contains both this interval and the given value. */
   def hull(value: Double): Interval = {
     if (isEmpty) {
-      Interval(value)
+      Interval.singleton(value)
     } else {
       Interval(lowerBound.min(value), upperBound.max(value))
     }
@@ -427,7 +425,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 
   def /(value: Double): Interval = {
     if (isSingleton) {
-      Interval(lowerBound / value)
+      Interval.singleton(lowerBound / value)
     } else {
       val reciprocal = 1.0 / value
       (lowerBound * reciprocal).hull(upperBound * reciprocal)
@@ -481,9 +479,9 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 }
 
 object Interval {
-  def apply(value: Double): Interval = new Interval(value)
-
   def apply(endpoints: (Double, Double)): Interval = new Interval(endpoints)
+
+  def singleton(value: Double): Interval = new Interval(value, value)
 
   def hullOf(values: (Double, Double)): Interval = values.first.hull(values.second)
 
@@ -535,7 +533,7 @@ object Interval {
     if (interval.isEmpty) {
       Interval.Empty
     } else if (interval.isSingleton) {
-      Interval(math.sin(interval.lowerBound))
+      Interval.singleton(math.sin(interval.lowerBound))
     } else {
       val (hasMin, hasMax) = cosHasMinMax(interval - math.Pi / 2.0)
       if (hasMin && hasMax) {
@@ -554,7 +552,7 @@ object Interval {
     if (interval.isEmpty) {
       Interval.Empty
     } else if (interval.isSingleton) {
-      Interval(math.cos(interval.lowerBound))
+      Interval.singleton(math.cos(interval.lowerBound))
     } else {
       val (hasMin, hasMax) = cosHasMinMax(interval)
       if (hasMin && hasMax) {
@@ -620,7 +618,7 @@ object Interval {
     if (y.isEmpty || x.isEmpty) {
       Interval.Empty
     } else if (y.isSingleton && x.isSingleton) {
-      Interval(math.atan2(y.lowerBound, x.lowerBound))
+      Interval.singleton(math.atan2(y.lowerBound, x.lowerBound))
     } else if (x.lowerBound > 0.0) {
       Interval.atan(y / x)
     } else if (y.lowerBound > 0.0) {

@@ -19,7 +19,7 @@ import org.scalacheck._
 import org.opensolid.core.DoubleGenerators._
 
 trait IntervalGenerators {
-  val singletonInterval: Gen[Interval] = randomDouble.map(Interval(_))
+  val singletonInterval: Gen[Interval] = randomDouble.map(Interval.singleton(_))
 
   val randomWidthInterval: Gen[Interval] =
     for {
@@ -48,9 +48,9 @@ trait IntervalGenerators {
     Gen.frequency(
       1 -> Interval.Empty,
       1 -> Interval.Whole,
-      1 -> Interval(0.0),
-      1 -> Interval(1.0),
-      1 -> Interval(-1.0),
+      1 -> Interval.Zero,
+      1 -> Interval.singleton(1.0),
+      1 -> Interval.singleton(-1.0),
       2 -> negativeHalfOpenInterval,
       2 -> positiveHalfOpenInterval,
       2 -> singletonInterval,
