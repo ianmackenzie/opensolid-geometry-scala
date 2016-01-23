@@ -104,7 +104,17 @@ object Expression1d {
   }
 
   case class Sum[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
-    extends Expression1d[T]
+    extends Expression1d[T] {
+
+    override def equals(other: Any): Boolean = other match {
+      case Sum(otherFirst, otherSecond) =>
+        (firstExpression == otherFirst && secondExpression == otherSecond) ||
+        (firstExpression == otherSecond && secondExpression == otherFirst)
+      case _ => false
+    }
+
+    override def hashCode: Int = firstExpression.hashCode * secondExpression.hashCode
+  }
 
   case class Difference[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
     extends Expression1d[T] {
@@ -114,7 +124,17 @@ object Expression1d {
   }
 
   case class Product[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
-    extends Expression1d[T]
+    extends Expression1d[T] {
+
+    override def equals(other: Any): Boolean = other match {
+      case Product(otherFirst, otherSecond) =>
+        (firstExpression == otherFirst && secondExpression == otherSecond) ||
+        (firstExpression == otherSecond && secondExpression == otherFirst)
+      case _ => false
+    }
+
+    override def hashCode: Int = firstExpression.hashCode * secondExpression.hashCode
+  }
 
   case class Quotient[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
     extends Expression1d[T]
@@ -126,7 +146,17 @@ object Expression1d {
   case class YComponent2d[T](expression: Expression2d[T]) extends Expression1d[T]
 
   case class DotProduct2d[T](firstExpression: Expression2d[T], secondExpression: Expression2d[T])
-    extends Expression1d[T]
+    extends Expression1d[T] {
+
+    override def equals(other: Any): Boolean = other match {
+      case DotProduct2d(otherFirst, otherSecond) =>
+        (firstExpression == otherFirst && secondExpression == otherSecond) ||
+        (firstExpression == otherSecond && secondExpression == otherFirst)
+      case _ => false
+    }
+
+    override def hashCode: Int = firstExpression.hashCode * secondExpression.hashCode
+  }
 
   case class SquaredNorm2d[T](expression: Expression2d[T]) extends Expression1d[T]
 

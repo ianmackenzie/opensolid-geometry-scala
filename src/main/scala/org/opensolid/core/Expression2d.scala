@@ -100,7 +100,17 @@ object Expression2d {
   }
 
   case class Sum[T](firstExpression: Expression2d[T], secondExpression: Expression2d[T])
-    extends Expression2d[T]
+    extends Expression2d[T] {
+
+    override def equals(other: Any): Boolean = other match {
+      case Sum(otherFirst, otherSecond) =>
+        (firstExpression == otherFirst && secondExpression == otherSecond) ||
+        (firstExpression == otherSecond && secondExpression == otherFirst)
+      case _ => false
+    }
+
+    override def hashCode: Int = firstExpression.hashCode * secondExpression.hashCode
+  }
 
   case class Difference[T](firstExpression: Expression2d[T], secondExpression: Expression2d[T])
     extends Expression2d[T] {
