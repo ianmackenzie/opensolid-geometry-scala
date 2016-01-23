@@ -14,39 +14,86 @@
 
 package org.opensolid.core
 
-object Expression {
-  def compile[T](expression: Expression1d[T]): (T) => Double = ???
+case class EvaluationSequence[T] private (
+  operations: List[EvaluationSequence.Operation],
+  arraySize: Int,
+  map1d: Map[Expression1d[T], Int],
+  map2d: Map[Expression2d[T], (Int, Int)]
+) {
+  import EvaluationSequence._
 
-  def compile[T, R](expression: Expression2d[T]): (T) => R = ???
+  def add(expression: Expression1d[T]): (EvaluationSequence[T], Int) =
+    map1d.get(expression) match {
+      case Some(index) => (this, index)
+      case None => {
+        import Expression1d._
+        expression match {
+          case p: Parameter1d[T] => (this, 0)
+          case Constant(value) => append(expression)(index => Initialization1d(index, value))
+          case Negation(argument) => {
+            val (tempSequence, argumentIndex) = add(argument)
+            tempSequence.append(expression)(index => Negation1d(argumentIndex, index))
+          }
+          case _ => ???
+        }
+      }
+    }
 
-  private[this] def append[T](
-    operations: Operations[T],
+  def add(expression: Expression2d[T]): (EvaluationSequence[T], (Int, Int)) = ???
+
+  private def append(
     expression: Expression1d[T]
-  ): Operations[T] = ???
+  )(
+    createOperation: (Int) => Operation
+  ): (EvaluationSequence[T], Int) =
+    (
+      EvaluationSequence[T](
+        operations :+ createOperation(arraySize),
+        arraySize + 1,
+        map1d + (expression -> arraySize),
+        map2d
+      ),
+      arraySize
+    )
 
-  private[this] def append[T](
-    operations: Operations[T],
+  private def append(
     expression: Expression2d[T]
-  ): Operations[T] = ???
+  )(
+    createOperation: (Int, Int) => Operation
+  ): (EvaluationSequence[T], (Int, Int)) =
+    (
+      EvaluationSequence[T](
+        operations :+ createOperation(arraySize, arraySize + 1),
+        arraySize + 2,
+        map1d,
+        map2d + (expression -> (arraySize, arraySize + 1))
+      ),
+      (arraySize, arraySize + 1)
+    )
+}
 
-  private[this] case class Operations[T](
-    operations: List[Operation],
-    arraySize: Int,
-    map1d: Map[Expression1d[T], Int],
-    map2d: Map[Expression2d[T], Int]
-  )
-
-  private[this] object Operations {
-    def empty[T]: Operations[T] = Operations[T](List.empty, 0, Map.empty, Map.empty)
+object EvaluationSequence {
+  def evaluate[T](expression: Expression1d[T]): EvaluationSequence[T] = {
+    val initial = EvaluationSequence[T](List.empty, 0, Map.empty, Map.empty)
+    val (evaluationSequence, resultIndex) = initial.add(expression)
+    evaluationSequence
   }
 
-  private[this] sealed abstract class Operation {
+  sealed abstract class Operation {
     def execute(values: Array[Double]): Unit
 
     def execute(values: Array[Interval]): Unit
   }
 
-  private[this] case class Negation1d(argumentIndex: Int, resultIndex: Int) extends Operation {
+  case class Initialization1d(index: Int, value: Double) extends Operation {
+    override def execute(values: Array[Double]): Unit =
+      values(index) = value
+
+    override def execute(values: Array[Interval]): Unit =
+      values(index) = Interval.singleton(value)
+  }
+
+  case class Negation1d(argumentIndex: Int, resultIndex: Int) extends Operation {
     override def execute(values: Array[Double]): Unit =
       values(resultIndex) = -values(argumentIndex)
 
