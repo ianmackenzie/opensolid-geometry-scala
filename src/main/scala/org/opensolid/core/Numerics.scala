@@ -16,8 +16,8 @@ package org.opensolid.core
 
 import scala.math
 
-package object numerics {
-  def normalDirectionFromThreePoints(
+object Numerics {
+  def normalDirection(
     firstPoint: Point3d,
     secondPoint: Point3d,
     thirdPoint: Point3d

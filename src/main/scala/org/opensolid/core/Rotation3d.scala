@@ -20,7 +20,7 @@ final case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Di
   extends Transformation3d {
 
   def this(axis: Axis3d, angle: Double) =
-    this(axis.originPoint, numerics.rotationBasis(axis.direction, angle))
+    this(axis.originPoint, Numerics.rotationBasis(axis.direction, angle))
 
   override def apply(point: Point3d): Point3d = this.point + apply(point - this.point)
 

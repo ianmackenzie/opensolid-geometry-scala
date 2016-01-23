@@ -34,7 +34,7 @@ final case class Plane3d(
     this(originPoint, basisDirections.first, basisDirections.second)
 
   def this(originPoint: Point3d, normalDirection: Direction3d) =
-    this(originPoint, numerics.normalBasis(normalDirection), normalDirection)
+    this(originPoint, Numerics.normalBasis(normalDirection), normalDirection)
 
   def basisDirections: (Direction3d, Direction3d) = (xDirection, yDirection)
 
@@ -70,8 +70,7 @@ object Plane3d {
     new Plane3d(originPoint, normalDirection)
 
   def through(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
-    val normalDirection =
-      numerics.normalDirectionFromThreePoints(firstPoint, secondPoint, thirdPoint)
+    val normalDirection = Numerics.normalDirection(firstPoint, secondPoint, thirdPoint)
     val xDirection = (secondPoint - firstPoint) match {
       case Vector3d.Zero => normalDirection.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction

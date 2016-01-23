@@ -69,7 +69,7 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
   def area: Double = 0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex).length
 
   def normalDirection: Direction3d =
-    numerics.normalDirectionFromThreePoints(firstVertex, secondVertex, thirdVertex)
+    Numerics.normalDirection(firstVertex, secondVertex, thirdVertex)
 
   def centroid: Point3d =
     firstVertex + ((secondVertex - firstVertex) + (thirdVertex - firstVertex)) / 3.0
