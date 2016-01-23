@@ -89,7 +89,9 @@ sealed abstract class Expression1d[T] {
 }
 
 object Expression1d {
-  object Parameter1d extends Expression1d[Double]
+  sealed abstract class Parameter1d[T] extends Expression1d[T]
+
+  object Parameter1d extends Parameter1d[Double]
 
   case class Constant[T](val value: Double) extends Expression1d[T] {
     override def unary_- : Expression1d[T] = Constant(-value)
