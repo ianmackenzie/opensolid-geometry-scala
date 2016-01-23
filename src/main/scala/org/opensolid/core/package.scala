@@ -162,7 +162,7 @@ package object core {
           Interval(value / interval.lowerBound, value / interval.upperBound)
         }
       } else if (value == 0.0) {
-        Interval(0.0)
+        Interval.Zero
       } else {
         Interval.Whole
       }
