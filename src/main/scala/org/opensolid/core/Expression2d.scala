@@ -48,6 +48,10 @@ sealed abstract class Expression2d[T] {
 
   final def times(that: Expression1d[T]): Expression2d[T] = this * that
 
+  final def *(value: Double): Expression2d[T] = this * Expression1d.Constant[T](value)
+
+  final def times(value: Double): Expression2d[T] = this * value
+
   final def /(that: Expression1d[T]): Expression2d[T] = (this, that) match {
     case (_, Expression1d.Constant(0.0)) => throw new ArithmeticException("Division by zero")
     case (Constant(firstValue), Expression1d.Constant(secondValue)) =>
@@ -63,6 +67,10 @@ sealed abstract class Expression2d[T] {
   }
 
   final def dividedBy(that: Expression1d[T]): Expression2d[T] = this / that
+
+  final def /(value: Double): Expression2d[T] = this / Expression1d.Constant[T](value)
+
+  final def dividedBy(value: Double): Expression2d[T] = this / value
 
   def squaredNorm: Expression1d[T] = Expression1d.SquaredNorm2d(this)
 

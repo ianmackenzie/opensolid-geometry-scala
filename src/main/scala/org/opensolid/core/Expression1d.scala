@@ -33,6 +33,10 @@ sealed abstract class Expression1d[T] {
 
   final def plus(that: Expression1d[T]): Expression1d[T] = this + that
 
+  final def +(value: Double): Expression1d[T] = this + Constant[T](value)
+
+  final def plus(value: Double): Expression1d[T] = this + value
+
   final def -(that: Expression1d[T]): Expression1d[T] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
     case (expression, Constant(0.0)) => expression
@@ -43,6 +47,10 @@ sealed abstract class Expression1d[T] {
   }
 
   final def minus(that: Expression1d[T]): Expression1d[T] = this - that
+
+  final def -(value: Double): Expression1d[T] = this - Constant[T](value)
+
+  final def minus(value: Double): Expression1d[T] = this - value
 
   final def *(that: Expression1d[T]): Expression1d[T] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
@@ -58,6 +66,10 @@ sealed abstract class Expression1d[T] {
   }
 
   final def times(that: Expression1d[T]): Expression1d[T] = this * that
+
+  final def *(value: Double): Expression1d[T] = this * Constant[T](value)
+
+  final def times(value: Double): Expression1d[T] = this * value
 
   final def *(that: Expression2d[T]): Expression2d[T] = (this, that) match {
     case (Constant(firstValue), Expression2d.Constant(secondValue)) =>
@@ -84,6 +96,10 @@ sealed abstract class Expression1d[T] {
   }
 
   final def dividedBy(that: Expression1d[T]): Expression1d[T] = this / that
+
+  final def /(value: Double): Expression1d[T] = this / Constant[T](value)
+
+  final def dividedBy(value: Double): Expression1d[T] = this / value
 
   def squared: Expression1d[T] = Square(this)
 }

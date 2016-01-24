@@ -176,6 +176,21 @@ package object core {
 
     def *(direction: Direction3d): Vector3d = direction * value
 
+    def +[T](expression: Expression1d[T]): Expression1d[T] =
+      Expression1d.Constant[T](value) + expression
+
+    def -[T](expression: Expression1d[T]): Expression1d[T] =
+      Expression1d.Constant[T](value) - expression
+
+    def *[T](expression: Expression1d[T]): Expression1d[T] =
+      Expression1d.Constant[T](value) * expression
+
+    def *[T](expression: Expression2d[T]): Expression2d[T] =
+      Expression1d.Constant[T](value) * expression
+
+    def /[T](expression: Expression1d[T]): Expression1d[T] =
+      Expression1d.Constant[T](value) / expression
+
     def hull(that: Double): Interval = Interval(value.min(that), value.max(that))
 
     def hull(interval: Interval): Interval = interval.hull(value)
