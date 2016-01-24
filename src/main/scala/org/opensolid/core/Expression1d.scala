@@ -162,7 +162,5 @@ object Expression1d {
 
   case class SquaredNorm2d[T](expression: Expression2d[T]) extends Expression1d[T]
 
-  case class Norm2d[T](expression: Expression2d[T]) extends Expression1d[T] {
-    override def squared: Expression1d[T] = SquaredNorm2d(expression)
-  }
+  case class SquareRoot[T](expression: Expression1d[T]) extends Expression1d[T]
 }

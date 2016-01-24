@@ -22,62 +22,178 @@ case class EvaluationSequence[T] private (
 ) {
   import EvaluationSequence._
 
-  def add(expression: Expression1d[T]): (EvaluationSequence[T], Int) =
+  def evaluate(expression: Expression1d[T]): (EvaluationSequence[T], Int) =
     map1d.get(expression) match {
       case Some(index) => (this, index)
-      case None => {
-        import Expression1d._
-        expression match {
-          case p: Parameter1d[T] => (this, 0)
-          case Constant(value) => append(expression)(index => Initialization1d(index, value))
-          case Negation(argument) => {
-            val (tempSequence, argumentIndex) = add(argument)
-            tempSequence.append(expression)(index => Negation1d(argumentIndex, index))
-          }
-          case _ => ???
+      case None => expression match {
+        case identity: Expression1d.Identity[T] =>
+          (this, 0)
+        case Expression1d.Constant(value) =>
+          append1d(expression, resultIndex => Constant1d(resultIndex, value))
+        case Expression1d.XComponent2d(expression) => {
+          val (withExpression, (xIndex, yIndex)) = this.evaluate(expression)
+          (withExpression, xIndex)
+        }
+        case Expression1d.YComponent2d(expression) => {
+          val (withExpression, (xIndex, yIndex)) = this.evaluate(expression)
+          (withExpression, yIndex)
+        }
+        case Expression1d.Negation(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Negation1d(argumentIndex, resultIndex))
+        }
+        case Expression1d.Sum(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
+          withSecond.append1d(
+            expression,
+            resultIndex => Sum1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
+          )
+        }
+        case Expression1d.Difference(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
+          withSecond.append1d(
+            expression,
+            resultIndex => Difference1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
+          )
+        }
+        case Expression1d.Product(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
+          withSecond.append1d(
+            expression,
+            resultIndex => Product1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
+          )
+        }
+        case Expression1d.Quotient(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
+          withSecond.append1d(
+            expression,
+            resultIndex => Quotient1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
+          )
+        }
+        case Expression1d.Square(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Square(argumentIndex, resultIndex))
+        }
+        case Expression1d.SquareRoot(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => SquareRoot(argumentIndex, resultIndex))
+        }
+        case Expression1d.DotProduct2d(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndices) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)
+          withSecond.append1d(
+            expression,
+            resultIndex => DotProduct2d(firstArgumentIndices, secondArgumentIndices, resultIndex)
+          )
+        }
+        case Expression1d.SquaredNorm2d(argument) => {
+          val (withArgument, argumentIndices) = evaluate(argument)
+          withArgument.append1d(
+            expression,
+            resultIndex => SquaredNorm2d(argumentIndices, resultIndex)
+          )
         }
       }
     }
 
-  def add(expression: Expression2d[T]): (EvaluationSequence[T], (Int, Int)) = ???
+  def evaluate(expression: Expression2d[T]): (EvaluationSequence[T], (Int, Int)) =
+    map2d.get(expression) match {
+      case Some(indices) => (this, indices)
+      case None => expression match {
+        case identity: Expression2d.Identity[T] =>
+          (this, (0, 1))
+        case Expression2d.Constant(value) =>
+          append2d(expression, resultIndices => Constant2d(resultIndices, value.components))
+        case Expression2d.Negation(argument) => {
+          val (withArgument, argumentIndices) = evaluate(argument)
+          withArgument.append2d(
+            expression,
+            resultIndices => Negation2d(argumentIndices, resultIndices)
+          )
+        }
+        case Expression2d.Sum(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndices) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)
+          withSecond.append2d(
+            expression,
+            resultIndices => Sum2d(firstArgumentIndices, secondArgumentIndices, resultIndices)
+          )
+        }
+        case Expression2d.Difference(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndices) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)
+          withSecond.append2d(
+            expression,
+            resultIndices =>
+              Difference2d(firstArgumentIndices, secondArgumentIndices, resultIndices)
+          )
+        }
+        case Expression2d.Product(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndices) = this.evaluate(secondArgument)
+          withSecond.append2d(
+            expression,
+            resultIndices => Product2d(firstArgumentIndex, secondArgumentIndices, resultIndices)
+          )
+        }
+        case Expression2d.Quotient(firstArgument, secondArgument) => {
+          val (withFirst, firstArgumentIndices) = this.evaluate(firstArgument)
+          val (withSecond, secondArgumentIndex) = this.evaluate(secondArgument)
+          withSecond.append2d(
+            expression,
+            resultIndices => Quotient2d(firstArgumentIndices, secondArgumentIndex, resultIndices)
+          )
+        }
+      }
+    }
 
-  private def append(
-    expression: Expression1d[T]
-  )(
+  private def append1d(
+    expression: Expression1d[T],
     createOperation: (Int) => Operation
-  ): (EvaluationSequence[T], Int) =
-    (
+  ): (EvaluationSequence[T], Int) = {
+    val resultIndex = arraySize
+    val appendedSequence =
       EvaluationSequence[T](
-        operations :+ createOperation(arraySize),
+        operations :+ createOperation(resultIndex),
         arraySize + 1,
-        map1d + (expression -> arraySize),
+        map1d + (expression -> resultIndex),
         map2d
-      ),
-      arraySize
-    )
+      )
+    (appendedSequence, resultIndex)
+  }
 
-  private def append(
-    expression: Expression2d[T]
-  )(
-    createOperation: (Int, Int) => Operation
-  ): (EvaluationSequence[T], (Int, Int)) =
-    (
+  private def append2d(
+    expression: Expression2d[T],
+    createOperation: ((Int, Int)) => Operation
+  ): (EvaluationSequence[T], (Int, Int)) = {
+    val resultIndices = (arraySize, arraySize + 1)
+    val appendedSequence =
       EvaluationSequence[T](
-        operations :+ createOperation(arraySize, arraySize + 1),
+        operations :+ createOperation(resultIndices),
         arraySize + 2,
         map1d,
-        map2d + (expression -> (arraySize, arraySize + 1))
-      ),
-      (arraySize, arraySize + 1)
-    )
+        map2d + (expression -> resultIndices)
+      )
+    (appendedSequence, resultIndices)
+  }
 }
 
 object EvaluationSequence {
-  def evaluate[T](expression: Expression1d[T]): EvaluationSequence[T] = {
-    val initial = EvaluationSequence[T](List.empty, 0, Map.empty, Map.empty)
-    val (evaluationSequence, resultIndex) = initial.add(expression)
-    evaluationSequence
-  }
+  def evaluate1d[T](expression: Expression1d[T]): (EvaluationSequence[T], Int) =
+    empty1d[T].evaluate(expression)
+
+  def evaluate2d[T](expression: Expression2d[T]): (EvaluationSequence[T], (Int, Int)) =
+    empty2d[T].evaluate(expression)
+
+  private def empty1d[T]: EvaluationSequence[T] =
+    EvaluationSequence[T](List.empty, 1, Map.empty, Map.empty)
+
+  private def empty2d[T]: EvaluationSequence[T] =
+    EvaluationSequence[T](List.empty, 2, Map.empty, Map.empty)
 
   sealed abstract class Operation {
     def execute(values: Array[Double]): Unit
@@ -85,50 +201,242 @@ object EvaluationSequence {
     def execute(values: Array[Interval]): Unit
   }
 
-  case class Initialization1d(index: Int, value: Double) extends Operation {
-    override def execute(values: Array[Double]): Unit =
-      values(index) = value
+  case class Constant1d(resultIndex: Int, value: Double) extends Operation {
+    private[this] val i = resultIndex;
+    private[this] val interval = Interval.singleton(value)
 
-    override def execute(values: Array[Interval]): Unit =
-      values(index) = Interval.singleton(value)
+    override def execute(values: Array[Double]): Unit = values(i) = value
+
+    override def execute(values: Array[Interval]): Unit = values(i) = interval
   }
 
   case class Negation1d(argumentIndex: Int, resultIndex: Int) extends Operation {
-    override def execute(values: Array[Double]): Unit =
-      values(resultIndex) = -values(argumentIndex)
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
 
-    override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = -values(argumentIndex)
+    override def execute(values: Array[Double]): Unit = values(i) = -values(j)
+
+    override def execute(values: Array[Interval]): Unit = values(i) = -values(j)
   }
 
-  // case class Sum[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
-  //   extends Expression1d[T]
+  case class Sum1d(firstArgumentIndex: Int, secondArgumentIndex: Int, resultIndex: Int)
+    extends Operation {
 
-  // case class Difference[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
-  //   extends Expression1d[T] {
+    private[this] val i = resultIndex
+    private[this] val j = firstArgumentIndex
+    private[this] val k = secondArgumentIndex
 
-  //   override def unary_- : Expression1d[T] =
-  //     Difference[T](secondExpression, firstExpression)
-  // }
+    override def execute(values: Array[Double]): Unit = values(i) = values(j) + values(k)
 
-  // case class Product[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
-  //   extends Expression1d[T]
+    override def execute(values: Array[Interval]): Unit = values(i) = values(j) + values(k)
+  }
 
-  // case class Quotient[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
-  //   extends Expression1d[T]
+  case class Difference1d(firstArgumentIndex: Int, secondArgumentIndex: Int, resultIndex: Int)
+    extends Operation {
 
-  // case class Square[T](expression: Expression1d[T]) extends Expression1d[T]
+    private[this] val i = resultIndex
+    private[this] val j = firstArgumentIndex
+    private[this] val k = secondArgumentIndex
 
-  // case class XComponent2d[T](expression: Expression2d[T]) extends Expression1d[T]
+    override def execute(values: Array[Double]): Unit = values(i) = values(j) - values(k)
 
-  // case class YComponent2d[T](expression: Expression2d[T]) extends Expression1d[T]
+    override def execute(values: Array[Interval]): Unit = values(i) = values(j) - values(k)
+  }
 
-  // case class DotProduct2d[T](firstExpression: Expression2d[T], secondExpression: Expression2d[T])
-  //   extends Expression1d[T]
+  case class Product1d(firstArgumentIndex: Int, secondArgumentIndex: Int, resultIndex: Int)
+    extends Operation {
 
-  // case class SquaredNorm2d[T](expression: Expression2d[T]) extends Expression1d[T]
+    private[this] val i = resultIndex
+    private[this] val j = firstArgumentIndex
+    private[this] val k = secondArgumentIndex
 
-  // case class Norm2d[T](expression: Expression2d[T]) extends Expression1d[T] {
-  //   override def squared: Expression1d[T] = SquaredNorm2d(expression)
-  // }
+    override def execute(values: Array[Double]): Unit = values(i) = values(j) * values(k)
+
+    override def execute(values: Array[Interval]): Unit = values(i) = values(j) * values(k)
+  }
+
+  case class Quotient1d(firstArgumentIndex: Int, secondArgumentIndex: Int, resultIndex: Int)
+    extends Operation {
+
+    private[this] val i = resultIndex
+    private[this] val j = firstArgumentIndex
+    private[this] val k = secondArgumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = values(j) / values(k)
+
+    override def execute(values: Array[Interval]): Unit = values(i) = values(j) / values(k)
+  }
+
+  case class Square(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = {
+      val argument = values(j)
+      values(i) = argument * argument
+    }
+
+    override def execute(values: Array[Interval]): Unit = values(i) = values(j).squared
+  }
+
+  case class SquareRoot(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.sqrt(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.sqrt(values(j))
+  }
+
+  case class DotProduct2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int),
+    resultIndex: Int
+  ) extends Operation {
+
+    private[this] val i = resultIndex
+    private[this] val (jx, jy) = firstArgumentIndices
+    private[this] val (kx, ky) = secondArgumentIndices
+
+    override def execute(values: Array[Double]): Unit =
+      values(i) = values(jx) * values(kx) + values(jy) * values(ky)
+
+    override def execute(values: Array[Interval]): Unit =
+      values(i) = values(jx) * values(kx) + values(jy) * values(ky)
+  }
+
+  case class SquaredNorm2d(argumentIndices: (Int, Int), resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val (jx, jy) = argumentIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      val x = values(jx)
+      val y = values(jy)
+      values(i) = x * x + y * y
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(i) = values(jx).squared + values(jy).squared
+    }
+  }
+
+  case class Constant2d(resultIndices: (Int, Int), values: (Double, Double)) extends Operation {
+    private[this] val (ix, iy) = resultIndices;
+    private[this] val (x, y) = values
+    private[this] val xInterval = Interval.singleton(x)
+    private[this] val yInterval = Interval.singleton(y)
+
+    override def execute(values: Array[Double]): Unit = {
+      values(ix) = x
+      values(iy) = y
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(ix) = xInterval
+      values(iy) = yInterval
+    }
+  }
+
+  case class Negation2d(argumentIndices: (Int, Int), resultIndices: (Int, Int)) extends Operation {
+    private[this] val (ix, iy) = resultIndices
+    private[this] val (jx, jy) = argumentIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(ix) = -values(jx)
+      values(iy) = -values(jy)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(ix) = -values(jx)
+      values(iy) = -values(jy)
+    }
+  }
+
+  case class Sum2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int),
+    resultIndices: (Int, Int)
+  ) extends Operation {
+
+    private[this] val (ix, iy) = resultIndices
+    private[this] val (jx, jy) = firstArgumentIndices
+    private[this] val (kx, ky) = secondArgumentIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(ix) = values(jx) + values(kx)
+      values(iy) = values(jy) + values(ky)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(ix) = values(jx) + values(kx)
+      values(iy) = values(jy) + values(ky)
+    }
+  }
+
+  case class Difference2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int),
+    resultIndices: (Int, Int)
+  ) extends Operation {
+
+    private[this] val (ix, iy) = resultIndices
+    private[this] val (jx, jy) = firstArgumentIndices
+    private[this] val (kx, ky) = secondArgumentIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(ix) = values(jx) - values(kx)
+      values(iy) = values(jy) - values(ky)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(ix) = values(jx) - values(kx)
+      values(iy) = values(jy) - values(ky)
+    }
+  }
+
+  case class Product2d(
+    firstArgumentIndex: Int,
+    secondArgumentIndices: (Int, Int),
+    resultIndices: (Int, Int)
+  ) extends Operation {
+
+    private[this] val (ix, iy) = resultIndices
+    private[this] val j = firstArgumentIndex
+    private[this] val (kx, ky) = secondArgumentIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      val multiplier = values(j)
+      values(ix) = multiplier * values(kx)
+      values(iy) = multiplier * values(ky)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      val multiplier = values(j)
+      values(ix) = multiplier * values(kx)
+      values(iy) = multiplier * values(ky)
+    }
+  }
+
+  case class Quotient2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndex: Int,
+    resultIndices: (Int, Int)
+  ) extends Operation {
+
+    private[this] val (ix, iy) = resultIndices
+    private[this] val (jx, jy) = firstArgumentIndices
+    private[this] val k = secondArgumentIndex
+
+    override def execute(values: Array[Double]): Unit = {
+      val divisor = values(k)
+      values(ix) = values(jx) / divisor
+      values(iy) = values(jy) / divisor
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      val divisor = values(k)
+      values(ix) = values(jx) / divisor
+      values(iy) = values(jy) / divisor
+    }
+  }
 }

@@ -66,7 +66,7 @@ sealed abstract class Expression2d[T] {
 
   def squaredNorm: Expression1d[T] = Expression1d.SquaredNorm2d(this)
 
-  def norm: Expression1d[T] = Expression1d.Norm2d(this)
+  def norm: Expression1d[T] = Expression1d.SquareRoot(squaredNorm)
 
   final def dot(that: Expression2d[T]): Expression1d[T] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) =>
