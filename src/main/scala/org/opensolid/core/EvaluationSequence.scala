@@ -97,6 +97,30 @@ case class EvaluationSequence[T] private (
             resultIndex => SquaredNorm2d(argumentIndices, resultIndex)
           )
         }
+        case Expression1d.Sine(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Sine(argumentIndex, resultIndex))
+        }
+        case Expression1d.Cosine(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Cosine(argumentIndex, resultIndex))
+        }
+        case Expression1d.Tangent(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Tangent(argumentIndex, resultIndex))
+        }
+        case Expression1d.Arcsine(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Arcsine(argumentIndex, resultIndex))
+        }
+        case Expression1d.Arccosine(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Arccosine(argumentIndex, resultIndex))
+        }
+        case Expression1d.Arctangent(argument) => {
+          val (withArgument, argumentIndex) = evaluate(argument)
+          withArgument.append1d(expression, resultIndex => Arctangent(argumentIndex, resultIndex))
+        }
       }
     }
 
@@ -286,6 +310,60 @@ object EvaluationSequence {
     override def execute(values: Array[Double]): Unit = values(i) = math.sqrt(values(j))
 
     override def execute(values: Array[Interval]): Unit = values(i) = Interval.sqrt(values(j))
+  }
+
+  case class Sine(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.sin(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.sin(values(j))
+  }
+
+  case class Cosine(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.cos(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.cos(values(j))
+  }
+
+  case class Tangent(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.tan(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.tan(values(j))
+  }
+
+  case class Arcsine(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.asin(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.asin(values(j))
+  }
+
+  case class Arccosine(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.acos(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.acos(values(j))
+  }
+
+  case class Arctangent(argumentIndex: Int, resultIndex: Int) extends Operation {
+    private[this] val i = resultIndex
+    private[this] val j = argumentIndex
+
+    override def execute(values: Array[Double]): Unit = values(i) = math.atan(values(j))
+
+    override def execute(values: Array[Interval]): Unit = values(i) = Interval.atan(values(j))
   }
 
   case class DotProduct2d(

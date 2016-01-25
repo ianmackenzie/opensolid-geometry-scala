@@ -17,9 +17,9 @@ package org.opensolid.core
 object Parameters {
   val T: Expression1d[Double] = Expression1d.Identity
 
-  val UV: Expression2d[Point2d] = Expression2d.Identity
+  val UV: Expression2d[(Double, Double)] = Expression2d.Identity
 
-  val U: Expression1d[Point2d] = Expression1d.XComponent2d(UV)
+  val U: Expression1d[(Double, Double)] = Expression1d.XComponent2d(UV)
 
-  val V: Expression1d[Point2d] = Expression1d.XComponent2d(UV)
+  val V: Expression1d[(Double, Double)] = Expression1d.XComponent2d(UV)
 }
