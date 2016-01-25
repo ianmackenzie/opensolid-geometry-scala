@@ -14,12 +14,8 @@
 
 package org.opensolid.core
 
-object Parameters {
-  val T: Expression1d[Double] = Expression1d.Identity
+sealed abstract class Parameter1d
 
-  val UV: Expression2d[(Double, Double)] = Expression2d.Identity
-
-  val U: Expression1d[(Double, Double)] = Expression1d.XComponent2d(UV)
-
-  val V: Expression1d[(Double, Double)] = Expression1d.XComponent2d(UV)
+object Parameter1d {
+  val T: Expression1d[Parameter1d] = Expression1d.Identity
 }

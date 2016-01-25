@@ -123,8 +123,8 @@ object Expression1d {
 
   sealed abstract class Identity[T] extends Expression1d[T]
 
-  object Identity extends Identity[Double] {
-    override def derivative(index: Int): Expression1d[Double] = {
+  object Identity extends Identity[Parameter1d] {
+    override def derivative(index: Int): Expression1d[Parameter1d] = {
       assert(index == 0)
       Constant(1)
     }

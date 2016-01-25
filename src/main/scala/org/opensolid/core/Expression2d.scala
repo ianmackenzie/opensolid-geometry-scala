@@ -103,8 +103,8 @@ object Expression2d {
 
   sealed abstract class Identity[T] extends Expression2d[T]
 
-  object Identity extends Identity[(Double, Double)] {
-    override def derivative(index: Int): Expression2d[(Double, Double)] = index match {
+  object Identity extends Identity[Parameter2d] {
+    override def derivative(index: Int): Expression2d[Parameter2d] = index match {
       case 0 => Constant(1, 0)
       case 1 => Constant(0, 1)
       case _ =>

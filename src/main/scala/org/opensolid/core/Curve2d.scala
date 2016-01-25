@@ -15,9 +15,7 @@
 package org.opensolid.core
 
 trait Curve2d {
-  import Curve2d._
-
-  def expression: Expression
+  def expression: Expression2d[Parameter1d]
 
   def domain: Interval
 
@@ -27,7 +25,7 @@ trait Curve2d {
 }
 
 object Curve2d {
-  type Expression = Expression2d[Double]
+  type Expression = Expression2d[Parameter1d]
 
   def apply(expression: Expression, domain: Interval): Curve2d = parametric(expression, domain)
 
