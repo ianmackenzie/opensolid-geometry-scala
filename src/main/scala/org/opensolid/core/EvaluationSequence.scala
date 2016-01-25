@@ -106,8 +106,8 @@ case class EvaluationSequence[T] private (
       case None => expression match {
         case identity: Expression2d.Identity[T] =>
           (this, (0, 1))
-        case Expression2d.Constant(value) =>
-          append2d(expression, resultIndices => Constant2d(resultIndices, value.components))
+        case Expression2d.Constant(x, y) =>
+          append2d(expression, resultIndices => Constant2d(resultIndices, (x, y)))
         case Expression2d.Negation(argument) => {
           val (withArgument, argumentIndices) = evaluate(argument)
           withArgument.append2d(

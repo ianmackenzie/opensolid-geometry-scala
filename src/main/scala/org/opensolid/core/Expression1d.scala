@@ -72,10 +72,10 @@ sealed abstract class Expression1d[T] {
   final def times(value: Double): Expression1d[T] = this * value
 
   final def *(that: Expression2d[T]): Expression2d[T] = (this, that) match {
-    case (Constant(firstValue), Expression2d.Constant(secondValue)) =>
-      Expression2d.Constant(firstValue * secondValue)
-    case (_, Expression2d.Constant(Vector2d.Zero)) => Expression2d.Constant(Vector2d.Zero)
-    case (Constant(0.0), _) => Expression2d.Constant(Vector2d.Zero)
+    case (Constant(multiplier), Expression2d.Constant(x, y)) =>
+      Expression2d.Constant(multiplier * x, multiplier * y)
+    case (_, Expression2d.Constant(0, 0)) => Expression2d.Constant(0, 0)
+    case (Constant(0), _) => Expression2d.Constant(0, 0)
     case (Constant(1), expression) => expression
     case (Constant(-1), expression) => -expression
     case (Quotient(a, b), Expression2d.Quotient(c, d)) => (a * c) / (b * d)
