@@ -105,7 +105,7 @@ class Vector2dTestSuite
     }
     forAll {
       (vector: Vector2d) => {
-        val tolerance = 2 * eps(vector.length)
+        val tolerance = 4 * eps(vector.length)
         vector.dot(vector.normalDirection).should(beEqualTo(0.0, tolerance))
         vector.dot(vector.direction).should(beEqualTo(vector.length, tolerance))
       }
