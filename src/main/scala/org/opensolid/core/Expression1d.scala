@@ -221,13 +221,11 @@ object Expression1d {
   }
 
   case class XComponent2d[T](expression: Expression2d[T]) extends Expression1d[T] {
-    override def derivative(parameter: T): Expression1d[T] =
-      expression.derivative(parameter).component(0)
+    override def derivative(parameter: T): Expression1d[T] = expression.derivative(parameter).x
   }
 
   case class YComponent2d[T](expression: Expression2d[T]) extends Expression1d[T] {
-    override def derivative(parameter: T): Expression1d[T] =
-      expression.derivative(parameter).component(1)
+    override def derivative(parameter: T): Expression1d[T] = expression.derivative(parameter).y
   }
 
   case class DotProduct2d[T](firstExpression: Expression2d[T], secondExpression: Expression2d[T])
