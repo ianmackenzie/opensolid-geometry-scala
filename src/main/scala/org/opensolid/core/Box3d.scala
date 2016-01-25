@@ -136,6 +136,9 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
 object Box3d {
   def apply(components: (Interval, Interval, Interval)): Box3d = new Box3d(components)
 
+  def singleton(point: Point3d): Box3d =
+    Box3d(Interval.singleton(point.x), Interval.singleton(point.y), Interval.singleton(point.z))
+
   def hullOf(points: (Point3d, Point3d)): Box3d = points.first.hull(points.second)
 
   def hullOf(points: (Point3d, Point3d, Point3d)): Box3d =

@@ -59,5 +59,8 @@ object DirectionBox2d {
 
   def apply(components: (Interval, Interval)): DirectionBox2d = new DirectionBox2d(components)
 
+  def singleton(direction: Direction2d): DirectionBox2d =
+    DirectionBox2d(VectorBox2d.singleton(direction.vector))
+
   val Empty = DirectionBox2d(Interval.Empty, Interval.Empty)
 }

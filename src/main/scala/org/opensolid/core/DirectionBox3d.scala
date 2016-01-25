@@ -63,5 +63,8 @@ object DirectionBox3d {
   def apply(components: (Interval, Interval, Interval)): DirectionBox3d =
     new DirectionBox3d(components)
 
+  def singleton(direction: Direction3d): DirectionBox3d =
+    DirectionBox3d(VectorBox3d.singleton(direction.vector))
+
   val Empty = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }

@@ -112,6 +112,9 @@ final case class Box2d(x: Interval, y: Interval)
 object Box2d {
   def apply(components: (Interval, Interval)): Box2d = new Box2d(components)
 
+  def singleton(point: Point2d): Box2d =
+    Box2d(Interval.singleton(point.x), Interval.singleton(point.y))
+
   def hullOf(points: (Point2d, Point2d)): Box2d = points.first.hull(points.second)
 
   def hullOf(points: (Point2d, Point2d, Point2d)): Box2d =

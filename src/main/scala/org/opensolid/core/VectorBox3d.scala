@@ -153,6 +153,13 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
 object VectorBox3d {
   def apply(components: (Interval, Interval, Interval)): VectorBox3d = new VectorBox3d(components)
 
+  def singleton(vector: Vector3d): VectorBox3d =
+    VectorBox3d(
+      Interval.singleton(vector.x),
+      Interval.singleton(vector.y),
+      Interval.singleton(vector.z)
+    )
+
   val Empty: VectorBox3d = VectorBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
   val Whole: VectorBox3d = VectorBox3d(Interval.Whole, Interval.Whole, Interval.Whole)

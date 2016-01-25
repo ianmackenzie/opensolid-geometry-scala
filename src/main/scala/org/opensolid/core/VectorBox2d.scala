@@ -122,6 +122,9 @@ final case class VectorBox2d(x: Interval, y: Interval) {
 object VectorBox2d {
   def apply(components: (Interval, Interval)): VectorBox2d = new VectorBox2d(components)
 
+  def singleton(vector: Vector2d): VectorBox2d =
+    VectorBox2d(Interval.singleton(vector.x), Interval.singleton(vector.y))
+
   val Empty: VectorBox2d = VectorBox2d(Interval.Empty, Interval.Empty)
 
   val Whole: VectorBox2d = VectorBox2d(Interval.Whole, Interval.Whole)
