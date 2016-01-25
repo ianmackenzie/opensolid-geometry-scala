@@ -139,6 +139,11 @@ case class EvaluationSequence[T] private (
             resultIndices => Negation2d(argumentIndices, resultIndices)
           )
         }
+        case Expression2d.FromComponents(x, y) => {
+          val (withX, xIndex) = this.evaluate(x)
+          val (withY, yIndex) = withX.evaluate(y)
+          (withY, (xIndex, yIndex))
+        }
         case Expression2d.Sum(firstArgument, secondArgument) => {
           val (withFirst, firstArgumentIndices) = this.evaluate(firstArgument)
           val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)

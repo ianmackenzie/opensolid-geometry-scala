@@ -98,6 +98,9 @@ sealed abstract class Expression2d[T] {
 }
 
 object Expression2d {
+  def fromComponents[T](x: Expression1d[T], y: Expression1d[T]): Expression2d[T] =
+    FromComponents[T](x, y)
+
   private[Expression2d] def componentIndexException =
     new IllegalArgumentException("Component index for Expression2d must be 0 or 1")
 
@@ -126,6 +129,21 @@ object Expression2d {
     override def component(index: Int): Expression1d[T] = index match {
       case 0 => Expression1d.Constant(x)
       case 1 => Expression1d.Constant(y)
+      case _ => throw componentIndexException
+    }
+  }
+
+  case class FromComponents[T](x: Expression1d[T], y: Expression1d[T]) extends Expression2d[T] {
+    override def derivative(index: Int): Expression2d[T] =
+      Expression2d.fromComponents(x.derivative(index), y.derivative(index))
+
+    override def unary_- : Expression2d[T] = Expression2d.fromComponents(-x, -y)
+
+    override def squaredNorm: Expression1d[T] = x.squared + y.squared
+
+    override def component(index: Int): Expression1d[T] = index match {
+      case 0 => x
+      case 1 => y
       case _ => throw componentIndexException
     }
   }
