@@ -23,9 +23,9 @@ sealed abstract class Expression1d[T] {
 
   final def +(that: Expression1d[T]): Expression1d[T] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
-    case (expression, Constant(0.0)) => expression
-    case (Constant(0.0), expression) => expression
-    case (first, second) if (first == second) => Constant(2.0) * first
+    case (expression, Constant(0)) => expression
+    case (Constant(0), expression) => expression
+    case (first, second) if (first == second) => Constant(2) * first
     case (first, Negation(second)) => first - second
     case (Negation(first), second) => second - first
     case _ => Sum(this, that)
@@ -39,9 +39,9 @@ sealed abstract class Expression1d[T] {
 
   final def -(that: Expression1d[T]): Expression1d[T] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
-    case (expression, Constant(0.0)) => expression
-    case (Constant(0.0), expression) => -expression
-    case (first, second) if (first == second) => Constant(0.0)
+    case (expression, Constant(0)) => expression
+    case (Constant(0), expression) => -expression
+    case (first, second) if (first == second) => Constant(0)
     case (first, Negation(second)) => first + second
     case _ => Difference(this, that)
   }
@@ -54,12 +54,12 @@ sealed abstract class Expression1d[T] {
 
   final def *(that: Expression1d[T]): Expression1d[T] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
-    case (_, Constant(0.0)) => Constant(0.0)
-    case (Constant(0.0), _) => Constant(0.0)
-    case (expression, Constant(1.0)) => expression
-    case (Constant(1.0), expression) => expression
-    case (expression, Constant(-1.0)) => -expression
-    case (Constant(-1.0), expression) => -expression
+    case (_, Constant(0)) => Constant(0)
+    case (Constant(0), _) => Constant(0)
+    case (expression, Constant(1)) => expression
+    case (Constant(1), expression) => expression
+    case (expression, Constant(-1)) => -expression
+    case (Constant(-1), expression) => -expression
     case (first, second) if (first == second) => first.squared
     case (Quotient(a, b), Quotient(c, d)) => (a * c) / (b * d)
     case _ => Product(this, that)
@@ -76,8 +76,8 @@ sealed abstract class Expression1d[T] {
       Expression2d.Constant(firstValue * secondValue)
     case (_, Expression2d.Constant(Vector2d.Zero)) => Expression2d.Constant(Vector2d.Zero)
     case (Constant(0.0), _) => Expression2d.Constant(Vector2d.Zero)
-    case (Constant(1.0), expression) => expression
-    case (Constant(-1.0), expression) => -expression
+    case (Constant(1), expression) => expression
+    case (Constant(-1), expression) => -expression
     case (Quotient(a, b), Expression2d.Quotient(c, d)) => (a * c) / (b * d)
     case _ => Expression2d.Product(this, that)
   }
@@ -85,12 +85,12 @@ sealed abstract class Expression1d[T] {
   final def times(that: Expression2d[T]): Expression2d[T] = this * that
 
   final def /(that: Expression1d[T]): Expression1d[T] = (this, that) match {
-    case (_, Constant(0.0)) => throw new ArithmeticException("Division by zero")
+    case (_, Constant(0)) => throw new ArithmeticException("Division by zero")
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
-    case (Constant(0.0), _) => Constant(0.0)
-    case (expression, Constant(1.0)) => expression
-    case (expression, Constant(-1.0)) => -expression
-    case (expression, Constant(value)) => Constant(1.0 / value) * expression
+    case (Constant(0), _) => Constant(0)
+    case (expression, Constant(1)) => expression
+    case (expression, Constant(-1)) => -expression
+    case (expression, Constant(value)) => Constant(1 / value) * expression
     case (expression, Quotient(numerator, denominator)) => expression * denominator / numerator
     case _ => Quotient(this, that)
   }
