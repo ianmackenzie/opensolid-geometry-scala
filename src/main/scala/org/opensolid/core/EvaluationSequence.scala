@@ -26,8 +26,8 @@ case class EvaluationSequence[T] private (
     map1d.get(expression) match {
       case Some(index) => (this, index)
       case None => expression match {
-        case identity: Expression1d.Identity[T] =>
-          (this, 0)
+        case parameter: Expression1d.Parameter[T] =>
+          (this, parameter.index)
         case Expression1d.Constant(value) =>
           append1d(expression, Constant1d(_, value))
         case Expression1d.XComponent2d(expression) => {
@@ -113,8 +113,6 @@ case class EvaluationSequence[T] private (
     map2d.get(expression) match {
       case Some(indices) => (this, indices)
       case None => expression match {
-        case identity: Expression2d.Identity[T] =>
-          (this, (0, 1))
         case Expression2d.Constant(x, y) =>
           append2d(expression, Constant2d(_, (x, y)))
         case Expression2d.Negation(argument) => {

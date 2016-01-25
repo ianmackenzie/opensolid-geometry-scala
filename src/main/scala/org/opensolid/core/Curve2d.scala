@@ -29,7 +29,7 @@ trait Curve2d {
 }
 
 object Curve2d {
-  type Expression = Expression2d[CurveParameter]
+  type Expression = Expression2d[Expression1d.CurveParameter]
 
   def apply(expression: Expression, domain: Interval): Curve2d = parametric(expression, domain)
 

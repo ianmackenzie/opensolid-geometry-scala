@@ -19,7 +19,7 @@ import scala.math
 sealed abstract class Expression2d[T] {
   import Expression2d._
 
-  def derivative(index: Int): Expression2d[T]
+  def derivative(parameter: T): Expression2d[T]
 
   def unary_- : Expression2d[T] = Negation(this)
 
@@ -104,21 +104,8 @@ object Expression2d {
   private[Expression2d] def componentIndexException =
     new IllegalArgumentException("Component index for Expression2d must be 0 or 1")
 
-  sealed abstract class Identity[T] extends Expression2d[T]
-
-  object Identity extends Identity[SurfaceParameter] {
-    override def derivative(index: Int): Expression2d[SurfaceParameter] = index match {
-      case 0 => Constant(1, 0)
-      case 1 => Constant(0, 1)
-      case _ =>
-        throw new IllegalArgumentException(
-          "Derivative index to expression of two parameters must be 0 or 1"
-        )
-    }
-  }
-
   case class Constant[T](val x: Double, val y: Double) extends Expression2d[T] {
-    override def derivative(index: Int): Expression2d[T] = Constant(0, 0)
+    override def derivative(parameter: T): Expression2d[T] = Constant(0, 0)
 
     override def unary_- : Expression2d[T] = Constant(-x, -y)
 
@@ -134,8 +121,8 @@ object Expression2d {
   }
 
   case class FromComponents[T](x: Expression1d[T], y: Expression1d[T]) extends Expression2d[T] {
-    override def derivative(index: Int): Expression2d[T] =
-      Expression2d.fromComponents(x.derivative(index), y.derivative(index))
+    override def derivative(parameter: T): Expression2d[T] =
+      Expression2d.fromComponents(x.derivative(parameter), y.derivative(parameter))
 
     override def unary_- : Expression2d[T] = Expression2d.fromComponents(-x, -y)
 
@@ -149,7 +136,7 @@ object Expression2d {
   }
 
   case class Negation[T](expression: Expression2d[T]) extends Expression2d[T] {
-    override def derivative(index: Int): Expression2d[T] = -expression.derivative(index)
+    override def derivative(parameter: T): Expression2d[T] = -expression.derivative(parameter)
 
     override def squaredNorm: Expression1d[T] = expression.squaredNorm
 
@@ -170,8 +157,8 @@ object Expression2d {
 
     override def hashCode: Int = firstExpression.hashCode * secondExpression.hashCode
 
-    override def derivative(index: Int): Expression2d[T] =
-      firstExpression.derivative(index) + secondExpression.derivative(index)
+    override def derivative(parameter: T): Expression2d[T] =
+      firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
     override def component(index: Int): Expression1d[T] =
       firstExpression.component(index) + secondExpression.component(index)
@@ -183,8 +170,8 @@ object Expression2d {
     override def unary_- : Expression2d[T] =
       Difference[T](secondExpression, firstExpression)
 
-    override def derivative(index: Int): Expression2d[T] =
-      firstExpression.derivative(index) - secondExpression.derivative(index)
+    override def derivative(parameter: T): Expression2d[T] =
+      firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
 
     override def component(index: Int): Expression1d[T] =
       firstExpression.component(index) - secondExpression.component(index)
@@ -193,9 +180,9 @@ object Expression2d {
   case class Product[T](firstExpression: Expression1d[T], secondExpression: Expression2d[T])
     extends Expression2d[T] {
 
-    override def derivative(index: Int): Expression2d[T] =
-      firstExpression.derivative(index) * secondExpression +
-      firstExpression * secondExpression.derivative(index)
+    override def derivative(parameter: T): Expression2d[T] =
+      firstExpression.derivative(parameter) * secondExpression +
+      firstExpression * secondExpression.derivative(parameter)
 
     override def component(index: Int): Expression1d[T] =
       firstExpression * secondExpression.component(index)
@@ -204,10 +191,10 @@ object Expression2d {
   case class Quotient[T](firstExpression: Expression2d[T], secondExpression: Expression1d[T])
     extends Expression2d[T] {
 
-    override def derivative(index: Int): Expression2d[T] =
+    override def derivative(parameter: T): Expression2d[T] =
       (
-        firstExpression.derivative(index) * secondExpression -
-        firstExpression * secondExpression.derivative(index)
+        firstExpression.derivative(parameter) * secondExpression -
+        firstExpression * secondExpression.derivative(parameter)
       ) / secondExpression.squared
 
     override def component(index: Int): Expression1d[T] =
