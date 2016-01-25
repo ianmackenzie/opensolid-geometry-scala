@@ -29,21 +29,11 @@ trait Curve1d {
 object Curve1d {
   type Expression = Expression1d[Double]
 
-  def apply(expression: Expression, domain: Interval): Curve1d = new Generic(expression, domain)
+  def apply(expression: Expression, domain: Interval): Curve1d = parametric(expression, domain)
 
-  case class Constant(value: Double) extends Curve1d {
-    private[this] val interval = Interval.singleton(value)
+  def parametric(expression: Expression, domain: Interval): Curve1d = Parametric(expression, domain)
 
-    override def expression: Expression = Expression1d.Constant(value)
-
-    override def domain: Interval = Interval.Whole
-
-    override def evaluate(parameterValue: Double): Double = value
-
-    override def bounds(parameterBounds: Interval): Interval = interval
-  }
-
-  private class Generic(val expression: Expression, val domain: Interval) extends Curve1d {
+  private case class Parametric(expression: Expression, domain: Interval) extends Curve1d {
     private[this] val (evaluationSequence, resultIndex) = EvaluationSequence.evaluate1d(expression)
 
     override def evaluate(parameterValue: Double): Double = {
@@ -63,5 +53,19 @@ object Curve1d {
       }
       array(resultIndex)
     }
+  }
+
+  def constant(value: Double): Curve1d = Constant(value)
+
+  private case class Constant(value: Double) extends Curve1d {
+    private[this] val interval = Interval.singleton(value)
+
+    override def expression: Expression = Expression1d.Constant(value)
+
+    override def domain: Interval = Interval.Whole
+
+    override def evaluate(parameterValue: Double): Double = value
+
+    override def bounds(parameterBounds: Interval): Interval = interval
   }
 }
