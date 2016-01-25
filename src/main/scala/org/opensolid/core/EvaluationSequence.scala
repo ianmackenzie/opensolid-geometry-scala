@@ -29,7 +29,7 @@ case class EvaluationSequence[T] private (
         case identity: Expression1d.Identity[T] =>
           (this, 0)
         case Expression1d.Constant(value) =>
-          append1d(expression, resultIndex => Constant1d(resultIndex, value))
+          append1d(expression, Constant1d(_, value))
         case Expression1d.XComponent2d(expression) => {
           val (withExpression, (xIndex, yIndex)) = this.evaluate(expression)
           (withExpression, xIndex)
@@ -40,86 +40,71 @@ case class EvaluationSequence[T] private (
         }
         case Expression1d.Negation(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Negation1d(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Negation1d(argumentIndex, _))
         }
         case Expression1d.Sum(firstArgument, secondArgument) => {
           val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
           val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
-          withSecond.append1d(
-            expression,
-            resultIndex => Sum1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
-          )
+          withSecond.append1d(expression, Sum1d(firstArgumentIndex, secondArgumentIndex, _))
         }
         case Expression1d.Difference(firstArgument, secondArgument) => {
           val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
           val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
-          withSecond.append1d(
-            expression,
-            resultIndex => Difference1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
-          )
+          withSecond.append1d(expression, Difference1d(firstArgumentIndex, secondArgumentIndex, _))
         }
         case Expression1d.Product(firstArgument, secondArgument) => {
           val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
           val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
-          withSecond.append1d(
-            expression,
-            resultIndex => Product1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
-          )
+          withSecond.append1d(expression, Product1d(firstArgumentIndex, secondArgumentIndex, _))
         }
         case Expression1d.Quotient(firstArgument, secondArgument) => {
           val (withFirst, firstArgumentIndex) = this.evaluate(firstArgument)
           val (withSecond, secondArgumentIndex) = withFirst.evaluate(secondArgument)
-          withSecond.append1d(
-            expression,
-            resultIndex => Quotient1d(firstArgumentIndex, secondArgumentIndex, resultIndex)
-          )
+          withSecond.append1d(expression, Quotient1d(firstArgumentIndex, secondArgumentIndex, _))
         }
         case Expression1d.Square(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Square(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Square(argumentIndex, _))
         }
         case Expression1d.SquareRoot(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => SquareRoot(argumentIndex, resultIndex))
+          withArgument.append1d(expression, SquareRoot(argumentIndex, _))
         }
         case Expression1d.DotProduct2d(firstArgument, secondArgument) => {
           val (withFirst, firstArgumentIndices) = this.evaluate(firstArgument)
           val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)
           withSecond.append1d(
             expression,
-            resultIndex => DotProduct2d(firstArgumentIndices, secondArgumentIndices, resultIndex)
+            DotProduct2d(firstArgumentIndices, secondArgumentIndices, _)
           )
         }
         case Expression1d.SquaredNorm2d(argument) => {
           val (withArgument, argumentIndices) = evaluate(argument)
-          withArgument.append1d(
-            expression,
-            resultIndex => SquaredNorm2d(argumentIndices, resultIndex)
-          )
+          withArgument.append1d(expression, SquaredNorm2d(argumentIndices, _))
         }
         case Expression1d.Sine(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Sine(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Sine(argumentIndex, _))
         }
         case Expression1d.Cosine(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Cosine(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Cosine(argumentIndex, _))
         }
         case Expression1d.Tangent(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Tangent(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Tangent(argumentIndex, _))
         }
         case Expression1d.Arcsine(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Arcsine(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Arcsine(argumentIndex, _))
         }
         case Expression1d.Arccosine(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Arccosine(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Arccosine(argumentIndex, _))
         }
         case Expression1d.Arctangent(argument) => {
           val (withArgument, argumentIndex) = evaluate(argument)
-          withArgument.append1d(expression, resultIndex => Arctangent(argumentIndex, resultIndex))
+          withArgument.append1d(expression, Arctangent(argumentIndex, _))
         }
       }
     }
@@ -131,13 +116,10 @@ case class EvaluationSequence[T] private (
         case identity: Expression2d.Identity[T] =>
           (this, (0, 1))
         case Expression2d.Constant(x, y) =>
-          append2d(expression, resultIndices => Constant2d(resultIndices, (x, y)))
+          append2d(expression, Constant2d(_, (x, y)))
         case Expression2d.Negation(argument) => {
           val (withArgument, argumentIndices) = evaluate(argument)
-          withArgument.append2d(
-            expression,
-            resultIndices => Negation2d(argumentIndices, resultIndices)
-          )
+          withArgument.append2d(expression, Negation2d(argumentIndices, _))
         }
         case Expression2d.FromComponents(x, y) => {
           val (withX, xIndex) = this.evaluate(x)
@@ -149,7 +131,7 @@ case class EvaluationSequence[T] private (
           val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)
           withSecond.append2d(
             expression,
-            resultIndices => Sum2d(firstArgumentIndices, secondArgumentIndices, resultIndices)
+            Sum2d(firstArgumentIndices, secondArgumentIndices, _)
           )
         }
         case Expression2d.Difference(firstArgument, secondArgument) => {
@@ -157,8 +139,7 @@ case class EvaluationSequence[T] private (
           val (withSecond, secondArgumentIndices) = withFirst.evaluate(secondArgument)
           withSecond.append2d(
             expression,
-            resultIndices =>
-              Difference2d(firstArgumentIndices, secondArgumentIndices, resultIndices)
+            Difference2d(firstArgumentIndices, secondArgumentIndices, _)
           )
         }
         case Expression2d.Product(firstArgument, secondArgument) => {
@@ -166,7 +147,7 @@ case class EvaluationSequence[T] private (
           val (withSecond, secondArgumentIndices) = this.evaluate(secondArgument)
           withSecond.append2d(
             expression,
-            resultIndices => Product2d(firstArgumentIndex, secondArgumentIndices, resultIndices)
+            Product2d(firstArgumentIndex, secondArgumentIndices, _)
           )
         }
         case Expression2d.Quotient(firstArgument, secondArgument) => {
@@ -174,7 +155,7 @@ case class EvaluationSequence[T] private (
           val (withSecond, secondArgumentIndex) = this.evaluate(secondArgument)
           withSecond.append2d(
             expression,
-            resultIndices => Quotient2d(firstArgumentIndices, secondArgumentIndex, resultIndices)
+            Quotient2d(firstArgumentIndices, secondArgumentIndex, _)
           )
         }
       }
