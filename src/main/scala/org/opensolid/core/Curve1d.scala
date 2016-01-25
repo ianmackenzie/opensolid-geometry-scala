@@ -23,7 +23,9 @@ trait Curve1d {
 
   def evaluate(parameterValue: Double): Double
 
-  def bounds(parameterBounds: Interval): Interval
+  def evaluate(parameterBounds: Interval): Interval
+
+  def bounds: Interval
 }
 
 object Curve1d {
@@ -45,7 +47,7 @@ object Curve1d {
       array(resultIndex)
     }
 
-    override def bounds(parameterBounds: Interval): Interval = {
+    override def evaluate(parameterBounds: Interval): Interval = {
       val array = Array.ofDim[Interval](evaluationSequence.arraySize)
       array(0) = parameterBounds
       for (operation <- evaluationSequence.operations) {
@@ -53,6 +55,8 @@ object Curve1d {
       }
       array(resultIndex)
     }
+
+    override val bounds: Interval = evaluate(domain)
   }
 
   def constant(value: Double): Curve1d = Constant(value)
@@ -66,6 +70,8 @@ object Curve1d {
 
     override def evaluate(parameterValue: Double): Double = value
 
-    override def bounds(parameterBounds: Interval): Interval = interval
+    override def evaluate(parameterBounds: Interval): Interval = interval
+
+    override def bounds: Interval = interval
   }
 }

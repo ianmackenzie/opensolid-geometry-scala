@@ -23,7 +23,9 @@ trait Curve2d {
 
   def evaluate(parameterValue: Double): Point2d
 
-  def bounds(parameterBounds: Interval): Box2d
+  def evaluate(parameterBounds: Interval): Box2d
+
+  def bounds: Box2d
 }
 
 object Curve2d {
@@ -46,7 +48,7 @@ object Curve2d {
       Point2d(array(xIndex), array(yIndex))
     }
 
-    override def bounds(parameterBounds: Interval): Box2d = {
+    override def evaluate(parameterBounds: Interval): Box2d = {
       val array = Array.ofDim[Interval](evaluationSequence.arraySize)
       array(0) = parameterBounds
       for (operation <- evaluationSequence.operations) {
@@ -54,6 +56,8 @@ object Curve2d {
       }
       Box2d(array(xIndex), array(yIndex))
     }
+
+    override val bounds: Box2d = evaluate(domain)
   }
 
   def constant(point: Point2d): Curve2d = Constant(point)
@@ -67,6 +71,8 @@ object Curve2d {
 
     override def evaluate(parameterValue: Double): Point2d = point
 
-    override def bounds(parameterBounds: Interval): Box2d = box
+    override def evaluate(parameterBounds: Interval): Box2d = box
+
+    override def bounds: Box2d = box
   }
 }
