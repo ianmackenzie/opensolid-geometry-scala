@@ -14,8 +14,8 @@
 
 package org.opensolid.core
 
-sealed abstract class Parameter1d
+sealed abstract class CurveParameter
 
-object Parameter1d {
-  val T: Expression1d[Parameter1d] = Expression1d.Identity
+object CurveParameter {
+  val T: Expression1d[CurveParameter] = Expression1d.Identity
 }

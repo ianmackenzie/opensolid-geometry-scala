@@ -14,10 +14,12 @@
 
 package org.opensolid.core
 
-sealed abstract class Parameter2d
+sealed abstract class SurfaceParameter
 
-object Parameter2d {
-  val U: Expression1d[Parameter2d] = Expression2d.Identity.component(0)
+object SurfaceParameter {
+  val UV: Expression2d[SurfaceParameter] = Expression2d.Identity
 
-  val V: Expression1d[Parameter2d] = Expression2d.Identity.component(1)
+  val U: Expression1d[SurfaceParameter] = UV.component(0)
+
+  val V: Expression1d[SurfaceParameter] = UV.component(1)
 }
