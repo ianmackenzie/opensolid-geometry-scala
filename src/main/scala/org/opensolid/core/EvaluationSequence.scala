@@ -197,10 +197,10 @@ object EvaluationSequence {
   def evaluate2d[T](expression: Expression2d[T]): (EvaluationSequence[T], (Int, Int)) =
     empty2d[T].evaluate(expression)
 
-  private def empty1d[T]: EvaluationSequence[T] =
+  private[this] def empty1d[T]: EvaluationSequence[T] =
     EvaluationSequence[T](List.empty, 1, Map.empty, Map.empty)
 
-  private def empty2d[T]: EvaluationSequence[T] =
+  private[this] def empty2d[T]: EvaluationSequence[T] =
     EvaluationSequence[T](List.empty, 2, Map.empty, Map.empty)
 
   sealed abstract class Operation {
