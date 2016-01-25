@@ -48,6 +48,7 @@ object Curve1d {
 
     override def evaluate(parameterValue: Double): Double = {
       val array = Array.ofDim[Double](evaluationSequence.arraySize)
+      array(0) = parameterValue
       for (operation <- evaluationSequence.operations) {
         operation.execute(array)
       }
@@ -56,6 +57,7 @@ object Curve1d {
 
     override def bounds(parameterBounds: Interval): Interval = {
       val array = Array.ofDim[Interval](evaluationSequence.arraySize)
+      array(0) = parameterBounds
       for (operation <- evaluationSequence.operations) {
         operation.execute(array)
       }
