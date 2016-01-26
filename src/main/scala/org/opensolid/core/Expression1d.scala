@@ -19,6 +19,8 @@ sealed abstract class Expression1d[T] {
 
   def derivative(parameter: T): Expression1d[T]
 
+  def condition: Expression1d[T]
+
   def unary_- : Expression1d[T] = Negation(this)
 
   final def negated: Expression1d[T] = -this
@@ -123,6 +125,8 @@ object Expression1d {
 
   sealed abstract class Parameter[T] extends Expression1d[T] {
     val index: Int
+
+    override def condition: Expression1d[T] = Constant(1)
   }
 
   sealed abstract class CurveParameter extends Parameter[CurveParameter] {
@@ -149,6 +153,8 @@ object Expression1d {
   case class Constant[T](val value: Double) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] = Constant(0)
 
+    override def condition: Expression1d[T] = Constant(1)
+
     override def unary_- : Expression1d[T] = Constant(-value)
 
     override def squared: Expression1d[T] = Constant(value * value)
@@ -156,6 +162,8 @@ object Expression1d {
 
   case class Negation[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] = -expression.derivative(parameter)
+
+    override def condition: Expression1d[T] = expression.condition
 
     override def unary_- : Expression1d[T] = expression
 
@@ -165,9 +173,6 @@ object Expression1d {
   case class Sum[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
     extends Expression1d[T] {
 
-    override def derivative(parameter: T): Expression1d[T] =
-      firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
-
     override def equals(other: Any): Boolean = other match {
       case Sum(otherFirst, otherSecond) =>
         (firstExpression == otherFirst && secondExpression == otherSecond) ||
@@ -176,6 +181,11 @@ object Expression1d {
     }
 
     override def hashCode: Int = firstExpression.hashCode * secondExpression.hashCode
+
+    override def derivative(parameter: T): Expression1d[T] =
+      firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
   }
 
   case class Difference[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
@@ -183,6 +193,8 @@ object Expression1d {
 
     override def derivative(parameter: T): Expression1d[T] =
       firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
 
     override def unary_- : Expression1d[T] =
       Difference[T](secondExpression, firstExpression)
@@ -203,6 +215,8 @@ object Expression1d {
     override def derivative(parameter: T): Expression1d[T] =
       firstExpression.derivative(parameter) * secondExpression +
       firstExpression * secondExpression.derivative(parameter)
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
   }
 
   case class Quotient[T](firstExpression: Expression1d[T], secondExpression: Expression1d[T])
@@ -213,19 +227,27 @@ object Expression1d {
         firstExpression.derivative(parameter) * secondExpression -
         firstExpression * secondExpression.derivative(parameter)
       ) / secondExpression.squared
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression
   }
 
   case class Square[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       2 * expression * expression.derivative(parameter)
+
+    override def condition: Expression1d[T] = expression.condition
   }
 
   case class XComponent2d[T](expression: Expression2d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] = expression.derivative(parameter).x
+
+    override def condition: Expression1d[T] = expression.condition
   }
 
   case class YComponent2d[T](expression: Expression2d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] = expression.derivative(parameter).y
+
+    override def condition: Expression1d[T] = expression.condition
   }
 
   case class DotProduct2d[T](firstExpression: Expression2d[T], secondExpression: Expression2d[T])
@@ -243,45 +265,64 @@ object Expression1d {
     override def derivative(parameter: T): Expression1d[T] =
       firstExpression.derivative(parameter).dot(secondExpression) +
       firstExpression.dot(secondExpression.derivative(parameter))
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
   }
 
   case class SquaredNorm2d[T](expression: Expression2d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       2 * expression.dot(expression.derivative(parameter))
+
+    override def condition: Expression1d[T] = expression.condition
   }
 
   case class SquareRoot[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       expression.derivative(parameter) / (2 * this)
+
+    override def condition: Expression1d[T] = expression.condition * expression
   }
 
   case class Sine[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       Expression1d.cos(expression) * expression.derivative(parameter)
+
+    override def condition: Expression1d[T] = expression.condition
   }
 
   case class Cosine[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       -Expression1d.sin(expression) * expression.derivative(parameter)
+
+    override def condition: Expression1d[T] = expression.condition
   }
 
   case class Tangent[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       expression.derivative(parameter) / Expression1d.cos(expression).squared
+
+    override def condition: Expression1d[T] =
+      expression.condition * Expression1d.cos(expression)
   }
 
   case class Arcsine[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       expression.derivative(parameter) / Expression1d.sqrt(1 - expression.squared)
+
+    override def condition: Expression1d[T] = expression.condition * (1 - expression.squared)
   }
 
   case class Arccosine[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       -expression.derivative(parameter) / Expression1d.sqrt(1 - expression.squared)
+
+    override def condition: Expression1d[T] = expression.condition * (1 - expression.squared)
   }
 
   case class Arctangent[T](expression: Expression1d[T]) extends Expression1d[T] {
     override def derivative(parameter: T): Expression1d[T] =
       expression.derivative(parameter) / (1 + expression.squared)
+
+    override def condition: Expression1d[T] = expression.condition
   }
 }

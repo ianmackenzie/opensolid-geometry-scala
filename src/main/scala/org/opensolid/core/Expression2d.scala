@@ -21,6 +21,8 @@ sealed abstract class Expression2d[T] {
 
   def derivative(parameter: T): Expression2d[T]
 
+  def condition: Expression1d[T]
+
   def unary_- : Expression2d[T] = Negation(this)
 
   final def negated: Expression2d[T] = -this
@@ -104,6 +106,8 @@ object Expression2d {
   case class Constant[T](val xValue: Double, val yValue: Double) extends Expression2d[T] {
     override def derivative(parameter: T): Expression2d[T] = Constant(0, 0)
 
+    override def condition: Expression1d[T] = Expression1d.Constant(1)
+
     override def unary_- : Expression2d[T] = Constant(-xValue, -yValue)
 
     override def squaredNorm: Expression1d[T] =
@@ -123,6 +127,8 @@ object Expression2d {
     override def derivative(parameter: T): Expression2d[T] =
       Expression2d.fromComponents(x.derivative(parameter), y.derivative(parameter))
 
+    override def condition: Expression1d[T] = x.condition * y.condition
+
     override def unary_- : Expression2d[T] = Expression2d.fromComponents(-x, -y)
 
     override def squaredNorm: Expression1d[T] = x.squared + y.squared
@@ -130,6 +136,8 @@ object Expression2d {
 
   case class Negation[T](expression: Expression2d[T]) extends Expression2d[T] {
     override def derivative(parameter: T): Expression2d[T] = -expression.derivative(parameter)
+
+    override def condition: Expression1d[T] = expression.condition
 
     override def squaredNorm: Expression1d[T] = expression.squaredNorm
 
@@ -155,6 +163,8 @@ object Expression2d {
     override def derivative(parameter: T): Expression2d[T] =
       firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
+
     override def x: Expression1d[T] = firstExpression.x + secondExpression.x
 
     override def y: Expression1d[T] = firstExpression.y + secondExpression.y
@@ -169,6 +179,8 @@ object Expression2d {
     override def derivative(parameter: T): Expression2d[T] =
       firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
 
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
+
     override def x: Expression1d[T] = firstExpression.x - secondExpression.x
 
     override def y: Expression1d[T] = firstExpression.y - secondExpression.y
@@ -180,6 +192,8 @@ object Expression2d {
     override def derivative(parameter: T): Expression2d[T] =
       firstExpression.derivative(parameter) * secondExpression +
       firstExpression * secondExpression.derivative(parameter)
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression.condition
 
     override def x: Expression1d[T] = firstExpression * secondExpression.x
 
@@ -194,6 +208,8 @@ object Expression2d {
         firstExpression.derivative(parameter) * secondExpression -
         firstExpression * secondExpression.derivative(parameter)
       ) / secondExpression.squared
+
+    override def condition: Expression1d[T] = firstExpression.condition * secondExpression
 
     override def x: Expression1d[T] = firstExpression.x / secondExpression
 
