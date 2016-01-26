@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.collection.mutable
 
-class ExpressionCompiler[T] private () {
+private class ExpressionCompiler[T] {
   import ExpressionCompiler._
 
   val arrayOperations: mutable.ArrayBuffer[ArrayOperation] =
