@@ -36,19 +36,20 @@ object Curve1d {
   def parametric(expression: Expression, domain: Interval): Curve1d = Parametric(expression, domain)
 
   private[this] case class Parametric(expression: Expression, domain: Interval) extends Curve1d {
-    private[this] val (evaluationSequence, resultIndex) = EvaluationSequence.evaluate1d(expression)
+    private[this] val (arrayOperations, arraySize, resultIndex) =
+      ExpressionCompiler.compile(expression)
 
     override def evaluate(parameterValue: Double): Double = {
-      val array = Array.ofDim[Double](evaluationSequence.arraySize)
+      val array = Array.ofDim[Double](arraySize)
       array(0) = parameterValue
-      for { operation <- evaluationSequence.operations } operation.execute(array)
+      for { operation <- arrayOperations } operation.execute(array)
       array(resultIndex)
     }
 
     override def evaluate(parameterBounds: Interval): Interval = {
-      val array = Array.ofDim[Interval](evaluationSequence.arraySize)
+      val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds
-      for { operation <- evaluationSequence.operations } operation.execute(array)
+      for { operation <- arrayOperations } operation.execute(array)
       array(resultIndex)
     }
 

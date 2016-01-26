@@ -36,24 +36,20 @@ object Curve2d {
   def parametric(expression: Expression, domain: Interval): Curve2d = Parametric(expression, domain)
 
   private case class Parametric(expression: Expression, domain: Interval) extends Curve2d {
-    private[this] val (evaluationSequence, (xIndex, yIndex)) =
-      EvaluationSequence.evaluate2d(expression)
+    private[this] val (arrayOperations, arraySize, (xIndex, yIndex)) =
+      ExpressionCompiler.compile(expression)
 
     override def evaluate(parameterValue: Double): Point2d = {
-      val array = Array.ofDim[Double](evaluationSequence.arraySize)
+      val array = Array.ofDim[Double](arraySize)
       array(0) = parameterValue
-      for (operation <- evaluationSequence.operations) {
-        operation.execute(array)
-      }
+      for { operation <- arrayOperations } operation.execute(array)
       Point2d(array(xIndex), array(yIndex))
     }
 
     override def evaluate(parameterBounds: Interval): Box2d = {
-      val array = Array.ofDim[Interval](evaluationSequence.arraySize)
+      val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds
-      for (operation <- evaluationSequence.operations) {
-        operation.execute(array)
-      }
+      for { operation <- arrayOperations } operation.execute(array)
       Box2d(array(xIndex), array(yIndex))
     }
 
