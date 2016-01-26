@@ -35,7 +35,7 @@ object Curve2d {
 
   def parametric(expression: Expression, domain: Interval): Curve2d = Parametric(expression, domain)
 
-  private case class Parametric(expression: Expression, domain: Interval) extends Curve2d {
+  private[this] case class Parametric(expression: Expression, domain: Interval) extends Curve2d {
     private[this] val (arrayOperations, arraySize, (xIndex, yIndex)) =
       ExpressionCompiler.compile(expression)
 
@@ -58,7 +58,7 @@ object Curve2d {
 
   def constant(point: Point2d): Curve2d = Constant(point)
 
-  private case class Constant(point: Point2d) extends Curve2d {
+  private[this] case class Constant(point: Point2d) extends Curve2d {
     private[this] val box = Box2d.singleton(point)
 
     override def expression: Expression = Expression2d.Constant(point.x, point.y)
