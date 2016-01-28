@@ -54,28 +54,23 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def direction: Direction3d = Direction3d(normalized)
 
-  def normalDirection: Direction3d = {
-    if (this == Vector3d.Zero) {
-      Direction3d.None
-    } else {
-      val absX = x.abs
-      val absY = y.abs
-      val absZ = z.abs
-      if (absX <= absY) {
-        if (absX <= absZ) {
-          Direction3d.X.cross(this).direction
-        } else {
-          Direction3d.Z.cross(this).direction
-        }
-      } else {
-        if (absY <= absZ) {
-          Direction3d.Y.cross(this).direction
-        } else {
-          Direction3d.Z.cross(this).direction
-        }
-      }
-    }
+  def perpendicularVector: Vector3d = {
+    val absX = x.abs
+    val absY = y.abs
+    val absZ = z.abs
+    if (absX <= absY)
+      if (absX <= absZ)
+        Vector3d(0, -z, y)
+      else
+        Vector3d(-y, x, 0)
+    else
+      if (absY <= absZ)
+        Vector3d(z, 0, -x)
+      else
+        Vector3d(-y, x, 0)
   }
+
+  def normalDirection: Direction3d = perpendicularVector.direction
 
   def unary_- : Vector3d = Vector3d(-x, -y, -z)
 
