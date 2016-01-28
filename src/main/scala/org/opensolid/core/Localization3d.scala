@@ -18,16 +18,16 @@ final case class Localization3d(frame: Frame3d) extends Transformation3d {
   def apply(point: Point3d): Point3d = {
     val displacement = point - frame.originPoint
     Point3d(
-      displacement.dot(frame.xDirection),
-      displacement.dot(frame.yDirection),
-      displacement.dot(frame.zDirection)
+      displacement.componentAlong(frame.xDirection),
+      displacement.componentAlong(frame.yDirection),
+      displacement.componentAlong(frame.zDirection)
     )
   }
 
   def apply(vector: Vector3d): Vector3d =
     Vector3d(
-      vector.dot(frame.xDirection),
-      vector.dot(frame.yDirection),
-      vector.dot(frame.zDirection)
+      vector.componentAlong(frame.xDirection),
+      vector.componentAlong(frame.yDirection),
+      vector.componentAlong(frame.zDirection)
     )
 }

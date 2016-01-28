@@ -38,9 +38,11 @@ final case class Point2d(x: Double, y: Double)
 
   def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
 
-  def distanceAlong(axis: Axis2d): Double = (this - axis.originPoint).dot(axis.direction)
+  def distanceAlong(axis: Axis2d): Double =
+    (this - axis.originPoint).componentAlong(axis.direction)
 
-  def distanceTo(axis: Axis2d): Double = (this - axis.originPoint).dot(axis.normalDirection)
+  def distanceTo(axis: Axis2d): Double =
+    (this - axis.originPoint).componentAlong(axis.normalDirection)
 
   def isOn(axis: Axis2d, tolerance: Double): Boolean = distanceTo(axis).isZero(tolerance)
 
@@ -48,7 +50,8 @@ final case class Point2d(x: Double, y: Double)
 
   override def scaledAbout(point: Point2d, scale: Double): Point2d = point + scale * (this - point)
 
-  def projectedOnto(axis: Axis2d): Point2d = axis.originPoint + distanceAlong(axis) * axis.direction
+  def projectedOnto(axis: Axis2d): Point2d =
+    axis.originPoint + (this - axis.originPoint).projectedOnto(axis)
 
   def placedOnto(plane: Plane3d): Point3d =
     plane.originPoint + x * plane.xDirection + y * plane.yDirection

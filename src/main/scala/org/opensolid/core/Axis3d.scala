@@ -25,13 +25,13 @@ final case class Axis3d(originPoint: Point3d, direction: Direction3d)
     Axis3d(originPoint.transformedBy(transformation), direction.transformedBy(transformation))
 
   def projectedOnto(that: Axis3d): Axis3d =
-    Axis3d(this.originPoint.projectedOnto(that), this.direction.projectedOnto(that).direction)
+    Axis3d(this.originPoint.projectedOnto(that), this.direction.projectedOnto(that))
 
   def projectedOnto(plane: Plane3d): Axis3d =
-    Axis3d(originPoint.projectedOnto(plane), direction.projectedOnto(plane).direction)
+    Axis3d(originPoint.projectedOnto(plane), direction.projectedOnto(plane))
 
   def projectedInto(plane: Plane3d): Axis2d =
-    Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane).direction)
+    Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane))
 
   def normalPlane: Plane3d = Plane3d(originPoint, direction)
 

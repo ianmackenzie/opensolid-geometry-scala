@@ -71,7 +71,7 @@ object Numerics {
 
   def normalBasis(direction: Direction3d): (Direction3d, Direction3d) = {
     val xDirection = direction.normalDirection
-    val yDirection = Direction3d(direction.cross(xDirection))
+    val yDirection = Direction3d(direction.vector.cross(xDirection.vector))
     (xDirection, yDirection)
   }
 }

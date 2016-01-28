@@ -39,13 +39,17 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
-  def projectedOnto(axis: Axis3d): Vector3d = this.dot(axis.direction) * axis.direction
+  def projectedOnto(direction: Direction3d): Vector3d = componentAlong(direction) * direction
 
-  def projectedOnto(plane: Plane3d): Vector3d =
-    this - this.dot(plane.normalDirection) * plane.normalDirection
+  def projectedOnto(axis: Axis3d): Vector3d = projectedOnto(axis.direction)
+
+  def projectedOnto(plane: Plane3d): Vector3d = this - this.projectedOnto(plane.normalDirection)
 
   def projectedInto(plane: Plane3d): Vector2d =
-    Vector2d(this.dot(plane.xDirection), this.dot(plane.yDirection))
+    Vector2d(
+      this.componentAlong(plane.xDirection),
+      this.componentAlong(plane.yDirection)
+    )
 
   def normalized: Vector3d = this match {
     case Vector3d.Zero => this
@@ -112,11 +116,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 
-  def dot(direction: Direction3d): Double = dot(direction.vector)
-
   def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
-
-  def dot(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -125,8 +125,6 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.x * that.y - this.y * that.x
     )
 
-  def cross(direction: Direction3d): Vector3d = cross(direction.vector)
-
   def cross(vectorBox: VectorBox3d): VectorBox3d =
     VectorBox3d(
       y * vectorBox.z - z * vectorBox.y,
@@ -134,7 +132,9 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       x * vectorBox.y - y * vectorBox.x
     )
 
-  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vectorBox)
+  def componentAlong(direction: Direction3d): Double = dot(direction.vector)
+
+  def componentAlong(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 }
 
 object Vector3d {

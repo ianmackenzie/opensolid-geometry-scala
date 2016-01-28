@@ -50,11 +50,11 @@ class Vector2dTestSuite
       (vector: Vector2d, axis: Axis2d) => {
         val projected = vector.projectedOnto(axis)
         val tolerance = 4 * eps(vector.length)
-        projected.length.should(beEqualTo(vector.dot(axis.direction).abs, tolerance))
-        projected.cross(axis.direction).should(beEqualTo(0.0, tolerance))
+        projected.length.should(beEqualTo(vector.componentAlong(axis.direction).abs, tolerance))
+        projected.cross(axis.direction.vector).should(beEqualTo(0.0, tolerance))
         val projectedTolerance = 8 * eps(projected.length)
         projected.projectedOnto(axis).should(beEqualTo(projected, tolerance))
-        (vector - projected).dot(axis.direction).should(beEqualTo(0.0, tolerance))
+        (vector - projected).componentAlong(axis.direction).should(beEqualTo(0.0, tolerance))
       }
     }
   }
@@ -106,8 +106,8 @@ class Vector2dTestSuite
     forAll {
       (vector: Vector2d) => {
         val tolerance = 4 * eps(vector.length)
-        vector.dot(vector.normalDirection).should(beEqualTo(0.0, tolerance))
-        vector.dot(vector.direction).should(beEqualTo(vector.length, tolerance))
+        vector.componentAlong(vector.normalDirection).should(beEqualTo(0.0, tolerance))
+        vector.componentAlong(vector.direction).should(beEqualTo(vector.length, tolerance))
       }
     }
   }

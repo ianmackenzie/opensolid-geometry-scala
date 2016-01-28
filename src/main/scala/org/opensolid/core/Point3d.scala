@@ -40,17 +40,18 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
 
-  def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).dot(axis.direction)
+  def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).componentAlong(axis.direction)
 
   def squaredDistanceTo(axis: Axis3d): Double =
-    (this - axis.originPoint).cross(axis.direction).squaredLength
+    (this - axis.originPoint).cross(axis.direction.vector).squaredLength
 
   def distanceTo(axis: Axis3d): Double = math.sqrt(squaredDistanceTo(axis))
 
   def isOn(axis: Axis3d, tolerance: Double): Boolean =
     squaredDistanceTo(axis).isZero(tolerance * tolerance)
 
-  def distanceTo(plane: Plane3d): Double = (this - plane.originPoint).dot(plane.normalDirection)
+  def distanceTo(plane: Plane3d): Double =
+    (this - plane.originPoint).componentAlong(plane.normalDirection)
 
   def isOn(plane: Plane3d, tolerance: Double): Boolean = distanceTo(plane).isZero(tolerance)
 
@@ -58,14 +59,18 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   override def scaledAbout(point: Point3d, scale: Double): Point3d = point + scale * (this - point)
 
-  def projectedOnto(axis: Axis3d): Point3d = axis.originPoint + distanceAlong(axis) * axis.direction
+  def projectedOnto(axis: Axis3d): Point3d =
+    axis.originPoint + (this - axis.originPoint).projectedOnto(axis)
 
   def projectedOnto(plane: Plane3d): Point3d =
-    this - (this - plane.originPoint).dot(plane.normalDirection) * plane.normalDirection
+    this - (this - plane.originPoint).projectedOnto(plane.normalDirection)
 
   def projectedInto(plane: Plane3d): Point2d = {
     val displacement = this - plane.originPoint
-    Point2d(displacement.dot(plane.xDirection), displacement.dot(plane.yDirection))
+    Point2d(
+      displacement.componentAlong(plane.xDirection),
+      displacement.componentAlong(plane.yDirection)
+    )
   }
 
   def hull(that: Point3d): Box3d =

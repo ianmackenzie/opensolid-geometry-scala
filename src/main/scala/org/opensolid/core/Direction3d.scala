@@ -46,31 +46,15 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
   def transformedBy(transformation: Transformation3d): Direction3d =
     Direction3d(vector.transformedBy(transformation))
 
-  def projectedOnto(axis: Axis3d): Vector3d = vector.projectedOnto(axis)
+  def projectedOnto(axis: Axis3d): Direction3d = vector.projectedOnto(axis).direction
 
-  def projectedOnto(plane: Plane3d): Vector3d = vector.projectedOnto(plane)
+  def projectedOnto(plane: Plane3d): Direction3d = vector.projectedOnto(plane).direction
 
-  def projectedInto(plane: Plane3d): Vector2d = vector.projectedInto(plane)
-
-  def dot(vector: Vector3d): Double = this.vector.dot(vector)
-
-  def dot(that: Direction3d): Double = this.vector.dot(that.vector)
-
-  def dot(vectorBox: VectorBox3d): Interval = vector.dot(vectorBox)
-
-  def dot(directionBox: DirectionBox3d): Interval = vector.dot(directionBox)
-
-  def cross(vector: Vector3d): Vector3d = this.vector.cross(vector)
-
-  def cross(that: Direction3d): Vector3d = this.vector.cross(that.vector)
-
-  def cross(vectorBox: VectorBox3d): VectorBox3d = vector.cross(vectorBox)
-
-  def cross(directionBox: DirectionBox3d): VectorBox3d = vector.cross(directionBox.vectorBox)
+  def projectedInto(plane: Plane3d): Direction2d = vector.projectedInto(plane).direction
 
   def normalDirection: Direction3d = vector.normalDirection
 
-  def angleTo(that: Direction3d): Double = math.acos(this.dot(that))
+  def angleTo(that: Direction3d): Double = math.acos(this.vector.dot(that.vector))
 }
 
 object Direction3d {

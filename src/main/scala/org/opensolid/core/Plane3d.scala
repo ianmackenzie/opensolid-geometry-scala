@@ -28,7 +28,12 @@ final case class Plane3d(
   ) = this(originPoint, basisDirections.first, basisDirections.second, normalDirection)
 
   def this(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d) =
-    this(originPoint, xDirection, yDirection, Direction3d(xDirection.cross(yDirection)))
+    this(
+      originPoint,
+      xDirection,
+      yDirection,
+      Direction3d(xDirection.vector.cross(yDirection.vector))
+    )
 
   def this(originPoint: Point3d, basisDirections: (Direction3d, Direction3d)) =
     this(originPoint, basisDirections.first, basisDirections.second)
@@ -75,25 +80,25 @@ object Plane3d {
       case Vector3d.Zero => normalDirection.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
-    val yDirection = Direction3d(normalDirection.cross(xDirection))
+    val yDirection = Direction3d(normalDirection.vector.cross(xDirection.vector))
     Plane3d(firstPoint, xDirection, yDirection, normalDirection)
   }
 
   def through(axis: Axis3d): Plane3d = {
     val xDirection = axis.direction
     val yDirection = axis.normalDirection
-    val normalDirection = Direction3d(xDirection.cross(yDirection))
+    val normalDirection = Direction3d(xDirection.vector.cross(yDirection.vector))
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
   def through(axis: Axis3d, point: Point3d): Plane3d = {
     val xDirection = axis.direction
-    val crossProduct = xDirection.cross(point - axis.originPoint)
+    val crossProduct = xDirection.vector.cross(point - axis.originPoint)
     val normalDirection = crossProduct match {
       case Vector3d.Zero => axis.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
-    val yDirection = Direction3d(normalDirection.cross(xDirection))
+    val yDirection = Direction3d(normalDirection.vector.cross(xDirection.vector))
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
