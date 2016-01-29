@@ -40,7 +40,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
 
-  def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).componentAlong(axis.direction)
+  def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).componentIn(axis.direction)
 
   def squaredDistanceTo(axis: Axis3d): Double =
     (this - axis.originPoint).cross(axis.direction.vector).squaredLength
@@ -51,7 +51,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
     squaredDistanceTo(axis).isZero(tolerance * tolerance)
 
   def distanceTo(plane: Plane3d): Double =
-    (this - plane.originPoint).componentAlong(plane.normalDirection)
+    (this - plane.originPoint).componentIn(plane.normalDirection)
 
   def isOn(plane: Plane3d, tolerance: Double): Boolean = distanceTo(plane).isZero(tolerance)
 
@@ -68,8 +68,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def projectedInto(plane: Plane3d): Point2d = {
     val displacement = this - plane.originPoint
     Point2d(
-      displacement.componentAlong(plane.xDirection),
-      displacement.componentAlong(plane.yDirection)
+      displacement.componentIn(plane.xDirection),
+      displacement.componentIn(plane.yDirection)
     )
   }
 

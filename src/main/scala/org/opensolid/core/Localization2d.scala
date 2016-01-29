@@ -18,14 +18,14 @@ final case class Localization2d(frame: Frame2d) extends Transformation2d {
   def apply(point: Point2d): Point2d = {
     val displacement = point - frame.originPoint
     Point2d(
-      displacement.componentAlong(frame.xDirection),
-      displacement.componentAlong(frame.yDirection)
+      displacement.componentIn(frame.xDirection),
+      displacement.componentIn(frame.yDirection)
     )
   }
 
   def apply(vector: Vector2d): Vector2d =
     Vector2d(
-      vector.componentAlong(frame.xDirection),
-      vector.componentAlong(frame.yDirection)
+      vector.componentIn(frame.xDirection),
+      vector.componentIn(frame.yDirection)
     )
 }

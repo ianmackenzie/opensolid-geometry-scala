@@ -38,11 +38,9 @@ final case class Point2d(x: Double, y: Double)
 
   def isOrigin(tolerance: Double): Boolean = x * x + y * y <= tolerance * tolerance
 
-  def distanceAlong(axis: Axis2d): Double =
-    (this - axis.originPoint).componentAlong(axis.direction)
+  def distanceAlong(axis: Axis2d): Double = (this - axis.originPoint).componentIn(axis.direction)
 
-  def distanceTo(axis: Axis2d): Double =
-    (this - axis.originPoint).componentAlong(axis.normalDirection)
+  def distanceTo(axis: Axis2d): Double = (this - axis.originPoint).componentIn(axis.normalDirection)
 
   def isOn(axis: Axis2d, tolerance: Double): Boolean = distanceTo(axis).isZero(tolerance)
 

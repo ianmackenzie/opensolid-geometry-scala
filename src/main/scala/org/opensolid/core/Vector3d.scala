@@ -39,7 +39,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
 
-  def projectedOnto(direction: Direction3d): Vector3d = componentAlong(direction) * direction
+  def projectedOnto(direction: Direction3d): Vector3d = componentIn(direction) * direction
 
   def projectedOnto(axis: Axis3d): Vector3d = projectedOnto(axis.direction)
 
@@ -47,8 +47,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def projectedInto(plane: Plane3d): Vector2d =
     Vector2d(
-      this.componentAlong(plane.xDirection),
-      this.componentAlong(plane.yDirection)
+      this.componentIn(plane.xDirection),
+      this.componentIn(plane.yDirection)
     )
 
   def normalized: Vector3d = this match {
@@ -132,9 +132,9 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       x * vectorBox.y - y * vectorBox.x
     )
 
-  def componentAlong(direction: Direction3d): Double = dot(direction.vector)
+  def componentIn(direction: Direction3d): Double = dot(direction.vector)
 
-  def componentAlong(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
+  def componentIn(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 }
 
 object Vector3d {

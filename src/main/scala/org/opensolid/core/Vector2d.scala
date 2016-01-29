@@ -37,7 +37,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
 
-  def projectedOnto(direction: Direction2d): Vector2d = componentAlong(direction) * direction
+  def projectedOnto(direction: Direction2d): Vector2d = componentIn(direction) * direction
 
   def projectedOnto(axis: Axis2d): Vector2d = projectedOnto(axis.direction)
 
@@ -96,9 +96,9 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def cross(vectorBox: VectorBox2d): Interval = x * vectorBox.y - y * vectorBox.x
 
-  def componentAlong(direction: Direction2d): Double = dot(direction.vector)
+  def componentIn(direction: Direction2d): Double = dot(direction.vector)
 
-  def componentAlong(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
+  def componentIn(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
 }
 
 object Vector2d {
