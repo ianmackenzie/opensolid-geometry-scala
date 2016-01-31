@@ -49,17 +49,6 @@ final case class Box3d(x: Interval, y: Interval, z: Interval)
 
   def maxVertex: Point3d = Point3d(x.upperBound, y.upperBound, z.upperBound)
 
-  def vertices: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d) = (
-    Point3d(x.lowerBound, y.lowerBound, z.lowerBound),
-    Point3d(x.upperBound, y.lowerBound, z.lowerBound),
-    Point3d(x.lowerBound, y.upperBound, z.lowerBound),
-    Point3d(x.upperBound, y.upperBound, z.lowerBound),
-    Point3d(x.lowerBound, y.lowerBound, z.upperBound),
-    Point3d(x.upperBound, y.lowerBound, z.upperBound),
-    Point3d(x.lowerBound, y.upperBound, z.upperBound),
-    Point3d(x.upperBound, y.upperBound, z.upperBound)
-  )
-
   def interpolated(u: Double, v: Double, w: Double): Point3d =
     Point3d(x.interpolated(u), y.interpolated(v), z.interpolated(w))
 
@@ -143,41 +132,6 @@ object Box3d {
 
   def hullOf(points: (Point3d, Point3d, Point3d)): Box3d =
     points.first.hull(points.second).hull(points.third)
-
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d)): Box3d =
-    points.first.hull(points.second).hull(points.third).hull(points.fourth)
-
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d)): Box3d =
-    points.first.hull(points.second).hull(points.third).hull(points.fourth).hull(points.fifth)
-
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)): Box3d =
-    points.first.
-      hull(points.second).
-      hull(points.third).
-      hull(points.fourth).
-      hull(points.fifth).
-      hull(points.sixth)
-
-  def hullOf(points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)): Box3d =
-    points.first.
-      hull(points.second).
-      hull(points.third).
-      hull(points.fourth).
-      hull(points.fifth).
-      hull(points.sixth).
-      hull(points.seventh)
-
-  def hullOf(
-    points: (Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d, Point3d)
-  ): Box3d =
-    points.first.
-      hull(points.second).
-      hull(points.third).
-      hull(points.fourth).
-      hull(points.fifth).
-      hull(points.sixth).
-      hull(points.seventh).
-      hull(points.eigth)
 
   val Empty: Box3d = Box3d(Interval.Empty, Interval.Empty, Interval.Empty)
 

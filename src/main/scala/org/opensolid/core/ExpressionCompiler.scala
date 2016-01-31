@@ -24,154 +24,332 @@ private class ExpressionCompiler[T] {
 
   var arraySize: Int = 0
 
-  private[this] val expressionMap1d: mutable.Map[Expression1d[T], Int] =
-    mutable.Map.empty[Expression1d[T], Int]
+  private[this] val constantMap = mutable.Map.empty[Double, Int]
+  private[this] val negation1dMap = mutable.Map.empty[Int, Int]
+  private[this] val sum1dMap = mutable.Map.empty[(Int, Int), Int]
+  private[this] val difference1dMap = mutable.Map.empty[(Int, Int), Int]
+  private[this] val product1dMap = mutable.Map.empty[(Int, Int), Int]
+  private[this] val quotient1dMap = mutable.Map.empty[(Int, Int), Int]
+  private[this] val squareMap = mutable.Map.empty[Int, Int]
+  private[this] val squareRootMap = mutable.Map.empty[Int, Int]
+  private[this] val sineMap = mutable.Map.empty[Int, Int]
+  private[this] val cosineMap = mutable.Map.empty[Int, Int]
+  private[this] val tangentMap = mutable.Map.empty[Int, Int]
+  private[this] val arcsineMap = mutable.Map.empty[Int, Int]
+  private[this] val arccosineMap = mutable.Map.empty[Int, Int]
+  private[this] val arctangentMap = mutable.Map.empty[Int, Int]
+  private[this] val dotProduct2dMap = mutable.Map.empty[((Int, Int), (Int, Int)), Int]
+  private[this] val crossProduct2dMap = mutable.Map.empty[((Int, Int), (Int, Int)), Int]
+  private[this] val squaredNorm2dMap = mutable.Map.empty[(Int, Int), Int]
+  private[this] val negation2dMap = mutable.Map.empty[(Int, Int), (Int, Int)]
+  private[this] val sum2dMap = mutable.Map.empty[((Int, Int), (Int, Int)), (Int, Int)]
+  private[this] val difference2dMap = mutable.Map.empty[((Int, Int), (Int, Int)), (Int, Int)]
+  private[this] val product2dMap = mutable.Map.empty[(Int, (Int, Int)), (Int, Int)]
+  private[this] val quotient2dMap = mutable.Map.empty[((Int, Int), Int), (Int, Int)]
 
-  private[this] val expressionMap2d: mutable.Map[Expression2d[T], (Int, Int)] =
-    mutable.Map.empty[Expression2d[T], (Int, Int)]
-
-  def evaluate(expression: Expression1d[T]): Int =
-    expressionMap1d.get(expression) match {
-      case Some(index) => index
-      case None => expression match {
-        case parameter: Expression1d.Parameter[T] =>
-          parameter.index
-        case Expression1d.Constant(value) =>
-          add1d(expression, new Constant1d(value, _))
-        case Expression1d.XComponent2d(expression) => {
-          val (xIndex, yIndex) = evaluate(expression)
-          xIndex
-        }
-        case Expression1d.YComponent2d(expression) => {
-          val (xIndex, yIndex) = evaluate(expression)
-          yIndex
-        }
-        case Expression1d.Negation(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Negation1d(argumentIndex, _))
-        }
-        case Expression1d.Sum(firstArgument, secondArgument) => {
-          val firstArgumentIndex = evaluate(firstArgument)
-          val secondArgumentIndex = evaluate(secondArgument)
-          add1d(expression, new Sum1d(firstArgumentIndex, secondArgumentIndex, _))
-        }
-        case Expression1d.Difference(firstArgument, secondArgument) => {
-          val firstArgumentIndex = evaluate(firstArgument)
-          val secondArgumentIndex = evaluate(secondArgument)
-          add1d(expression, new Difference1d(firstArgumentIndex, secondArgumentIndex, _))
-        }
-        case Expression1d.Product(firstArgument, secondArgument) => {
-          val firstArgumentIndex = evaluate(firstArgument)
-          val secondArgumentIndex = evaluate(secondArgument)
-          add1d(expression, new Product1d(firstArgumentIndex, secondArgumentIndex, _))
-        }
-        case Expression1d.Quotient(firstArgument, secondArgument) => {
-          val firstArgumentIndex = evaluate(firstArgument)
-          val secondArgumentIndex = evaluate(secondArgument)
-          add1d(expression, new Quotient1d(firstArgumentIndex, secondArgumentIndex, _))
-        }
-        case Expression1d.Square(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Square(argumentIndex, _))
-        }
-        case Expression1d.SquareRoot(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new SquareRoot(argumentIndex, _))
-        }
-        case Expression1d.DotProduct2d(firstArgument, secondArgument) => {
-          val firstArgumentIndices = evaluate(firstArgument)
-          val secondArgumentIndices = evaluate(secondArgument)
-          add1d(expression, new DotProduct2d(firstArgumentIndices, secondArgumentIndices, _))
-        }
-        case Expression1d.SquaredNorm2d(argument) => {
-          val argumentIndices = evaluate(argument)
-          add1d(expression, new SquaredNorm2d(argumentIndices, _))
-        }
-        case Expression1d.Sine(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Sine(argumentIndex, _))
-        }
-        case Expression1d.Cosine(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Cosine(argumentIndex, _))
-        }
-        case Expression1d.Tangent(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Tangent(argumentIndex, _))
-        }
-        case Expression1d.Arcsine(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Arcsine(argumentIndex, _))
-        }
-        case Expression1d.Arccosine(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Arccosine(argumentIndex, _))
-        }
-        case Expression1d.Arctangent(argument) => {
-          val argumentIndex = evaluate(argument)
-          add1d(expression, new Arctangent(argumentIndex, _))
-        }
-      }
-    }
-
-  def evaluate(expression: Expression2d[T]): (Int, Int) =
-    expressionMap2d.get(expression) match {
-      case Some(indices) => indices
-      case None => expression match {
-        case Expression2d.Constant(x, y) =>
-          add2d(expression, new Constant2d((x, y), _))
-        case Expression2d.FromComponents(x, y) => {
-          val xIndex = evaluate(x)
-          val yIndex = evaluate(y)
-          (xIndex, yIndex)
-        }
-        case Expression2d.Negation(argument) => {
-          val argumentIndices = evaluate(argument)
-          add2d(expression, new Negation2d(argumentIndices, _))
-        }
-        case Expression2d.Sum(firstArgument, secondArgument) => {
-          val firstArgumentIndices = evaluate(firstArgument)
-          val secondArgumentIndices = evaluate(secondArgument)
-          add2d(expression, new Sum2d(firstArgumentIndices, secondArgumentIndices, _))
-        }
-        case Expression2d.Difference(firstArgument, secondArgument) => {
-          val firstArgumentIndices = evaluate(firstArgument)
-          val secondArgumentIndices = evaluate(secondArgument)
-          add2d(expression, new Difference2d(firstArgumentIndices, secondArgumentIndices, _))
-        }
-        case Expression2d.Product(firstArgument, secondArgument) => {
-          val firstArgumentIndex = evaluate(firstArgument)
-          val secondArgumentIndices = evaluate(secondArgument)
-          add2d(expression, new Product2d(firstArgumentIndex, secondArgumentIndices, _))
-        }
-        case Expression2d.Quotient(firstArgument, secondArgument) => {
-          val firstArgumentIndices = evaluate(firstArgument)
-          val secondArgumentIndex = evaluate(secondArgument)
-          add2d(expression, new Quotient2d(firstArgumentIndices, secondArgumentIndex, _))
-        }
-      }
-    }
-
-  private[this] def add1d(
-    expression: Expression1d[T],
-    createOperation: (Int) => ArrayOperation
-  ): Int = {
-    val resultIndex = arraySize
-    arrayOperations += createOperation(resultIndex)
-    arraySize += 1
-    expressionMap1d += (expression -> resultIndex)
-    resultIndex
+  def evaluate(expression: Expression1d[T]): Int = expression match {
+    case Expression1d.Parameter(index) =>
+      index
+    case Expression1d.Constant(value) =>
+      constant1d(value)
+    case Expression1d.XComponent2d(expression) =>
+      evaluate(expression).first
+    case Expression1d.YComponent2d(expression) =>
+      evaluate(expression).second
+    case Expression1d.Negation(argument) =>
+      negation1d(evaluate(argument))
+    case Expression1d.Sum(firstArgument, secondArgument) =>
+      sum1d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression1d.Difference(firstArgument, secondArgument) =>
+      difference1d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression1d.Product(firstArgument, secondArgument) =>
+      product1d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression1d.Quotient(firstArgument, secondArgument) =>
+      quotient1d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression1d.Square(argument) =>
+      square(evaluate(argument))
+    case Expression1d.SquareRoot(argument) =>
+      squareRoot(evaluate(argument))
+    case Expression1d.Sine(argument) =>
+      sine(evaluate(argument))
+    case Expression1d.Cosine(argument) =>
+      cosine(evaluate(argument))
+    case Expression1d.Tangent(argument) =>
+      tangent(evaluate(argument))
+    case Expression1d.Arcsine(argument) =>
+      arcsine(evaluate(argument))
+    case Expression1d.Arccosine(argument) =>
+      arccosine(evaluate(argument))
+    case Expression1d.Arctangent(argument) =>
+      arctangent(evaluate(argument))
+    case Expression1d.DotProduct2d(firstArgument, secondArgument) =>
+      dotProduct2d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression1d.SquaredNorm2d(argument) =>
+      squaredNorm2d(evaluate(argument))
   }
 
-  private[this] def add2d(
-    expression: Expression2d[T],
-    createOperation: ((Int, Int)) => ArrayOperation
-  ): (Int, Int) = {
-    val resultIndices = (arraySize, arraySize + 1)
-    arrayOperations += createOperation(resultIndices)
-    arraySize += 2
-    expressionMap2d += (expression -> resultIndices)
-    resultIndices
+  def evaluate(expression: Expression2d[T]): (Int, Int) = expression match {
+    case Expression2d.Constant(xValue, yValue) =>
+      constant2d(xValue, yValue)
+    case Expression2d.FromComponents(x, y) =>
+      (evaluate(x), evaluate(y))
+    case Expression2d.Negation(argument) =>
+      negation2d(evaluate(argument))
+    case Expression2d.Sum(firstArgument, secondArgument) =>
+      sum2d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression2d.Difference(firstArgument, secondArgument) =>
+      difference2d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression2d.Product(firstArgument, secondArgument) =>
+      product2d(evaluate(firstArgument), evaluate(secondArgument))
+    case Expression2d.Quotient(firstArgument, secondArgument) =>
+      quotient2d(evaluate(firstArgument), evaluate(secondArgument))
+  }
+
+  private[this] def constant1d(value: Double): Int = constantMap.get(value) match {
+    case Some(index) => index
+    case None => {
+      val resultIndex = arraySize
+      arraySize += 1
+      arrayOperations += new Constant1d(value, resultIndex)
+      constantMap += (value -> resultIndex)
+      resultIndex
+    }
+  }
+
+  private[this] def unaryOperation1d(
+    argumentIndex: Int,
+    resultMap: mutable.Map[Int, Int],
+    newOperation: (Int) => ArrayOperation
+  ): Int = resultMap.get(argumentIndex) match {
+    case Some(index) => index
+    case None => {
+      val resultIndex = arraySize
+      arraySize += 1
+      arrayOperations += newOperation(resultIndex)
+      resultMap += (argumentIndex -> resultIndex)
+      resultIndex
+    }
+  }
+
+  private[this] def binaryOperation1d(
+    firstArgumentIndex: Int,
+    secondArgumentIndex: Int,
+    resultMap: mutable.Map[(Int, Int), Int],
+    newOperation: (Int) => ArrayOperation,
+    symmetric: Boolean = false
+  ): Int = {
+    val argumentIndices = (firstArgumentIndex, secondArgumentIndex)
+    resultMap.get(argumentIndices) match {
+      case Some(index) => index
+      case None => {
+        val resultIndex = arraySize
+        arraySize += 1
+        arrayOperations += newOperation(resultIndex)
+        resultMap += (argumentIndices -> resultIndex)
+        if (symmetric) resultMap += (argumentIndices.reverse -> resultIndex)
+        resultIndex
+      }
+    }
+  }
+
+  private[this] def unaryOperation2d(
+    argumentIndices: (Int, Int),
+    resultMap: mutable.Map[(Int, Int), (Int, Int)],
+    newOperation: ((Int, Int)) => ArrayOperation
+  ): (Int, Int) = resultMap.get(argumentIndices) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1)
+      arraySize += 2
+      arrayOperations += newOperation(resultIndices)
+      resultMap += (argumentIndices -> resultIndices)
+      resultIndices
+    }
+  }
+
+  private[this] def binaryOperation2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int),
+    resultMap: mutable.Map[((Int, Int), (Int, Int)), (Int, Int)],
+    newOperation: ((Int, Int)) => ArrayOperation,
+    symmetric: Boolean = false
+  ): (Int, Int) = resultMap.get((firstArgumentIndices, secondArgumentIndices)) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1)
+      arraySize += 2
+      arrayOperations += newOperation(resultIndices)
+      resultMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndices)
+      if (symmetric) resultMap += ((secondArgumentIndices, firstArgumentIndices) -> resultIndices)
+      resultIndices
+    }
+  }
+
+  private[this] def negation1d(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, negation1dMap, new Negation1d(argumentIndex, _))
+
+  private[this] def sum1d(firstArgumentIndex: Int, secondArgumentIndex: Int): Int =
+    binaryOperation1d(
+      firstArgumentIndex,
+      secondArgumentIndex,
+      sum1dMap,
+      new Sum1d(firstArgumentIndex, secondArgumentIndex, _),
+      true
+    )
+
+  private[this] def difference1d(firstArgumentIndex: Int, secondArgumentIndex: Int): Int =
+    binaryOperation1d(
+      firstArgumentIndex,
+      secondArgumentIndex,
+      difference1dMap,
+      new Difference1d(firstArgumentIndex, secondArgumentIndex, _)
+    )
+
+  private[this] def product1d(firstArgumentIndex: Int, secondArgumentIndex: Int): Int =
+    binaryOperation1d(
+      firstArgumentIndex,
+      secondArgumentIndex,
+      product1dMap,
+      new Product1d(firstArgumentIndex, secondArgumentIndex, _),
+      true
+    )
+
+  private[this] def quotient1d(firstArgumentIndex: Int, secondArgumentIndex: Int): Int =
+    binaryOperation1d(
+      firstArgumentIndex,
+      secondArgumentIndex,
+      quotient1dMap,
+      new Quotient1d(firstArgumentIndex, secondArgumentIndex, _)
+    )
+
+  private[this] def square(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, squareMap, new Square(argumentIndex, _))
+
+  private[this] def squareRoot(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, squareRootMap, new SquareRoot(argumentIndex, _))
+
+  private[this] def sine(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, sineMap, new Sine(argumentIndex, _))
+
+  private[this] def cosine(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, cosineMap, new Cosine(argumentIndex, _))
+
+  private[this] def tangent(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, tangentMap, new Tangent(argumentIndex, _))
+
+  private[this] def arcsine(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, arcsineMap, new Arcsine(argumentIndex, _))
+
+  private[this] def arccosine(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, arccosineMap, new Arccosine(argumentIndex, _))
+
+  private[this] def arctangent(argumentIndex: Int): Int =
+    unaryOperation1d(argumentIndex, arctangentMap, new Arctangent(argumentIndex, _))
+
+  private[this] def dotProduct2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int)
+  ): Int = dotProduct2dMap.get((firstArgumentIndices, secondArgumentIndices)) match {
+    case Some(index) => index
+    case None => {
+      val resultIndex = arraySize
+      arraySize += 1
+      arrayOperations += new DotProduct2d(firstArgumentIndices, secondArgumentIndices, resultIndex)
+      dotProduct2dMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndex)
+      dotProduct2dMap += ((secondArgumentIndices, firstArgumentIndices) -> resultIndex)
+      resultIndex
+    }
+  }
+
+  private[this] def squaredNorm2d(argumentIndices: (Int, Int)): Int =
+    binaryOperation1d(
+      argumentIndices.first,
+      argumentIndices.second,
+      squaredNorm2dMap,
+      new SquaredNorm2d(argumentIndices, _),
+      true
+    )
+
+  private[this] def constant2d(xValue: Double, yValue: Double): (Int, Int) =
+    (constantMap.get(xValue), constantMap.get(yValue)) match {
+      case (Some(xIndex), Some(yIndex)) =>
+        (xIndex, yIndex)
+      case (Some(xIndex), None) => {
+        val yIndex = arraySize
+        arraySize += 1
+        arrayOperations += new Constant1d(yValue, yIndex)
+        constantMap += (yValue -> yIndex)
+        (xIndex, yIndex)
+      }
+      case (None, Some(yIndex)) => {
+        val xIndex = arraySize
+        arraySize += 1
+        arrayOperations += new Constant1d(xValue, xIndex)
+        constantMap += (xValue -> xIndex)
+        (xIndex, yIndex)
+      }
+      case (None, None) => {
+        val resultIndices = (arraySize, arraySize + 1)
+        arraySize += 2
+        arrayOperations += new Constant2d((xValue, yValue), resultIndices)
+        constantMap += (xValue -> resultIndices.first)
+        constantMap += (yValue -> resultIndices.second)
+        resultIndices
+      }
+    }
+
+  private[this] def negation2d(argumentIndices: (Int, Int)): (Int, Int) =
+    unaryOperation2d(argumentIndices, negation2dMap, new Negation2d(argumentIndices, _))
+
+  private[this] def sum2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int)
+  ): (Int, Int) =
+    binaryOperation2d(
+      firstArgumentIndices,
+      secondArgumentIndices,
+      sum2dMap,
+      new Sum2d(firstArgumentIndices, secondArgumentIndices, _),
+      true
+    )
+
+  private[this] def difference2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int)
+  ): (Int, Int) =
+    binaryOperation2d(
+      firstArgumentIndices,
+      secondArgumentIndices,
+      difference2dMap,
+      new Difference2d(firstArgumentIndices, secondArgumentIndices, _)
+    )
+
+  private[this] def product2d(
+    firstArgumentIndex: Int,
+    secondArgumentIndices: (Int, Int)
+  ): (Int, Int) = product2dMap.get((firstArgumentIndex, secondArgumentIndices)) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1)
+      arraySize += 2
+      arrayOperations += new Product2d(firstArgumentIndex, secondArgumentIndices, resultIndices)
+      product2dMap += ((firstArgumentIndex, secondArgumentIndices) -> resultIndices)
+      resultIndices
+    }
+  }
+
+  private[this] def quotient2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndex: Int
+  ): (Int, Int) = quotient2dMap.get((firstArgumentIndices, secondArgumentIndex)) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1)
+      arraySize += 2
+      arrayOperations += new Quotient2d(firstArgumentIndices, secondArgumentIndex, resultIndices)
+      quotient2dMap += ((firstArgumentIndices, secondArgumentIndex) -> resultIndices)
+      resultIndices
+    }
   }
 }
 
@@ -366,6 +544,26 @@ object ExpressionCompiler {
       values(resultIndex) =
         values(firstArgumentXIndex) * values(secondArgumentXIndex) +
         values(firstArgumentYIndex) * values(secondArgumentYIndex)
+  }
+
+  private[ExpressionCompiler] class CrossProduct2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int),
+    resultIndex: Int
+  ) extends ArrayOperation {
+
+    private[this] val (firstArgumentXIndex, firstArgumentYIndex) = firstArgumentIndices
+    private[this] val (secondArgumentXIndex, secondArgumentYIndex) = secondArgumentIndices
+
+    override def execute(values: Array[Double]): Unit =
+      values(resultIndex) =
+        values(firstArgumentXIndex) * values(secondArgumentYIndex) -
+        values(firstArgumentYIndex) * values(secondArgumentXIndex)
+
+    override def execute(values: Array[Interval]): Unit =
+      values(resultIndex) =
+        values(firstArgumentXIndex) * values(secondArgumentYIndex) -
+        values(firstArgumentYIndex) * values(secondArgumentXIndex)
   }
 
   private[ExpressionCompiler] class SquaredNorm2d(argumentIndices: (Int, Int), resultIndex: Int)
