@@ -488,39 +488,6 @@ object Interval {
   def hullOf(values: (Double, Double, Double)): Interval =
     values.first.hull(values.second).hull(values.third)
 
-  def hullOf(values: (Double, Double, Double, Double)): Interval =
-    values.first.hull(values.second).hull(values.third).hull(values.fourth)
-
-  def hullOf(values: (Double, Double, Double, Double, Double)): Interval =
-    values.first.hull(values.second).hull(values.third).hull(values.fourth).hull(values.fifth)
-
-  def hullOf(values: (Double, Double, Double, Double, Double, Double)): Interval =
-    values.first.
-      hull(values.second).
-      hull(values.third).
-      hull(values.fourth).
-      hull(values.fifth).
-      hull(values.sixth)
-
-  def hullOf(values: (Double, Double, Double, Double, Double, Double, Double)): Interval =
-    values.first.
-      hull(values.second).
-      hull(values.third).
-      hull(values.fourth).
-      hull(values.fifth).
-      hull(values.sixth).
-      hull(values.seventh)
-
-  def hullOf(values: (Double, Double, Double, Double, Double, Double, Double, Double)): Interval =
-    values.first.
-      hull(values.second).
-      hull(values.third).
-      hull(values.fourth).
-      hull(values.fifth).
-      hull(values.sixth).
-      hull(values.seventh).
-      hull(values.eigth)
-
   def sqrt(interval: Interval): Interval = {
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
