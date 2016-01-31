@@ -104,19 +104,15 @@ final case class VectorBox2d(x: Interval, y: Interval) {
 
   def dot(vector: Vector2d): Interval = x * vector.x + y * vector.y
 
-  def dot(direction: Direction2d): Interval = dot(direction.vector)
-
   def dot(that: VectorBox2d): Interval = this.x * that.x + this.y * that.y
-
-  def dot(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
 
   def cross(vector: Vector2d): Interval = x * vector.y - y * vector.x
 
-  def cross(direction: Direction2d): Interval = cross(direction.vector)
-
   def cross(that: VectorBox2d): Interval = this.x * that.y - this.y * that.x
 
-  def cross(directionBox: DirectionBox2d): Interval = cross(directionBox.vectorBox)
+  def componentIn(direction: Direction2d): Interval = dot(direction.vector)
+
+  def componentIn(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
 }
 
 object VectorBox2d {

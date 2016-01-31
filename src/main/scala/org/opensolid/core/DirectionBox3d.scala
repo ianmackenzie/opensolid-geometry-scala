@@ -39,22 +39,6 @@ final case class DirectionBox3d(vectorBox: VectorBox3d) {
   def /(value: Double): VectorBox3d = vectorBox / value
 
   def /(interval: Interval): VectorBox3d = vectorBox / interval
-
-  def dot(vector: Vector3d): Interval = vectorBox.dot(vector)
-
-  def dot(vectorBox: VectorBox3d): Interval = this.vectorBox.dot(vectorBox)
-
-  def dot(direction: Direction3d): Interval = vectorBox.dot(direction.vector)
-
-  def dot(that: DirectionBox3d): Interval = this.vectorBox.dot(that.vectorBox)
-
-  def cross(vector: Vector3d): VectorBox3d = vectorBox.cross(vector)
-
-  def cross(vectorBox: VectorBox3d): VectorBox3d = this.vectorBox.cross(vectorBox)
-
-  def cross(direction: Direction3d): VectorBox3d = vectorBox.cross(direction.vector)
-
-  def cross(that: DirectionBox3d): VectorBox3d = this.vectorBox.cross(that.vectorBox)
 }
 
 object DirectionBox3d {

@@ -125,11 +125,7 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
 
   def dot(vector: Vector3d): Interval = x * vector.x + y * vector.y + z * vector.z
 
-  def dot(direction: Direction3d): Interval = dot(direction.vector)
-
   def dot(that: VectorBox3d): Interval = this.x * that.x + this.y * that.y + this.z * that.z
-
-  def dot(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 
   def cross(vector: Vector3d): VectorBox3d =
     VectorBox3d(
@@ -138,8 +134,6 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
       x * vector.y - y * vector.x
     )
 
-  def cross(direction: Direction3d): VectorBox3d = cross(direction.vector)
-
   def cross(that: VectorBox3d): VectorBox3d =
     VectorBox3d(
       this.y * that.z - this.z * that.y,
@@ -147,7 +141,9 @@ final case class VectorBox3d(x: Interval, y: Interval, z: Interval) {
       this.x * that.y - this.y * that.x
     )
 
-  def cross(directionBox: DirectionBox3d): VectorBox3d = cross(directionBox.vectorBox)
+  def componentIn(direction: Direction3d): Interval = dot(direction.vector)
+
+  def componentIn(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
 }
 
 object VectorBox3d {
