@@ -129,6 +129,10 @@ object Expression1d {
     override def condition: Expression1d[T] = Constant(1)
   }
 
+  object Parameter {
+    def unapply(parameter: Parameter[_]): Option[Int] = Some(parameter.index)
+  }
+
   sealed abstract class CurveParameter extends Parameter[CurveParameter] {
     override val index: Int = 0
 
