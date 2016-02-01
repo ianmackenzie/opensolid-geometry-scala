@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.util.Random
 
-final case class VectorBox2d(x: Interval, y: Interval) {
+final case class VectorBounds2d(x: Interval, y: Interval) {
   def this(components: (Interval, Interval)) = this(components.first, components.second)
 
   def components: (Interval, Interval) = (x, y)
@@ -24,7 +24,8 @@ final case class VectorBox2d(x: Interval, y: Interval) {
   def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
-    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for VectorBox2d")
+    case _ =>
+      throw new IndexOutOfBoundsException(s"Index $index is out of bounds for VectorBounds2d")
   }
 
   def isEmpty: Boolean = x.isEmpty || y.isEmpty
@@ -42,20 +43,22 @@ final case class VectorBox2d(x: Interval, y: Interval) {
   def randomVector(generator: Random): Vector2d =
     interpolated(generator.nextDouble, generator.nextDouble)
 
-  def hull(vector: Vector2d): VectorBox2d = VectorBox2d(x.hull(vector.x), y.hull(vector.y))
+  def hull(vector: Vector2d): VectorBounds2d =
+    VectorBounds2d(x.hull(vector.x), y.hull(vector.y))
 
-  def hull(that: VectorBox2d): VectorBox2d = VectorBox2d(this.x.hull(that.x), this.y.hull(that.y))
+  def hull(that: VectorBounds2d): VectorBounds2d =
+    VectorBounds2d(this.x.hull(that.x), this.y.hull(that.y))
 
-  def intersection(that: VectorBox2d): VectorBox2d = {
+  def intersection(that: VectorBounds2d): VectorBounds2d = {
     val x = this.x.intersection(that.x)
     val y = this.y.intersection(that.y)
-    if (x.isEmpty || y.isEmpty) VectorBox2d.Empty else VectorBox2d(x, y)
+    if (x.isEmpty || y.isEmpty) VectorBounds2d.Empty else VectorBounds2d(x, y)
   }
 
-  def overlaps(that: VectorBox2d): Boolean =
+  def overlaps(that: VectorBounds2d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y)
 
-  def overlaps(that: VectorBox2d, tolerance: Double): Boolean =
+  def overlaps(that: VectorBounds2d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) && this.y.overlaps(that.y, tolerance)
 
   def contains(vector: Vector2d): Boolean = x.contains(vector.x) && y.contains(vector.y)
@@ -63,67 +66,67 @@ final case class VectorBox2d(x: Interval, y: Interval) {
   def contains(vector: Vector2d, tolerance: Double): Boolean =
     x.contains(vector.x, tolerance) && y.contains(vector.y, tolerance)
 
-  def contains(that: VectorBox2d): Boolean =
+  def contains(that: VectorBounds2d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y)
 
-  def contains(that: VectorBox2d, tolerance: Double): Boolean =
+  def contains(that: VectorBounds2d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
 
   def squaredLength: Interval = x * x + y * y
 
   def length: Interval = Interval.sqrt(squaredLength)
 
-  def normalized: VectorBox2d = directionBox.vectorBox
+  def normalized: VectorBounds2d = directionBounds.vectorBounds
 
-  def directionBox: DirectionBox2d = {
-    if (this == VectorBox2d.Zero) {
-      DirectionBox2d.Empty
+  def directionBounds: DirectionBounds2d = {
+    if (this == VectorBounds2d.Zero) {
+      DirectionBounds2d.Empty
     } else {
       val length = this.length
-      DirectionBox2d(x / length, y / length)
+      DirectionBounds2d(x / length, y / length)
     }
   }
 
-  def unary_- : VectorBox2d = VectorBox2d(-x, -y)
+  def unary_- : VectorBounds2d = VectorBounds2d(-x, -y)
 
-  def +(vector: Vector2d): VectorBox2d = VectorBox2d(x + vector.x, y + vector.y)
+  def +(vector: Vector2d): VectorBounds2d = VectorBounds2d(x + vector.x, y + vector.y)
 
-  def +(that: VectorBox2d): VectorBox2d = VectorBox2d(this.x + that.x, this.y + that.y)
+  def +(that: VectorBounds2d): VectorBounds2d = VectorBounds2d(this.x + that.x, this.y + that.y)
 
-  def -(vector: Vector2d): VectorBox2d = VectorBox2d(x - vector.x, y - vector.y)
+  def -(vector: Vector2d): VectorBounds2d = VectorBounds2d(x - vector.x, y - vector.y)
 
-  def -(that: VectorBox2d): VectorBox2d = VectorBox2d(this.x - that.x, this.y - that.y)
+  def -(that: VectorBounds2d): VectorBounds2d = VectorBounds2d(this.x - that.x, this.y - that.y)
 
-  def *(value: Double): VectorBox2d = VectorBox2d(x * value, y * value)
+  def *(value: Double): VectorBounds2d = VectorBounds2d(x * value, y * value)
 
-  def *(interval: Interval): VectorBox2d = VectorBox2d(x * interval, y * interval)
+  def *(interval: Interval): VectorBounds2d = VectorBounds2d(x * interval, y * interval)
 
-  def /(value: Double): VectorBox2d = VectorBox2d(x / value, y / value)
+  def /(value: Double): VectorBounds2d = VectorBounds2d(x / value, y / value)
 
-  def /(interval: Interval): VectorBox2d = VectorBox2d(x / interval, y / interval)
+  def /(interval: Interval): VectorBounds2d = VectorBounds2d(x / interval, y / interval)
 
   def dot(vector: Vector2d): Interval = x * vector.x + y * vector.y
 
-  def dot(that: VectorBox2d): Interval = this.x * that.x + this.y * that.y
+  def dot(that: VectorBounds2d): Interval = this.x * that.x + this.y * that.y
 
   def cross(vector: Vector2d): Interval = x * vector.y - y * vector.x
 
-  def cross(that: VectorBox2d): Interval = this.x * that.y - this.y * that.x
+  def cross(that: VectorBounds2d): Interval = this.x * that.y - this.y * that.x
 
   def componentIn(direction: Direction2d): Interval = dot(direction.vector)
 
-  def componentIn(directionBox: DirectionBox2d): Interval = dot(directionBox.vectorBox)
+  def componentIn(directionBounds: DirectionBounds2d): Interval = dot(directionBounds.vectorBounds)
 }
 
-object VectorBox2d {
-  def apply(components: (Interval, Interval)): VectorBox2d = new VectorBox2d(components)
+object VectorBounds2d {
+  def apply(components: (Interval, Interval)): VectorBounds2d = new VectorBounds2d(components)
 
-  def singleton(vector: Vector2d): VectorBox2d =
-    VectorBox2d(Interval.singleton(vector.x), Interval.singleton(vector.y))
+  def singleton(vector: Vector2d): VectorBounds2d =
+    VectorBounds2d(Interval.singleton(vector.x), Interval.singleton(vector.y))
 
-  val Empty: VectorBox2d = VectorBox2d(Interval.Empty, Interval.Empty)
+  val Empty: VectorBounds2d = VectorBounds2d(Interval.Empty, Interval.Empty)
 
-  val Whole: VectorBox2d = VectorBox2d(Interval.Whole, Interval.Whole)
+  val Whole: VectorBounds2d = VectorBounds2d(Interval.Whole, Interval.Whole)
 
-  val Zero: VectorBox2d = VectorBox2d(Interval.Zero, Interval.Zero)
+  val Zero: VectorBounds2d = VectorBounds2d(Interval.Zero, Interval.Zero)
 }

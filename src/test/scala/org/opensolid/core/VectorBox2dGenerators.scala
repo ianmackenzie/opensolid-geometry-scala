@@ -17,20 +17,20 @@ package org.opensolid.core
 import org.opensolid.core.IntervalGenerators._
 import org.scalacheck._
 
-trait VectorBox2dGenerators {
-  val randomVectorBox2d: Gen[VectorBox2d] =
+trait VectorBounds2dGenerators {
+  val randomVectorBounds2d: Gen[VectorBounds2d] =
     for {
       x <- randomInterval
       y <- randomInterval
-    } yield VectorBox2d(x, y)
+    } yield VectorBounds2d(x, y)
 
-  implicit val arbitraryVectorBox2d: Arbitrary[VectorBox2d] = Arbitrary(randomVectorBox2d)
+  implicit val arbitraryVectorBounds2d: Arbitrary[VectorBounds2d] = Arbitrary(randomVectorBounds2d)
 
-  val closedVectorBox2d: Gen[VectorBox2d] =
+  val closedVectorBounds2d: Gen[VectorBounds2d] =
     for {
       x <- closedInterval
       y <- closedInterval
-    } yield VectorBox2d(x, y)
+    } yield VectorBounds2d(x, y)
 }
 
-object VectorBox2dGenerators extends VectorBox2dGenerators
+object VectorBounds2dGenerators extends VectorBounds2dGenerators

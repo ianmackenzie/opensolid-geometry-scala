@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Circle3d(centerPoint: Point3d, normalDirection: Direction3d, radius: Double)
-  extends Scalable3d[Circle3d] with Bounded[Box3d] {
+  extends Scalable3d[Circle3d] with Bounded[Bounds3d] {
 
   require(radius >= 0.0)
 
@@ -31,14 +31,14 @@ final case class Circle3d(centerPoint: Point3d, normalDirection: Direction3d, ra
   override def scaledAbout(point: Point3d, scale: Double): Circle3d =
     Circle3d(centerPoint.scaledAbout(point, scale), normalDirection, radius * scale)
 
-  override def bounds: Box3d = {
+  override def bounds: Bounds3d = {
     val nx2 = normalDirection.x * normalDirection.x
     val ny2 = normalDirection.y * normalDirection.y
     val nz2 = normalDirection.z * normalDirection.z
     val dx = radius * math.sqrt(ny2 + nz2)
     val dy = radius * math.sqrt(nx2 + nz2)
     val dz = radius * math.sqrt(nx2 + ny2)
-    Box3d(
+    Bounds3d(
       Interval(centerPoint.x - dx, centerPoint.x + dx),
       Interval(centerPoint.y - dy, centerPoint.y + dy),
       Interval(centerPoint.z - dz, centerPoint.z + dz)

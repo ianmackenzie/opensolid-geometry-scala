@@ -14,37 +14,37 @@
 
 package org.opensolid.core
 
-final case class DirectionBox2d(vectorBox: VectorBox2d) {
-  def this(x: Interval, y: Interval) = this(VectorBox2d(x, y))
+final case class DirectionBounds2d(vectorBounds: VectorBounds2d) {
+  def this(x: Interval, y: Interval) = this(VectorBounds2d(x, y))
 
   def this(components: (Interval, Interval)) = this(components.first, components.second)
 
-  def x: Interval = vectorBox.x
+  def x: Interval = vectorBounds.x
 
-  def y: Interval = vectorBox.y
+  def y: Interval = vectorBounds.y
 
-  def components: (Interval, Interval) = vectorBox.components
+  def components: (Interval, Interval) = vectorBounds.components
 
-  def component(index: Int): Interval = vectorBox.component(index)
+  def component(index: Int): Interval = vectorBounds.component(index)
 
-  def unary_- : DirectionBox2d = DirectionBox2d(-vectorBox)
+  def unary_- : DirectionBounds2d = DirectionBounds2d(-vectorBounds)
 
-  def *(value: Double): VectorBox2d = vectorBox * value
+  def *(value: Double): VectorBounds2d = vectorBounds * value
 
-  def *(interval: Interval): VectorBox2d = vectorBox * interval
+  def *(interval: Interval): VectorBounds2d = vectorBounds * interval
 
-  def /(value: Double): VectorBox2d = vectorBox / value
+  def /(value: Double): VectorBounds2d = vectorBounds / value
 
-  def /(interval: Interval): VectorBox2d = vectorBox / interval
+  def /(interval: Interval): VectorBounds2d = vectorBounds / interval
 }
 
-object DirectionBox2d {
-  def apply(x: Interval, y: Interval): DirectionBox2d = new DirectionBox2d(x, y)
+object DirectionBounds2d {
+  def apply(x: Interval, y: Interval): DirectionBounds2d = new DirectionBounds2d(x, y)
 
-  def apply(components: (Interval, Interval)): DirectionBox2d = new DirectionBox2d(components)
+  def apply(components: (Interval, Interval)): DirectionBounds2d = new DirectionBounds2d(components)
 
-  def singleton(direction: Direction2d): DirectionBox2d =
-    DirectionBox2d(VectorBox2d.singleton(direction.vector))
+  def singleton(direction: Direction2d): DirectionBounds2d =
+    DirectionBounds2d(VectorBounds2d.singleton(direction.vector))
 
-  val Empty = DirectionBox2d(Interval.Empty, Interval.Empty)
+  val Empty = DirectionBounds2d(Interval.Empty, Interval.Empty)
 }

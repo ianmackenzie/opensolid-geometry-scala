@@ -14,6 +14,6 @@
 
 package org.opensolid.core
 
-trait Curve2d extends Bounded[Box2d] {
+trait Curve2d extends Bounded[Bounds2d] {
   def parameterized: ParametricCurve2d
 }

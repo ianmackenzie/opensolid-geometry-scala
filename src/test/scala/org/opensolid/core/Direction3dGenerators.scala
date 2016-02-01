@@ -23,7 +23,7 @@ import org.scalacheck._
 trait Direction3dGenerators {
   val randomDirection3d: Gen[Direction3d] = {
     val vectorGenerator =
-      vectorWithin(VectorBox3d(Interval(-1.0, 1.0), Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
+      vectorWithin(VectorBounds3d(Interval(-1.0, 1.0), Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
     val radiusPredicate = (vector: Vector3d) => Interval(0.25, 1.0).contains(vector.squaredLength)
     vectorGenerator.retryUntil(radiusPredicate).map(_.direction)
   }

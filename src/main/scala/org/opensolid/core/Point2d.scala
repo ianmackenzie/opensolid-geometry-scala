@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Point2d(x: Double, y: Double)
-  extends Scalable2d[Point2d] with Bounded[Box2d] with GeometricallyComparable[Point2d] {
+  extends Scalable2d[Point2d] with Bounded[Bounds2d] with GeometricallyComparable[Point2d] {
 
   def components: (Double, Double) = (x, y)
 
@@ -27,7 +27,7 @@ final case class Point2d(x: Double, y: Double)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point2d")
   }
 
-  override def bounds: Box2d = Box2d(Interval.singleton(x), Interval.singleton(y))
+  override def bounds: Bounds2d = Bounds2d(Interval.singleton(x), Interval.singleton(y))
 
   override def equals(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
@@ -54,21 +54,21 @@ final case class Point2d(x: Double, y: Double)
   def placedOnto(plane: Plane3d): Point3d =
     plane.originPoint + x * plane.xDirection + y * plane.yDirection
 
-  def hull(that: Point2d): Box2d = Box2d(this.x.hull(that.x), this.y.hull(that.y))
+  def hull(that: Point2d): Bounds2d = Bounds2d(this.x.hull(that.x), this.y.hull(that.y))
 
-  def hull(box: Box2d): Box2d = Box2d(x.hull(box.x), y.hull(box.y))
+  def hull(bounds: Bounds2d): Bounds2d = Bounds2d(x.hull(bounds.x), y.hull(bounds.y))
 
   def +(vector: Vector2d): Point2d = Point2d(x + vector.x, y + vector.y)
 
-  def +(vectorBox: VectorBox2d): Box2d = Box2d(x + vectorBox.x, y + vectorBox.y)
+  def +(vectorBounds: VectorBounds2d): Bounds2d = Bounds2d(x + vectorBounds.x, y + vectorBounds.y)
 
   def -(vector: Vector2d): Point2d = Point2d(x - vector.x, y - vector.y)
 
-  def -(vectorBox: VectorBox2d): Box2d = Box2d(x - vectorBox.x, y - vectorBox.y)
+  def -(vectorBounds: VectorBounds2d): Bounds2d = Bounds2d(x - vectorBounds.x, y - vectorBounds.y)
 
   def -(that: Point2d): Vector2d = Vector2d(x - that.x, y - that.y)
 
-  def -(box: Box2d): VectorBox2d = VectorBox2d(x - box.x, y - box.y)
+  def -(bounds: Bounds2d): VectorBounds2d = VectorBounds2d(x - bounds.x, y - bounds.y)
 }
 
 object Point2d {

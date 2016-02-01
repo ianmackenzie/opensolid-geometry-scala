@@ -27,11 +27,11 @@ trait Point3dGenerators {
 
   implicit val arbitraryPoint3d: Arbitrary[Point3d] = Arbitrary(randomPoint3d)
 
-  def pointWithin(box: Box3d): Gen[Point3d] =
+  def pointWithin(bounds: Bounds3d): Gen[Point3d] =
     for {
-      x <- valueWithin(box.x)
-      y <- valueWithin(box.y)
-      z <- valueWithin(box.z)
+      x <- valueWithin(bounds.x)
+      y <- valueWithin(bounds.y)
+      z <- valueWithin(bounds.z)
     } yield Point3d(x, y, z)
 }
 

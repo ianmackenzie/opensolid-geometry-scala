@@ -19,7 +19,7 @@ case class ParametricCurve2d(
   domain: Interval
 ) extends Curve2d {
 
-  override val bounds: Box2d = evaluate(domain)
+  override val bounds: Bounds2d = evaluate(domain)
 
   override def parameterized: ParametricCurve2d = this
 
@@ -33,10 +33,10 @@ case class ParametricCurve2d(
     Point2d(array(xIndex), array(yIndex))
   }
 
-  def evaluate(parameterBounds: Interval): Box2d = {
+  def evaluate(parameterBounds: Interval): Bounds2d = {
     val array = Array.ofDim[Interval](arraySize)
     array(0) = parameterBounds
     for { operation <- arrayOperations } operation.execute(array)
-    Box2d(array(xIndex), array(yIndex))
+    Bounds2d(array(xIndex), array(yIndex))
   }
 }

@@ -62,16 +62,19 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     val absX = x.abs
     val absY = y.abs
     val absZ = z.abs
-    if (absX <= absY)
-      if (absX <= absZ)
+    if (absX <= absY) {
+      if (absX <= absZ) {
         Vector3d(0, -z, y)
-      else
+      } else {
         Vector3d(-y, x, 0)
-    else
-      if (absY <= absZ)
+      }
+    } else {
+      if (absY <= absZ) {
         Vector3d(z, 0, -x)
-      else
+      } else {
         Vector3d(-y, x, 0)
+      }
+    }
   }
 
   def normalDirection: Direction3d = perpendicularVector.direction
@@ -84,39 +87,42 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def plus(that: Vector3d): Vector3d = this + that
 
-  def +(vectorBox: VectorBox3d): VectorBox3d =
-    VectorBox3d(x + vectorBox.x, y + vectorBox.y, z + vectorBox.z)
+  def +(vectorBounds: VectorBounds3d): VectorBounds3d =
+    VectorBounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
 
-  def plus(vectorBox: VectorBox3d): VectorBox3d = this + vectorBox
+  def plus(vectorBounds: VectorBounds3d): VectorBounds3d = this + vectorBounds
 
   def -(that: Vector3d): Vector3d = Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
 
   def minus(that: Vector3d): Vector3d = this - that
 
-  def -(vectorBox: VectorBox3d): VectorBox3d =
-    VectorBox3d(x - vectorBox.x, y - vectorBox.y, z - vectorBox.z)
+  def -(vectorBounds: VectorBounds3d): VectorBounds3d =
+    VectorBounds3d(x - vectorBounds.x, y - vectorBounds.y, z - vectorBounds.z)
 
-  def minus(vectorBox: VectorBox3d): VectorBox3d = this - vectorBox
+  def minus(vectorBounds: VectorBounds3d): VectorBounds3d = this - vectorBounds
 
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
   def times(value: Double): Vector3d = this * value
 
-  def *(interval: Interval): VectorBox3d = VectorBox3d(x * interval, y * interval, z * interval)
+  def *(interval: Interval): VectorBounds3d =
+    VectorBounds3d(x * interval, y * interval, z * interval)
 
-  def times(interval: Interval): VectorBox3d = this * interval
+  def times(interval: Interval): VectorBounds3d = this * interval
 
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
 
   def dividedBy(value: Double): Vector3d = this / value
 
-  def /(interval: Interval): VectorBox3d = VectorBox3d(x / interval, y / interval, z / interval)
+  def /(interval: Interval): VectorBounds3d =
+    VectorBounds3d(x / interval, y / interval, z / interval)
 
-  def dividedBy(interval: Interval): VectorBox3d = this / interval
+  def dividedBy(interval: Interval): VectorBounds3d = this / interval
 
   def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
 
-  def dot(vectorBox: VectorBox3d): Interval = x * vectorBox.x + y * vectorBox.y + z * vectorBox.z
+  def dot(vectorBounds: VectorBounds3d): Interval =
+    x * vectorBounds.x + y * vectorBounds.y + z * vectorBounds.z
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -125,16 +131,16 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.x * that.y - this.y * that.x
     )
 
-  def cross(vectorBox: VectorBox3d): VectorBox3d =
-    VectorBox3d(
-      y * vectorBox.z - z * vectorBox.y,
-      z * vectorBox.x - x * vectorBox.z,
-      x * vectorBox.y - y * vectorBox.x
+  def cross(vectorBounds: VectorBounds3d): VectorBounds3d =
+    VectorBounds3d(
+      y * vectorBounds.z - z * vectorBounds.y,
+      z * vectorBounds.x - x * vectorBounds.z,
+      x * vectorBounds.y - y * vectorBounds.x
     )
 
   def componentIn(direction: Direction3d): Double = dot(direction.vector)
 
-  def componentIn(directionBox: DirectionBox3d): Interval = dot(directionBox.vectorBox)
+  def componentIn(directionBounds: DirectionBounds3d): Interval = dot(directionBounds.vectorBounds)
 }
 
 object Vector3d {

@@ -59,7 +59,7 @@ import scala.math
   * Functions transforming an object usually belong to the object being transformed, so for example
   * one uses `point.projectedOnto(plane)` instead of something like `plane.project(point)`.
   * In general, names have been chosen to make entire expressions read as naturally as possible as
-  * 'noun phrases', for example `if (box.contains(lineSegment.rotatedAbout(axis, angle)) ...`.
+  * 'noun phrases', for example `if (bounds.contains(lineSegment.rotatedAbout(axis, angle)) ...`.
   *
   * === Transformations framework ===
   *

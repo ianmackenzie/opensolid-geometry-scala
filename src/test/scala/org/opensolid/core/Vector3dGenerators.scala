@@ -27,11 +27,11 @@ trait Vector3dGenerators {
 
   implicit val arbitraryVector3d: Arbitrary[Vector3d] = Arbitrary(randomVector3d)
 
-  def vectorWithin(vectorBox: VectorBox3d): Gen[Vector3d] =
+  def vectorWithin(vectorBounds: VectorBounds3d): Gen[Vector3d] =
     for {
-      x <- valueWithin(vectorBox.x)
-      y <- valueWithin(vectorBox.y)
-      z <- valueWithin(vectorBox.z)
+      x <- valueWithin(vectorBounds.x)
+      y <- valueWithin(vectorBounds.y)
+      z <- valueWithin(vectorBounds.z)
     } yield Vector3d(x, y, z)
 }
 

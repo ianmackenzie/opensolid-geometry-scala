@@ -16,7 +16,7 @@ package org.opensolid.core
 
 final case class LineSegment3d(firstEndpoint: Point3d, secondEndpoint: Point3d)
   extends Scalable3d[LineSegment3d]
-  with Bounded[Box3d]
+  with Bounded[Bounds3d]
   with GeometricallyComparable[LineSegment3d] {
 
   def this(endpoints: (Point3d, Point3d)) = this(endpoints.first, endpoints.second)
@@ -37,7 +37,7 @@ final case class LineSegment3d(firstEndpoint: Point3d, secondEndpoint: Point3d)
 
   def midpoint: Point3d = firstEndpoint + 0.5 * vector
 
-  override def bounds: Box3d = firstEndpoint.hull(secondEndpoint)
+  override def bounds: Bounds3d = firstEndpoint.hull(secondEndpoint)
 
   override def equals(that: LineSegment3d, tolerance: Double): Boolean =
     this.firstEndpoint.equals(that.firstEndpoint, tolerance) &&

@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Sphere3d(centerPoint: Point3d, radius: Double)
-  extends Scalable3d[Sphere3d] with Bounded[Box3d] with GeometricallyComparable[Sphere3d] {
+  extends Scalable3d[Sphere3d] with Bounded[Bounds3d] with GeometricallyComparable[Sphere3d] {
 
   require(radius >= 0.0)
 
@@ -27,8 +27,8 @@ final case class Sphere3d(centerPoint: Point3d, radius: Double)
   override def scaledAbout(point: Point3d, scale: Double): Sphere3d =
     Sphere3d(centerPoint.scaledAbout(point, scale), radius * scale)
 
-  override def bounds: Box3d =
-    Box3d(
+  override def bounds: Bounds3d =
+    Bounds3d(
       Interval(centerPoint.x - radius, centerPoint.x + radius),
       Interval(centerPoint.y - radius, centerPoint.y + radius),
       Interval(centerPoint.z - radius, centerPoint.z + radius)

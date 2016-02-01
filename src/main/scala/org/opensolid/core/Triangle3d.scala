@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVertex: Point3d)
-  extends Scalable3d[Triangle3d] with Bounded[Box3d] with GeometricallyComparable[Triangle3d] {
+  extends Scalable3d[Triangle3d] with Bounded[Bounds3d] with GeometricallyComparable[Triangle3d] {
 
   def this(vertices: (Point3d, Point3d, Point3d)) =
     this(vertices.first, vertices.second, vertices.third)
@@ -59,7 +59,7 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
       thirdVertex.scaledAbout(point, scale)
     )
 
-  override def bounds: Box3d = firstVertex.hull(secondVertex).hull(thirdVertex)
+  override def bounds: Bounds3d = firstVertex.hull(secondVertex).hull(thirdVertex)
 
   override def equals(that: Triangle3d, tolerance: Double): Boolean =
     this.firstVertex.equals(that.firstVertex, tolerance) &&

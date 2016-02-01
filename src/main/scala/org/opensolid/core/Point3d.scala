@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Point3d(x: Double, y: Double, z: Double)
-  extends Scalable3d[Point3d] with Bounded[Box3d] with GeometricallyComparable[Point3d] {
+  extends Scalable3d[Point3d] with Bounded[Bounds3d] with GeometricallyComparable[Point3d] {
 
   def components: (Double, Double, Double) = (x, y, z)
 
@@ -28,8 +28,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Point3d")
   }
 
-  override def bounds: Box3d =
-    Box3d(Interval.singleton(x), Interval.singleton(y), Interval.singleton(z))
+  override def bounds: Bounds3d =
+    Bounds3d(Interval.singleton(x), Interval.singleton(y), Interval.singleton(z))
 
   override def equals(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
@@ -73,23 +73,26 @@ final case class Point3d(x: Double, y: Double, z: Double)
     )
   }
 
-  def hull(that: Point3d): Box3d =
-    Box3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
+  def hull(that: Point3d): Bounds3d =
+    Bounds3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
 
-  def hull(box: Box3d): Box3d =
-    Box3d(x.hull(box.x), y.hull(box.y), z.hull(box.z))
+  def hull(bounds: Bounds3d): Bounds3d =
+    Bounds3d(x.hull(bounds.x), y.hull(bounds.y), z.hull(bounds.z))
 
   def +(vector: Vector3d): Point3d = Point3d(x + vector.x, y + vector.y, z + vector.z)
 
-  def +(vectorBox: VectorBox3d): Box3d = Box3d(x + vectorBox.x, y + vectorBox.y, z + vectorBox.z)
+  def +(vectorBounds: VectorBounds3d): Bounds3d =
+    Bounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
 
   def -(vector: Vector3d): Point3d = Point3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -(vectorBox: VectorBox3d): Box3d = Box3d(x - vectorBox.x, y - vectorBox.y, z - vectorBox.z)
+  def -(vectorBounds: VectorBounds3d): Bounds3d =
+    Bounds3d(x - vectorBounds.x, y - vectorBounds.y, z - vectorBounds.z)
 
   def -(that: Point3d): Vector3d = Vector3d(x - that.x, y - that.y, z - that.z)
 
-  def -(box: Box3d): VectorBox3d = VectorBox3d(x - box.x, y - box.y, z - box.z)
+  def -(bounds: Bounds3d): VectorBounds3d =
+    VectorBounds3d(x - bounds.x, y - bounds.y, z - bounds.z)
 }
 
 object Point3d {

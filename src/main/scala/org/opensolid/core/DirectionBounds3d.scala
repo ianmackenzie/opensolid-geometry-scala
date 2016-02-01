@@ -14,41 +14,42 @@
 
 package org.opensolid.core
 
-final case class DirectionBox3d(vectorBox: VectorBox3d) {
-  def this(x: Interval, y: Interval, z: Interval) = this(VectorBox3d(x, y, z))
+final case class DirectionBounds3d(vectorBounds: VectorBounds3d) {
+  def this(x: Interval, y: Interval, z: Interval) = this(VectorBounds3d(x, y, z))
 
   def this(components: (Interval, Interval, Interval)) =
     this(components.first, components.second, components.third)
 
-  def x: Interval = vectorBox.x
+  def x: Interval = vectorBounds.x
 
-  def y: Interval = vectorBox.y
+  def y: Interval = vectorBounds.y
 
-  def z: Interval = vectorBox.z
+  def z: Interval = vectorBounds.z
 
-  def components: (Interval, Interval, Interval) = vectorBox.components
+  def components: (Interval, Interval, Interval) = vectorBounds.components
 
-  def component(index: Int): Interval = vectorBox.component(index)
+  def component(index: Int): Interval = vectorBounds.component(index)
 
-  def unary_- : DirectionBox3d = DirectionBox3d(-vectorBox)
+  def unary_- : DirectionBounds3d = DirectionBounds3d(-vectorBounds)
 
-  def *(value: Double): VectorBox3d = vectorBox * value
+  def *(value: Double): VectorBounds3d = vectorBounds * value
 
-  def *(interval: Interval): VectorBox3d = vectorBox * interval
+  def *(interval: Interval): VectorBounds3d = vectorBounds * interval
 
-  def /(value: Double): VectorBox3d = vectorBox / value
+  def /(value: Double): VectorBounds3d = vectorBounds / value
 
-  def /(interval: Interval): VectorBox3d = vectorBox / interval
+  def /(interval: Interval): VectorBounds3d = vectorBounds / interval
 }
 
-object DirectionBox3d {
-  def apply(x: Interval, y: Interval, z: Interval): DirectionBox3d = new DirectionBox3d(x, y, z)
+object DirectionBounds3d {
+  def apply(x: Interval, y: Interval, z: Interval): DirectionBounds3d =
+    new DirectionBounds3d(x, y, z)
 
-  def apply(components: (Interval, Interval, Interval)): DirectionBox3d =
-    new DirectionBox3d(components)
+  def apply(components: (Interval, Interval, Interval)): DirectionBounds3d =
+    new DirectionBounds3d(components)
 
-  def singleton(direction: Direction3d): DirectionBox3d =
-    DirectionBox3d(VectorBox3d.singleton(direction.vector))
+  def singleton(direction: Direction3d): DirectionBounds3d =
+    DirectionBounds3d(VectorBounds3d.singleton(direction.vector))
 
-  val Empty = DirectionBox3d(Interval.Empty, Interval.Empty, Interval.Empty)
+  val Empty = DirectionBounds3d(Interval.Empty, Interval.Empty, Interval.Empty)
 }

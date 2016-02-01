@@ -22,7 +22,7 @@ import org.scalacheck._
 
 trait Direction2dGenerators {
   val randomDirection2d: Gen[Direction2d] = {
-    val vectorGenerator = vectorWithin(VectorBox2d(Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
+    val vectorGenerator = vectorWithin(VectorBounds2d(Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
     val radiusPredicate = (vector: Vector2d) => Interval(0.25, 1.0).contains(vector.squaredLength)
     vectorGenerator.retryUntil(radiusPredicate).map(_.direction)
   }

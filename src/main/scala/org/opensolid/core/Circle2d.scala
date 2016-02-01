@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Circle2d(centerPoint: Point2d, radius: Double)
-  extends Scalable2d[Circle2d] with Bounded[Box2d] with GeometricallyComparable[Circle2d] {
+  extends Scalable2d[Circle2d] with Bounded[Bounds2d] with GeometricallyComparable[Circle2d] {
 
   require(radius >= 0.0)
 
@@ -25,8 +25,8 @@ final case class Circle2d(centerPoint: Point2d, radius: Double)
   override def scaledAbout(point: Point2d, scale: Double): Circle2d =
     Circle2d(centerPoint.scaledAbout(point, scale), radius * scale)
 
-  override def bounds: Box2d =
-    Box2d(
+  override def bounds: Bounds2d =
+    Bounds2d(
       Interval(centerPoint.x - radius, centerPoint.x + radius),
       Interval(centerPoint.y - radius, centerPoint.y + radius)
     )
