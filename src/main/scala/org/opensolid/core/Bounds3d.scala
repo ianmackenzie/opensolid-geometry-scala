@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class Bounds3d(x: Interval, y: Interval, z: Interval)
-  extends Bounded[Bounds3d] with GeometricallyComparable[Bounds3d] {
+  extends Bounded[Bounds3d] {
 
   def this(components: (Interval, Interval, Interval)) =
     this(components.first, components.second, components.third)
@@ -30,10 +30,6 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
     case 2 => z
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Bounds3d")
   }
-
-  override def equals(that: Bounds3d, tolerance: Double): Boolean =
-    this.minVertex.equals(that.minVertex, tolerance) &&
-    this.maxVertex.equals(that.maxVertex, tolerance)
 
   override def bounds: Bounds3d = this
 
