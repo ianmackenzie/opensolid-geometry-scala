@@ -69,9 +69,6 @@ import scala.util.Random
 final case class Interval(lowerBound: Double, upperBound: Double)
   extends Bounded[Interval] with GeometricallyComparable[Interval] {
 
-  def this(endpoints: (Double, Double)) =
-    this(endpoints.first, endpoints.second)
-
   /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) =
     (lowerBound, upperBound)
@@ -503,11 +500,11 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 }
 
 object Interval {
-  def apply(endpoints: (Double, Double)): Interval =
-    new Interval(endpoints)
+  def fromEndpoints(endpoints: (Double, Double)): Interval =
+    Interval(endpoints.first, endpoints.second)
 
   def singleton(value: Double): Interval =
-    new Interval(value, value)
+    Interval(value, value)
 
   def hullOf(values: (Double, Double)): Interval =
     values.first.hull(values.second)
