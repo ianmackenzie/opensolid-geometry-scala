@@ -69,10 +69,12 @@ import scala.util.Random
 final case class Interval(lowerBound: Double, upperBound: Double)
   extends Bounded[Interval] with GeometricallyComparable[Interval] {
 
-  def this(endpoints: (Double, Double)) = this(endpoints.first, endpoints.second)
+  def this(endpoints: (Double, Double)) =
+    this(endpoints.first, endpoints.second)
 
   /** Returns a tuple containing the lower and upper bounds of this interval. */
-  def endpoints: (Double, Double) = (lowerBound, upperBound)
+  def endpoints: (Double, Double) =
+    (lowerBound, upperBound)
 
   override def equals(other: Any): Boolean = other match {
     case that: Interval =>
@@ -81,9 +83,11 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     case _ => false
   }
 
-  override def bounds: Interval = this
+  override def bounds: Interval =
+    this
 
-  override def hashCode: Int = (lowerBound, upperBound).hashCode
+  override def hashCode: Int =
+    (lowerBound, upperBound).hashCode
 
   override def toString: String = {
     if (isEmpty) {
@@ -109,17 +113,20 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     *
     * Equivalent to `this == Interval.Empty`.
     */
-  def isEmpty: Boolean = lowerBound.isNaN && upperBound.isNaN
+  def isEmpty: Boolean =
+    lowerBound.isNaN && upperBound.isNaN
 
   /** Returns true if this interval represents the entire range of possible real values (from
     * negative infinity to positive infinity).
     *
     * Equivalent to `this == Interval.Whole`.
     */
-  def isWhole: Boolean = lowerBound.isNegInfinity && upperBound.isPosInfinity
+  def isWhole: Boolean =
+    lowerBound.isNegInfinity && upperBound.isPosInfinity
 
   /** Returns the width of this interval (the difference between the upper and lower bounds). */
-  def width: Double = upperBound - lowerBound
+  def width: Double =
+    upperBound - lowerBound
 
   /** Returns a value interpolated between the lower and upper bounds of this interval.
     *
@@ -144,21 +151,26 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
     * infinite).
     */
-  def interpolated(value: Double): Double = lowerBound + value * width
+  def interpolated(value: Double): Double =
+    lowerBound + value * width
 
   /** Returns a value halfway between the lower and upper bounds of this interval. */
-  def median: Double = interpolated(0.5)
+  def median: Double =
+    interpolated(0.5)
 
   /** Returns a random value within this interval. */
-  def randomValue: Double = randomValue(Random)
+  def randomValue: Double =
+    randomValue(Random)
 
   /** Returns a random value within this interval, using the provided generator. */
-  def randomValue(generator: Random): Double = interpolated(generator.nextDouble)
+  def randomValue(generator: Random): Double =
+    interpolated(generator.nextDouble)
 
   /** Returns true if this interval consists of a single value (the upper and lower bounds are
     * equal).
     */
-  def isSingleton: Boolean = lowerBound == upperBound
+  def isSingleton: Boolean =
+    lowerBound == upperBound
 
   /** Returns a pair of intervals equal to this interval split into two halves.
     *
@@ -367,27 +379,35 @@ final case class Interval(lowerBound: Double, upperBound: Double)
   def overlaps(that: Interval, tolerance: Double): Boolean =
     that.lowerBound <= this.upperBound + tolerance && that.upperBound >= this.lowerBound - tolerance
 
-  def unary_- : Interval = Interval(-upperBound, -lowerBound)
+  def unary_- : Interval =
+    Interval(-upperBound, -lowerBound)
 
-  def negated: Interval = -this
+  def negated: Interval =
+    -this
 
-  def +(value: Double): Interval = Interval(lowerBound + value, upperBound + value)
+  def +(value: Double): Interval =
+    Interval(lowerBound + value, upperBound + value)
 
-  def plus(value: Double): Interval = this + value;
+  def plus(value: Double): Interval =
+    this + value;
 
   def +(that: Interval): Interval =
     Interval(lowerBound + that.lowerBound, upperBound + that.upperBound)
 
-  def plus(that: Interval): Interval = this + that
+  def plus(that: Interval): Interval =
+    this + that
 
-  def -(value: Double): Interval = Interval(lowerBound - value, upperBound - value)
+  def -(value: Double): Interval =
+    Interval(lowerBound - value, upperBound - value)
 
-  def minus(value: Double): Interval = this - value
+  def minus(value: Double): Interval =
+    this - value
 
   def -(that: Interval): Interval =
     Interval(lowerBound - that.upperBound, upperBound - that.lowerBound)
 
-  def minus(that: Interval): Interval = this - that
+  def minus(that: Interval): Interval =
+    this - that
 
   def *(value: Double): Interval = {
     val lowerProduct = value * lowerBound
@@ -399,7 +419,8 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
-  def times(value: Double): Interval = this * value
+  def times(value: Double): Interval =
+    this * value
 
   def *(that: Interval): Interval = {
     val ll = this.lowerBound * that.lowerBound
@@ -421,7 +442,8 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
-  def times(that: Interval): Interval = this * that
+  def times(that: Interval): Interval =
+    this * that
 
   def /(value: Double): Interval = {
     if (isSingleton) {
@@ -432,7 +454,8 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
-  def dividedBy(value: Double): Interval = this / value
+  def dividedBy(value: Double): Interval =
+    this / value
 
   def /(that: Interval): Interval = {
     if (isEmpty || that.isEmpty) {
@@ -447,7 +470,8 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
-  def dividedBy(that: Interval): Interval = this / that
+  def dividedBy(that: Interval): Interval =
+    this / that
 
   def abs: Interval = {
     if (isEmpty) {
@@ -479,11 +503,14 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 }
 
 object Interval {
-  def apply(endpoints: (Double, Double)): Interval = new Interval(endpoints)
+  def apply(endpoints: (Double, Double)): Interval =
+    new Interval(endpoints)
 
-  def singleton(value: Double): Interval = new Interval(value, value)
+  def singleton(value: Double): Interval =
+    new Interval(value, value)
 
-  def hullOf(values: (Double, Double)): Interval = values.first.hull(values.second)
+  def hullOf(values: (Double, Double)): Interval =
+    values.first.hull(values.second)
 
   def hullOf(values: (Double, Double, Double)): Interval =
     values.first.hull(values.second).hull(values.third)
@@ -638,23 +665,17 @@ object Interval {
       case _ => throw new IndexOutOfBoundsException(s"Index $index is out of range for Interval")
     }
 
-    override def overlaps(
-      firstInterval: Interval,
-      secondInterval: Interval,
-      tolerance: Double
-    ): Boolean = firstInterval.overlaps(secondInterval, tolerance)
+    override def overlaps(first: Interval, second: Interval, tolerance: Double): Boolean =
+      first.overlaps(second, tolerance)
 
-    override def contains(
-      firstInterval: Interval,
-      secondInterval: Interval,
-      tolerance: Double
-    ): Boolean = firstInterval.contains(secondInterval, tolerance)
+    override def contains(first: Interval, second: Interval, tolerance: Double): Boolean =
+      first.contains(second, tolerance)
 
     override def bisected(interval: Interval, index: Int): (Interval, Interval) =
       interval.bisected
 
-    override def hull(firstInterval: Interval, secondInterval: Interval): Interval =
-      firstInterval.hull(secondInterval)
+    override def hull(first: Interval, second: Interval): Interval =
+      first.hull(second)
 
     override val NumDimensions: Int = 1
 
