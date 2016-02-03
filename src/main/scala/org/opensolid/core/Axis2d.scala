@@ -29,9 +29,6 @@ final case class Axis2d(originPoint: Point2d, direction: Direction2d)
   def transformedBy(transformation: Transformation2d): Axis2d =
     Axis2d(originPoint.transformedBy(transformation), direction.transformedBy(transformation))
 
-  def projectedOnto(that: Axis2d): Axis2d =
-    Axis2d(this.originPoint.projectedOnto(that), this.direction.projectedOnto(that).direction)
-
   def placedOnto(plane: Plane3d): Axis3d =
     Axis3d(originPoint.placedOnto(plane), direction.placedOnto(plane))
 }
