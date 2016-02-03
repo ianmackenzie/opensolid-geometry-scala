@@ -17,9 +17,11 @@ package org.opensolid.core
 final case class Axis3d(originPoint: Point3d, direction: Direction3d)
   extends Transformable3d[Axis3d] {
 
-  def pointAt(distance: Double): Point3d = originPoint + distance * direction
+  def pointAt(distance: Double): Point3d =
+    originPoint + distance * direction
 
-  def reversed: Axis3d = Axis3d(originPoint, -direction)
+  def reversed: Axis3d =
+    Axis3d(originPoint, -direction)
 
   def transformedBy(transformation: Transformation3d): Axis3d =
     Axis3d(originPoint.transformedBy(transformation), direction.transformedBy(transformation))
@@ -33,9 +35,11 @@ final case class Axis3d(originPoint: Point3d, direction: Direction3d)
   def projectedInto(plane: Plane3d): Axis2d =
     Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane))
 
-  def normalPlane: Plane3d = Plane3d(originPoint, direction)
+  def normalPlane: Plane3d =
+    Plane3d(originPoint, direction)
 
-  def normalDirection: Direction3d = direction.normalDirection
+  def normalDirection: Direction3d =
+    direction.normalDirection
 }
 
 object Axis3d {
