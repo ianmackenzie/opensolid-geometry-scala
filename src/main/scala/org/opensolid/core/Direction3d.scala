@@ -46,8 +46,6 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
   def transformedBy(transformation: Transformation3d): Direction3d =
     Direction3d(vector.transformedBy(transformation))
 
-  def projectedOnto(axis: Axis3d): Direction3d = vector.projectedOnto(axis).direction
-
   def projectedOnto(plane: Plane3d): Direction3d = vector.projectedOnto(plane).direction
 
   def projectedInto(plane: Plane3d): Direction2d = vector.projectedInto(plane).direction
