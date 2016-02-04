@@ -19,9 +19,6 @@ import scala.util.Random
 final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   extends Bounded[Bounds3d] {
 
-  def this(components: (Interval, Interval, Interval)) =
-    this(components.first, components.second, components.third)
-
   def components: (Interval, Interval, Interval) = (x, y, z)
 
   def component(index: Int): Interval = index match {
@@ -118,7 +115,8 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
 }
 
 object Bounds3d {
-  def apply(components: (Interval, Interval, Interval)): Bounds3d = new Bounds3d(components)
+  def fromComponents(components: (Interval, Interval, Interval)): Bounds3d =
+    Bounds3d(components.first, components.second, components.third)
 
   def singleton(point: Point3d): Bounds3d =
     Bounds3d(Interval.singleton(point.x), Interval.singleton(point.y), Interval.singleton(point.z))

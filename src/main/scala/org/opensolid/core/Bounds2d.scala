@@ -19,8 +19,6 @@ import scala.util.Random
 final case class Bounds2d(x: Interval, y: Interval)
   extends Bounded[Bounds2d] {
 
-  def this(components: (Interval, Interval)) = this(components.first, components.second)
-
   def components: (Interval, Interval) = (x, y)
 
   def component(index: Int): Interval = index match {
@@ -95,7 +93,8 @@ final case class Bounds2d(x: Interval, y: Interval)
 }
 
 object Bounds2d {
-  def apply(components: (Interval, Interval)): Bounds2d = new Bounds2d(components)
+  def fromComponents(components: (Interval, Interval)): Bounds2d =
+    Bounds2d(components.first, components.second)
 
   def singleton(point: Point2d): Bounds2d =
     Bounds2d(Interval.singleton(point.x), Interval.singleton(point.y))
