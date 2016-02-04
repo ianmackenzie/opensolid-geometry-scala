@@ -19,7 +19,8 @@ import scala.util.Random
 final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   extends Bounded[Bounds3d] {
 
-  def components: (Interval, Interval, Interval) = (x, y, z)
+  def components: (Interval, Interval, Interval) =
+    (x, y, z)
 
   def component(index: Int): Interval = index match {
     case 0 => x
@@ -30,23 +31,29 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
 
   override def bounds: Bounds3d = this
 
-  def isEmpty: Boolean = x.isEmpty || y.isEmpty || z.isEmpty
+  def isEmpty: Boolean =
+    x.isEmpty || y.isEmpty || z.isEmpty
 
-  def isWhole: Boolean = x.isWhole && y.isWhole && z.isWhole
+  def isWhole: Boolean =
+    x.isWhole && y.isWhole && z.isWhole
 
-  def isSingleton: Boolean = x.isSingleton && y.isSingleton && z.isSingleton
+  def isSingleton: Boolean =
+    x.isSingleton && y.isSingleton && z.isSingleton
 
-  def center: Point3d = Point3d(x.median, y.median, z.median)
+  def center: Point3d =
+    Point3d(x.median, y.median, z.median)
 
   def interpolated(u: Double, v: Double, w: Double): Point3d =
     Point3d(x.interpolated(u), y.interpolated(v), z.interpolated(w))
 
-  def randomPoint: Point3d = randomPoint(Random)
+  def randomPoint: Point3d =
+    randomPoint(Random)
 
   def randomPoint(generator: Random): Point3d =
     interpolated(generator.nextDouble, generator.nextDouble, generator.nextDouble)
 
-  def hull(point: Point3d): Bounds3d = Bounds3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
+  def hull(point: Point3d): Bounds3d =
+    Bounds3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
   def hull(that: Bounds3d): Bounds3d =
     Bounds3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
@@ -98,17 +105,20 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
       }
     }
 
-  def +(vector: Vector3d): Bounds3d = Bounds3d(x + vector.x, y + vector.y, z + vector.z)
+  def +(vector: Vector3d): Bounds3d =
+    Bounds3d(x + vector.x, y + vector.y, z + vector.z)
 
   def +(vectorBounds: VectorBounds3d): Bounds3d =
     Bounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
 
-  def -(vector: Vector3d): Bounds3d = Bounds3d(x - vector.x, y - vector.y, z - vector.z)
+  def -(vector: Vector3d): Bounds3d =
+    Bounds3d(x - vector.x, y - vector.y, z - vector.z)
 
   def -(vectorBounds: VectorBounds3d): Bounds3d =
     Bounds3d(x - vectorBounds.x, y - vectorBounds.y, z - vectorBounds.z)
 
-  def -(point: Point3d): VectorBounds3d = VectorBounds3d(x - point.x, y - point.y, z - point.z)
+  def -(point: Point3d): VectorBounds3d =
+    VectorBounds3d(x - point.x, y - point.y, z - point.z)
 
   def -(that: Bounds3d): VectorBounds3d =
     VectorBounds3d(this.x - that.x, this.y - that.y, this.z - that.z)
@@ -121,7 +131,8 @@ object Bounds3d {
   def singleton(point: Point3d): Bounds3d =
     Bounds3d(Interval.singleton(point.x), Interval.singleton(point.y), Interval.singleton(point.z))
 
-  def hullOf(points: (Point3d, Point3d)): Bounds3d = points.first.hull(points.second)
+  def hullOf(points: (Point3d, Point3d)): Bounds3d =
+    points.first.hull(points.second)
 
   def hullOf(points: (Point3d, Point3d, Point3d)): Bounds3d =
     points.first.hull(points.second).hull(points.third)
@@ -135,23 +146,17 @@ object Bounds3d {
   implicit val Traits: Bounds[Bounds3d] = new Bounds[Bounds3d] {
     override def component(bounds: Bounds3d, index: Int): Interval = bounds.component(index)
 
-    override def overlaps(
-      firstBounds: Bounds3d,
-      secondBounds: Bounds3d,
-      tolerance: Double
-    ): Boolean = firstBounds.overlaps(secondBounds, tolerance)
+    override def overlaps(first: Bounds3d, second: Bounds3d, tolerance: Double): Boolean =
+      first.overlaps(second, tolerance)
 
-    override def contains(
-      firstBounds: Bounds3d,
-      secondBounds: Bounds3d,
-      tolerance: Double
-    ): Boolean = firstBounds.contains(secondBounds, tolerance)
+    override def contains(first: Bounds3d, second: Bounds3d, tolerance: Double): Boolean =
+      first.contains(second, tolerance)
 
     override def bisected(bounds: Bounds3d, index: Int): (Bounds3d, Bounds3d) =
       bounds.bisected(index)
 
-    override def hull(firstBounds: Bounds3d, secondBounds: Bounds3d): Bounds3d =
-      firstBounds.hull(secondBounds)
+    override def hull(first: Bounds3d, second: Bounds3d): Bounds3d =
+      first.hull(second)
 
     override val NumDimensions: Int = 3
 
