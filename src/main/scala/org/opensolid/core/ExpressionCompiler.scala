@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.collection.mutable
 
-private class ExpressionCompiler[T] {
+private class ExpressionCompiler {
   import ExpressionCompiler._
 
   val arrayOperations: mutable.ArrayBuffer[ArrayOperation] =
@@ -47,48 +47,48 @@ private class ExpressionCompiler[T] {
   private[this] val product2dMap = mutable.Map.empty[(Int, (Int, Int)), (Int, Int)]
   private[this] val quotient2dMap = mutable.Map.empty[((Int, Int), Int), (Int, Int)]
 
-  def evaluate(expression: Expression1d[T]): Int = expression match {
-    case Expression1d.Parameter(index) =>
+  def evaluate(expression: ScalarExpression[_]): Int = expression match {
+    case ScalarExpression.Parameter(index) =>
       index
-    case Expression1d.Constant(value) =>
+    case ScalarExpression.Constant(value) =>
       constant1d(value)
-    case Expression1d.XComponent2d(expression) =>
+    case ScalarExpression.XComponent2d(expression) =>
       evaluate(expression).first
-    case Expression1d.YComponent2d(expression) =>
+    case ScalarExpression.YComponent2d(expression) =>
       evaluate(expression).second
-    case Expression1d.Negation(argument) =>
+    case ScalarExpression.Negation(argument) =>
       negation1d(evaluate(argument))
-    case Expression1d.Sum(firstArgument, secondArgument) =>
+    case ScalarExpression.Sum(firstArgument, secondArgument) =>
       sum1d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression1d.Difference(firstArgument, secondArgument) =>
+    case ScalarExpression.Difference(firstArgument, secondArgument) =>
       difference1d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression1d.Product(firstArgument, secondArgument) =>
+    case ScalarExpression.Product(firstArgument, secondArgument) =>
       product1d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression1d.Quotient(firstArgument, secondArgument) =>
+    case ScalarExpression.Quotient(firstArgument, secondArgument) =>
       quotient1d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression1d.Square(argument) =>
+    case ScalarExpression.Square(argument) =>
       square(evaluate(argument))
-    case Expression1d.SquareRoot(argument) =>
+    case ScalarExpression.SquareRoot(argument) =>
       squareRoot(evaluate(argument))
-    case Expression1d.Sine(argument) =>
+    case ScalarExpression.Sine(argument) =>
       sine(evaluate(argument))
-    case Expression1d.Cosine(argument) =>
+    case ScalarExpression.Cosine(argument) =>
       cosine(evaluate(argument))
-    case Expression1d.Tangent(argument) =>
+    case ScalarExpression.Tangent(argument) =>
       tangent(evaluate(argument))
-    case Expression1d.Arcsine(argument) =>
+    case ScalarExpression.Arcsine(argument) =>
       arcsine(evaluate(argument))
-    case Expression1d.Arccosine(argument) =>
+    case ScalarExpression.Arccosine(argument) =>
       arccosine(evaluate(argument))
-    case Expression1d.Arctangent(argument) =>
+    case ScalarExpression.Arctangent(argument) =>
       arctangent(evaluate(argument))
-    case Expression1d.DotProduct2d(firstArgument, secondArgument) =>
+    case ScalarExpression.DotProduct2d(firstArgument, secondArgument) =>
       dotProduct2d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression1d.SquaredNorm2d(argument) =>
+    case ScalarExpression.SquaredNorm2d(argument) =>
       squaredNorm2d(evaluate(argument))
   }
 
-  def evaluate(expression: Expression2d[T]): (Int, Int) = expression match {
+  def evaluate(expression: Expression2d[_]): (Int, Int) = expression match {
     case Expression2d.Constant(xValue, yValue) =>
       constant2d(xValue, yValue)
     case Expression2d.FromComponents(x, y) =>
@@ -354,14 +354,14 @@ private class ExpressionCompiler[T] {
 }
 
 object ExpressionCompiler {
-  def compile[T](expression: Expression1d[T]): (Array[ArrayOperation], Int, Int) = {
-    val compiler = new ExpressionCompiler[T]
+  def compile(expression: ScalarExpression[_]): (Array[ArrayOperation], Int, Int) = {
+    val compiler = new ExpressionCompiler
     val resultIndex = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
   }
 
-  def compile[T](expression: Expression2d[T]): (Array[ArrayOperation], Int, (Int, Int)) = {
-    val compiler = new ExpressionCompiler[T]
+  def compile(expression: Expression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
+    val compiler = new ExpressionCompiler
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }

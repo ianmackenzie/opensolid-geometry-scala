@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 case class ParametricCurve1d(
-  expression: Expression1d[Expression1d.CurveParameter],
+  expression: ScalarExpression[CurveParameter],
   domain: Interval
 ) extends Curve1d {
 
