@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 case class ParametricCurve2d(
-  expression: Expression2d[CurveParameter],
+  expression: VectorExpression2d[CurveParameter],
   domain: Interval
 ) extends Curve2d {
 

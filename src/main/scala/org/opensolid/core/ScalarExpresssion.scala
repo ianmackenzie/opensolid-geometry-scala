@@ -43,7 +43,7 @@ sealed abstract class ScalarExpression[P] {
     this + that
 
   final def plus(value: Double): ScalarExpression[P] =
-    this + value
+    this + Constant[P](value)
 
   final def -(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
@@ -61,7 +61,7 @@ sealed abstract class ScalarExpression[P] {
     this - that
 
   final def minus(value: Double): ScalarExpression[P] =
-    this - value
+    this - Constant[P](value)
 
   final def *(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
@@ -83,21 +83,13 @@ sealed abstract class ScalarExpression[P] {
     this * that
 
   final def times(value: Double): ScalarExpression[P] =
-    this * value
+    this * Constant[P](value)
 
-  final def *(that: Expression2d[P]): Expression2d[P] = (this, that) match {
-    case (Constant(multiplier), Expression2d.Constant(x, y)) =>
-      Expression2d.Constant(multiplier * x, multiplier * y)
-    case (_, Expression2d.Constant(0, 0)) => Expression2d.Constant(0, 0)
-    case (Constant(0), _) => Expression2d.Constant(0, 0)
-    case (Constant(1), expression) => expression
-    case (Constant(-1), expression) => -expression
-    case (Quotient(a, b), Expression2d.Quotient(c, d)) => (a * c) / (b * d)
-    case _ => Expression2d.Product(this, that)
-  }
+  final def *(that: VectorExpression2d[P]): VectorExpression2d[P] =
+    that * this
 
-  final def times(that: Expression2d[P]): Expression2d[P] =
-    this * that
+  final def times(that: VectorExpression2d[P]): VectorExpression2d[P] =
+    that * this
 
   final def /(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
     case (_, Constant(0)) => throw new ArithmeticException("Division by zero")
@@ -117,7 +109,7 @@ sealed abstract class ScalarExpression[P] {
     this / that
 
   final def dividedBy(value: Double): ScalarExpression[P] =
-    this / value
+    this / Constant[P](value)
 
   def squared: ScalarExpression[P] =
     Square(this)
@@ -269,7 +261,7 @@ object ScalarExpression {
       expression.condition
   }
 
-  case class XComponent2d[P](expression: Expression2d[P]) extends ScalarExpression[P] {
+  case class VectorXComponent2d[P](expression: VectorExpression2d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       expression.derivative(parameter).x
 
@@ -277,7 +269,7 @@ object ScalarExpression {
       expression.condition
   }
 
-  case class YComponent2d[P](expression: Expression2d[P]) extends ScalarExpression[P] {
+  case class VectorYComponent2d[P](expression: VectorExpression2d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       expression.derivative(parameter).y
 
@@ -285,8 +277,10 @@ object ScalarExpression {
       expression.condition
   }
 
-  case class DotProduct2d[P](firstExpression: Expression2d[P], secondExpression: Expression2d[P])
-    extends ScalarExpression[P] {
+  case class DotProduct2d[P](
+    firstExpression: VectorExpression2d[P],
+    secondExpression: VectorExpression2d[P]
+  ) extends ScalarExpression[P] {
 
     override def equals(other: Any): Boolean = other match {
       case DotProduct2d(otherFirst, otherSecond) =>
@@ -306,7 +300,7 @@ object ScalarExpression {
       firstExpression.condition * secondExpression.condition
   }
 
-  case class SquaredNorm2d[P](expression: Expression2d[P]) extends ScalarExpression[P] {
+  case class SquaredLength2d[P](expression: VectorExpression2d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       2 * expression.dot(expression.derivative(parameter))
 

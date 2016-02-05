@@ -52,9 +52,9 @@ private class ExpressionCompiler {
       index
     case ScalarExpression.Constant(value) =>
       constant1d(value)
-    case ScalarExpression.XComponent2d(expression) =>
+    case ScalarExpression.VectorXComponent2d(expression) =>
       evaluate(expression).first
-    case ScalarExpression.YComponent2d(expression) =>
+    case ScalarExpression.VectorYComponent2d(expression) =>
       evaluate(expression).second
     case ScalarExpression.Negation(argument) =>
       negation1d(evaluate(argument))
@@ -84,24 +84,24 @@ private class ExpressionCompiler {
       arctangent(evaluate(argument))
     case ScalarExpression.DotProduct2d(firstArgument, secondArgument) =>
       dotProduct2d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.SquaredNorm2d(argument) =>
+    case ScalarExpression.SquaredLength2d(argument) =>
       squaredNorm2d(evaluate(argument))
   }
 
-  def evaluate(expression: Expression2d[_]): (Int, Int) = expression match {
-    case Expression2d.Constant(xValue, yValue) =>
-      constant2d(xValue, yValue)
-    case Expression2d.FromComponents(x, y) =>
+  def evaluate(expression: VectorExpression2d[_]): (Int, Int) = expression match {
+    case VectorExpression2d.Constant(vector) =>
+      constant2d(vector.x, vector.y)
+    case VectorExpression2d.FromComponents(x, y) =>
       (evaluate(x), evaluate(y))
-    case Expression2d.Negation(argument) =>
+    case VectorExpression2d.Negation(argument) =>
       negation2d(evaluate(argument))
-    case Expression2d.Sum(firstArgument, secondArgument) =>
+    case VectorExpression2d.Sum(firstArgument, secondArgument) =>
       sum2d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression2d.Difference(firstArgument, secondArgument) =>
+    case VectorExpression2d.Difference(firstArgument, secondArgument) =>
       difference2d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression2d.Product(firstArgument, secondArgument) =>
+    case VectorExpression2d.Product(firstArgument, secondArgument) =>
       product2d(evaluate(firstArgument), evaluate(secondArgument))
-    case Expression2d.Quotient(firstArgument, secondArgument) =>
+    case VectorExpression2d.Quotient(firstArgument, secondArgument) =>
       quotient2d(evaluate(firstArgument), evaluate(secondArgument))
   }
 
@@ -360,7 +360,7 @@ object ExpressionCompiler {
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
   }
 
-  def compile(expression: Expression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
+  def compile(expression: VectorExpression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
     val compiler = new ExpressionCompiler
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
