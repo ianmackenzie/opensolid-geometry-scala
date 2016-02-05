@@ -17,8 +17,6 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class VectorBounds2d(x: Interval, y: Interval) {
-  def this(components: (Interval, Interval)) = this(components.first, components.second)
-
   def components: (Interval, Interval) = (x, y)
 
   def component(index: Int): Interval = index match {
@@ -119,7 +117,8 @@ final case class VectorBounds2d(x: Interval, y: Interval) {
 }
 
 object VectorBounds2d {
-  def apply(components: (Interval, Interval)): VectorBounds2d = new VectorBounds2d(components)
+  def fromComponents(components: (Interval, Interval)): VectorBounds2d =
+    VectorBounds2d(components.first, components.second)
 
   def singleton(vector: Vector2d): VectorBounds2d =
     VectorBounds2d(Interval.singleton(vector.x), Interval.singleton(vector.y))

@@ -17,8 +17,6 @@ package org.opensolid.core
 final case class DirectionBounds2d(vectorBounds: VectorBounds2d) {
   def this(x: Interval, y: Interval) = this(VectorBounds2d(x, y))
 
-  def this(components: (Interval, Interval)) = this(components.first, components.second)
-
   def x: Interval = vectorBounds.x
 
   def y: Interval = vectorBounds.y
@@ -41,7 +39,8 @@ final case class DirectionBounds2d(vectorBounds: VectorBounds2d) {
 object DirectionBounds2d {
   def apply(x: Interval, y: Interval): DirectionBounds2d = new DirectionBounds2d(x, y)
 
-  def apply(components: (Interval, Interval)): DirectionBounds2d = new DirectionBounds2d(components)
+  def fromComponents(components: (Interval, Interval)): DirectionBounds2d =
+    DirectionBounds2d(VectorBounds2d.fromComponents(components))
 
   def singleton(direction: Direction2d): DirectionBounds2d =
     DirectionBounds2d(VectorBounds2d.singleton(direction.vector))

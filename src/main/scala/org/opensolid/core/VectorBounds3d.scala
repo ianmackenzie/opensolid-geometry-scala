@@ -17,9 +17,6 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
-  def this(components: (Interval, Interval, Interval)) =
-    this(components.first, components.second, components.third)
-
   def components: (Interval, Interval, Interval) = (x, y, z)
 
   def component(index: Int): Interval = index match {
@@ -152,8 +149,8 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
 }
 
 object VectorBounds3d {
-  def apply(components: (Interval, Interval, Interval)): VectorBounds3d =
-    new VectorBounds3d(components)
+  def fromComponents(components: (Interval, Interval, Interval)): VectorBounds3d =
+    VectorBounds3d(components.first, components.second, components.third)
 
   def singleton(vector: Vector3d): VectorBounds3d =
     VectorBounds3d(

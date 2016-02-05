@@ -17,9 +17,6 @@ package org.opensolid.core
 final case class DirectionBounds3d(vectorBounds: VectorBounds3d) {
   def this(x: Interval, y: Interval, z: Interval) = this(VectorBounds3d(x, y, z))
 
-  def this(components: (Interval, Interval, Interval)) =
-    this(components.first, components.second, components.third)
-
   def x: Interval = vectorBounds.x
 
   def y: Interval = vectorBounds.y
@@ -45,8 +42,8 @@ object DirectionBounds3d {
   def apply(x: Interval, y: Interval, z: Interval): DirectionBounds3d =
     new DirectionBounds3d(x, y, z)
 
-  def apply(components: (Interval, Interval, Interval)): DirectionBounds3d =
-    new DirectionBounds3d(components)
+  def fromComponents(components: (Interval, Interval, Interval)): DirectionBounds3d =
+    DirectionBounds3d(VectorBounds3d.fromComponents(components))
 
   def singleton(direction: Direction3d): DirectionBounds3d =
     DirectionBounds3d(VectorBounds3d.singleton(direction.vector))
