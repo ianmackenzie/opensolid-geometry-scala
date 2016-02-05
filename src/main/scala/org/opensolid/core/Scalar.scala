@@ -15,13 +15,18 @@
 package org.opensolid.core
 
 object Scalar {
-  def isZero(value: Double, tolerance: Double): Boolean = value.isZero(tolerance)
+  def isZero(value: Double, tolerance: Double): Boolean =
+    value.isZero(tolerance)
 
-  def isNotZero(value: Double, tolerance: Double): Boolean = value.isNotZero(tolerance)
+  def isNotZero(value: Double, tolerance: Double): Boolean =
+    value.isNotZero(tolerance)
 
-  def difference(value: Double, interval: Interval): Interval  = value - interval
+  def difference(value: Double, interval: Interval): Interval  =
+    value - interval
 
-  def quotient(value: Double, interval: Interval): Interval = value / interval
+  def quotient(value: Double, interval: Interval): Interval =
+    value / interval
 
-  def hull(firstValue: Double, secondValue: Double): Interval = firstValue.hull(secondValue)
+  def hull(firstValue: Double, secondValue: Double): Interval =
+    firstValue.hull(secondValue)
 }
