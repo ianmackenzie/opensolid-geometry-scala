@@ -39,7 +39,7 @@ final case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirecti
 }
 
 object Frame2d {
-  def apply(originPoint: Point2d): Frame2d =
+  def local(originPoint: Point2d): Frame2d =
     Frame2d(originPoint, Direction2d.X, Direction2d.Y)
 
   def fromXAxis(axis: Axis2d): Frame2d =

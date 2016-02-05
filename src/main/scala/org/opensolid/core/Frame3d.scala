@@ -58,7 +58,7 @@ final case class Frame3d(
 }
 
 object Frame3d {
-  def apply(originPoint: Point3d): Frame3d =
+  def local(originPoint: Point3d): Frame3d =
     Frame3d(originPoint, Direction3d.X, Direction3d.Y, Direction3d.Z)
 
   val Global: Frame3d = Frame3d(Point3d.Origin, Direction3d.X, Direction3d.Y, Direction3d.Z)
