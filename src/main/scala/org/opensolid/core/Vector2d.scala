@@ -46,9 +46,11 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     case _ => this / length
   }
 
+  def perpendicularVector: Vector2d = Vector2d(-y, x)
+
   def direction: Direction2d = Direction2d(normalized)
 
-  def normalDirection: Direction2d = direction.normalDirection
+  def normalDirection: Direction2d = perpendicularVector.direction
 
   def unary_- : Vector2d = Vector2d(-x, -y)
 

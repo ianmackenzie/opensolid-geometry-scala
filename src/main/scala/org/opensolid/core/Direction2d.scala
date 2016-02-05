@@ -44,7 +44,7 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
 
   def placedOnto(plane: Plane3d): Direction3d = Direction3d(vector.placedOnto(plane))
 
-  def normalDirection: Direction2d = Direction2d(-y, x)
+  def normalDirection: Direction2d = Direction2d(vector.perpendicularVector)
 
   def angleTo(that: Direction2d): Double =
     math.atan2(this.x * that.y - this.y * that.x, this.x * that.x + this.y * that.y)
