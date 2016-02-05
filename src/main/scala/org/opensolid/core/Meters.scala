@@ -29,7 +29,7 @@ object Meters {
 
   def fromKilometers(value: Double): Double = value.kilometers
 
-  def fromToKilometers(value: Double): Double = value.inKilometers
+  def toKilometers(value: Double): Double = value.inKilometers
 
   def fromInches(value: Double): Double = value.inches
 
