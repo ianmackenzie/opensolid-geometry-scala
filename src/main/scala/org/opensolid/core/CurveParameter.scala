@@ -14,7 +14,9 @@
 
 package org.opensolid.core
 
-abstract class CurveParameter extends ScalarExpression.Parameter[CurveParameter](0)
+abstract class CurveParameter extends ScalarExpression.Parameter[CurveParameter] {
+  override def index: Int = 0
+}
 
 object CurveParameter {
   object T extends CurveParameter

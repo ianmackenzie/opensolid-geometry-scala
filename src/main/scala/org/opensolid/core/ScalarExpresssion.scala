@@ -137,7 +137,9 @@ object ScalarExpression {
   def atan[P](expression: ScalarExpression[P]): ScalarExpression[P] =
     Arctangent(expression)
 
-  abstract class Parameter[P <: Parameter[P]](val index: Int) extends ScalarExpression[P] {
+  abstract class Parameter[P <: Parameter[P]] extends ScalarExpression[P] {
+    def index: Int
+
     override def derivative(parameter: P): ScalarExpression[P] =
       if (parameter eq this) Constant(1) else Constant(0)
 
