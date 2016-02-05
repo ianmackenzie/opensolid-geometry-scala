@@ -24,9 +24,11 @@ final case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirecti
       yDirection.transformedBy(transformation)
     )
 
-  def xAxis: Axis2d = Axis2d(originPoint, xDirection)
+  def xAxis: Axis2d =
+    Axis2d(originPoint, xDirection)
 
-  def yAxis: Axis2d = Axis2d(originPoint, yDirection)
+  def yAxis: Axis2d =
+    Axis2d(originPoint, yDirection)
 
   def placedOnto(plane: Plane3d): Plane3d =
     Plane3d(
@@ -37,7 +39,8 @@ final case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirecti
 }
 
 object Frame2d {
-  def apply(originPoint: Point2d): Frame2d = Frame2d(originPoint, Direction2d.X, Direction2d.Y)
+  def apply(originPoint: Point2d): Frame2d =
+    Frame2d(originPoint, Direction2d.X, Direction2d.Y)
 
   def apply(originPoint: Point2d, xDirection: Direction2d): Frame2d =
     Frame2d(originPoint, xDirection, xDirection.normalDirection)

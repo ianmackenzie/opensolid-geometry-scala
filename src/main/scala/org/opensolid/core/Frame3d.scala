@@ -29,23 +29,32 @@ final case class Frame3d(
       zDirection.transformedBy(transformation)
     )
 
-  def xAxis: Axis3d = Axis3d(originPoint, xDirection)
+  def xAxis: Axis3d =
+    Axis3d(originPoint, xDirection)
 
-  def yAxis: Axis3d = Axis3d(originPoint, yDirection)
+  def yAxis: Axis3d =
+    Axis3d(originPoint, yDirection)
 
-  def zAxis: Axis3d = Axis3d(originPoint, zDirection)
+  def zAxis: Axis3d =
+    Axis3d(originPoint, zDirection)
 
-  def xyPlane: Plane3d = Plane3d(originPoint, xDirection, yDirection, zDirection)
+  def xyPlane: Plane3d =
+    Plane3d(originPoint, xDirection, yDirection, zDirection)
 
-  def xzPlane: Plane3d = Plane3d(originPoint, xDirection, zDirection, -yDirection)
+  def xzPlane: Plane3d =
+    Plane3d(originPoint, xDirection, zDirection, -yDirection)
 
-  def yxPlane: Plane3d = Plane3d(originPoint, yDirection, xDirection, -zDirection)
+  def yxPlane: Plane3d =
+    Plane3d(originPoint, yDirection, xDirection, -zDirection)
 
-  def yzPlane: Plane3d = Plane3d(originPoint, yDirection, zDirection, xDirection)
+  def yzPlane: Plane3d =
+    Plane3d(originPoint, yDirection, zDirection, xDirection)
 
-  def zxPlane: Plane3d = Plane3d(originPoint, zDirection, xDirection, yDirection)
+  def zxPlane: Plane3d =
+    Plane3d(originPoint, zDirection, xDirection, yDirection)
 
-  def zyPlane: Plane3d = Plane3d(originPoint, zDirection, yDirection, -xDirection)
+  def zyPlane: Plane3d =
+    Plane3d(originPoint, zDirection, yDirection, -xDirection)
 }
 
 object Frame3d {
