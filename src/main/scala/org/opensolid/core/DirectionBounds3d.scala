@@ -15,27 +15,32 @@
 package org.opensolid.core
 
 final case class DirectionBounds3d(vectorBounds: VectorBounds3d) {
-  def this(x: Interval, y: Interval, z: Interval) = this(VectorBounds3d(x, y, z))
+  def this(x: Interval, y: Interval, z: Interval) =
+    this(VectorBounds3d(x, y, z))
 
-  def x: Interval = vectorBounds.x
+  def x: Interval =
+    vectorBounds.x
 
-  def y: Interval = vectorBounds.y
+  def y: Interval =
+    vectorBounds.y
 
-  def z: Interval = vectorBounds.z
+  def z: Interval =
+    vectorBounds.z
 
-  def components: (Interval, Interval, Interval) = vectorBounds.components
+  def components: (Interval, Interval, Interval) =
+    vectorBounds.components
 
-  def component(index: Int): Interval = vectorBounds.component(index)
+  def component(index: Int): Interval =
+    vectorBounds.component(index)
 
-  def unary_- : DirectionBounds3d = DirectionBounds3d(-vectorBounds)
+  def unary_- : DirectionBounds3d =
+    DirectionBounds3d(-vectorBounds)
 
-  def *(value: Double): VectorBounds3d = vectorBounds * value
+  def *(value: Double): VectorBounds3d =
+    vectorBounds * value
 
-  def *(interval: Interval): VectorBounds3d = vectorBounds * interval
-
-  def /(value: Double): VectorBounds3d = vectorBounds / value
-
-  def /(interval: Interval): VectorBounds3d = vectorBounds / interval
+  def *(interval: Interval): VectorBounds3d =
+    vectorBounds * interval
 }
 
 object DirectionBounds3d {

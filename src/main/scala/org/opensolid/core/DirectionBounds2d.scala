@@ -15,29 +15,34 @@
 package org.opensolid.core
 
 final case class DirectionBounds2d(vectorBounds: VectorBounds2d) {
-  def this(x: Interval, y: Interval) = this(VectorBounds2d(x, y))
+  def this(x: Interval, y: Interval) =
+    this(VectorBounds2d(x, y))
 
-  def x: Interval = vectorBounds.x
+  def x: Interval =
+    vectorBounds.x
 
-  def y: Interval = vectorBounds.y
+  def y: Interval =
+    vectorBounds.y
 
-  def components: (Interval, Interval) = vectorBounds.components
+  def components: (Interval, Interval) =
+    vectorBounds.components
 
-  def component(index: Int): Interval = vectorBounds.component(index)
+  def component(index: Int): Interval =
+    vectorBounds.component(index)
 
-  def unary_- : DirectionBounds2d = DirectionBounds2d(-vectorBounds)
+  def unary_- : DirectionBounds2d =
+    DirectionBounds2d(-vectorBounds)
 
-  def *(value: Double): VectorBounds2d = vectorBounds * value
+  def *(value: Double): VectorBounds2d =
+    vectorBounds * value
 
-  def *(interval: Interval): VectorBounds2d = vectorBounds * interval
-
-  def /(value: Double): VectorBounds2d = vectorBounds / value
-
-  def /(interval: Interval): VectorBounds2d = vectorBounds / interval
+  def *(interval: Interval): VectorBounds2d =
+    vectorBounds * interval
 }
 
 object DirectionBounds2d {
-  def apply(x: Interval, y: Interval): DirectionBounds2d = DirectionBounds2d(VectorBounds2d(x, y))
+  def apply(x: Interval, y: Interval): DirectionBounds2d =
+    DirectionBounds2d(VectorBounds2d(x, y))
 
   def fromComponents(components: (Interval, Interval)): DirectionBounds2d =
     DirectionBounds2d(VectorBounds2d.fromComponents(components))
