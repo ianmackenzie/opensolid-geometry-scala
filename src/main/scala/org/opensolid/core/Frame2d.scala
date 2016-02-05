@@ -42,8 +42,11 @@ object Frame2d {
   def apply(originPoint: Point2d): Frame2d =
     Frame2d(originPoint, Direction2d.X, Direction2d.Y)
 
-  def apply(originPoint: Point2d, xDirection: Direction2d): Frame2d =
-    Frame2d(originPoint, xDirection, xDirection.normalDirection)
+  def fromXAxis(axis: Axis2d): Frame2d =
+    Frame2d(axis.originPoint, axis.direction, axis.normalDirection)
+
+  def fromYAxis(axis: Axis2d): Frame2d =
+    Frame2d(axis.originPoint, -axis.normalDirection, axis.direction)
 
   val Global: Frame2d = Frame2d(Point2d.Origin, Direction2d.X, Direction2d.Y)
 }
