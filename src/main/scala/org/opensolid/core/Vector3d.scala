@@ -17,9 +17,6 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransformable3d[Vector3d] {
-  def this(components: (Double, Double, Double)) =
-    this(components.first, components.second, components.third)
-
   def components: (Double, Double, Double) = (x, y, z)
 
   def component(index: Int): Double = index match {
@@ -144,7 +141,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 }
 
 object Vector3d {
-  def apply(components: (Double, Double, Double)): Vector3d = new Vector3d(components)
+  def fromComponents(components: (Double, Double, Double)): Vector3d =
+    Vector3d(components.first, components.second, components.third)
 
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
 }

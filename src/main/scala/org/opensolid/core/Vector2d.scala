@@ -17,8 +17,6 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
-  def this(components: (Double, Double)) = this(components.first, components.second)
-
   def components: (Double, Double) = (x, y)
 
   def component(index: Int): Double = index match {
@@ -104,7 +102,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 }
 
 object Vector2d {
-  def apply(components: (Double, Double)): Vector2d = new Vector2d(components)
+  def fromComponents(components: (Double, Double)): Vector2d =
+    Vector2d(components.first, components.second)
 
   def polar(radius: Double, angle: Double): Vector2d =
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
