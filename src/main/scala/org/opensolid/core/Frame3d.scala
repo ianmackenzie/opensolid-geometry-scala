@@ -61,5 +61,23 @@ object Frame3d {
   def local(originPoint: Point3d): Frame3d =
     Frame3d(originPoint, Direction3d.X, Direction3d.Y, Direction3d.Z)
 
+  def fromXYPlane(plane: Plane3d): Frame3d =
+    Frame3d(plane.originPoint, plane.xDirection, plane.yDirection, plane.normalDirection)
+
+  def fromXZPlane(plane: Plane3d): Frame3d =
+    Frame3d(plane.originPoint, plane.xDirection, -plane.normalDirection, plane.yDirection)
+
+  def fromYXPlane(plane: Plane3d): Frame3d =
+    Frame3d(plane.originPoint, plane.yDirection, plane.xDirection, -plane.normalDirection)
+
+  def fromYZPlane(plane: Plane3d): Frame3d =
+    Frame3d(plane.originPoint, plane.normalDirection, plane.xDirection, plane.yDirection)
+
+  def fromZXPlane(plane: Plane3d): Frame3d =
+    Frame3d(plane.originPoint, plane.yDirection, plane.normalDirection, plane.xDirection)
+
+  def fromZYPlane(plane: Plane3d): Frame3d =
+    Frame3d(plane.originPoint, -plane.normalDirection, plane.yDirection, plane.xDirection)
+
   val Global: Frame3d = Frame3d(Point3d.Origin, Direction3d.X, Direction3d.Y, Direction3d.Z)
 }
