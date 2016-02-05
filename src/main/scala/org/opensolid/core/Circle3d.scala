@@ -45,9 +45,11 @@ final case class Circle3d(centerPoint: Point3d, normalDirection: Direction3d, ra
     )
   }
 
-  def axis: Axis3d = Axis3d(centerPoint, normalDirection)
+  def axis: Axis3d =
+    Axis3d(centerPoint, normalDirection)
 
-  def plane: Plane3d = Plane3d(centerPoint, normalDirection)
+  def plane: Plane3d =
+    Plane3d(centerPoint, normalDirection)
 }
 
 object Circle3d {
@@ -71,11 +73,8 @@ object Circle3d {
     radius: Double
   ): Circle3d = Circle3d.throughTwoPoints(points.first, points.second, normalDirection, radius)
 
-  def throughThreePoints(
-    firstPoint: Point3d,
-    secondPoint: Point3d,
-    thirdPoint: Point3d
-  ): Circle3d = Circle3d.circumcircle(Triangle3d(firstPoint, secondPoint, thirdPoint))
+  def throughThreePoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Circle3d =
+    Circle3d.circumcircle(Triangle3d(firstPoint, secondPoint, thirdPoint))
 
   def throughThreePoints(points: (Point3d, Point3d, Point3d)): Circle3d =
     Circle3d.throughThreePoints(points.first, points.second, points.third)
