@@ -40,7 +40,7 @@ final case class DirectionBounds3d(vectorBounds: VectorBounds3d) {
 
 object DirectionBounds3d {
   def apply(x: Interval, y: Interval, z: Interval): DirectionBounds3d =
-    new DirectionBounds3d(x, y, z)
+    DirectionBounds3d(VectorBounds3d(x, y, z))
 
   def fromComponents(components: (Interval, Interval, Interval)): DirectionBounds3d =
     DirectionBounds3d(VectorBounds3d.fromComponents(components))

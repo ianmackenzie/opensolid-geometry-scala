@@ -37,7 +37,7 @@ final case class DirectionBounds2d(vectorBounds: VectorBounds2d) {
 }
 
 object DirectionBounds2d {
-  def apply(x: Interval, y: Interval): DirectionBounds2d = new DirectionBounds2d(x, y)
+  def apply(x: Interval, y: Interval): DirectionBounds2d = DirectionBounds2d(VectorBounds2d(x, y))
 
   def fromComponents(components: (Interval, Interval)): DirectionBounds2d =
     DirectionBounds2d(VectorBounds2d.fromComponents(components))
