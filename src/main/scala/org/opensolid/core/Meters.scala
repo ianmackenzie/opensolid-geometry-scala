@@ -15,39 +15,57 @@
 package org.opensolid.core
 
 object Meters {
-  def fromCentimeters(value: Double): Double = value.centimeters
+  def fromCentimeters(value: Double): Double =
+    value.centimeters
 
-  def toCentimeters(value: Double): Double = value.inCentimeters
+  def toCentimeters(value: Double): Double =
+    value.inCentimeters
 
-  def fromMillimeters(value: Double): Double = value.millimeters
+  def fromMillimeters(value: Double): Double =
+    value.millimeters
 
-  def toMillimeters(value: Double): Double = value.inMillimeters
+  def toMillimeters(value: Double): Double =
+    value.inMillimeters
 
-  def fromMicrons(value: Double): Double = value.microns
+  def fromMicrons(value: Double): Double =
+    value.microns
 
-  def toMicrons(value: Double): Double = value.inMicrons
+  def toMicrons(value: Double): Double =
+    value.inMicrons
 
-  def fromKilometers(value: Double): Double = value.kilometers
+  def fromKilometers(value: Double): Double =
+    value.kilometers
 
-  def toKilometers(value: Double): Double = value.inKilometers
+  def toKilometers(value: Double): Double =
+    value.inKilometers
 
-  def fromInches(value: Double): Double = value.inches
+  def fromInches(value: Double): Double =
+    value.inches
 
-  def toInches(value: Double): Double = value.inInches
+  def toInches(value: Double): Double =
+    value.inInches
 
-  def fromFeet(value: Double): Double = value.feet
+  def fromFeet(value: Double): Double =
+    value.feet
 
-  def toFeet(value: Double): Double = value.inFeet
+  def toFeet(value: Double): Double =
+    value.inFeet
 
-  def fromThou(value: Double): Double = value.thou
+  def fromThou(value: Double): Double =
+    value.thou
 
-  def toThou(value: Double): Double = value.inThou
+  def toThou(value: Double): Double =
+    value.inThou
 
-  def fromYards(value: Double): Double = value.yards
+  def fromYards(value: Double): Double =
+    value.yards
 
-  def toYards(value: Double): Double = value.inYards
+  def toYards(value: Double): Double =
+    value.inYards
 
-  def fromMiles(value: Double): Double = value.miles
+  def fromMiles(value: Double): Double =
+    value.miles
 
-  def toMiles(value: Double): Double = value.inMiles
+  def toMiles(value: Double): Double =
+    value.inMiles
 }
