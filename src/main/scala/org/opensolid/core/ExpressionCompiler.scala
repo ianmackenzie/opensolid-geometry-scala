@@ -377,9 +377,11 @@ object ExpressionCompiler {
 
     private[this] val interval = Interval.singleton(value)
 
-    override def execute(values: Array[Double]): Unit = values(resultIndex) = value
+    override def execute(values: Array[Double]): Unit =
+      values(resultIndex) = value
 
-    override def execute(values: Array[Interval]): Unit = values(resultIndex) = interval
+    override def execute(values: Array[Interval]): Unit =
+      values(resultIndex) = interval
   }
 
   private[ExpressionCompiler] class Negation1d(argumentIndex: Int, resultIndex: Int)
@@ -469,11 +471,11 @@ object ExpressionCompiler {
   private[ExpressionCompiler] class Sine(argumentIndex: Int, resultIndex: Int)
     extends ArrayOperation {
 
-    override def execute(values: Array[Double]): Unit = values(resultIndex) =
-      math.sin(values(argumentIndex))
+    override def execute(values: Array[Double]): Unit =
+      values(resultIndex) = math.sin(values(argumentIndex))
 
-    override def execute(values: Array[Interval]): Unit = values(resultIndex) =
-      Interval.sin(values(argumentIndex))
+    override def execute(values: Array[Interval]): Unit =
+      values(resultIndex) = Interval.sin(values(argumentIndex))
   }
 
   private[ExpressionCompiler] class Cosine(argumentIndex: Int, resultIndex: Int)
@@ -577,9 +579,8 @@ object ExpressionCompiler {
       values(resultIndex) = argumentX * argumentX + argumentY * argumentY
     }
 
-    override def execute(values: Array[Interval]): Unit = {
+    override def execute(values: Array[Interval]): Unit =
       values(resultIndex) = values(argumentXIndex).squared + values(argumentYIndex).squared
-    }
   }
 
   private[ExpressionCompiler] class Constant2d(values: (Double, Double), resultIndices: (Int, Int))
