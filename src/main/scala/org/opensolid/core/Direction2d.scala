@@ -19,46 +19,55 @@ import scala.math
 import scala.util.Random
 
 final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Direction2d] {
-  def this(x: Double, y: Double) = this(Vector2d(x, y))
+  def this(x: Double, y: Double) =
+    this(Vector2d(x, y))
 
-  def x: Double = vector.x
+  def x: Double =
+    vector.x
 
-  def y: Double = vector.y
+  def y: Double =
+    vector.y
 
-  def components: (Double, Double) = vector.components
+  def components: (Double, Double) =
+    vector.components
 
-  def component(index: Int): Double = vector.component(index)
+  def component(index: Int): Double =
+    vector.component(index)
 
-  def unary_- : Direction2d = Direction2d(-vector)
+  def unary_- : Direction2d =
+    Direction2d(-vector)
 
-  def *(value: Double): Vector2d = vector * value
+  def *(value: Double): Vector2d =
+    vector * value
 
-  def *(interval: Interval): VectorBounds2d = vector * interval
-
-  def /(value: Double): Vector2d = vector / value
-
-  def /(interval: Interval): VectorBounds2d = vector / interval
+  def *(interval: Interval): VectorBounds2d =
+    vector * interval
 
   def transformedBy(transformation: Transformation2d): Direction2d =
     Direction2d(vector.transformedBy(transformation))
 
-  def placedOnto(plane: Plane3d): Direction3d = Direction3d(vector.placedOnto(plane))
+  def placedOnto(plane: Plane3d): Direction3d =
+    Direction3d(vector.placedOnto(plane))
 
-  def normalDirection: Direction2d = Direction2d(vector.perpendicularVector)
+  def normalDirection: Direction2d =
+    Direction2d(vector.perpendicularVector)
 
   def angleTo(that: Direction2d): Double =
-    math.atan2(this.x * that.y - this.y * that.x, this.x * that.x + this.y * that.y)
+    math.atan2(this.vector.cross(that.vector), this.vector.dot(that.vector))
 }
 
 object Direction2d {
-  def apply(x: Double, y: Double): Direction2d = new Direction2d(x, y)
+  def apply(x: Double, y: Double): Direction2d =
+    Direction2d(Vector2d(x, y))
 
   def fromComponents(components: (Double, Double)): Direction2d =
     Direction2d(Vector2d.fromComponents(components))
 
-  def polar(angle: Double): Direction2d = Direction2d(math.cos(angle), math.sin(angle))
+  def polar(angle: Double): Direction2d =
+    Direction2d(math.cos(angle), math.sin(angle))
 
-  def random: Direction2d = random(Random)
+  def random: Direction2d =
+    random(Random)
 
   def random(generator: Random): Direction2d = {
     @tailrec

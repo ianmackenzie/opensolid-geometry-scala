@@ -19,42 +19,52 @@ import scala.math
 import scala.util.Random
 
 final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Direction3d] {
-  def this(x: Double, y: Double, z: Double) = this(Vector3d(x, y, z))
+  def this(x: Double, y: Double, z: Double) =
+    this(Vector3d(x, y, z))
 
-  def x: Double = vector.x
+  def x: Double =
+    vector.x
 
-  def y: Double = vector.y
+  def y: Double =
+    vector.y
 
-  def z: Double = vector.z
+  def z: Double =
+    vector.z
 
-  def components: (Double, Double, Double) = vector.components
+  def components: (Double, Double, Double) =
+    vector.components
 
-  def component(index: Int): Double = vector.component(index)
+  def component(index: Int): Double =
+    vector.component(index)
 
-  def unary_- : Direction3d = Direction3d(-vector)
+  def unary_- : Direction3d =
+    Direction3d(-vector)
 
-  def *(value: Double): Vector3d = vector * value
+  def *(value: Double): Vector3d =
+    vector * value
 
-  def *(interval: Interval): VectorBounds3d = vector * interval
-
-  def /(value: Double): Vector3d = vector / value
-
-  def /(interval: Interval): VectorBounds3d = vector / interval
+  def *(interval: Interval): VectorBounds3d =
+    vector * interval
 
   def transformedBy(transformation: Transformation3d): Direction3d =
     Direction3d(vector.transformedBy(transformation))
 
-  def projectedOnto(plane: Plane3d): Direction3d = vector.projectedOnto(plane).direction
+  def projectedOnto(plane: Plane3d): Direction3d =
+    vector.projectedOnto(plane).direction
 
-  def projectedInto(plane: Plane3d): Direction2d = vector.projectedInto(plane).direction
+  def projectedInto(plane: Plane3d): Direction2d =
+    vector.projectedInto(plane).direction
 
-  def normalDirection: Direction3d = vector.normalDirection
+  def normalDirection: Direction3d =
+    vector.normalDirection
 
-  def angleTo(that: Direction3d): Double = math.acos(this.vector.dot(that.vector))
+  def angleTo(that: Direction3d): Double =
+    math.acos(this.vector.dot(that.vector))
 }
 
 object Direction3d {
-  def apply(x: Double, y: Double, z: Double): Direction3d = new Direction3d(x, y, z)
+  def apply(x: Double, y: Double, z: Double): Direction3d =
+    Direction3d(Vector3d(x, y, z))
 
   def fromComponents(components: (Double, Double, Double)): Direction3d =
     Direction3d(Vector3d.fromComponents(components))
@@ -67,7 +77,8 @@ object Direction3d {
     Direction3d(cosElevation * cosAzimuth, cosElevation * sinAzimuth, sinElevation)
   }
 
-  def random: Direction3d = random(Random)
+  def random: Direction3d =
+    random(Random)
 
   def random(generator: Random): Direction3d = {
     @tailrec
