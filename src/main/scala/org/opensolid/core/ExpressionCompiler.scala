@@ -48,8 +48,8 @@ private class ExpressionCompiler {
   private[this] val quotient2dMap = mutable.Map.empty[((Int, Int), Int), (Int, Int)]
 
   def evaluate(expression: ScalarExpression[_]): Int = expression match {
-    case ScalarExpression.Parameter(index) =>
-      index
+    case parameter: ScalarExpression.Parameter[_] =>
+      parameter.index
     case ScalarExpression.Constant(value) =>
       constant1d(value)
     case ScalarExpression.VectorXComponent2d(expression) =>

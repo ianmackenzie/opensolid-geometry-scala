@@ -147,11 +147,6 @@ object ScalarExpression {
       Constant(1)
   }
 
-  object Parameter {
-    def unapply(parameter: Parameter[_]): Option[Int] =
-      Some(parameter.index)
-  }
-
   case class Constant[P](val value: Double) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       Constant(0)
