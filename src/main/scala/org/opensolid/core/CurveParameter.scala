@@ -19,6 +19,4 @@ abstract class CurveParameter extends ScalarExpression.Parameter[CurveParameter]
     0
 }
 
-object CurveParameter {
-  object T extends CurveParameter
-}
+object CurveParameter extends CurveParameter
