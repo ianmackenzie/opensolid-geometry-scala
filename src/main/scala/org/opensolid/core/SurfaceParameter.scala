@@ -14,11 +14,16 @@
 
 package org.opensolid.core
 
-abstract class SurfaceParameter(override val index: Int)
-  extends ScalarExpression.Parameter[SurfaceParameter]
+abstract class SurfaceParameter extends ScalarExpression.Parameter[SurfaceParameter]
 
 object SurfaceParameter {
-  object U extends SurfaceParameter(0)
+  object U extends SurfaceParameter {
+    override def index: Int =
+      0
+  }
 
-  object V extends SurfaceParameter(1)
+  object V extends SurfaceParameter {
+    override def index: Int =
+      1
+  }
 }
