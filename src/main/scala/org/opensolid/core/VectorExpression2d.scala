@@ -255,6 +255,27 @@ object VectorExpression2d {
       firstExpression.y - secondExpression.y
   }
 
+  case class PointDifference[P](
+    firstExpression: PointExpression2d[P],
+    secondExpression: PointExpression2d[P]
+  ) extends VectorExpression2d[P] {
+
+    override def unary_- : VectorExpression2d[P] =
+      PointDifference[P](secondExpression, firstExpression)
+
+    override def derivative(parameter: P): VectorExpression2d[P] =
+      firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
+
+    override def condition: ScalarExpression[P] =
+      firstExpression.condition * secondExpression.condition
+
+    override def x: ScalarExpression[P] =
+      firstExpression.x - secondExpression.x
+
+    override def y: ScalarExpression[P] =
+      firstExpression.y - secondExpression.y
+  }
+
   case class Product[P](
     scalarExpression: ScalarExpression[P],
     vectorExpression: VectorExpression2d[P]

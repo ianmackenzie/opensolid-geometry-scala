@@ -274,6 +274,22 @@ object ScalarExpression {
       expression.condition
   }
 
+  case class PointXComponent2d[P](expression: PointExpression2d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).x
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class PointYComponent2d[P](expression: PointExpression2d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).y
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
   case class DotProduct2d[P](
     firstExpression: VectorExpression2d[P],
     secondExpression: VectorExpression2d[P]

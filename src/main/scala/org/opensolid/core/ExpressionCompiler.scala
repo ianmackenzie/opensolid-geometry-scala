@@ -56,6 +56,10 @@ private class ExpressionCompiler {
       evaluate(expression).first
     case ScalarExpression.VectorYComponent2d(expression) =>
       evaluate(expression).second
+    case ScalarExpression.PointXComponent2d(expression) =>
+      evaluate(expression).first
+    case ScalarExpression.PointYComponent2d(expression) =>
+      evaluate(expression).second
     case ScalarExpression.Negation(argument) =>
       negation1d(evaluate(argument))
     case ScalarExpression.Sum(firstArgument, secondArgument) =>
@@ -99,10 +103,23 @@ private class ExpressionCompiler {
       sum2d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression2d.Difference(firstArgument, secondArgument) =>
       difference2d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression2d.PointDifference(firstArgument, secondArgument) =>
+      difference2d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression2d.Product(firstArgument, secondArgument) =>
       product2d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression2d.Quotient(firstArgument, secondArgument) =>
       quotient2d(evaluate(firstArgument), evaluate(secondArgument))
+  }
+
+  def evaluate(expression: PointExpression2d[_]): (Int, Int) = expression match {
+    case PointExpression2d.Constant(point) =>
+      constant2d(point.x, point.y)
+    case PointExpression2d.FromComponents(x, y) =>
+      (evaluate(x), evaluate(y))
+    case PointExpression2d.PointPlusVector(pointExpression, vectorExpression) =>
+      sum2d(evaluate(pointExpression), evaluate(vectorExpression))
+    case PointExpression2d.PointMinusVector(pointExpression, vectorExpression) =>
+      difference2d(evaluate(pointExpression), evaluate(vectorExpression))
   }
 
   private[this] def constant1d(value: Double): Int = constantMap.get(value) match {
@@ -361,6 +378,12 @@ object ExpressionCompiler {
   }
 
   def compile(expression: VectorExpression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
+    val compiler = new ExpressionCompiler
+    val resultIndices = compiler.evaluate(expression)
+    (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
+  }
+
+  def compile(expression: PointExpression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
     val compiler = new ExpressionCompiler
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
