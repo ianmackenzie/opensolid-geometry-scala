@@ -19,12 +19,12 @@ case class ParametricCurve2d(
   domain: Interval
 ) extends Curve2d {
 
+  private[this] val (arrayOperations, arraySize, (xIndex, yIndex)) =
+    ExpressionCompiler.compile(expression, 1)
+
   override val bounds: Bounds2d = evaluate(domain)
 
   override def parameterized: ParametricCurve2d = this
-
-  private[this] val (arrayOperations, arraySize, (xIndex, yIndex)) =
-    ExpressionCompiler.compile(expression)
 
   def evaluate(parameterValue: Double): Point2d = {
     val array = Array.ofDim[Double](arraySize)

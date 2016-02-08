@@ -24,7 +24,7 @@ case class ParametricCurve1d(
   override def parameterized: ParametricCurve1d = this
 
   private[this] val (arrayOperations, arraySize, resultIndex) =
-    ExpressionCompiler.compile(expression)
+    ExpressionCompiler.compile(expression, 1)
 
   def evaluate(parameterValue: Double): Double = {
     val array = Array.ofDim[Double](arraySize)

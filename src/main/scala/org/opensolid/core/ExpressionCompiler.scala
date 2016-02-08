@@ -16,13 +16,13 @@ package org.opensolid.core
 
 import scala.collection.mutable
 
-private class ExpressionCompiler {
+private class ExpressionCompiler(numParameters: Int) {
   import ExpressionCompiler._
 
   val arrayOperations: mutable.ArrayBuffer[ArrayOperation] =
     new mutable.ArrayBuffer[ArrayOperation]
 
-  var arraySize: Int = 0
+  var arraySize: Int = numParameters
 
   private[this] val constantMap = mutable.Map.empty[Double, Int]
   private[this] val negation1dMap = mutable.Map.empty[Int, Int]
@@ -371,20 +371,29 @@ private class ExpressionCompiler {
 }
 
 object ExpressionCompiler {
-  def compile(expression: ScalarExpression[_]): (Array[ArrayOperation], Int, Int) = {
-    val compiler = new ExpressionCompiler
+  def compile(
+    expression: ScalarExpression[_],
+    numParameters: Int
+  ): (Array[ArrayOperation], Int, Int) = {
+    val compiler = new ExpressionCompiler(numParameters)
     val resultIndex = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
   }
 
-  def compile(expression: VectorExpression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
-    val compiler = new ExpressionCompiler
+  def compile(
+    expression: VectorExpression2d[_],
+    numParameters: Int
+  ): (Array[ArrayOperation], Int, (Int, Int)) = {
+    val compiler = new ExpressionCompiler(numParameters)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }
 
-  def compile(expression: PointExpression2d[_]): (Array[ArrayOperation], Int, (Int, Int)) = {
-    val compiler = new ExpressionCompiler
+  def compile(
+    expression: PointExpression2d[_],
+    numParameters: Int
+  ): (Array[ArrayOperation], Int, (Int, Int)) = {
+    val compiler = new ExpressionCompiler(numParameters)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }
