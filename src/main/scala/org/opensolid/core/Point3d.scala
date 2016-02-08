@@ -19,7 +19,8 @@ import scala.math
 final case class Point3d(x: Double, y: Double, z: Double)
   extends Scalable3d[Point3d] with Bounded[Bounds3d] with GeometricallyComparable[Point3d] {
 
-  def components: (Double, Double, Double) = (x, y, z)
+  def components: (Double, Double, Double) =
+    (x, y, z)
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -34,18 +35,23 @@ final case class Point3d(x: Double, y: Double, z: Double)
   override def equals(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
-  def squaredDistanceTo(that: Point3d): Double = (this - that).squaredLength
+  def squaredDistanceTo(that: Point3d): Double =
+    (this - that).squaredLength
 
-  def distanceTo(that: Point3d): Double = (this - that).length
+  def distanceTo(that: Point3d): Double =
+    (this - that).length
 
-  def isOrigin(tolerance: Double): Boolean = x * x + y * y + z * z <= tolerance * tolerance
+  def isOrigin(tolerance: Double): Boolean =
+    x * x + y * y + z * z <= tolerance * tolerance
 
-  def distanceAlong(axis: Axis3d): Double = (this - axis.originPoint).componentIn(axis.direction)
+  def distanceAlong(axis: Axis3d): Double =
+    (this - axis.originPoint).componentIn(axis.direction)
 
   def squaredDistanceTo(axis: Axis3d): Double =
     (this - axis.originPoint).cross(axis.direction.vector).squaredLength
 
-  def distanceTo(axis: Axis3d): Double = math.sqrt(squaredDistanceTo(axis))
+  def distanceTo(axis: Axis3d): Double =
+    math.sqrt(squaredDistanceTo(axis))
 
   def isOn(axis: Axis3d, tolerance: Double): Boolean =
     squaredDistanceTo(axis).isZero(tolerance * tolerance)
@@ -53,11 +59,14 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def distanceTo(plane: Plane3d): Double =
     (this - plane.originPoint).componentIn(plane.normalDirection)
 
-  def isOn(plane: Plane3d, tolerance: Double): Boolean = distanceTo(plane).isZero(tolerance)
+  def isOn(plane: Plane3d, tolerance: Double): Boolean =
+    distanceTo(plane).isZero(tolerance)
 
-  override def transformedBy(transformation: Transformation3d): Point3d = transformation(this)
+  override def transformedBy(transformation: Transformation3d): Point3d =
+    transformation(this)
 
-  override def scaledAbout(point: Point3d, scale: Double): Point3d = point + scale * (this - point)
+  override def scaledAbout(point: Point3d, scale: Double): Point3d =
+    point + scale * (this - point)
 
   def projectedOnto(axis: Axis3d): Point3d =
     axis.originPoint + (this - axis.originPoint).projectedOnto(axis)
@@ -67,10 +76,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
 
   def projectedInto(plane: Plane3d): Point2d = {
     val displacement = this - plane.originPoint
-    Point2d(
-      displacement.componentIn(plane.xDirection),
-      displacement.componentIn(plane.yDirection)
-    )
+    Point2d(displacement.componentIn(plane.xDirection), displacement.componentIn(plane.yDirection))
   }
 
   def hull(that: Point3d): Bounds3d =
@@ -79,7 +85,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def hull(bounds: Bounds3d): Bounds3d =
     Bounds3d(x.hull(bounds.x), y.hull(bounds.y), z.hull(bounds.z))
 
-  def +(vector: Vector3d): Point3d = Point3d(x + vector.x, y + vector.y, z + vector.z)
+  def +(vector: Vector3d): Point3d =
+    Point3d(x + vector.x, y + vector.y, z + vector.z)
 
   def +(vectorBounds: VectorBounds3d): Bounds3d =
     Bounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
