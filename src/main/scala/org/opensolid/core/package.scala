@@ -232,17 +232,22 @@ package object core {
     def *[P](vectorExpression: VectorExpression2d[P]): VectorExpression2d[P] =
       ScalarExpression.Constant[P](value) * vectorExpression
 
-    def hull(that: Double): Interval = Interval(value.min(that), value.max(that))
+    def hull(that: Double): Interval =
+      Interval(value.min(that), value.max(that))
 
-    def hull(interval: Interval): Interval = interval.hull(value)
+    def hull(interval: Interval): Interval =
+      interval.hull(value)
   }
 
   implicit class Tuple2Extensions[T](val tuple: (T, T)) extends AnyVal {
-    def first: T = tuple match { case (first, second) => first }
+    def first: T =
+      tuple match { case (first, second) => first }
 
-    def second: T = tuple match { case (first, second) => second }
+    def second: T =
+      tuple match { case (first, second) => second }
 
-    def map[U](function: (T) => U): (U, U) = (function(first), function(second))
+    def map[U](function: (T) => U): (U, U) =
+      (function(first), function(second))
 
     def foreach(function: (T) => Unit): Unit = {
       function(first)
@@ -258,17 +263,22 @@ package object core {
     def count(function: (T) => Boolean): Int =
       (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
 
-    def reduce[R](function: (T, T) => R): R = function(first, second)
+    def reduce[R](function: (T, T) => R): R =
+      function(first, second)
 
-    def reverse: (T, T) = (second, first)
+    def reverse: (T, T) =
+      (second, first)
   }
 
   implicit class Tuple3Extensions[T](val tuple: (T, T, T)) extends AnyVal {
-    def first: T = tuple match { case (first, second, third) => first }
+    def first: T =
+      tuple match { case (first, second, third) => first }
 
-    def second: T = tuple match { case (first, second, third) => second }
+    def second: T =
+      tuple match { case (first, second, third) => second }
 
-    def third: T = tuple match { case (first, second, third) => third }
+    def third: T =
+      tuple match { case (first, second, third) => third }
 
     def map[U](function: (T) => U): (U, U, U) =
       (function(first), function(second), function(third))
@@ -291,8 +301,10 @@ package object core {
       (if (function(second)) 1 else 0) +
       (if (function(third)) 1 else 0)
 
-    def reduce[R](function: (T, T, T) => R): R = function(first, second, third)
+    def reduce[R](function: (T, T, T) => R): R =
+      function(first, second, third)
 
-    def reverse: (T, T, T) = (third, second, first)
+    def reverse: (T, T, T) =
+      (third, second, first)
   }
 }
