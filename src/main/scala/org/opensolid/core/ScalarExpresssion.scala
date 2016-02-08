@@ -91,6 +91,12 @@ sealed abstract class ScalarExpression[P] {
   final def times(that: VectorExpression2d[P]): VectorExpression2d[P] =
     that * this
 
+  final def *(vector: Vector2d): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](vector) * this
+
+  final def times(vector: Vector2d): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](vector) * this
+
   final def /(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
     case (_, Constant(0)) => throw new ArithmeticException("Division by zero")
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
