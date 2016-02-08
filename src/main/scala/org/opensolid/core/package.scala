@@ -83,7 +83,7 @@ import scala.math
   * TODO
   */
 package object core {
-  implicit class ImplicitScalar(val value: Double) extends AnyVal {
+  implicit class DoubleExtensions(val value: Double) extends AnyVal {
     def isZero(tolerance: Double): Boolean =
       value >= -tolerance && value <= tolerance
 
