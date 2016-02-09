@@ -72,7 +72,7 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
     LineSegment3d(startPoint.placedOnto(plane), endPoint.placedOnto(plane))
 
   def parameterized: ParametricCurve2d =
-    parameterized(startPoint + CurveParameter * vector, Interval.Unit)
+    parameterizedBy(startPoint + CurveParameter * vector, Interval.Unit)
 }
 
 object LineSegment2d {
