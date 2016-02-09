@@ -16,4 +16,10 @@ package org.opensolid.core
 
 trait Curve1d extends Bounded[Interval] {
   def parameterized: ParametricCurve1d
+
+  def parameterized(
+    expression: ScalarExpression[CurveParameter],
+    domain: Interval
+  ): ParametricCurve1d =
+    new ParameterizedCurve1d(this, expression, domain)
 }

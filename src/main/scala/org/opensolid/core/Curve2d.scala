@@ -16,4 +16,10 @@ package org.opensolid.core
 
 trait Curve2d extends Bounded[Bounds2d] {
   def parameterized: ParametricCurve2d
+
+  def parameterized(
+    expression: PointExpression2d[CurveParameter],
+    domain: Interval
+  ): ParametricCurve2d =
+    new ParameterizedCurve2d(this, expression, domain)
 }
