@@ -84,42 +84,19 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
 
   def plus(that: Vector3d): Vector3d = this + that
 
-  def +(vectorBounds: VectorBounds3d): VectorBounds3d =
-    VectorBounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
-
-  def plus(vectorBounds: VectorBounds3d): VectorBounds3d = this + vectorBounds
-
   def -(that: Vector3d): Vector3d = Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
 
   def minus(that: Vector3d): Vector3d = this - that
-
-  def -(vectorBounds: VectorBounds3d): VectorBounds3d =
-    VectorBounds3d(x - vectorBounds.x, y - vectorBounds.y, z - vectorBounds.z)
-
-  def minus(vectorBounds: VectorBounds3d): VectorBounds3d = this - vectorBounds
 
   def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
 
   def times(value: Double): Vector3d = this * value
 
-  def *(interval: Interval): VectorBounds3d =
-    VectorBounds3d(x * interval, y * interval, z * interval)
-
-  def times(interval: Interval): VectorBounds3d = this * interval
-
   def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
 
   def dividedBy(value: Double): Vector3d = this / value
 
-  def /(interval: Interval): VectorBounds3d =
-    VectorBounds3d(x / interval, y / interval, z / interval)
-
-  def dividedBy(interval: Interval): VectorBounds3d = this / interval
-
   def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
-
-  def dot(vectorBounds: VectorBounds3d): Interval =
-    x * vectorBounds.x + y * vectorBounds.y + z * vectorBounds.z
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -128,16 +105,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.x * that.y - this.y * that.x
     )
 
-  def cross(vectorBounds: VectorBounds3d): VectorBounds3d =
-    VectorBounds3d(
-      y * vectorBounds.z - z * vectorBounds.y,
-      z * vectorBounds.x - x * vectorBounds.z,
-      x * vectorBounds.y - y * vectorBounds.x
-    )
-
   def componentIn(direction: Direction3d): Double = dot(direction.vector)
-
-  def componentIn(directionBounds: DirectionBounds3d): Interval = dot(directionBounds.vectorBounds)
 }
 
 object Vector3d {

@@ -83,69 +83,6 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
     this.x.contains(that.x, tolerance) &&
     this.y.contains(that.y, tolerance) &&
     this.z.contains(that.z, tolerance)
-
-  def squaredLength: Interval = x * x + y * y + z * z
-
-  def length: Interval = Interval.sqrt(squaredLength)
-
-  def normalized: VectorBounds3d = directionBounds.vectorBounds
-
-  def directionBounds: DirectionBounds3d = {
-    if (this == VectorBounds3d.Zero) {
-      DirectionBounds3d.Empty
-    } else {
-      val length = this.length
-      DirectionBounds3d(x / length, y / length, z / length)
-    }
-  }
-
-  def unary_- : VectorBounds3d = VectorBounds3d(-x, -y, -z)
-
-  def +(vector: Vector3d): VectorBounds3d =
-    VectorBounds3d(x + vector.x, y + vector.y, z + vector.z)
-
-  def +(that: VectorBounds3d): VectorBounds3d =
-    VectorBounds3d(this.x + that.x, this.y + that.y, this.z + that.z)
-
-  def -(vector: Vector3d): VectorBounds3d =
-    VectorBounds3d(x - vector.x, y - vector.y, z - vector.z)
-
-  def -(that: VectorBounds3d): VectorBounds3d =
-    VectorBounds3d(this.x - that.x, this.y - that.y, this.z - that.z)
-
-  def *(value: Double): VectorBounds3d = VectorBounds3d(x * value, y * value, z * value)
-
-  def *(interval: Interval): VectorBounds3d =
-    VectorBounds3d(x * interval, y * interval, z * interval)
-
-  def /(value: Double): VectorBounds3d = VectorBounds3d(x / value, y / value, z / value)
-
-  def /(interval: Interval): VectorBounds3d =
-    VectorBounds3d(x / interval, y / interval, z / interval)
-
-  def dot(vector: Vector3d): Interval = x * vector.x + y * vector.y + z * vector.z
-
-  def dot(that: VectorBounds3d): Interval = this.x * that.x + this.y * that.y + this.z * that.z
-
-  def cross(vector: Vector3d): VectorBounds3d =
-    VectorBounds3d(
-      y * vector.z - z * vector.y,
-      z * vector.x - x * vector.z,
-      x * vector.y - y * vector.x
-    )
-
-  def cross(that: VectorBounds3d): VectorBounds3d =
-    VectorBounds3d(
-      this.y * that.z - this.z * that.y,
-      this.z * that.x - this.x * that.z,
-      this.x * that.y - this.y * that.x
-    )
-
-  def componentIn(direction: Direction3d): Interval =
-    dot(direction.vector)
-
-  def componentIn(directionBounds: DirectionBounds3d): Interval =
-    dot(directionBounds.vectorBounds)
 }
 
 object VectorBounds3d {

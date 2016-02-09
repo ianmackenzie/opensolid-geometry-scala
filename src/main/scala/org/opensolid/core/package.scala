@@ -205,18 +205,6 @@ package object core {
     def *(direction: Direction3d): Vector3d =
       direction * value
 
-    def *(vectorBounds: VectorBounds2d): VectorBounds2d =
-      vectorBounds * value
-
-    def *(vectorBounds: VectorBounds3d): VectorBounds3d =
-      vectorBounds * value
-
-    def *(directionBounds: DirectionBounds2d): VectorBounds2d =
-      directionBounds * value
-
-    def *(directionBounds: DirectionBounds3d): VectorBounds3d =
-      directionBounds * value
-
     def +[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
       ScalarExpression.Constant[P](value) + scalarExpression
 

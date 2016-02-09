@@ -40,9 +40,6 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
   def *(value: Double): Vector2d =
     vector * value
 
-  def *(interval: Interval): VectorBounds2d =
-    vector * interval
-
   def transformedBy(transformation: Transformation2d): Direction2d =
     Direction2d(vector.transformedBy(transformation))
 

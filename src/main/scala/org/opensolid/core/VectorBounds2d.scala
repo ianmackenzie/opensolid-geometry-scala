@@ -69,51 +69,6 @@ final case class VectorBounds2d(x: Interval, y: Interval) {
 
   def contains(that: VectorBounds2d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
-
-  def squaredLength: Interval = x * x + y * y
-
-  def length: Interval = Interval.sqrt(squaredLength)
-
-  def normalized: VectorBounds2d = directionBounds.vectorBounds
-
-  def directionBounds: DirectionBounds2d = {
-    if (this == VectorBounds2d.Zero) {
-      DirectionBounds2d.Empty
-    } else {
-      val length = this.length
-      DirectionBounds2d(x / length, y / length)
-    }
-  }
-
-  def unary_- : VectorBounds2d = VectorBounds2d(-x, -y)
-
-  def +(vector: Vector2d): VectorBounds2d = VectorBounds2d(x + vector.x, y + vector.y)
-
-  def +(that: VectorBounds2d): VectorBounds2d = VectorBounds2d(this.x + that.x, this.y + that.y)
-
-  def -(vector: Vector2d): VectorBounds2d = VectorBounds2d(x - vector.x, y - vector.y)
-
-  def -(that: VectorBounds2d): VectorBounds2d = VectorBounds2d(this.x - that.x, this.y - that.y)
-
-  def *(value: Double): VectorBounds2d = VectorBounds2d(x * value, y * value)
-
-  def *(interval: Interval): VectorBounds2d = VectorBounds2d(x * interval, y * interval)
-
-  def /(value: Double): VectorBounds2d = VectorBounds2d(x / value, y / value)
-
-  def /(interval: Interval): VectorBounds2d = VectorBounds2d(x / interval, y / interval)
-
-  def dot(vector: Vector2d): Interval = x * vector.x + y * vector.y
-
-  def dot(that: VectorBounds2d): Interval = this.x * that.x + this.y * that.y
-
-  def cross(vector: Vector2d): Interval = x * vector.y - y * vector.x
-
-  def cross(that: VectorBounds2d): Interval = this.x * that.y - this.y * that.x
-
-  def componentIn(direction: Direction2d): Interval = dot(direction.vector)
-
-  def componentIn(directionBounds: DirectionBounds2d): Interval = dot(directionBounds.vectorBounds)
 }
 
 object VectorBounds2d {

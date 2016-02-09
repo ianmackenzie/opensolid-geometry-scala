@@ -43,9 +43,6 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
   def *(value: Double): Vector3d =
     vector * value
 
-  def *(interval: Interval): VectorBounds3d =
-    vector * interval
-
   def transformedBy(transformation: Transformation3d): Direction3d =
     Direction3d(vector.transformedBy(transformation))
 

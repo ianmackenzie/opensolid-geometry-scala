@@ -470,54 +470,6 @@ final case class Interval(lowerBound: Double, upperBound: Double)
   def dividedBy(that: Interval): Interval =
     this / that
 
-  def *(vector: Vector2d): VectorBounds2d =
-    vector * this
-
-  def times(vector: Vector2d): VectorBounds2d =
-    vector * this
-
-  def *(vector: Vector3d): VectorBounds3d =
-    vector * this
-
-  def times(vector: Vector3d): VectorBounds3d =
-    vector * this
-
-  def *(direction: Direction2d): VectorBounds2d =
-    direction * this
-
-  def times(direction: Direction2d): VectorBounds2d =
-    direction * this
-
-  def *(direction: Direction3d): VectorBounds3d =
-    direction * this
-
-  def times(direction: Direction3d): VectorBounds3d =
-    direction * this
-
-  def *(vectorBounds: VectorBounds2d): VectorBounds2d =
-    vectorBounds * this
-
-  def times(vectorBounds: VectorBounds2d): VectorBounds2d =
-    vectorBounds * this
-
-  def *(vectorBounds: VectorBounds3d): VectorBounds3d =
-    vectorBounds * this
-
-  def times(vectorBounds: VectorBounds3d): VectorBounds3d =
-    vectorBounds * this
-
-  def *(directionBounds: DirectionBounds2d): VectorBounds2d =
-    directionBounds * this
-
-  def times(directionBounds: DirectionBounds2d): VectorBounds2d =
-    directionBounds * this
-
-  def *(directionBounds: DirectionBounds3d): VectorBounds3d =
-    directionBounds * this
-
-  def times(directionBounds: DirectionBounds3d): VectorBounds3d =
-    directionBounds * this
-
   def abs: Interval = {
     if (isEmpty) {
       Interval.Empty

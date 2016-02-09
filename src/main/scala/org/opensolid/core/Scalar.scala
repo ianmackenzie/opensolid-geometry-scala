@@ -117,18 +117,6 @@ class Scalar(val value: Double) extends AnyVal {
   def times(direction: Direction3d): Vector3d =
     value * direction
 
-  def times(vectorBounds: VectorBounds2d): VectorBounds2d =
-    value * vectorBounds
-
-  def times(vectorBounds: VectorBounds3d): VectorBounds3d =
-    value * vectorBounds
-
-  def times(directionBounds: DirectionBounds2d): VectorBounds2d =
-    value * directionBounds
-
-  def times(directionBounds: DirectionBounds3d): VectorBounds3d =
-    value * directionBounds
-
   def plus[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
     value + scalarExpression
 

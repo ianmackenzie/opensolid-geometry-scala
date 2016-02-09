@@ -104,24 +104,6 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
         (Bounds3d(x, y, zLower), Bounds3d(x, y, zUpper))
       }
     }
-
-  def +(vector: Vector3d): Bounds3d =
-    Bounds3d(x + vector.x, y + vector.y, z + vector.z)
-
-  def +(vectorBounds: VectorBounds3d): Bounds3d =
-    Bounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
-
-  def -(vector: Vector3d): Bounds3d =
-    Bounds3d(x - vector.x, y - vector.y, z - vector.z)
-
-  def -(vectorBounds: VectorBounds3d): Bounds3d =
-    Bounds3d(x - vectorBounds.x, y - vectorBounds.y, z - vectorBounds.z)
-
-  def -(point: Point3d): VectorBounds3d =
-    VectorBounds3d(x - point.x, y - point.y, z - point.z)
-
-  def -(that: Bounds3d): VectorBounds3d =
-    VectorBounds3d(this.x - that.x, this.y - that.y, this.z - that.z)
 }
 
 object Bounds3d {

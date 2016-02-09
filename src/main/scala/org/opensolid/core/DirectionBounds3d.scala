@@ -32,15 +32,6 @@ final case class DirectionBounds3d(vectorBounds: VectorBounds3d) {
 
   def component(index: Int): Interval =
     vectorBounds.component(index)
-
-  def unary_- : DirectionBounds3d =
-    DirectionBounds3d(-vectorBounds)
-
-  def *(value: Double): VectorBounds3d =
-    vectorBounds * value
-
-  def *(interval: Interval): VectorBounds3d =
-    vectorBounds * interval
 }
 
 object DirectionBounds3d {

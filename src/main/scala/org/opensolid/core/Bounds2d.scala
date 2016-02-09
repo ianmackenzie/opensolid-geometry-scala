@@ -91,24 +91,6 @@ final case class Bounds2d(x: Interval, y: Interval)
       (Bounds2d(x, yLower), Bounds2d(x, yUpper))
     }
   }
-
-  def +(vector: Vector2d): Bounds2d =
-    Bounds2d(x + vector.x, y + vector.y)
-
-  def +(vectorBounds: VectorBounds2d): Bounds2d =
-    Bounds2d(x + vectorBounds.x, y + vectorBounds.y)
-
-  def -(vector: Vector2d): Bounds2d =
-    Bounds2d(x - vector.x, y - vector.y)
-
-  def -(vectorBounds: VectorBounds2d): Bounds2d =
-    Bounds2d(x - vectorBounds.x, y - vectorBounds.y)
-
-  def -(point: Point2d): VectorBounds2d =
-    VectorBounds2d(x - point.x, y - point.y)
-
-  def -(that: Bounds2d): VectorBounds2d =
-    VectorBounds2d(this.x - that.x, this.y - that.y)
 }
 
 object Bounds2d {

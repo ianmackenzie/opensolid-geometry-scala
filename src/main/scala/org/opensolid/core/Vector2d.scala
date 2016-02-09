@@ -60,47 +60,23 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def plus(that: Vector2d): Vector2d = this + that
 
-  def +(vectorBounds: VectorBounds2d): VectorBounds2d =
-    VectorBounds2d(x + vectorBounds.x, y + vectorBounds.y)
-
-  def plus(vectorBounds: VectorBounds2d): VectorBounds2d = this + vectorBounds
-
   def -(that: Vector2d): Vector2d = Vector2d(this.x - that.x, this.y - that.y)
 
   def minus(that: Vector2d): Vector2d = this - that
-
-  def -(vectorBounds: VectorBounds2d): VectorBounds2d =
-    VectorBounds2d(x - vectorBounds.x, y - vectorBounds.y)
-
-  def minus(vectorBounds: VectorBounds2d): VectorBounds2d = this - vectorBounds
 
   def *(value: Double): Vector2d = Vector2d(x * value, y * value)
 
   def times(value: Double): Vector2d = this * value
 
-  def *(interval: Interval): VectorBounds2d = VectorBounds2d(x * interval, y * interval)
-
-  def times(interval: Interval): VectorBounds2d = this * interval
-
   def /(value: Double): Vector2d = Vector2d(x / value, y / value)
 
   def dividedBy(value: Double): Vector2d = this / value
 
-  def /(interval: Interval): VectorBounds2d = VectorBounds2d(x / interval, y / interval)
-
-  def dividedBy(interval: Interval): VectorBounds2d = this / interval
-
   def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
-
-  def dot(vectorBounds: VectorBounds2d): Interval = x * vectorBounds.x + y * vectorBounds.y
 
   def cross(that: Vector2d): Double = this.x * that.y - this.y * that.x
 
-  def cross(vectorBounds: VectorBounds2d): Interval = x * vectorBounds.y - y * vectorBounds.x
-
   def componentIn(direction: Direction2d): Double = dot(direction.vector)
-
-  def componentIn(directionBounds: DirectionBounds2d): Interval = dot(directionBounds.vectorBounds)
 }
 
 object Vector2d {
