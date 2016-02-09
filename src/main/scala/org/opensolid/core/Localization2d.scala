@@ -29,9 +29,11 @@ final case class Localization2d(frame: Frame2d) extends Transformation2d {
       vector.componentIn(frame.yDirection)
     )
 
-  def apply(direction: Direction2d): Direction2d =
+  def apply(direction: Direction2d): Direction2d = {
+    val vector = direction.vector
     Direction2d(
-      direction.x * frame.xDirection.x + direction.y * frame.xDirection.y,
-      direction.x * frame.yDirection.x + direction.y * frame.yDirection.y
+      vector.componentIn(frame.xDirection),
+      vector.componentIn(frame.yDirection)
     )
+  }
 }
