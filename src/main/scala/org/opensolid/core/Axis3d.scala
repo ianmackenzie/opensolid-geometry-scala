@@ -30,7 +30,7 @@ final case class Axis3d(originPoint: Point3d, direction: Direction3d)
     Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane))
 
   def normalPlane: Plane3d =
-    Plane3d(originPoint, direction)
+    Plane3d.fromPointAndNormal(originPoint, direction)
 
   def normalDirection: Direction3d =
     direction.normalDirection

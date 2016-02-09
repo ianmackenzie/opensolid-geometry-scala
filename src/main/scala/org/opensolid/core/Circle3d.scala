@@ -49,7 +49,7 @@ final case class Circle3d(centerPoint: Point3d, normalDirection: Direction3d, ra
     Axis3d(centerPoint, normalDirection)
 
   def plane: Plane3d =
-    Plane3d(centerPoint, normalDirection)
+    Plane3d.fromPointAndNormal(centerPoint, normalDirection)
 }
 
 object Circle3d {
@@ -59,7 +59,8 @@ object Circle3d {
     normalDirection: Direction3d,
     radius: Double
   ): Circle3d = {
-    val plane = Plane3d(firstPoint + 0.5 * (secondPoint - firstPoint), normalDirection)
+    val plane =
+      Plane3d.fromPointAndNormal(firstPoint + 0.5 * (secondPoint - firstPoint), normalDirection)
     Circle2d.throughTwoPoints(
       firstPoint.projectedInto(plane),
       secondPoint.projectedInto(plane),

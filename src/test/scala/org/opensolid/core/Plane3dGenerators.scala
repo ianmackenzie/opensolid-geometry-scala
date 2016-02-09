@@ -23,7 +23,7 @@ trait Plane3dGenerators {
     for {
       originPoint <- randomPoint3d
       normalDirection <- randomDirection3d
-    } yield Plane3d(originPoint, normalDirection)
+    } yield Plane3d.fromPointAndNormal(originPoint, normalDirection)
 
   implicit val arbitraryPlane3d: Arbitrary[Plane3d] = Arbitrary(randomPlane3d)
 }

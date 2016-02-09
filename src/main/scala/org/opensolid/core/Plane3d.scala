@@ -21,26 +21,6 @@ final case class Plane3d(
   normalDirection: Direction3d
 ) extends Transformable3d[Plane3d] {
 
-  def this(
-    originPoint: Point3d,
-    basisDirections: (Direction3d, Direction3d),
-    normalDirection: Direction3d
-  ) = this(originPoint, basisDirections.first, basisDirections.second, normalDirection)
-
-  def this(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d) =
-    this(
-      originPoint,
-      xDirection,
-      yDirection,
-      Direction3d(xDirection.vector.cross(yDirection.vector))
-    )
-
-  def this(originPoint: Point3d, basisDirections: (Direction3d, Direction3d)) =
-    this(originPoint, basisDirections.first, basisDirections.second)
-
-  def this(originPoint: Point3d, normalDirection: Direction3d) =
-    this(originPoint, Numerics.normalBasis(normalDirection), normalDirection)
-
   def basisDirections: (Direction3d, Direction3d) = (xDirection, yDirection)
 
   override def transformedBy(transformation: Transformation3d): Plane3d =
@@ -59,20 +39,19 @@ final case class Plane3d(
 }
 
 object Plane3d {
-  def apply(
+  def fromPointAndBasis(
     originPoint: Point3d,
-    basisDirections: (Direction3d, Direction3d),
-    normalDirection: Direction3d
-  ): Plane3d = new Plane3d(originPoint, basisDirections, normalDirection)
+    xDirection: Direction3d,
+    yDirection: Direction3d
+  ): Plane3d = {
+    val normalDirection = Direction3d(xDirection.vector.cross(yDirection.vector))
+    Plane3d(originPoint, xDirection, yDirection, normalDirection)
+  }
 
-  def apply(originPoint: Point3d, xDirection: Direction3d, yDirection: Direction3d): Plane3d =
-    new Plane3d(originPoint, xDirection, yDirection)
-
-  def apply(originPoint: Point3d, basisDirections: (Direction3d, Direction3d)): Plane3d =
-    new Plane3d(originPoint, basisDirections)
-
-  def apply(originPoint: Point3d, normalDirection: Direction3d): Plane3d =
-    new Plane3d(originPoint, normalDirection)
+  def fromPointAndNormal(originPoint: Point3d, normalDirection: Direction3d): Plane3d = {
+    val (xDirection, yDirection) = Numerics.normalBasis(normalDirection)
+    new Plane3d(originPoint, xDirection, yDirection, normalDirection)
+  }
 
   def through(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
     val normalDirection = Numerics.normalDirection(firstPoint, secondPoint, thirdPoint)
@@ -104,7 +83,7 @@ object Plane3d {
 
   def midplane(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
     val displacementVector = upperPoint - lowerPoint
-    Plane3d(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
+    Plane3d.fromPointAndNormal(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
   }
 
   def midplane(lowerPlane: Plane3d, upperPlane: Plane3d): Plane3d = {
@@ -135,7 +114,7 @@ object Plane3d {
         -normalVectorSum.direction
       }
 
-    Plane3d(originPoint, normalDirection)
+    Plane3d.fromPointAndNormal(originPoint, normalDirection)
   }
 
   val XY: Plane3d = Frame3d.Global.xyPlane
