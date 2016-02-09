@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-final case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
+final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
   extends Scalable2d[LineSegment2d]
   with Bounded[Bounds2d]
   with GeometricallyComparable[LineSegment2d]
@@ -22,49 +22,49 @@ final case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
 
   def this(endpoints: (Point2d, Point2d)) = this(endpoints.first, endpoints.second)
 
-  def endpoints: (Point2d, Point2d) = (firstEndpoint, secondEndpoint)
+  def endpoints: (Point2d, Point2d) = (startPoint, endPoint)
 
-  def vector: Vector2d = secondEndpoint - firstEndpoint
+  def vector: Vector2d = endPoint - startPoint
 
   def direction: Direction2d = vector.direction
 
   def normalDirection: Direction2d = direction.normalDirection
 
-  def axis: Axis2d = Axis2d(firstEndpoint, direction)
+  def axis: Axis2d = Axis2d(startPoint, direction)
 
-  def reversed: LineSegment2d = LineSegment2d(secondEndpoint, firstEndpoint)
+  def reversed: LineSegment2d = LineSegment2d(endPoint, startPoint)
 
   def length: Double = vector.length
 
   def squaredLength: Double = vector.squaredLength
 
-  def midpoint: Point2d = firstEndpoint + 0.5 * vector
+  def midpoint: Point2d = startPoint + 0.5 * vector
 
-  override def bounds: Bounds2d = firstEndpoint.hull(secondEndpoint)
+  override def bounds: Bounds2d = startPoint.hull(endPoint)
 
   override def equals(that: LineSegment2d, tolerance: Double): Boolean =
-    this.firstEndpoint.equals(that.firstEndpoint, tolerance) &&
-    this.secondEndpoint.equals(that.secondEndpoint, tolerance)
+    this.startPoint.equals(that.startPoint, tolerance) &&
+    this.endPoint.equals(that.endPoint, tolerance)
 
   override def scaledAbout(point: Point2d, scale: Double): LineSegment2d = {
     require(scale > 0.0)
-    LineSegment2d(firstEndpoint.scaledAbout(point, scale), secondEndpoint.scaledAbout(point, scale))
+    LineSegment2d(startPoint.scaledAbout(point, scale), endPoint.scaledAbout(point, scale))
   }
 
   override def transformedBy(transformation: Transformation2d): LineSegment2d =
     LineSegment2d(
-      firstEndpoint.transformedBy(transformation),
-      secondEndpoint.transformedBy(transformation)
+      startPoint.transformedBy(transformation),
+      endPoint.transformedBy(transformation)
     )
 
   def projectedOnto(axis: Axis2d): LineSegment2d =
-    LineSegment2d(firstEndpoint.projectedOnto(axis), secondEndpoint.projectedOnto(axis))
+    LineSegment2d(startPoint.projectedOnto(axis), endPoint.projectedOnto(axis))
 
   def placedOnto(plane: Plane3d): LineSegment3d =
-    LineSegment3d(firstEndpoint.placedOnto(plane), secondEndpoint.placedOnto(plane))
+    LineSegment3d(startPoint.placedOnto(plane), endPoint.placedOnto(plane))
 
   def parameterized: ParametricCurve2d =
-    parameterized(firstEndpoint + CurveParameter * vector, Interval.Unit)
+    parameterized(startPoint + CurveParameter * vector, Interval.Unit)
 }
 
 object LineSegment2d {
