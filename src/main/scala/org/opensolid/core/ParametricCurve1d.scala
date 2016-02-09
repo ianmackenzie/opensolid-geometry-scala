@@ -14,17 +14,19 @@
 
 package org.opensolid.core
 
-case class ParametricCurve1d(
-  expression: ScalarExpression[CurveParameter],
-  domain: Interval
+class ParametricCurve1d(
+  val expression: ScalarExpression[CurveParameter],
+  val domain: Interval
 ) extends Curve1d {
-
-  override val bounds: Interval = evaluate(domain)
-
-  override def parameterized: ParametricCurve1d = this
 
   private[this] val (arrayOperations, arraySize, resultIndex) =
     ExpressionCompiler.compile(expression, 1)
+
+  override def bounds: Interval =
+    evaluate(domain)
+
+  override def parameterized: ParametricCurve1d =
+    this
 
   def evaluate(parameterValue: Double): Double = {
     val array = Array.ofDim[Double](arraySize)
