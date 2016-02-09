@@ -17,7 +17,8 @@ package org.opensolid.core
 final case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
   extends Scalable2d[LineSegment2d]
   with Bounded[Bounds2d]
-  with GeometricallyComparable[LineSegment2d] {
+  with GeometricallyComparable[LineSegment2d]
+  with Curve2d {
 
   def this(endpoints: (Point2d, Point2d)) = this(endpoints.first, endpoints.second)
 
@@ -61,6 +62,9 @@ final case class LineSegment2d(firstEndpoint: Point2d, secondEndpoint: Point2d)
 
   def placedOnto(plane: Plane3d): LineSegment3d =
     LineSegment3d(firstEndpoint.placedOnto(plane), secondEndpoint.placedOnto(plane))
+
+  def parameterized: ParametricCurve2d =
+    parameterized(firstEndpoint + CurveParameter * vector, Interval.Unit)
 }
 
 object LineSegment2d {
