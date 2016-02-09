@@ -20,8 +20,6 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
   with GeometricallyComparable[LineSegment2d]
   with Curve2d {
 
-  def this(endpoints: (Point2d, Point2d)) = this(endpoints.first, endpoints.second)
-
   def endpoints: (Point2d, Point2d) = (startPoint, endPoint)
 
   def vector: Vector2d = endPoint - startPoint
@@ -68,5 +66,7 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
 }
 
 object LineSegment2d {
-  def apply(endpoints: (Point2d, Point2d)): LineSegment2d = new LineSegment2d(endpoints)
+  def fromEndpoints(endpoints: (Point2d, Point2d)): LineSegment2d = endpoints match {
+    case (startPoint, endPoint) => LineSegment2d(startPoint, endPoint)
+  }
 }

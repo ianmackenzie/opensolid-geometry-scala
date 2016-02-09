@@ -19,8 +19,6 @@ final case class LineSegment3d(startPoint: Point3d, endPoint: Point3d)
   with Bounded[Bounds3d]
   with GeometricallyComparable[LineSegment3d] {
 
-  def this(endpoints: (Point3d, Point3d)) = this(endpoints.first, endpoints.second)
-
   def endpoints: (Point3d, Point3d) = (startPoint, endPoint)
 
   def vector: Vector3d = endPoint - startPoint
@@ -66,5 +64,7 @@ final case class LineSegment3d(startPoint: Point3d, endPoint: Point3d)
 }
 
 object LineSegment3d {
-  def apply(endpoints: (Point3d, Point3d)): LineSegment3d = new LineSegment3d(endpoints)
+  def fromEndpoints(endpoints: (Point3d, Point3d)): LineSegment3d = endpoints match {
+    case (startPoint, endPoint) => LineSegment3d(startPoint, endPoint)
+  }
 }
