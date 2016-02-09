@@ -134,7 +134,8 @@ object Bounds2d {
   val Unit: Bounds2d = Bounds2d(Interval.Unit, Interval.Unit)
 
   implicit val Traits: Bounds[Bounds2d] = new Bounds[Bounds2d] {
-    override def component(bounds: Bounds2d, index: Int): Interval = bounds.component(index)
+    override def component(bounds: Bounds2d, index: Int): Interval =
+      bounds.component(index)
 
     override def overlaps(first: Bounds2d, second: Bounds2d, tolerance: Double): Boolean =
       first.overlaps(second, tolerance)
