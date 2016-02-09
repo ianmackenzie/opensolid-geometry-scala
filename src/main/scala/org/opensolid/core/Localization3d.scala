@@ -32,13 +32,11 @@ final case class Localization3d(frame: Frame3d) extends Transformation3d {
     )
 
   def apply(direction: Direction3d): Direction3d = {
-    val xDirection = frame.xDirection
-    val yDirection = frame.yDirection
-    val zDirection = frame.zDirection
+    val vector = direction.vector
     Direction3d(
-      direction.x * xDirection.x + direction.y * xDirection.y + direction.z * xDirection.z,
-      direction.x * yDirection.x + direction.y * yDirection.y + direction.z * yDirection.z,
-      direction.x * zDirection.x + direction.y * zDirection.y + direction.z * zDirection.z
+      vector.componentIn(frame.xDirection),
+      vector.componentIn(frame.yDirection),
+      vector.componentIn(frame.zDirection)
     )
   }
 }
