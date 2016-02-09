@@ -125,17 +125,20 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
 }
 
 object Bounds3d {
-  def fromComponents(components: (Interval, Interval, Interval)): Bounds3d =
-    Bounds3d(components.first, components.second, components.third)
+  def fromComponents(components: (Interval, Interval, Interval)): Bounds3d = components match {
+    case (x, y, z) => Bounds3d(x, y, z)
+  }
 
   def singleton(point: Point3d): Bounds3d =
     Bounds3d(Interval.singleton(point.x), Interval.singleton(point.y), Interval.singleton(point.z))
 
-  def hullOf(points: (Point3d, Point3d)): Bounds3d =
-    points.first.hull(points.second)
+  def hullOf(points: (Point3d, Point3d)): Bounds3d = points match {
+    case (first, second) => first.hull(second)
+  }
 
-  def hullOf(points: (Point3d, Point3d, Point3d)): Bounds3d =
-    points.first.hull(points.second).hull(points.third)
+  def hullOf(points: (Point3d, Point3d, Point3d)): Bounds3d = points match {
+    case (first, second, third) => first.hull(second).hull(third)
+  }
 
   val Empty: Bounds3d = Bounds3d(Interval.Empty, Interval.Empty, Interval.Empty)
 

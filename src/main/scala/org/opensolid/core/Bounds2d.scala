@@ -112,17 +112,20 @@ final case class Bounds2d(x: Interval, y: Interval)
 }
 
 object Bounds2d {
-  def fromComponents(components: (Interval, Interval)): Bounds2d =
-    Bounds2d(components.first, components.second)
+  def fromComponents(components: (Interval, Interval)): Bounds2d = components match {
+    case (x, y) => Bounds2d(x, y)
+  }
 
   def singleton(point: Point2d): Bounds2d =
     Bounds2d(Interval.singleton(point.x), Interval.singleton(point.y))
 
-  def hullOf(points: (Point2d, Point2d)): Bounds2d =
-    points.first.hull(points.second)
+  def hullOf(points: (Point2d, Point2d)): Bounds2d = points match {
+    case (first, second) => first.hull(second)
+  }
 
-  def hullOf(points: (Point2d, Point2d, Point2d)): Bounds2d =
-    points.first.hull(points.second).hull(points.third)
+  def hullOf(points: (Point2d, Point2d, Point2d)): Bounds2d = points match {
+    case (first, second, third) => first.hull(second).hull(third)
+  }
 
   val Empty: Bounds2d = Bounds2d(Interval.Empty, Interval.Empty)
 
