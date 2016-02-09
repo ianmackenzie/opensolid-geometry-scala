@@ -25,4 +25,15 @@ final case class Globalization3d(frame: Frame3d) extends Transformation3d {
     vector.x * frame.xDirection +
     vector.y * frame.yDirection +
     vector.z * frame.zDirection
+
+  override def apply(direction: Direction3d): Direction3d = {
+    val xDirection = frame.xDirection
+    val yDirection = frame.yDirection
+    val zDirection = frame.zDirection
+    Direction3d(
+      direction.x * xDirection.x + direction.y * yDirection.x + direction.z * zDirection.x,
+      direction.x * xDirection.y + direction.y * yDirection.y + direction.z * zDirection.y,
+      direction.x * xDirection.z + direction.y * yDirection.z + direction.z * zDirection.z
+    )
+  }
 }

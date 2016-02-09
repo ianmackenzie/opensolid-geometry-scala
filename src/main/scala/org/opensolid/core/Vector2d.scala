@@ -41,14 +41,23 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
 
   def placedOnto(plane: Plane3d): Vector3d = x * plane.xDirection + y * plane.yDirection
 
-  def normalized: Vector2d = this match {
-    case Vector2d.Zero => this
-    case _ => this / length
+  def normalized: Vector2d = {
+    val length = this.length
+    if (length == 0.0) {
+      throw GeometricException("Cannot normalize zero length vector")
+    }
+    this / length
   }
 
   def perpendicularVector: Vector2d = Vector2d(-y, x)
 
-  def direction: Direction2d = Direction2d(normalized)
+  def direction: Direction2d = {
+    val length = this.length
+    if (length == 0.0) {
+      throw GeometricException("Cannot find direction of zero length vector")
+    }
+    Direction2d(x / length, y / length)
+  }
 
   def normalDirection: Direction2d = perpendicularVector.direction
 

@@ -20,4 +20,10 @@ final case class Globalization2d(frame: Frame2d) extends Transformation2d {
 
   override def apply(vector: Vector2d): Vector2d =
     vector.x * frame.xDirection + vector.y * frame.yDirection
+
+  override def apply(direction: Direction2d): Direction2d =
+    Direction2d(
+      direction.x * frame.xDirection.x + direction.y * frame.yDirection.x,
+      direction.x * frame.xDirection.y + direction.y * frame.yDirection.y
+    )
 }

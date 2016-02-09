@@ -24,4 +24,10 @@ final case class Rotation2d(point: Point2d, angle: Double) extends Transformatio
 
   override def apply(vector: Vector2d): Vector2d =
     Vector2d(cosAngle * vector.x - sinAngle * vector.y, sinAngle * vector.x + cosAngle * vector.y)
+
+  override def apply(direction: Direction2d): Direction2d =
+    Direction2d(
+      cosAngle * direction.x - sinAngle * direction.y,
+      sinAngle * direction.x + cosAngle * direction.y
+    )
 }

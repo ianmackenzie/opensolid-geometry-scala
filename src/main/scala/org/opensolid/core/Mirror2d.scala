@@ -15,11 +15,20 @@
 package org.opensolid.core
 
 final case class Mirror2d(axis: Axis2d) extends Transformation2d {
+  private[this] val originPoint = axis.originPoint
   private[this] val normalDirection = axis.normalDirection
 
   override def apply(point: Point2d): Point2d =
-    point - 2 * (point - axis.originPoint).projectedOnto(normalDirection)
+    point - 2 * (point - originPoint).projectedOnto(normalDirection)
 
   override def apply(vector: Vector2d): Vector2d =
     vector - 2 * vector.projectedOnto(normalDirection)
+
+  override def apply(direction: Direction2d): Direction2d = {
+    val dotProduct = direction.x * normalDirection.x + direction.y * normalDirection.y
+    Direction2d(
+      direction.x - 2 * dotProduct * normalDirection.x,
+      direction.y - 2 * dotProduct * normalDirection.y
+    )
+  }
 }

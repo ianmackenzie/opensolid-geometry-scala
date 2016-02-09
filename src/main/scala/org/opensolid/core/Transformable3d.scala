@@ -26,15 +26,6 @@ trait Transformable3d[T] {
 
   def rotatedAbout(axis: Axis3d, angle: Double): T = transformedBy(Rotation3d(axis, angle))
 
-  def rotatedAboutX(point: Point3d, angle: Double): T =
-    transformedBy(Rotation3d.aboutX(point, angle))
-
-  def rotatedAboutY(point: Point3d, angle: Double): T =
-    transformedBy(Rotation3d.aboutY(point, angle))
-
-  def rotatedAboutZ(point: Point3d, angle: Double): T =
-    transformedBy(Rotation3d.aboutZ(point, angle))
-
   def relativeTo(frame: Frame3d): T = transformedBy(Localization3d(frame))
 
   def placedIn(frame: Frame3d): T = transformedBy(Globalization3d(frame))

@@ -16,44 +16,20 @@ package org.opensolid.core
 
 import scala.math
 
-final case class Rotation3d(point: Point3d, basis: (Direction3d, Direction3d, Direction3d))
-  extends Transformation3d {
+final case class Rotation3d(axis: Axis3d, angle: Double) extends Transformation3d {
+  private[this] val originPoint = axis.originPoint
+  private[this] val (xDirection, yDirection, zDirection) =
+    Numerics.rotationBasis(axis.direction, angle)
 
-  def this(axis: Axis3d, angle: Double) =
-    this(axis.originPoint, Numerics.rotationBasis(axis.direction, angle))
+  override def apply(point: Point3d): Point3d = originPoint + apply(point - originPoint)
 
-  override def apply(point: Point3d): Point3d = this.point + apply(point - this.point)
-
-  override def apply(vector: Vector3d): Vector3d = {
-    val (xDirection, yDirection, zDirection) = basis
+  override def apply(vector: Vector3d): Vector3d =
     vector.x * xDirection + vector.y * yDirection + vector.z * zDirection
-  }
-}
 
-object Rotation3d {
-  def apply(axis: Axis3d, angle: Double): Rotation3d = new Rotation3d(axis, angle)
-
-  def aboutX(point: Point3d, angle: Double): Rotation3d = {
-    val sinAngle = math.sin(angle)
-    val cosAngle = math.cos(angle)
-    val yDirection = Direction3d(0.0, cosAngle, sinAngle)
-    val zDirection = Direction3d(0.0, -sinAngle, cosAngle)
-    Rotation3d(point, (Direction3d.X, yDirection, zDirection))
-  }
-
-  def aboutY(point: Point3d, angle: Double): Rotation3d = {
-    val sinAngle = math.sin(angle)
-    val cosAngle = math.cos(angle)
-    val xDirection = Direction3d(cosAngle, 0.0, -sinAngle)
-    val zDirection = Direction3d(sinAngle, 0.0, cosAngle)
-    Rotation3d(point, (xDirection, Direction3d.Y, zDirection))
-  }
-
-  def aboutZ(point: Point3d, angle: Double): Rotation3d = {
-    val sinAngle = math.sin(angle)
-    val cosAngle = math.cos(angle)
-    val xDirection = Direction3d(cosAngle, sinAngle, 0.0)
-    val yDirection = Direction3d(-sinAngle, cosAngle, 0.0)
-    Rotation3d(point, (xDirection, yDirection, Direction3d.Z))
-  }
+  override def apply(direction: Direction3d): Direction3d =
+    Direction3d(
+      direction.x * xDirection.x + direction.y * yDirection.x + direction.z * zDirection.x,
+      direction.x * xDirection.y + direction.y * yDirection.y + direction.z * zDirection.y,
+      direction.x * xDirection.z + direction.y * yDirection.z + direction.z * zDirection.z
+    )
 }

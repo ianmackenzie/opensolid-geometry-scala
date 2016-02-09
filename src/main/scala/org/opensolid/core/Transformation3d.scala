@@ -21,31 +21,26 @@ abstract class Transformation3d {
 
   def apply(vector: Vector3d): Vector3d
 
-  def andThen(that: Transformation3d): Transformation3d = Transformation3d.Compound(this, that)
+  def apply(direction: Direction3d): Direction3d
 
-  def compose(that: Transformation3d): Transformation3d = Transformation3d.Compound(that, this)
+  def andThen(that: Transformation3d): Transformation3d =
+    Transformation3d.Compound(this, that)
+
+  def compose(that: Transformation3d): Transformation3d =
+    Transformation3d.Compound(that, this)
 }
 
 object Transformation3d {
   final case class Compound(first: Transformation3d, second: Transformation3d)
     extends Transformation3d {
 
-    override def apply(point: Point3d): Point3d = second(first(point))
+    override def apply(point: Point3d): Point3d =
+      second(first(point))
 
-    override def apply(vector: Vector3d): Vector3d = second(first(vector))
-  }
+    override def apply(vector: Vector3d): Vector3d =
+      second(first(vector))
 
-  implicit class TransformationFunction3d[T <: Transformable3d[T]](
-    transformation: Transformation3d
-  ) extends AbstractFunction1[T, T] {
-
-    def apply(transformable: T): T = transformable.transformedBy(transformation)
-  }
-
-  implicit class VectorTransformationFunction3d[T <: VectorTransformable3d[T]](
-    transformation: Transformation3d
-  ) extends AbstractFunction1[T, T] {
-
-    def apply(transformable: T): T = transformable.transformedBy(transformation)
+    override def apply(direction: Direction3d): Direction3d =
+      second(first(direction))
   }
 }

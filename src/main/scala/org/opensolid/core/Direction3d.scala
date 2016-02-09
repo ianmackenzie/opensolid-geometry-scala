@@ -18,39 +18,39 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Direction3d] {
-  def this(x: Double, y: Double, z: Double) =
-    this(Vector3d(x, y, z))
+final case class Direction3d(x: Double, y: Double, z: Double)
+  extends VectorTransformable3d[Direction3d] {
 
-  def x: Double =
-    vector.x
-
-  def y: Double =
-    vector.y
-
-  def z: Double =
-    vector.z
+  def this(vector: Vector3d) =
+    this(vector.x, vector.y, vector.z)
 
   def components: (Double, Double, Double) =
-    vector.components
+    (x, y, z)
 
-  def component(index: Int): Double =
-    vector.component(index)
+  def component(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case 2 => z
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Direction3d")
+  }
+
+  def vector: Vector3d =
+    Vector3d(x, y, z)
 
   def unary_- : Direction3d =
-    Direction3d(-vector)
+    Direction3d(-x, -y, -z)
 
   def negated: Direction3d =
     -this
 
   def *(value: Double): Vector3d =
-    vector * value
+    Vector3d(x * value, y * value, z * value)
 
   def times(value: Double): Vector3d =
     this * value
 
   def transformedBy(transformation: Transformation3d): Direction3d =
-    Direction3d(vector.transformedBy(transformation))
+    transformation(this)
 
   def projectedOnto(plane: Plane3d): Direction3d =
     vector.projectedOnto(plane).direction
@@ -62,15 +62,16 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
     vector.normalDirection
 
   def angleTo(that: Direction3d): Double =
-    math.acos(this.vector.dot(that.vector))
+    math.acos(x * that.x + y * that.y + z * that.z)
 }
 
 object Direction3d {
-  def apply(x: Double, y: Double, z: Double): Direction3d =
-    Direction3d(Vector3d(x, y, z))
+  def apply(vector: Vector3d): Direction3d =
+    Direction3d(vector.x, vector.y, vector.z)
 
-  def fromComponents(components: (Double, Double, Double)): Direction3d =
-    Direction3d(Vector3d.fromComponents(components))
+  def fromComponents(components: (Double, Double, Double)): Direction3d = components match {
+    case (x, y, z) => Direction3d(x, y, z)
+  }
 
   def spherical(azimuth: Double, elevation: Double): Direction3d = {
     val cosElevation = math.cos(elevation)
@@ -99,8 +100,6 @@ object Direction3d {
     }
     generate
   }
-
-  val None: Direction3d = Direction3d(0.0, 0.0, 0.0)
 
   val X: Direction3d = Direction3d(1.0, 0.0, 0.0)
 

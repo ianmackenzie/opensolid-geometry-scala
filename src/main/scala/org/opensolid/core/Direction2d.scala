@@ -18,53 +18,54 @@ import scala.annotation.tailrec
 import scala.math
 import scala.util.Random
 
-final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Direction2d] {
-  def this(x: Double, y: Double) =
-    this(Vector2d(x, y))
-
-  def x: Double =
-    vector.x
-
-  def y: Double =
-    vector.y
+final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d[Direction2d] {
+  def this(vector: Vector2d) =
+    this(vector.x, vector.y)
 
   def components: (Double, Double) =
-    vector.components
+    (x, y)
 
-  def component(index: Int): Double =
-    vector.component(index)
+  def component(index: Int): Double = index match {
+    case 0 => x
+    case 1 => y
+    case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Direction2d")
+  }
+
+  def vector: Vector2d =
+    Vector2d(x, y)
 
   def unary_- : Direction2d =
-    Direction2d(-vector)
+    Direction2d(-x, -y)
 
   def negated: Direction2d =
     -this
 
   def *(value: Double): Vector2d =
-    vector * value
+    Vector2d(x * value, y * value)
 
   def times(value: Double): Vector2d =
     this * value
 
   def transformedBy(transformation: Transformation2d): Direction2d =
-    Direction2d(vector.transformedBy(transformation))
+    transformation(this)
 
   def placedOnto(plane: Plane3d): Direction3d =
     Direction3d(vector.placedOnto(plane))
 
   def normalDirection: Direction2d =
-    Direction2d(vector.perpendicularVector)
+    Direction2d(-y, x)
 
   def angleTo(that: Direction2d): Double =
-    math.atan2(this.vector.cross(that.vector), this.vector.dot(that.vector))
+    math.atan2(x * that.y - y * that.x, x * that.x + y * that.y)
 }
 
 object Direction2d {
-  def apply(x: Double, y: Double): Direction2d =
-    Direction2d(Vector2d(x, y))
+  def apply(vector: Vector2d): Direction2d =
+    Direction2d(vector.x, vector.y)
 
-  def fromComponents(components: (Double, Double)): Direction2d =
-    Direction2d(Vector2d.fromComponents(components))
+  def fromComponents(components: (Double, Double)): Direction2d = components match {
+    case (x, y) => Direction2d(x, y)
+  }
 
   def polar(angle: Double): Direction2d =
     Direction2d(math.cos(angle), math.sin(angle))
@@ -87,8 +88,6 @@ object Direction2d {
     }
     generate
   }
-
-  val None: Direction2d = Direction2d(0.0, 0.0)
 
   val X: Direction2d = Direction2d(1.0, 0.0)
 

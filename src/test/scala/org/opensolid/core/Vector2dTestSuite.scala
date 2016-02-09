@@ -74,10 +74,8 @@ class Vector2dTestSuite
   test("normalized") {
     forAll {
       (vector: Vector2d) => {
-        val normalized = vector.normalized
-        if (vector == Vector2d.Zero) {
-          normalized.shouldBe(Vector2d.Zero)
-        } else {
+        whenever(vector != Vector2d.Zero) {
+          val normalized = vector.normalized
           normalized.length.should(beEqualTo(1.0, 2 * eps(1.0)))
           val tolerance = 4 * eps(vector.length)
           vector.dot(normalized).should(beEqualTo(vector.length, tolerance))
@@ -88,7 +86,13 @@ class Vector2dTestSuite
   }
 
   test("direction") {
-    forAll { (vector: Vector2d) => vector.direction.vector.shouldBe(vector.normalized) }
+    forAll {
+      (vector: Vector2d) => {
+        whenever(vector != Vector2d.Zero) {
+          vector.direction.vector.shouldBe(vector.normalized)
+        }
+      }
+    }
   }
 
   test("dot(that)") {
@@ -105,9 +109,11 @@ class Vector2dTestSuite
     }
     forAll {
       (vector: Vector2d) => {
-        val tolerance = 4 * eps(vector.length)
-        vector.componentIn(vector.normalDirection).should(beEqualTo(0.0, tolerance))
-        vector.componentIn(vector.direction).should(beEqualTo(vector.length, tolerance))
+        whenever (vector != Vector2d.Zero) {
+          val tolerance = 4 * eps(vector.length)
+          vector.componentIn(vector.normalDirection).should(beEqualTo(0.0, tolerance))
+          vector.componentIn(vector.direction).should(beEqualTo(vector.length, tolerance))
+        }
       }
     }
   }
