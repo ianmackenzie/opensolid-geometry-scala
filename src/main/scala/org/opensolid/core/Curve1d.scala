@@ -21,5 +21,8 @@ trait Curve1d extends Bounded[Interval] {
     expression: ScalarExpression[CurveParameter],
     domain: Interval
   ): ParametricCurve1d =
-    new ParameterizedCurve1d(this, expression, domain)
+    new ParametricCurve1d(expression, domain) {
+      override def bounds: Interval =
+        Curve1d.this.bounds
+    }
 }

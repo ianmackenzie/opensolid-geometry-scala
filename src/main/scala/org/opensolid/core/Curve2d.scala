@@ -21,5 +21,8 @@ trait Curve2d extends Bounded[Bounds2d] {
     expression: PointExpression2d[CurveParameter],
     domain: Interval
   ): ParametricCurve2d =
-    new ParameterizedCurve2d(this, expression, domain)
+    new ParametricCurve2d(expression, domain) {
+      override def bounds: Bounds2d =
+        Curve2d.this.bounds
+    }
 }
