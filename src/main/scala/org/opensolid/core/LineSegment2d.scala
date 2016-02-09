@@ -45,7 +45,7 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
     vector.squaredLength
 
   def midpoint: Point2d =
-    startPoint + 0.5 * vector
+    Point2d.midpoint(startPoint, endPoint)
 
   override def bounds: Bounds2d =
     startPoint.hull(endPoint)

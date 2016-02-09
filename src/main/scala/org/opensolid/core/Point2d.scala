@@ -129,5 +129,8 @@ object Point2d {
   def polar(radius: Double, angle: Double): Point2d =
     Point2d(radius * math.cos(angle), radius * math.sin(angle))
 
+  def midpoint(firstPoint: Point2d, secondPoint: Point2d): Point2d =
+    firstPoint + 0.5 * (secondPoint - firstPoint)
+
   val Origin: Point2d = Point2d(0.0, 0.0)
 }

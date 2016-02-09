@@ -60,7 +60,7 @@ object Circle3d {
     radius: Double
   ): Circle3d = {
     val plane =
-      Plane3d.fromPointAndNormal(firstPoint + 0.5 * (secondPoint - firstPoint), normalDirection)
+      Plane3d.fromPointAndNormal(Point3d.midpoint(firstPoint, secondPoint), normalDirection)
     Circle2d.throughTwoPoints(
       firstPoint.projectedInto(plane),
       secondPoint.projectedInto(plane),

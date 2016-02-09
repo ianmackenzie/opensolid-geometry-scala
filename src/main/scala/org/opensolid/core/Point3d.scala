@@ -103,5 +103,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
 }
 
 object Point3d {
+  def midpoint(firstPoint: Point3d, secondPoint: Point3d): Point3d =
+    firstPoint + 0.5 * (secondPoint - firstPoint)
+
   val Origin: Point3d = Point3d(0.0, 0.0, 0.0)
 }
