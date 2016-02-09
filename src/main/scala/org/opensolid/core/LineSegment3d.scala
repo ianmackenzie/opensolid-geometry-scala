@@ -19,23 +19,32 @@ final case class LineSegment3d(startPoint: Point3d, endPoint: Point3d)
   with Bounded[Bounds3d]
   with GeometricallyComparable[LineSegment3d] {
 
-  def endpoints: (Point3d, Point3d) = (startPoint, endPoint)
+  def endpoints: (Point3d, Point3d) =
+    (startPoint, endPoint)
 
-  def vector: Vector3d = endPoint - startPoint
+  def vector: Vector3d =
+    endPoint - startPoint
 
-  def direction: Direction3d = vector.direction
+  def direction: Direction3d =
+    vector.direction
 
-  def normalDirection: Direction3d = direction.normalDirection
+  def normalDirection: Direction3d =
+    direction.normalDirection
 
-  def axis: Axis3d = Axis3d(startPoint, direction)
+  def axis: Axis3d =
+    Axis3d(startPoint, direction)
 
-  def length: Double = vector.length
+  def length: Double =
+    vector.length
 
-  def squaredLength: Double = vector.squaredLength
+  def squaredLength: Double =
+    vector.squaredLength
 
-  def midpoint: Point3d = startPoint + 0.5 * vector
+  def midpoint: Point3d =
+    startPoint + 0.5 * vector
 
-  override def bounds: Bounds3d = startPoint.hull(endPoint)
+  override def bounds: Bounds3d =
+    startPoint.hull(endPoint)
 
   override def equals(that: LineSegment3d, tolerance: Double): Boolean =
     this.startPoint.equals(that.startPoint, tolerance) &&

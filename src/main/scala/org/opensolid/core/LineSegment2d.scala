@@ -20,25 +20,35 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
   with GeometricallyComparable[LineSegment2d]
   with Curve2d {
 
-  def endpoints: (Point2d, Point2d) = (startPoint, endPoint)
+  def endpoints: (Point2d, Point2d) =
+    (startPoint, endPoint)
 
-  def vector: Vector2d = endPoint - startPoint
+  def vector: Vector2d =
+    endPoint - startPoint
 
-  def direction: Direction2d = vector.direction
+  def direction: Direction2d =
+    vector.direction
 
-  def normalDirection: Direction2d = direction.normalDirection
+  def normalDirection: Direction2d =
+    direction.normalDirection
 
-  def axis: Axis2d = Axis2d(startPoint, direction)
+  def axis: Axis2d =
+    Axis2d(startPoint, direction)
 
-  def reversed: LineSegment2d = LineSegment2d(endPoint, startPoint)
+  def reversed: LineSegment2d =
+    LineSegment2d(endPoint, startPoint)
 
-  def length: Double = vector.length
+  def length: Double =
+    vector.length
 
-  def squaredLength: Double = vector.squaredLength
+  def squaredLength: Double =
+    vector.squaredLength
 
-  def midpoint: Point2d = startPoint + 0.5 * vector
+  def midpoint: Point2d =
+    startPoint + 0.5 * vector
 
-  override def bounds: Bounds2d = startPoint.hull(endPoint)
+  override def bounds: Bounds2d =
+    startPoint.hull(endPoint)
 
   override def equals(that: LineSegment2d, tolerance: Double): Boolean =
     this.startPoint.equals(that.startPoint, tolerance) &&
