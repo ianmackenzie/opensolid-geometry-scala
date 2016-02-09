@@ -33,16 +33,6 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
 
   def isSingleton: Boolean = x.isSingleton && y.isSingleton && z.isSingleton
 
-  def center: Vector3d = Vector3d(x.median, y.median, z.median)
-
-  def interpolated(u: Double, v: Double, w: Double): Vector3d =
-    Vector3d(x.interpolated(u), y.interpolated(v), z.interpolated(w))
-
-  def randomVector: Vector3d = randomVector(Random)
-
-  def randomVector(generator: Random): Vector3d =
-    interpolated(generator.nextDouble, generator.nextDouble, generator.nextDouble)
-
   def hull(vector: Vector3d): VectorBounds3d =
     VectorBounds3d(x.hull(vector.x), y.hull(vector.y), z.hull(vector.z))
 

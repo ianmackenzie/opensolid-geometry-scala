@@ -40,18 +40,6 @@ final case class Bounds2d(x: Interval, y: Interval)
   def isSingleton: Boolean =
     x.isSingleton && y.isSingleton
 
-  def center: Point2d =
-    Point2d(x.median, y.median)
-
-  def interpolated(u: Double, v: Double): Point2d =
-    Point2d(x.interpolated(u), y.interpolated(v))
-
-  def randomPoint: Point2d =
-    randomPoint(Random)
-
-  def randomPoint(generator: Random): Point2d =
-    interpolated(generator.nextDouble, generator.nextDouble)
-
   def hull(point: Point2d): Bounds2d =
     Bounds2d(x.hull(point.x), y.hull(point.y))
 

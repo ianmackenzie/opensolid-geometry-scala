@@ -40,18 +40,6 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   def isSingleton: Boolean =
     x.isSingleton && y.isSingleton && z.isSingleton
 
-  def center: Point3d =
-    Point3d(x.median, y.median, z.median)
-
-  def interpolated(u: Double, v: Double, w: Double): Point3d =
-    Point3d(x.interpolated(u), y.interpolated(v), z.interpolated(w))
-
-  def randomPoint: Point3d =
-    randomPoint(Random)
-
-  def randomPoint(generator: Random): Point3d =
-    interpolated(generator.nextDouble, generator.nextDouble, generator.nextDouble)
-
   def hull(point: Point3d): Bounds3d =
     Bounds3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
