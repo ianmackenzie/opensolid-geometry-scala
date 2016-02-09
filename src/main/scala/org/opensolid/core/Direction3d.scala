@@ -40,8 +40,14 @@ final case class Direction3d(vector: Vector3d) extends VectorTransformable3d[Dir
   def unary_- : Direction3d =
     Direction3d(-vector)
 
+  def negated: Direction3d =
+    -this
+
   def *(value: Double): Vector3d =
     vector * value
+
+  def times(value: Double): Vector3d =
+    this * value
 
   def transformedBy(transformation: Transformation3d): Direction3d =
     Direction3d(vector.transformedBy(transformation))

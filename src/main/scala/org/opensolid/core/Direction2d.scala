@@ -37,8 +37,14 @@ final case class Direction2d(vector: Vector2d) extends VectorTransformable2d[Dir
   def unary_- : Direction2d =
     Direction2d(-vector)
 
+  def negated: Direction2d =
+    -this
+
   def *(value: Double): Vector2d =
     vector * value
+
+  def times(value: Double): Vector2d =
+    this * value
 
   def transformedBy(transformation: Transformation2d): Direction2d =
     Direction2d(vector.transformedBy(transformation))
