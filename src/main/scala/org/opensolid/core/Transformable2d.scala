@@ -47,10 +47,12 @@ trait Transformable2d[T] {
   def transformedBy(transformation: Transformation2d): T
 
   /** Returns this object translated by the given vector. */
-  def translatedBy(vector: Vector2d): T = transformedBy(Translation2d(vector))
+  def translatedBy(vector: Vector2d): T =
+    transformedBy(Translation2d(vector))
 
   /** Returns this object translated by the given x and y components.*/
-  def translatedBy(x: Double, y: Double): T = transformedBy(Translation2d(x, y))
+  def translatedBy(x: Double, y: Double): T =
+    transformedBy(Translation2d(x, y))
 
   /** Returns this object translated along the given axis by the given distance.
     *
@@ -60,7 +62,8 @@ trait Transformable2d[T] {
     transformedBy(Translation2d(axis, distance))
 
   /** Returns this object rotated about the given point by the given angle (in radians). */
-  def rotatedAbout(point: Point2d, angle: Double): T = transformedBy(Rotation2d(point, angle))
+  def rotatedAbout(point: Point2d, angle: Double): T =
+    transformedBy(Rotation2d(point, angle))
 
   /** Global-to-local transformation: returns this object as expressed relative to the given
     * reference frame, assuming it is currently defined in global coordinates.
@@ -69,7 +72,8 @@ trait Transformable2d[T] {
     * are themselves defined in global coordinates, and returns a copy of `curve` expressed in local
     * coordinates relative to `frame`.
     */
-  def relativeTo(frame: Frame2d): T = transformedBy(Localization2d(frame))
+  def relativeTo(frame: Frame2d): T =
+    transformedBy(Localization2d(frame))
 
   /** Local-to-global transformation: returns this object in global coordinates, assuming it is
     * currently defined relative to the given reference frame.
@@ -87,7 +91,8 @@ trait Transformable2d[T] {
     * val point = Point2d(1, 0).placedIn(frame) // Point2d(0.707, 0.707)
     * }}}
     */
-  def placedIn(frame: Frame2d): T = transformedBy(Globalization2d(frame))
+  def placedIn(frame: Frame2d): T =
+    transformedBy(Globalization2d(frame))
 
   /** Returns this object mirrored about the given axis.
     *
@@ -104,5 +109,6 @@ trait Transformable2d[T] {
     * normals property (and perhaps the list itself should be reversed so that all line segments
     * continue to touch head-to-tail).
     */
-  def mirroredAbout(axis: Axis2d): T = transformedBy(Mirror2d(axis))
+  def mirroredAbout(axis: Axis2d): T =
+    transformedBy(Mirror2d(axis))
 }

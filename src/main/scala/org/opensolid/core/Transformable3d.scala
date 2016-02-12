@@ -17,18 +17,24 @@ package org.opensolid.core
 trait Transformable3d[T] {
   def transformedBy(transformation: Transformation3d): T
 
-  def translatedBy(vector: Vector3d): T = transformedBy(Translation3d(vector))
+  def translatedBy(vector: Vector3d): T =
+    transformedBy(Translation3d(vector))
 
-  def translatedBy(x: Double, y: Double, z: Double): T = transformedBy(Translation3d(x, y, z))
+  def translatedBy(x: Double, y: Double, z: Double): T =
+    transformedBy(Translation3d(x, y, z))
 
   def translatedAlong(axis: Axis3d, distance: Double): T =
     transformedBy(Translation3d(axis, distance))
 
-  def rotatedAbout(axis: Axis3d, angle: Double): T = transformedBy(Rotation3d(axis, angle))
+  def rotatedAbout(axis: Axis3d, angle: Double): T =
+    transformedBy(Rotation3d(axis, angle))
 
-  def relativeTo(frame: Frame3d): T = transformedBy(Localization3d(frame))
+  def relativeTo(frame: Frame3d): T =
+    transformedBy(Localization3d(frame))
 
-  def placedIn(frame: Frame3d): T = transformedBy(Globalization3d(frame))
+  def placedIn(frame: Frame3d): T =
+    transformedBy(Globalization3d(frame))
 
-  def mirroredAbout(plane: Plane3d): T = transformedBy(Mirror3d(plane))
+  def mirroredAbout(plane: Plane3d): T =
+    transformedBy(Mirror3d(plane))
 }
