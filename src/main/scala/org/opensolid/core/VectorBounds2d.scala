@@ -67,8 +67,9 @@ final case class VectorBounds2d(x: Interval, y: Interval) {
 }
 
 object VectorBounds2d {
-  def fromComponents(components: (Interval, Interval)): VectorBounds2d =
-    VectorBounds2d(components.first, components.second)
+  def fromComponents(components: (Interval, Interval)): VectorBounds2d = components match {
+    case (x, y) => VectorBounds2d(x, y)
+  }
 
   def singleton(vector: Vector2d): VectorBounds2d =
     VectorBounds2d(Interval.singleton(vector.x), Interval.singleton(vector.y))

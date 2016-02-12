@@ -81,7 +81,9 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
 
 object VectorBounds3d {
   def fromComponents(components: (Interval, Interval, Interval)): VectorBounds3d =
-    VectorBounds3d(components.first, components.second, components.third)
+    components match {
+      case (x, y, z) => VectorBounds3d(x, y, z)
+    }
 
   def singleton(vector: Vector3d): VectorBounds3d =
     VectorBounds3d(
