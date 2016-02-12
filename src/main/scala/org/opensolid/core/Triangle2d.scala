@@ -17,9 +17,6 @@ package org.opensolid.core
 final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVertex: Point2d)
   extends Scalable2d[Triangle2d] with Bounded[Bounds2d] with GeometricallyComparable[Triangle2d] {
 
-  def this(vertices: (Point2d, Point2d, Point2d)) =
-    this(vertices.first, vertices.second, vertices.third)
-
   def vertices: (Point2d, Point2d, Point2d) = (firstVertex, secondVertex, thirdVertex)
 
   def vertex(index: Int): Point2d = index match {
@@ -89,7 +86,5 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
 }
 
 object Triangle2d {
-  def apply(vertices: (Point2d, Point2d, Point2d)): Triangle2d = new Triangle2d(vertices)
-
   val Unit: Triangle2d = Triangle2d(Point2d.Origin, Point2d(1, 0), Point2d(0, 1))
 }
