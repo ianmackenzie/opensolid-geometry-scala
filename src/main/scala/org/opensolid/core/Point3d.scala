@@ -88,18 +88,11 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def +(vector: Vector3d): Point3d =
     Point3d(x + vector.x, y + vector.y, z + vector.z)
 
-  def +(vectorBounds: VectorBounds3d): Bounds3d =
-    Bounds3d(x + vectorBounds.x, y + vectorBounds.y, z + vectorBounds.z)
 
   def -(vector: Vector3d): Point3d = Point3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -(vectorBounds: VectorBounds3d): Bounds3d =
-    Bounds3d(x - vectorBounds.x, y - vectorBounds.y, z - vectorBounds.z)
-
   def -(that: Point3d): Vector3d = Vector3d(x - that.x, y - that.y, z - that.z)
 
-  def -(bounds: Bounds3d): VectorBounds3d =
-    VectorBounds3d(x - bounds.x, y - bounds.y, z - bounds.z)
 }
 
 object Point3d {
