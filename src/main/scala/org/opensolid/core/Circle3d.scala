@@ -68,17 +68,8 @@ object Circle3d {
     ).placedOnto(plane)
   }
 
-  def throughTwoPoints(
-    points: (Point3d, Point3d),
-    normalDirection: Direction3d,
-    radius: Double
-  ): Circle3d = Circle3d.throughTwoPoints(points.first, points.second, normalDirection, radius)
-
   def throughThreePoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Circle3d =
     Circle3d.circumcircle(Triangle3d(firstPoint, secondPoint, thirdPoint))
-
-  def throughThreePoints(points: (Point3d, Point3d, Point3d)): Circle3d =
-    Circle3d.throughThreePoints(points.first, points.second, points.third)
 
   def circumcircle(triangle: Triangle3d): Circle3d = {
     val plane = triangle.plane

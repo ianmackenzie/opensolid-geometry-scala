@@ -60,9 +60,6 @@ object Circle2d {
     Circle2d(centerPoint, radius)
   }
 
-  def throughTwoPoints(points: (Point2d, Point2d), radius: Double): Circle2d =
-    Circle2d.throughTwoPoints(points.first, points.second, radius)
-
   def throughThreePoints(
     firstPoint: Point2d,
     secondPoint: Point2d,
@@ -89,9 +86,6 @@ object Circle2d {
     val radius = (firstRadius + secondRadius + thirdRadius) / 3.0;
     Circle2d(centerPoint, radius)
   }
-
-  def throughThreePoints(points: (Point2d, Point2d, Point2d)): Circle2d =
-    Circle2d.throughThreePoints(points.first, points.second, points.third)
 
   def circumcircle(triangle: Triangle2d): Circle2d =
     Circle2d.throughThreePoints(triangle.firstVertex, triangle.secondVertex, triangle.thirdVertex)

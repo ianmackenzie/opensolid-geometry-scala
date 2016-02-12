@@ -89,14 +89,6 @@ object Bounds2d {
   def singleton(point: Point2d): Bounds2d =
     Bounds2d(Interval.singleton(point.x), Interval.singleton(point.y))
 
-  def hullOf(points: (Point2d, Point2d)): Bounds2d = points match {
-    case (first, second) => first.hull(second)
-  }
-
-  def hullOf(points: (Point2d, Point2d, Point2d)): Bounds2d = points match {
-    case (first, second, third) => first.hull(second).hull(third)
-  }
-
   val Empty: Bounds2d = Bounds2d(Interval.Empty, Interval.Empty)
 
   val Whole: Bounds2d = Bounds2d(Interval.Whole, Interval.Whole)

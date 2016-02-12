@@ -102,14 +102,6 @@ object Bounds3d {
   def singleton(point: Point3d): Bounds3d =
     Bounds3d(Interval.singleton(point.x), Interval.singleton(point.y), Interval.singleton(point.z))
 
-  def hullOf(points: (Point3d, Point3d)): Bounds3d = points match {
-    case (first, second) => first.hull(second)
-  }
-
-  def hullOf(points: (Point3d, Point3d, Point3d)): Bounds3d = points match {
-    case (first, second, third) => first.hull(second).hull(third)
-  }
-
   val Empty: Bounds3d = Bounds3d(Interval.Empty, Interval.Empty, Interval.Empty)
 
   val Whole: Bounds3d = Bounds3d(Interval.Whole, Interval.Whole, Interval.Whole)

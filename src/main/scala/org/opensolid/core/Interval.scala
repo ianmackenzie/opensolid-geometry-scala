@@ -506,12 +506,6 @@ object Interval {
   def singleton(value: Double): Interval =
     Interval(value, value)
 
-  def hullOf(values: (Double, Double)): Interval =
-    values.first.hull(values.second)
-
-  def hullOf(values: (Double, Double, Double)): Interval =
-    values.first.hull(values.second).hull(values.third)
-
   def sqrt(interval: Interval): Interval = {
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
