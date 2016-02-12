@@ -40,7 +40,8 @@ final case class Sphere3d(centerPoint: Point3d, radius: Double)
     (centerDistance + radiusDifference).isZero(tolerance)
   }
 
-  def contains(point: Point3d): Boolean = point.squaredDistanceTo(centerPoint) <= radius * radius
+  def contains(point: Point3d): Boolean =
+    point.squaredDistanceTo(centerPoint) <= radius * radius
 
   def projectedOnto(plane: Plane3d): Circle3d =
     Circle3d(centerPoint.projectedOnto(plane), plane.normalDirection, radius)

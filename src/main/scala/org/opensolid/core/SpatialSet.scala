@@ -23,11 +23,14 @@ class SpatialSet[T <: Bounded[B] with GeometricallyComparable[T], B : Bounds](it
 
   val root = SpatialTree.build[T, B](leaves, 0, leaves.size, traits, 0)
 
-  override def toString: String = s"SpatialSet($root)"
+  override def toString: String =
+    s"SpatialSet($root)"
 
-  override def length: Int = leaves.length
+  override def length: Int =
+    leaves.length
 
-  override def apply(index: Int): T = leaves(index).item
+  override def apply(index: Int): T =
+    leaves(index).item
 
   def withBoundsFilter(predicate: (B) => Boolean): Iterable[T] =
     new SpatialSet.Filtered[T, B](root, predicate)
@@ -45,7 +48,8 @@ object SpatialSet {
     predicate: (B) => Boolean
   ) extends Iterable[T] {
 
-    override def foreach[U](function: (T) => U): Unit = foreach(root, function)
+    override def foreach[U](function: (T) => U): Unit =
+      foreach(root, function)
 
     private[this] def foreach[U](tree: SpatialTree[T, B], function: (T) => U): Unit = tree match {
       case leaf: SpatialTree.Leaf[T, B] => if (predicate(leaf.bounds)) function(leaf.item)
@@ -57,7 +61,8 @@ object SpatialSet {
       case empty: SpatialTree.Empty[T, B] => ()
     }
 
-    override def iterator: Iterator[T] = iterator(root)
+    override def iterator: Iterator[T] =
+      iterator(root)
 
     private[this] def iterator(tree: SpatialTree[T, B]): Iterator[T] = tree match {
       case leaf: SpatialTree.Leaf[T, B] =>

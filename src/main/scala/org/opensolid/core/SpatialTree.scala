@@ -26,7 +26,8 @@ object SpatialTree {
     rightChild: SpatialTree[T, B]
   ) extends SpatialTree[T, B] {
 
-    override def toString: String = s"Node($leftChild, $rightChild)"
+    override def toString: String =
+      s"Node($leftChild, $rightChild)"
 
     override val size: Int = leftChild.size + rightChild.size
 
@@ -37,31 +38,41 @@ object SpatialTree {
       rightChild.foreach(function)
     }
 
-    override def iterator: Iterator[T] = leftChild.iterator ++ rightChild.iterator
+    override def iterator: Iterator[T] =
+      leftChild.iterator ++ rightChild.iterator
   }
 
   final case class Leaf[T <: Bounded[B], B : Bounds](val item: T) extends SpatialTree[T, B] {
-    override def toString: String = s"Leaf($item)"
+    override def toString: String =
+      s"Leaf($item)"
 
-    override def size: Int = 1
+    override def size: Int =
+      1
 
     override val bounds = item.bounds
 
-    override def foreach[U](function: (T) => U): Unit = function(item)
+    override def foreach[U](function: (T) => U): Unit =
+      function(item)
 
-    override def iterator: Iterator[T] = Iterator.single(item)
+    override def iterator: Iterator[T] =
+      Iterator.single(item)
   }
 
   final case class Empty[T <: Bounded[B], B : Bounds]() extends SpatialTree[T, B] {
-    override def toString: String = "Empty"
+    override def toString: String =
+      "Empty"
 
-    override def size: Int = 0
+    override def size: Int =
+      0
 
-    override def bounds: B = implicitly[Bounds[B]].Empty
+    override def bounds: B =
+      implicitly[Bounds[B]].Empty
 
-    override def foreach[U](function: (T) => U): Unit = ()
+    override def foreach[U](function: (T) => U): Unit =
+      ()
 
-    override def iterator: Iterator[T] = Iterator.empty
+    override def iterator: Iterator[T] =
+      Iterator.empty
   }
 
   private[core] def build[T <: Bounded[B], B: Bounds](
