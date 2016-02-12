@@ -17,7 +17,8 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransformable3d[Vector3d] {
-  def components: (Double, Double, Double) = (x, y, z)
+  def components: (Double, Double, Double) =
+    (x, y, z)
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -26,21 +27,29 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Vector3d")
   }
 
-  def squaredLength: Double = x * x + y * y + z * z
+  def squaredLength: Double =
+    x * x + y * y + z * z
 
-  def length: Double = math.sqrt(squaredLength)
+  def length: Double =
+    math.sqrt(squaredLength)
 
-  def isZero(tolerance: Double): Boolean = squaredLength.isZero(tolerance * tolerance)
+  def isZero(tolerance: Double): Boolean =
+    squaredLength.isZero(tolerance * tolerance)
 
-  def isNotZero(tolerance: Double): Boolean = squaredLength.isNotZero(tolerance * tolerance)
+  def isNotZero(tolerance: Double): Boolean =
+    squaredLength.isNotZero(tolerance * tolerance)
 
-  override def transformedBy(transformation: Transformation3d): Vector3d = transformation(this)
+  override def transformedBy(transformation: Transformation3d): Vector3d =
+    transformation(this)
 
-  def projectedOnto(direction: Direction3d): Vector3d = componentIn(direction) * direction
+  def projectedOnto(direction: Direction3d): Vector3d =
+    componentIn(direction) * direction
 
-  def projectedOnto(axis: Axis3d): Vector3d = projectedOnto(axis.direction)
+  def projectedOnto(axis: Axis3d): Vector3d =
+    projectedOnto(axis.direction)
 
-  def projectedOnto(plane: Plane3d): Vector3d = this - this.projectedOnto(plane.normalDirection)
+  def projectedOnto(plane: Plane3d): Vector3d =
+    this - this.projectedOnto(plane.normalDirection)
 
   def projectedInto(plane: Plane3d): Vector2d =
     Vector2d(
@@ -48,12 +57,21 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.componentIn(plane.yDirection)
     )
 
-  def normalized: Vector3d = this match {
-    case Vector3d.Zero => this
-    case _ => this / length
+  def normalized: Vector3d = {
+    val length = this.length
+    if (length == 0.0) {
+      throw GeometricException("Cannot normalize zero length vector")
+    }
+    this / length
   }
 
-  def direction: Direction3d = Direction3d(normalized)
+  def direction: Direction3d = {
+    val length = this.length
+    if (length == 0.0) {
+      throw GeometricException("Cannot find direction of zero length vector")
+    }
+    Direction3d(x / length, y / length, z / length)
+  }
 
   def perpendicularVector: Vector3d = {
     val absX = x.abs
@@ -74,29 +92,41 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     }
   }
 
-  def normalDirection: Direction3d = perpendicularVector.direction
+  def normalDirection: Direction3d =
+    perpendicularVector.direction
 
-  def unary_- : Vector3d = Vector3d(-x, -y, -z)
+  def unary_- : Vector3d =
+    Vector3d(-x, -y, -z)
 
-  def negated: Vector3d = -this
+  def negated: Vector3d =
+    -this
 
-  def +(that: Vector3d): Vector3d = Vector3d(this.x + that.x, this.y + that.y, this.z + that.z)
+  def +(that: Vector3d): Vector3d =
+    Vector3d(this.x + that.x, this.y + that.y, this.z + that.z)
 
-  def plus(that: Vector3d): Vector3d = this + that
+  def plus(that: Vector3d): Vector3d =
+    this + that
 
-  def -(that: Vector3d): Vector3d = Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
+  def -(that: Vector3d): Vector3d =
+    Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
 
-  def minus(that: Vector3d): Vector3d = this - that
+  def minus(that: Vector3d): Vector3d =
+    this - that
 
-  def *(value: Double): Vector3d = Vector3d(x * value, y * value, z * value)
+  def *(value: Double): Vector3d =
+    Vector3d(x * value, y * value, z * value)
 
-  def times(value: Double): Vector3d = this * value
+  def times(value: Double): Vector3d =
+    this * value
 
-  def /(value: Double): Vector3d = Vector3d(x / value, y / value, z / value)
+  def /(value: Double): Vector3d =
+    Vector3d(x / value, y / value, z / value)
 
-  def dividedBy(value: Double): Vector3d = this / value
+  def dividedBy(value: Double): Vector3d =
+    this / value
 
-  def dot(that: Vector3d): Double = this.x * that.x + this.y * that.y + this.z * that.z
+  def dot(that: Vector3d): Double =
+    this.x * that.x + this.y * that.y + this.z * that.z
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -105,12 +135,14 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.x * that.y - this.y * that.x
     )
 
-  def componentIn(direction: Direction3d): Double = dot(direction.vector)
+  def componentIn(direction: Direction3d): Double =
+    x * direction.x + y * direction.y + z * direction.z
 }
 
 object Vector3d {
-  def fromComponents(components: (Double, Double, Double)): Vector3d =
-    Vector3d(components.first, components.second, components.third)
+  def fromComponents(components: (Double, Double, Double)): Vector3d = components match {
+    case (x, y, z) => Vector3d(x, y, z)
+  }
 
   val Zero: Vector3d = Vector3d(0.0, 0.0, 0.0)
 }

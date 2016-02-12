@@ -17,7 +17,8 @@ package org.opensolid.core
 import scala.math
 
 final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Vector2d] {
-  def components: (Double, Double) = (x, y)
+  def components: (Double, Double) =
+    (x, y)
 
   def component(index: Int): Double = index match {
     case 0 => x
@@ -25,21 +26,29 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Vector2d")
   }
 
-  def squaredLength: Double = x * x + y * y
+  def squaredLength: Double =
+    x * x + y * y
 
-  def length: Double = math.sqrt(squaredLength)
+  def length: Double =
+    math.sqrt(squaredLength)
 
-  def isZero(tolerance: Double): Boolean = squaredLength.isZero(tolerance * tolerance)
+  def isZero(tolerance: Double): Boolean =
+    squaredLength.isZero(tolerance * tolerance)
 
-  def isNotZero(tolerance: Double): Boolean = squaredLength.isNotZero(tolerance * tolerance)
+  def isNotZero(tolerance: Double): Boolean =
+    squaredLength.isNotZero(tolerance * tolerance)
 
-  override def transformedBy(transformation: Transformation2d): Vector2d = transformation(this)
+  override def transformedBy(transformation: Transformation2d): Vector2d =
+    transformation(this)
 
-  def projectedOnto(direction: Direction2d): Vector2d = componentIn(direction) * direction
+  def projectedOnto(direction: Direction2d): Vector2d =
+    componentIn(direction) * direction
 
-  def projectedOnto(axis: Axis2d): Vector2d = projectedOnto(axis.direction)
+  def projectedOnto(axis: Axis2d): Vector2d =
+    projectedOnto(axis.direction)
 
-  def placedOnto(plane: Plane3d): Vector3d = x * plane.xDirection + y * plane.yDirection
+  def placedOnto(plane: Plane3d): Vector3d =
+    x * plane.xDirection + y * plane.yDirection
 
   def normalized: Vector2d = {
     val length = this.length
@@ -49,8 +58,6 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     this / length
   }
 
-  def perpendicularVector: Vector2d = Vector2d(-y, x)
-
   def direction: Direction2d = {
     val length = this.length
     if (length == 0.0) {
@@ -59,38 +66,56 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     Direction2d(x / length, y / length)
   }
 
-  def normalDirection: Direction2d = perpendicularVector.direction
+  def perpendicularVector: Vector2d =
+    Vector2d(-y, x)
 
-  def unary_- : Vector2d = Vector2d(-x, -y)
+  def normalDirection: Direction2d =
+    perpendicularVector.direction
 
-  def negated: Vector2d = -this
+  def unary_- : Vector2d =
+    Vector2d(-x, -y)
 
-  def +(that: Vector2d): Vector2d = Vector2d(this.x + that.x, this.y + that.y)
+  def negated: Vector2d =
+    -this
 
-  def plus(that: Vector2d): Vector2d = this + that
+  def +(that: Vector2d): Vector2d =
+    Vector2d(this.x + that.x, this.y + that.y)
 
-  def -(that: Vector2d): Vector2d = Vector2d(this.x - that.x, this.y - that.y)
+  def plus(that: Vector2d): Vector2d =
+    this + that
 
-  def minus(that: Vector2d): Vector2d = this - that
+  def -(that: Vector2d): Vector2d =
+    Vector2d(this.x - that.x, this.y - that.y)
 
-  def *(value: Double): Vector2d = Vector2d(x * value, y * value)
+  def minus(that: Vector2d): Vector2d =
+    this - that
 
-  def times(value: Double): Vector2d = this * value
+  def *(value: Double): Vector2d =
+    Vector2d(x * value, y * value)
 
-  def /(value: Double): Vector2d = Vector2d(x / value, y / value)
+  def times(value: Double): Vector2d =
+    this * value
 
-  def dividedBy(value: Double): Vector2d = this / value
+  def /(value: Double): Vector2d =
+    Vector2d(x / value, y / value)
 
-  def dot(that: Vector2d): Double = this.x * that.x + this.y * that.y
+  def dividedBy(value: Double): Vector2d =
+    this / value
 
-  def cross(that: Vector2d): Double = this.x * that.y - this.y * that.x
+  def dot(that: Vector2d): Double =
+    this.x * that.x + this.y * that.y
 
-  def componentIn(direction: Direction2d): Double = dot(direction.vector)
+  def cross(that: Vector2d): Double =
+    this.x * that.y - this.y * that.x
+
+  def componentIn(direction: Direction2d): Double =
+    x * direction.x + y * direction.y
 }
 
 object Vector2d {
-  def fromComponents(components: (Double, Double)): Vector2d =
-    Vector2d(components.first, components.second)
+  def fromComponents(components: (Double, Double)): Vector2d = components match {
+    case (x, y) => Vector2d(x, y)
+  }
 
   def polar(radius: Double, angle: Double): Vector2d =
     Vector2d(radius * math.cos(angle), radius * math.sin(angle))
