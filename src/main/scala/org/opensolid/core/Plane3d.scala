@@ -21,7 +21,8 @@ final case class Plane3d(
   normalDirection: Direction3d
 ) extends Transformable3d[Plane3d] {
 
-  def basisDirections: (Direction3d, Direction3d) = (xDirection, yDirection)
+  def basisDirections: (Direction3d, Direction3d) =
+    (xDirection, yDirection)
 
   override def transformedBy(transformation: Transformation3d): Plane3d =
     Plane3d(
@@ -31,11 +32,14 @@ final case class Plane3d(
       normalDirection.transformedBy(transformation)
     )
 
-  def offsetBy(distance: Double): Plane3d = translatedBy(distance * normalDirection)
+  def offsetBy(distance: Double): Plane3d =
+    translatedBy(distance * normalDirection)
 
-  def flipped: Plane3d = Plane3d(originPoint, xDirection, yDirection, -normalDirection)
+  def flipped: Plane3d =
+    Plane3d(originPoint, xDirection, yDirection, -normalDirection)
 
-  def normalAxis: Axis3d = Axis3d(originPoint, normalDirection)
+  def normalAxis: Axis3d =
+    Axis3d(originPoint, normalDirection)
 }
 
 object Plane3d {
