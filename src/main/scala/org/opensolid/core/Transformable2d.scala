@@ -59,7 +59,7 @@ trait Transformable2d[T] {
     * Equivalent to `translatedBy(distance * axis.direction)`.
     */
   def translatedAlong(axis: Axis2d, distance: Double): T =
-    transformedBy(Translation2d(axis, distance))
+    transformedBy(Translation2d.along(axis, distance))
 
   /** Returns this object rotated about the given point by the given angle (in radians). */
   def rotatedAbout(point: Point2d, angle: Double): T =
