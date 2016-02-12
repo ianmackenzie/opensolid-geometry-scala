@@ -27,12 +27,12 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
       throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a triangle vertex")
   }
 
-  def edges: (LineSegment3d, LineSegment3d, LineSegment3d) =
-    (
-      LineSegment3d(thirdVertex, secondVertex),
-      LineSegment3d(firstVertex, thirdVertex),
-      LineSegment3d(secondVertex, firstVertex)
-    )
+  def edges: (LineSegment3d, LineSegment3d, LineSegment3d) = {
+    val oppositeFirst = LineSegment3d(thirdVertex, secondVertex)
+    val oppositeSecond = LineSegment3d(firstVertex, thirdVertex)
+    val oppositeThird = LineSegment3d(secondVertex, firstVertex)
+    (oppositeFirst, oppositeSecond, oppositeThird)
+  }
 
   def edge(index: Int): LineSegment3d = index match {
     case 0 => LineSegment3d(thirdVertex, secondVertex)
