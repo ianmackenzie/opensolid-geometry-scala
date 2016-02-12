@@ -89,9 +89,11 @@ final case class Point3d(x: Double, y: Double, z: Double)
     Point3d(x + vector.x, y + vector.y, z + vector.z)
 
 
-  def -(vector: Vector3d): Point3d = Point3d(x - vector.x, y - vector.y, z - vector.z)
+  def -(vector: Vector3d): Point3d =
+    Point3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -(that: Point3d): Vector3d = Vector3d(x - that.x, y - that.y, z - that.z)
+  def -(that: Point3d): Vector3d =
+    Vector3d(x - that.x, y - that.y, z - that.z)
 
 }
 
