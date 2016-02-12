@@ -17,7 +17,8 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
-  def components: (Interval, Interval, Interval) = (x, y, z)
+  def components: (Interval, Interval, Interval) =
+    (x, y, z)
 
   def component(index: Int): Interval = index match {
     case 0 => x
@@ -27,11 +28,14 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
       throw new IndexOutOfBoundsException(s"Index $index is out of bounds for VectorBounds3d")
   }
 
-  def isEmpty: Boolean = x.isEmpty || y.isEmpty || z.isEmpty
+  def isEmpty: Boolean =
+    x.isEmpty || y.isEmpty || z.isEmpty
 
-  def isWhole: Boolean = x.isWhole && y.isWhole && z.isWhole
+  def isWhole: Boolean =
+    x.isWhole && y.isWhole && z.isWhole
 
-  def isSingleton: Boolean = x.isSingleton && y.isSingleton && z.isSingleton
+  def isSingleton: Boolean =
+    x.isSingleton && y.isSingleton && z.isSingleton
 
   def hull(vector: Vector3d): VectorBounds3d =
     VectorBounds3d(x.hull(vector.x), y.hull(vector.y), z.hull(vector.z))
