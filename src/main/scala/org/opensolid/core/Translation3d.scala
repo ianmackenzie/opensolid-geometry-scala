@@ -30,7 +30,7 @@ final case class Translation3d(vector: Vector3d) extends Transformation3d {
 
 object Translation3d {
   def apply(x: Double, y: Double, z: Double): Translation3d =
-    new Translation3d(x, y, z)
+    Translation3d(Vector3d(x, y, z))
 
   def along(axis: Axis3d, distance: Double): Translation3d =
     Translation3d(axis.direction * distance)
