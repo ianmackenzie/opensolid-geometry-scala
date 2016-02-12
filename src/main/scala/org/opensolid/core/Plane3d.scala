@@ -57,7 +57,7 @@ object Plane3d {
     new Plane3d(originPoint, xDirection, yDirection, normalDirection)
   }
 
-  def through(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
+  def throughPoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
     val normalDirection = Numerics.normalDirection(firstPoint, secondPoint, thirdPoint)
     val xDirection = (secondPoint - firstPoint) match {
       case Vector3d.Zero => normalDirection.normalDirection
@@ -67,14 +67,14 @@ object Plane3d {
     Plane3d(firstPoint, xDirection, yDirection, normalDirection)
   }
 
-  def through(axis: Axis3d): Plane3d = {
+  def throughAxis(axis: Axis3d): Plane3d = {
     val xDirection = axis.direction
     val yDirection = axis.normalDirection
     val normalDirection = Direction3d(xDirection.vector.cross(yDirection.vector))
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
-  def through(axis: Axis3d, point: Point3d): Plane3d = {
+  def throughAxisAndPoint(axis: Axis3d, point: Point3d): Plane3d = {
     val xDirection = axis.direction
     val crossProduct = xDirection.vector.cross(point - axis.originPoint)
     val normalDirection = crossProduct match {
@@ -85,12 +85,12 @@ object Plane3d {
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
-  def midplane(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
+  def midplaneBetweenPoints(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
     val displacementVector = upperPoint - lowerPoint
     Plane3d.fromPointAndNormal(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
   }
 
-  def midplane(lowerPlane: Plane3d, upperPlane: Plane3d): Plane3d = {
+  def midplaneBetweenPlanes(lowerPlane: Plane3d, upperPlane: Plane3d): Plane3d = {
     val displacementVector = upperPlane.originPoint - lowerPlane.originPoint
 
     // Compute origin point equidistant from both planes
