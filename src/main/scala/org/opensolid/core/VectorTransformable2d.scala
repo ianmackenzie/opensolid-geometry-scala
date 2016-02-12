@@ -17,11 +17,15 @@ package org.opensolid.core
 trait VectorTransformable2d[T] {
   def transformedBy(transformation: Transformation2d): T
 
-  def rotatedBy(angle: Double): T = transformedBy(Rotation2d(Point2d.Origin, angle))
+  def rotatedBy(angle: Double): T =
+    transformedBy(Rotation2d(Point2d.Origin, angle))
 
-  def relativeTo(frame: Frame2d): T = transformedBy(Localization2d(frame))
+  def relativeTo(frame: Frame2d): T =
+    transformedBy(Localization2d(frame))
 
-  def placedIn(frame: Frame2d): T = transformedBy(Globalization2d(frame))
+  def placedIn(frame: Frame2d): T =
+    transformedBy(Globalization2d(frame))
 
-  def mirroredAbout(axis: Axis2d): T = transformedBy(Mirror2d(axis))
+  def mirroredAbout(axis: Axis2d): T =
+    transformedBy(Mirror2d(axis))
 }
