@@ -97,6 +97,18 @@ sealed abstract class ScalarExpression[P] {
   final def times(vector: Vector2d): VectorExpression2d[P] =
     VectorExpression2d.Constant[P](vector) * this
 
+  final def *(that: VectorExpression3d[P]): VectorExpression3d[P] =
+    that * this
+
+  final def times(that: VectorExpression3d[P]): VectorExpression3d[P] =
+    that * this
+
+  final def *(vector: Vector3d): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](vector) * this
+
+  final def times(vector: Vector3d): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](vector) * this
+
   final def /(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
     case (_, Constant(0)) => throw new ArithmeticException("Division by zero")
     case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
@@ -280,6 +292,30 @@ object ScalarExpression {
       expression.condition
   }
 
+  case class VectorXComponent3d[P](expression: VectorExpression3d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).x
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class VectorYComponent3d[P](expression: VectorExpression3d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).y
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class VectorZComponent3d[P](expression: VectorExpression3d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).z
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
   case class PointXComponent2d[P](expression: PointExpression2d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       expression.derivative(parameter).x
@@ -291,6 +327,30 @@ object ScalarExpression {
   case class PointYComponent2d[P](expression: PointExpression2d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       expression.derivative(parameter).y
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class PointXComponent3d[P](expression: PointExpression3d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).x
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class PointYComponent3d[P](expression: PointExpression3d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).y
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class PointZComponent3d[P](expression: PointExpression3d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      expression.derivative(parameter).z
 
     override def condition: ScalarExpression[P] =
       expression.condition
@@ -319,7 +379,38 @@ object ScalarExpression {
       firstExpression.condition * secondExpression.condition
   }
 
+  case class DotProduct3d[P](
+    firstExpression: VectorExpression3d[P],
+    secondExpression: VectorExpression3d[P]
+  ) extends ScalarExpression[P] {
+
+    override def equals(other: Any): Boolean = other match {
+      case DotProduct3d(otherFirst, otherSecond) =>
+        (firstExpression == otherFirst && secondExpression == otherSecond) ||
+        (firstExpression == otherSecond && secondExpression == otherFirst)
+      case _ => false
+    }
+
+    override def hashCode: Int =
+      firstExpression.hashCode * secondExpression.hashCode
+
+    override def derivative(parameter: P): ScalarExpression[P] =
+      firstExpression.derivative(parameter).dot(secondExpression) +
+      firstExpression.dot(secondExpression.derivative(parameter))
+
+    override def condition: ScalarExpression[P] =
+      firstExpression.condition * secondExpression.condition
+  }
+
   case class SquaredLength2d[P](expression: VectorExpression2d[P]) extends ScalarExpression[P] {
+    override def derivative(parameter: P): ScalarExpression[P] =
+      2 * expression.dot(expression.derivative(parameter))
+
+    override def condition: ScalarExpression[P] =
+      expression.condition
+  }
+
+  case class SquaredLength3d[P](expression: VectorExpression3d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       2 * expression.dot(expression.derivative(parameter))
 

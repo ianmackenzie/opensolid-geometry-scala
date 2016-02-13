@@ -88,6 +88,8 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def +(vector: Vector3d): Point3d =
     Point3d(x + vector.x, y + vector.y, z + vector.z)
 
+  def +[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+    PointExpression3d.Constant[P](this) + vectorExpression
 
   def -(vector: Vector3d): Point3d =
     Point3d(x - vector.x, y - vector.y, z - vector.z)
@@ -95,6 +97,11 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def -(that: Point3d): Vector3d =
     Vector3d(x - that.x, y - that.y, z - that.z)
 
+  def -[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+    PointExpression3d.Constant[P](this) - vectorExpression
+
+  def -[P](pointExpression: PointExpression3d[P]): VectorExpression3d[P] =
+    PointExpression3d.Constant[P](this) - pointExpression
 }
 
 object Point3d {

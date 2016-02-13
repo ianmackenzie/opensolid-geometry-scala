@@ -47,6 +47,18 @@ private class ExpressionCompiler(numParameters: Int) {
   private[this] val product2dMap = mutable.Map.empty[(Int, (Int, Int)), (Int, Int)]
   private[this] val quotient2dMap = mutable.Map.empty[((Int, Int), Int), (Int, Int)]
 
+  private[this] val dotProduct3dMap = mutable.Map.empty[((Int, Int, Int), (Int, Int, Int)), Int]
+  private[this] val crossProduct3dMap =
+    mutable.Map.empty[((Int, Int, Int), (Int, Int, Int)), (Int, Int, Int)]
+  private[this] val squaredNorm3dMap = mutable.Map.empty[(Int, Int, Int), Int]
+  private[this] val negation3dMap = mutable.Map.empty[(Int, Int, Int), (Int, Int, Int)]
+  private[this] val sum3dMap =
+    mutable.Map.empty[((Int, Int, Int), (Int, Int, Int)), (Int, Int, Int)]
+  private[this] val difference3dMap =
+    mutable.Map.empty[((Int, Int, Int), (Int, Int, Int)), (Int, Int, Int)]
+  private[this] val product3dMap = mutable.Map.empty[(Int, (Int, Int, Int)), (Int, Int, Int)]
+  private[this] val quotient3dMap = mutable.Map.empty[((Int, Int, Int), Int), (Int, Int, Int)]
+
   def evaluate(expression: ScalarExpression[_]): Int = expression match {
     case parameter: ScalarExpression.Parameter[_] =>
       parameter.index
@@ -56,10 +68,22 @@ private class ExpressionCompiler(numParameters: Int) {
       evaluate(expression).first
     case ScalarExpression.VectorYComponent2d(expression) =>
       evaluate(expression).second
+    case ScalarExpression.VectorXComponent3d(expression) =>
+      evaluate(expression).first
+    case ScalarExpression.VectorYComponent3d(expression) =>
+      evaluate(expression).second
+    case ScalarExpression.VectorZComponent3d(expression) =>
+      evaluate(expression).third
     case ScalarExpression.PointXComponent2d(expression) =>
       evaluate(expression).first
     case ScalarExpression.PointYComponent2d(expression) =>
       evaluate(expression).second
+    case ScalarExpression.PointXComponent3d(expression) =>
+      evaluate(expression).first
+    case ScalarExpression.PointYComponent3d(expression) =>
+      evaluate(expression).second
+    case ScalarExpression.PointZComponent3d(expression) =>
+      evaluate(expression).third
     case ScalarExpression.Negation(argument) =>
       negation1d(evaluate(argument))
     case ScalarExpression.Sum(firstArgument, secondArgument) =>
@@ -88,8 +112,12 @@ private class ExpressionCompiler(numParameters: Int) {
       arctangent(evaluate(argument))
     case ScalarExpression.DotProduct2d(firstArgument, secondArgument) =>
       dotProduct2d(evaluate(firstArgument), evaluate(secondArgument))
+    case ScalarExpression.DotProduct3d(firstArgument, secondArgument) =>
+      dotProduct3d(evaluate(firstArgument), evaluate(secondArgument))
     case ScalarExpression.SquaredLength2d(argument) =>
       squaredNorm2d(evaluate(argument))
+    case ScalarExpression.SquaredLength3d(argument) =>
+      squaredNorm3d(evaluate(argument))
   }
 
   def evaluate(expression: VectorExpression2d[_]): (Int, Int) = expression match {
@@ -111,6 +139,25 @@ private class ExpressionCompiler(numParameters: Int) {
       quotient2d(evaluate(firstArgument), evaluate(secondArgument))
   }
 
+  def evaluate(expression: VectorExpression3d[_]): (Int, Int, Int) = expression match {
+    case VectorExpression3d.Constant(vector) =>
+      constant3d(vector.x, vector.y, vector.z)
+    case VectorExpression3d.FromComponents(x, y, z) =>
+      (evaluate(x), evaluate(y), evaluate(z))
+    case VectorExpression3d.Negation(argument) =>
+      negation3d(evaluate(argument))
+    case VectorExpression3d.Sum(firstArgument, secondArgument) =>
+      sum3d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression3d.Difference(firstArgument, secondArgument) =>
+      difference3d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression3d.PointDifference(firstArgument, secondArgument) =>
+      difference3d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression3d.Product(firstArgument, secondArgument) =>
+      product3d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression3d.Quotient(firstArgument, secondArgument) =>
+      quotient3d(evaluate(firstArgument), evaluate(secondArgument))
+  }
+
   def evaluate(expression: PointExpression2d[_]): (Int, Int) = expression match {
     case PointExpression2d.Constant(point) =>
       constant2d(point.x, point.y)
@@ -122,15 +169,15 @@ private class ExpressionCompiler(numParameters: Int) {
       difference2d(evaluate(pointExpression), evaluate(vectorExpression))
   }
 
-  private[this] def constant1d(value: Double): Int = constantMap.get(value) match {
-    case Some(index) => index
-    case None => {
-      val resultIndex = arraySize
-      arraySize += 1
-      arrayOperations += new Constant1d(value, resultIndex)
-      constantMap += (value -> resultIndex)
-      resultIndex
-    }
+  def evaluate(expression: PointExpression3d[_]): (Int, Int, Int) = expression match {
+    case PointExpression3d.Constant(point) =>
+      constant3d(point.x, point.y, point.z)
+    case PointExpression3d.FromComponents(x, y, z) =>
+      (evaluate(x), evaluate(y), evaluate(z))
+    case PointExpression3d.PointPlusVector(pointExpression, vectorExpression) =>
+      sum3d(evaluate(pointExpression), evaluate(vectorExpression))
+    case PointExpression3d.PointMinusVector(pointExpression, vectorExpression) =>
+      difference3d(evaluate(pointExpression), evaluate(vectorExpression))
   }
 
   private[this] def unaryOperation1d(
@@ -199,6 +246,50 @@ private class ExpressionCompiler(numParameters: Int) {
       resultMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndices)
       if (symmetric) resultMap += ((secondArgumentIndices, firstArgumentIndices) -> resultIndices)
       resultIndices
+    }
+  }
+
+  private[this] def unaryOperation3d(
+    argumentIndices: (Int, Int, Int),
+    resultMap: mutable.Map[(Int, Int, Int), (Int, Int, Int)],
+    newOperation: ((Int, Int, Int)) => ArrayOperation
+  ): (Int, Int, Int) = resultMap.get(argumentIndices) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1, arraySize + 2)
+      arraySize += 3
+      arrayOperations += newOperation(resultIndices)
+      resultMap += (argumentIndices -> resultIndices)
+      resultIndices
+    }
+  }
+
+  private[this] def binaryOperation3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int),
+    resultMap: mutable.Map[((Int, Int, Int), (Int, Int, Int)), (Int, Int, Int)],
+    newOperation: ((Int, Int, Int)) => ArrayOperation,
+    symmetric: Boolean = false
+  ): (Int, Int, Int) = resultMap.get((firstArgumentIndices, secondArgumentIndices)) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1, arraySize + 2)
+      arraySize += 3
+      arrayOperations += newOperation(resultIndices)
+      resultMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndices)
+      if (symmetric) resultMap += ((secondArgumentIndices, firstArgumentIndices) -> resultIndices)
+      resultIndices
+    }
+  }
+
+  private[this] def constant1d(value: Double): Int = constantMap.get(value) match {
+    case Some(index) => index
+    case None => {
+      val resultIndex = arraySize
+      arraySize += 1
+      arrayOperations += new Constant1d(value, resultIndex)
+      constantMap += (value -> resultIndex)
+      resultIndex
     }
   }
 
@@ -278,6 +369,21 @@ private class ExpressionCompiler(numParameters: Int) {
     }
   }
 
+  private[this] def dotProduct3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int)
+  ): Int = dotProduct3dMap.get((firstArgumentIndices, secondArgumentIndices)) match {
+    case Some(index) => index
+    case None => {
+      val resultIndex = arraySize
+      arraySize += 1
+      arrayOperations += new DotProduct3d(firstArgumentIndices, secondArgumentIndices, resultIndex)
+      dotProduct3dMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndex)
+      dotProduct3dMap += ((secondArgumentIndices, firstArgumentIndices) -> resultIndex)
+      resultIndex
+    }
+  }
+
   private[this] def squaredNorm2d(argumentIndices: (Int, Int)): Int =
     binaryOperation1d(
       argumentIndices.first,
@@ -286,6 +392,18 @@ private class ExpressionCompiler(numParameters: Int) {
       new SquaredNorm2d(argumentIndices, _),
       true
     )
+
+  private[this] def squaredNorm3d(argumentIndices: (Int, Int, Int)): Int =
+    squaredNorm3dMap.get(argumentIndices) match {
+      case Some(indices) => indices
+      case None => {
+        val resultIndex = arraySize
+        arraySize += 1
+        arrayOperations += new SquaredNorm3d(argumentIndices, resultIndex)
+        squaredNorm3dMap += (argumentIndices -> resultIndex)
+        resultIndex
+      }
+    }
 
   private[this] def constant2d(xValue: Double, yValue: Double): (Int, Int) =
     (constantMap.get(xValue), constantMap.get(yValue)) match {
@@ -368,6 +486,126 @@ private class ExpressionCompiler(numParameters: Int) {
       resultIndices
     }
   }
+
+  private[this] def constant3d(xValue: Double, yValue: Double, zValue: Double): (Int, Int, Int) =
+    (constantMap.get(xValue), constantMap.get(yValue), constantMap.get(zValue)) match {
+      case (Some(xIndex), Some(yIndex), Some(zIndex)) =>
+        (xIndex, yIndex, zIndex)
+      case (Some(xIndex), None, None) => {
+        val yIndex = arraySize
+        val zIndex = arraySize + 1
+        arraySize += 2
+        arrayOperations += new Constant2d((yValue, zValue), (yIndex, zIndex))
+        constantMap += (yValue -> yIndex)
+        constantMap += (zValue -> zIndex)
+        (xIndex, yIndex, zIndex)
+      }
+      case (None, Some(yIndex), None) => {
+        val xIndex = arraySize
+        val zIndex = arraySize + 1
+        arraySize += 2
+        arrayOperations += new Constant2d((xValue, zValue), (xIndex, zIndex))
+        constantMap += (xValue -> xIndex)
+        constantMap += (zValue -> zIndex)
+        (xIndex, yIndex, zIndex)
+      }
+      case (None, None, Some(zIndex)) => {
+        val xIndex = arraySize
+        val yIndex = arraySize + 1
+        arraySize += 2
+        arrayOperations += new Constant2d((xValue, yValue), (xIndex, yIndex))
+        constantMap += (xValue -> xIndex)
+        constantMap += (yValue -> yIndex)
+        (xIndex, yIndex, zIndex)
+      }
+      case (Some(xIndex), Some(yIndex), None) => {
+        val zIndex = arraySize
+        arraySize += 1
+        arrayOperations += new Constant1d(zValue, zIndex)
+        constantMap += (zValue -> zIndex)
+        (xIndex, yIndex, zIndex)
+      }
+      case (Some(xIndex), None, Some(zIndex)) => {
+        val yIndex = arraySize
+        arraySize += 1
+        arrayOperations += new Constant1d(yValue, yIndex)
+        constantMap += (yValue -> yIndex)
+        (xIndex, yIndex, zIndex)
+      }
+      case (None, Some(yIndex), Some(zIndex)) => {
+        val xIndex = arraySize
+        arraySize += 1
+        arrayOperations += new Constant1d(xValue, xIndex)
+        constantMap += (xValue -> xIndex)
+        (xIndex, yIndex, zIndex)
+      }
+      case (None, None, None) => {
+        val xIndex = arraySize
+        val yIndex = arraySize + 1
+        val zIndex = arraySize + 2
+        arraySize += 3
+        val resultIndices = (xIndex, yIndex, zIndex)
+        arrayOperations += new Constant3d((xValue, yValue, zValue), resultIndices)
+        constantMap += (xValue -> xIndex)
+        constantMap += (yValue -> yIndex)
+        constantMap += (yValue -> zIndex)
+        resultIndices
+      }
+    }
+
+  private[this] def negation3d(argumentIndices: (Int, Int, Int)): (Int, Int, Int) =
+    unaryOperation3d(argumentIndices, negation3dMap, new Negation3d(argumentIndices, _))
+
+  private[this] def sum3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int)
+  ): (Int, Int, Int) =
+    binaryOperation3d(
+      firstArgumentIndices,
+      secondArgumentIndices,
+      sum3dMap,
+      new Sum3d(firstArgumentIndices, secondArgumentIndices, _),
+      true
+    )
+
+  private[this] def difference3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int)
+  ): (Int, Int, Int) =
+    binaryOperation3d(
+      firstArgumentIndices,
+      secondArgumentIndices,
+      difference3dMap,
+      new Difference3d(firstArgumentIndices, secondArgumentIndices, _)
+    )
+
+  private[this] def product3d(
+    firstArgumentIndex: Int,
+    secondArgumentIndices: (Int, Int, Int)
+  ): (Int, Int, Int) = product3dMap.get((firstArgumentIndex, secondArgumentIndices)) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1, arraySize + 2)
+      arraySize += 3
+      arrayOperations += new Product3d(firstArgumentIndex, secondArgumentIndices, resultIndices)
+      product3dMap += ((firstArgumentIndex, secondArgumentIndices) -> resultIndices)
+      resultIndices
+    }
+  }
+
+  private[this] def quotient3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndex: Int
+  ): (Int, Int, Int) = quotient3dMap.get((firstArgumentIndices, secondArgumentIndex)) match {
+    case Some(indices) => indices
+    case None => {
+      val resultIndices = (arraySize, arraySize + 1, arraySize + 2)
+      arraySize += 2
+      arrayOperations += new Quotient3d(firstArgumentIndices, secondArgumentIndex, resultIndices)
+      quotient3dMap += ((firstArgumentIndices, secondArgumentIndex) -> resultIndices)
+      resultIndices
+    }
+  }
 }
 
 object ExpressionCompiler {
@@ -390,9 +628,27 @@ object ExpressionCompiler {
   }
 
   def compile(
+    expression: VectorExpression3d[_],
+    numParameters: Int
+  ): (Array[ArrayOperation], Int, (Int, Int, Int)) = {
+    val compiler = new ExpressionCompiler(numParameters)
+    val resultIndices = compiler.evaluate(expression)
+    (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
+  }
+
+  def compile(
     expression: PointExpression2d[_],
     numParameters: Int
   ): (Array[ArrayOperation], Int, (Int, Int)) = {
+    val compiler = new ExpressionCompiler(numParameters)
+    val resultIndices = compiler.evaluate(expression)
+    (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
+  }
+
+  def compile(
+    expression: PointExpression3d[_],
+    numParameters: Int
+  ): (Array[ArrayOperation], Int, (Int, Int, Int)) = {
     val compiler = new ExpressionCompiler(numParameters)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
@@ -580,6 +836,30 @@ object ExpressionCompiler {
         values(firstArgumentYIndex) * values(secondArgumentYIndex)
   }
 
+  private[ExpressionCompiler] class DotProduct3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int),
+    resultIndex: Int
+  ) extends ArrayOperation {
+
+    private[this] val (firstArgumentXIndex, firstArgumentYIndex, firstArgumentZIndex) =
+      firstArgumentIndices
+    private[this] val (secondArgumentXIndex, secondArgumentYIndex, secondArgumentZIndex) =
+      secondArgumentIndices
+
+    override def execute(values: Array[Double]): Unit =
+      values(resultIndex) =
+        values(firstArgumentXIndex) * values(secondArgumentXIndex) +
+        values(firstArgumentYIndex) * values(secondArgumentYIndex) +
+        values(firstArgumentZIndex) * values(secondArgumentZIndex)
+
+    override def execute(values: Array[Interval]): Unit =
+      values(resultIndex) =
+        values(firstArgumentXIndex) * values(secondArgumentXIndex) +
+        values(firstArgumentYIndex) * values(secondArgumentYIndex) +
+        values(firstArgumentZIndex) * values(secondArgumentZIndex)
+  }
+
   private[ExpressionCompiler] class CrossProduct2d(
     firstArgumentIndices: (Int, Int),
     secondArgumentIndices: (Int, Int),
@@ -613,6 +893,28 @@ object ExpressionCompiler {
 
     override def execute(values: Array[Interval]): Unit =
       values(resultIndex) = values(argumentXIndex).squared + values(argumentYIndex).squared
+  }
+
+  private[ExpressionCompiler] class SquaredNorm3d(
+    argumentIndices: (Int, Int, Int),
+    resultIndex: Int
+  ) extends ArrayOperation {
+
+    private[this] val (argumentXIndex, argumentYIndex, argumentZIndex) = argumentIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      val argumentX = values(argumentXIndex)
+      val argumentY = values(argumentYIndex)
+      val argumentZ = values(argumentZIndex)
+      values(resultIndex) = argumentX * argumentX + argumentY * argumentY + argumentZ * argumentZ
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      val argumentX = values(argumentXIndex)
+      val argumentY = values(argumentYIndex)
+      val argumentZ = values(argumentZIndex)
+      values(resultIndex) = argumentX.squared + argumentY.squared + argumentZ.squared
+    }
   }
 
   private[ExpressionCompiler] class Constant2d(values: (Double, Double), resultIndices: (Int, Int))
@@ -736,6 +1038,151 @@ object ExpressionCompiler {
       val divisor = values(secondArgumentIndex)
       values(resultXIndex) = values(firstArgumentXIndex) / divisor
       values(resultYIndex) = values(firstArgumentYIndex) / divisor
+    }
+  }
+
+  private[ExpressionCompiler] class Constant3d(
+    values: (Double, Double, Double),
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (xValue, yValue, zValue) = values
+    private[this] val xInterval = Interval.singleton(xValue)
+    private[this] val yInterval = Interval.singleton(yValue)
+    private[this] val zInterval = Interval.singleton(zValue)
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(resultXIndex) = xValue
+      values(resultYIndex) = yValue
+      values(resultZIndex) = zValue
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(resultXIndex) = xInterval
+      values(resultYIndex) = yInterval
+      values(resultZIndex) = zInterval
+    }
+  }
+
+  private[ExpressionCompiler] class Negation3d(
+    argumentIndices: (Int, Int, Int),
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (argumentXIndex, argumentYIndex, argumentZIndex) = argumentIndices
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(resultXIndex) = -values(argumentXIndex)
+      values(resultYIndex) = -values(argumentYIndex)
+      values(resultZIndex) = -values(argumentZIndex)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(resultXIndex) = -values(argumentXIndex)
+      values(resultYIndex) = -values(argumentYIndex)
+      values(resultZIndex) = -values(argumentZIndex)
+    }
+  }
+
+  private[ExpressionCompiler] class Sum3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int),
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (firstArgumentXIndex, firstArgumentYIndex, firstArgumentZIndex) =
+      firstArgumentIndices
+    private[this] val (secondArgumentXIndex, secondArgumentYIndex, secondArgumentZIndex) =
+      secondArgumentIndices
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(resultXIndex) = values(firstArgumentXIndex) + values(secondArgumentXIndex)
+      values(resultYIndex) = values(firstArgumentYIndex) + values(secondArgumentYIndex)
+      values(resultZIndex) = values(firstArgumentZIndex) + values(secondArgumentZIndex)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(resultXIndex) = values(firstArgumentXIndex) + values(secondArgumentXIndex)
+      values(resultYIndex) = values(firstArgumentYIndex) + values(secondArgumentYIndex)
+      values(resultZIndex) = values(firstArgumentZIndex) + values(secondArgumentZIndex)
+    }
+  }
+
+  private[ExpressionCompiler] class Difference3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int),
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (firstArgumentXIndex, firstArgumentYIndex, firstArgumentZIndex) =
+      firstArgumentIndices
+    private[this] val (secondArgumentXIndex, secondArgumentYIndex, secondArgumentZIndex) =
+      secondArgumentIndices
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      values(resultXIndex) = values(firstArgumentXIndex) - values(secondArgumentXIndex)
+      values(resultYIndex) = values(firstArgumentYIndex) - values(secondArgumentYIndex)
+      values(resultZIndex) = values(firstArgumentZIndex) - values(secondArgumentZIndex)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      values(resultXIndex) = values(firstArgumentXIndex) - values(secondArgumentXIndex)
+      values(resultYIndex) = values(firstArgumentYIndex) - values(secondArgumentYIndex)
+      values(resultZIndex) = values(firstArgumentZIndex) - values(secondArgumentZIndex)
+    }
+  }
+
+  private[ExpressionCompiler] class Product3d(
+    firstArgumentIndex: Int,
+    secondArgumentIndices: (Int, Int, Int),
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (secondArgumentXIndex, secondArgumentYIndex, secondArgumentZIndex) =
+      secondArgumentIndices
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      val multiplier = values(firstArgumentIndex)
+      values(resultXIndex) = multiplier * values(secondArgumentXIndex)
+      values(resultYIndex) = multiplier * values(secondArgumentYIndex)
+      values(resultZIndex) = multiplier * values(secondArgumentZIndex)
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      val multiplier = values(firstArgumentIndex)
+      values(resultXIndex) = multiplier * values(secondArgumentXIndex)
+      values(resultYIndex) = multiplier * values(secondArgumentYIndex)
+      values(resultZIndex) = multiplier * values(secondArgumentZIndex)
+    }
+  }
+
+  private[ExpressionCompiler] class Quotient3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndex: Int,
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (firstArgumentXIndex, firstArgumentYIndex, firstArgumentZIndex) =
+      firstArgumentIndices
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      val divisor = values(secondArgumentIndex)
+      values(resultXIndex) = values(firstArgumentXIndex) / divisor
+      values(resultYIndex) = values(firstArgumentYIndex) / divisor
+      values(resultZIndex) = values(firstArgumentZIndex) / divisor
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      val divisor = values(secondArgumentIndex)
+      values(resultXIndex) = values(firstArgumentXIndex) / divisor
+      values(resultYIndex) = values(firstArgumentYIndex) / divisor
+      values(resultZIndex) = values(firstArgumentZIndex) / divisor
     }
   }
 }

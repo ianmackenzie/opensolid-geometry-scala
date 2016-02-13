@@ -220,6 +220,9 @@ package object core {
     def *[P](vectorExpression: VectorExpression2d[P]): VectorExpression2d[P] =
       ScalarExpression.Constant[P](value) * vectorExpression
 
+    def *[P](vectorExpression: VectorExpression3d[P]): VectorExpression3d[P] =
+      ScalarExpression.Constant[P](value) * vectorExpression
+
     def hull(that: Double): Interval =
       Interval(value.min(that), value.max(that))
 
