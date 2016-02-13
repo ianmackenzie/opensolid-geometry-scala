@@ -31,6 +31,9 @@ final case class Circle3d(centerPoint: Point3d, normalDirection: Direction3d, ra
   override def scaledAbout(point: Point3d, scale: Double): Circle3d =
     Circle3d(centerPoint.scaledAbout(point, scale), normalDirection, radius * scale)
 
+  def translatedTo(point: Point3d): Circle3d =
+    Circle3d(point, normalDirection, radius)
+
   override def bounds: Bounds3d = {
     val nx2 = normalDirection.x * normalDirection.x
     val ny2 = normalDirection.y * normalDirection.y

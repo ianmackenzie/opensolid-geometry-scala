@@ -25,6 +25,9 @@ final case class Circle2d(centerPoint: Point2d, radius: Double)
   override def scaledAbout(point: Point2d, scale: Double): Circle2d =
     Circle2d(centerPoint.scaledAbout(point, scale), radius * scale)
 
+  def translatedTo(point: Point2d): Circle2d =
+    Circle2d(point, radius)
+
   override def bounds: Bounds2d =
     Bounds2d(
       Interval(centerPoint.x - radius, centerPoint.x + radius),

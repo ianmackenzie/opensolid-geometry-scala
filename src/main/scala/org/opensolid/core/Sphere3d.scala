@@ -27,6 +27,9 @@ final case class Sphere3d(centerPoint: Point3d, radius: Double)
   override def scaledAbout(point: Point3d, scale: Double): Sphere3d =
     Sphere3d(centerPoint.scaledAbout(point, scale), radius * scale)
 
+  def translatedTo(point: Point3d): Sphere3d =
+    Sphere3d(point, radius)
+
   override def bounds: Bounds3d =
     Bounds3d(
       Interval(centerPoint.x - radius, centerPoint.x + radius),

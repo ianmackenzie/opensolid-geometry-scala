@@ -23,6 +23,9 @@ final case class Axis3d(originPoint: Point3d, direction: Direction3d)
   def transformedBy(transformation: Transformation3d): Axis3d =
     Axis3d(originPoint.transformedBy(transformation), direction.transformedBy(transformation))
 
+  def translatedTo(point: Point3d): Axis3d =
+    Axis3d(point, direction)
+
   def projectedOnto(plane: Plane3d): Axis3d =
     Axis3d(originPoint.projectedOnto(plane), direction.projectedOnto(plane))
 

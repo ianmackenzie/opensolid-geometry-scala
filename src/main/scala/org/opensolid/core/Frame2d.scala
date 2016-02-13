@@ -30,6 +30,9 @@ final case class Frame2d(originPoint: Point2d, xDirection: Direction2d, yDirecti
   def yAxis: Axis2d =
     Axis2d(originPoint, yDirection)
 
+  def translatedTo(point: Point2d): Frame2d =
+    Frame2d(point, xDirection, yDirection)
+
   def placedOnto(plane: Plane3d): Plane3d =
     Plane3d.fromPointAndBasis(
       originPoint.placedOnto(plane),

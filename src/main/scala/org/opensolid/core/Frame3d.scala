@@ -29,6 +29,9 @@ final case class Frame3d(
       zDirection.transformedBy(transformation)
     )
 
+  def translatedTo(point: Point3d): Frame3d =
+    Frame3d(point, xDirection, yDirection, zDirection)
+
   def xAxis: Axis3d =
     Axis3d(originPoint, xDirection)
 

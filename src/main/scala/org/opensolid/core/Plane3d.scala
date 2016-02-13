@@ -32,6 +32,9 @@ final case class Plane3d(
       normalDirection.transformedBy(transformation)
     )
 
+  def translatedTo(point: Point3d): Plane3d =
+    Plane3d(point, xDirection, yDirection, normalDirection)
+
   def offsetBy(distance: Double): Plane3d =
     translatedBy(distance * normalDirection)
 
