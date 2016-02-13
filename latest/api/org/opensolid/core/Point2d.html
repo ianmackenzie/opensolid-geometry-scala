@@ -47,13 +47,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Point2d</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Double">Double</span></span>, <span name="y">y: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Scalable2d.html" class="extype" name="org.opensolid.core.Scalable2d">Scalable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>] with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Point2d</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Double">Double</span></span>, <span name="y">y: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Scalable2d.html" class="extype" name="org.opensolid.core.Scalable2d">Scalable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>] with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>], <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a>], <a href="Scalable2d.html" class="extype" name="org.opensolid.core.Scalable2d">Scalable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>], <a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>], <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>], <a href="Scalable2d.html" class="extype" name="org.opensolid.core.Scalable2d">Scalable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>], <a href="Transformable2d.html" class="extype" name="org.opensolid.core.Transformable2d">Transformable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -151,18 +151,35 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.opensolid.core.Point2d#+" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="+(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Box2d"></a>
-      <a id="+(VectorBox2d):Box2d"></a>
+      <a id="+[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]"></a>
+      <a id="+[P](VectorExpression2d[P]):PointExpression2d[P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="vectorBox">vectorBox: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>)</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
+        <span title="gt4s: $plus" class="name">+</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="vectorExpression">vectorExpression: <a href="VectorExpression2d.html" class="extype" name="org.opensolid.core.VectorExpression2d">VectorExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.+.P">P</span>]</span>)</span><span class="result">: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.+.P">P</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Point2d@+(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Box2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Point2d@+[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#+" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="+(vectorBounds:org.opensolid.core.VectorBounds2d):org.opensolid.core.Bounds2d"></a>
+      <a id="+(VectorBounds2d):Bounds2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $plus" class="name">+</span><span class="params">(<span name="vectorBounds">vectorBounds: <a href="VectorBounds2d.html" class="extype" name="org.opensolid.core.VectorBounds2d">VectorBounds2d</a></span>)</span><span class="result">: <a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@+(vectorBounds:org.opensolid.core.VectorBounds2d):org.opensolid.core.Bounds2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -185,18 +202,35 @@
     </span>
       
     </li><li name="org.opensolid.core.Point2d#-" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="-(box:org.opensolid.core.Box2d):org.opensolid.core.VectorBox2d"></a>
-      <a id="-(Box2d):VectorBox2d"></a>
+      <a id="-[P](pointExpression:org.opensolid.core.PointExpression2d[P]):org.opensolid.core.VectorExpression2d[P]"></a>
+      <a id="-[P](PointExpression2d[P]):VectorExpression2d[P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $minus" class="name">-</span><span class="params">(<span name="box">box: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>)</span><span class="result">: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>
+        <span title="gt4s: $minus" class="name">-</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="pointExpression">pointExpression: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.-.P">P</span>]</span>)</span><span class="result">: <a href="VectorExpression2d.html" class="extype" name="org.opensolid.core.VectorExpression2d">VectorExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.-.P">P</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Point2d@-(box:org.opensolid.core.Box2d):org.opensolid.core.VectorBox2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Point2d@-[P](pointExpression:org.opensolid.core.PointExpression2d[P]):org.opensolid.core.VectorExpression2d[P]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#-" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="-[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]"></a>
+      <a id="-[P](VectorExpression2d[P]):PointExpression2d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span title="gt4s: $minus" class="name">-</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="vectorExpression">vectorExpression: <a href="VectorExpression2d.html" class="extype" name="org.opensolid.core.VectorExpression2d">VectorExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.-.P">P</span>]</span>)</span><span class="result">: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.-.P">P</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@-[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -214,23 +248,6 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Point2d@-(that:org.opensolid.core.Point2d):org.opensolid.core.Vector2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Point2d#-" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="-(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Box2d"></a>
-      <a id="-(VectorBox2d):Box2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $minus" class="name">-</span><span class="params">(<span name="vectorBox">vectorBox: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>)</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Point2d@-(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Box2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -287,18 +304,18 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.opensolid.core.Point2d#bounds" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="bounds:org.opensolid.core.Box2d"></a>
-      <a id="bounds:Box2d"></a>
+      <a id="bounds:org.opensolid.core.Bounds2d"></a>
+      <a id="bounds:Bounds2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">bounds</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
+        <span class="name">bounds</span><span class="result">: <a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Point2d@bounds:org.opensolid.core.Box2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Point2d@bounds:org.opensolid.core.Bounds2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -486,35 +503,35 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.opensolid.core.Point2d#hull" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="hull(box:org.opensolid.core.Box2d):org.opensolid.core.Box2d"></a>
-      <a id="hull(Box2d):Box2d"></a>
+      <a id="hull(bounds:org.opensolid.core.Bounds2d):org.opensolid.core.Bounds2d"></a>
+      <a id="hull(Bounds2d):Bounds2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hull</span><span class="params">(<span name="box">box: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>)</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
+        <span class="name">hull</span><span class="params">(<span name="bounds">bounds: <a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a></span>)</span><span class="result">: <a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Point2d@hull(box:org.opensolid.core.Box2d):org.opensolid.core.Box2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Point2d@hull(bounds:org.opensolid.core.Bounds2d):org.opensolid.core.Bounds2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Point2d#hull" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="hull(that:org.opensolid.core.Point2d):org.opensolid.core.Box2d"></a>
-      <a id="hull(Point2d):Box2d"></a>
+      <a id="hull(that:org.opensolid.core.Point2d):org.opensolid.core.Bounds2d"></a>
+      <a id="hull(Point2d):Bounds2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hull</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>)</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
+        <span class="name">hull</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>)</span><span class="result">: <a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Point2d@hull(that:org.opensolid.core.Point2d):org.opensolid.core.Box2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Point2d@hull(that:org.opensolid.core.Point2d):org.opensolid.core.Bounds2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -566,6 +583,74 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Point2d@isOrigin(tolerance:Double):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#minus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="minus[P](pointExpression:org.opensolid.core.PointExpression2d[P]):org.opensolid.core.VectorExpression2d[P]"></a>
+      <a id="minus[P](PointExpression2d[P]):VectorExpression2d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="pointExpression">pointExpression: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.minus.P">P</span>]</span>)</span><span class="result">: <a href="VectorExpression2d.html" class="extype" name="org.opensolid.core.VectorExpression2d">VectorExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.minus.P">P</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@minus[P](pointExpression:org.opensolid.core.PointExpression2d[P]):org.opensolid.core.VectorExpression2d[P]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#minus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="minus[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]"></a>
+      <a id="minus[P](VectorExpression2d[P]):PointExpression2d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="vectorExpression">vectorExpression: <a href="VectorExpression2d.html" class="extype" name="org.opensolid.core.VectorExpression2d">VectorExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.minus.P">P</span>]</span>)</span><span class="result">: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.minus.P">P</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@minus[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#minus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="minus(that:org.opensolid.core.Point2d):org.opensolid.core.Vector2d"></a>
+      <a id="minus(Point2d):Vector2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minus</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>)</span><span class="result">: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@minus(that:org.opensolid.core.Point2d):org.opensolid.core.Vector2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#minus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="minus(vector:org.opensolid.core.Vector2d):org.opensolid.core.Point2d"></a>
+      <a id="minus(Vector2d):Point2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minus</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@minus(vector:org.opensolid.core.Vector2d):org.opensolid.core.Point2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -684,6 +769,40 @@ global coordinates:</p><pre><span class="kw">val</span> frame = Frame2d.Global.r
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Point2d@placedOnto(plane:org.opensolid.core.Plane3d):org.opensolid.core.Point3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#plus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="plus[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]"></a>
+      <a id="plus[P](VectorExpression2d[P]):PointExpression2d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">plus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="vectorExpression">vectorExpression: <a href="VectorExpression2d.html" class="extype" name="org.opensolid.core.VectorExpression2d">VectorExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.plus.P">P</span>]</span>)</span><span class="result">: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<span class="extype" name="org.opensolid.core.Point2d.plus.P">P</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@plus[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.PointExpression2d[P]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Point2d#plus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="plus(vector:org.opensolid.core.Vector2d):org.opensolid.core.Point2d"></a>
+      <a id="plus(Vector2d):Point2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">plus</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Point2d@plus(vector:org.opensolid.core.Vector2d):org.opensolid.core.Point2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1000,7 +1119,7 @@ can be used as functions:</p><pre><span class="kw">val</span> rotated3 = points.
             </div><div class="parent" name="org.opensolid.core.GeometricallyComparable">
               <h3>Inherited from <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>]</h3>
             </div><div class="parent" name="org.opensolid.core.Bounded">
-              <h3>Inherited from <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a>]</h3>
+              <h3>Inherited from <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>]</h3>
             </div><div class="parent" name="org.opensolid.core.Scalable2d">
               <h3>Inherited from <a href="Scalable2d.html" class="extype" name="org.opensolid.core.Scalable2d">Scalable2d</a>[<a href="" class="extype" name="org.opensolid.core.Point2d">Point2d</a>]</h3>
             </div><div class="parent" name="org.opensolid.core.Transformable2d">

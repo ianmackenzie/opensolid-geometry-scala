@@ -114,7 +114,7 @@ such as <code>equals</code> and <code>contains</code> (and, for symmetry, <code>
 results start with 'is' or 'has' (e.g. <code>point.isOn(plane, tolerance)</code>).</p><p>Functions transforming an object usually belong to the object being transformed, so for example
 one uses <code>point.projectedOnto(plane)</code> instead of something like <code>plane.project(point)</code>.
 In general, names have been chosen to make entire expressions read as naturally as possible as
-'noun phrases', for example <code>if (box.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
+'noun phrases', for example <code>if (bounds.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
 vector-like classes, <code>VectorTransformable2d</code> or <code>VectorTransformable3d</code>). These provide support
 for the common transformations such as translations, rotations, and mirrors, as well as
 transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds types </h5><p>TODO</p><h5> Operators </h5><p>TODO (mention Java-friendly versions)</p><h5> Tuples </h5><p>TODO

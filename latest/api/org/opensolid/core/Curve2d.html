@@ -28,12 +28,10 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="Curve2d$.html" title="See companion object"><img alt="Trait/Object" src="../../../lib/trait_to_object_big.png" /></a>
+        <img alt="Trait" src="../../../lib/trait_big.png" />
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.opensolid">opensolid</a>.<a href="package.html" class="extype" name="org.opensolid.core">core</a></p>
-        <h1><a href="Curve2d$.html" title="See companion object">Curve2d</a></h1><h3><span class="morelinks"><div>
-            Related Docs:
-            <a href="Curve2d$.html" title="See companion object">object Curve2d</a>
-            | <a href="package.html" class="extype" name="org.opensolid.core">package core</a>
+        <h1>Curve2d</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="org.opensolid.core">package core</a>
           </div></span></h3><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Curve2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
@@ -47,14 +45,17 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">Curve2d</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Curve2d</span><span class="result"> extends <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>]</span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+          <div class="superTypes hiddenContent"><a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="LineSegment2d.html" class="extype" name="org.opensolid.core.LineSegment2d">LineSegment2d</a>, <a href="ParametricCurve2d.html" class="extype" name="org.opensolid.core.ParametricCurve2d">ParametricCurve2d</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -71,7 +72,7 @@
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.opensolid.core.Curve2d"><span>Curve2d</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.opensolid.core.Curve2d"><span>Curve2d</span></li><li class="in" name="org.opensolid.core.Bounded"><span>Bounded</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
@@ -94,87 +95,36 @@
 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="org.opensolid.core.Curve2d#bounds" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="bounds:org.opensolid.core.Box2d"></a>
-      <a id="bounds:Box2d"></a>
+              <ol><li name="org.opensolid.core.Bounded#bounds" visbl="pub" data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="bounds:T"></a>
+      <a id="bounds:Bounds2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">bounds</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
+        <span class="name">bounds</span><span class="result">: <a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Curve2d@bounds:org.opensolid.core.Box2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Curve2d@bounds:T" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      
-    </li><li name="org.opensolid.core.Curve2d#domain" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="domain:org.opensolid.core.Interval"></a>
-      <a id="domain:Interval"></a>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a></dd></dl></div>
+    </li><li name="org.opensolid.core.Curve2d#parameterized" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="parameterized:org.opensolid.core.ParametricCurve2d"></a>
+      <a id="parameterized:ParametricCurve2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">domain</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+        <span class="name">parameterized</span><span class="result">: <a href="ParametricCurve2d.html" class="extype" name="org.opensolid.core.ParametricCurve2d">ParametricCurve2d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Curve2d@domain:org.opensolid.core.Interval" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Curve2d#evaluate" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="evaluate(parameterBounds:org.opensolid.core.Interval):org.opensolid.core.Box2d"></a>
-      <a id="evaluate(Interval):Box2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">evaluate</span><span class="params">(<span name="parameterBounds">parameterBounds: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="Box2d.html" class="extype" name="org.opensolid.core.Box2d">Box2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Curve2d@evaluate(parameterBounds:org.opensolid.core.Interval):org.opensolid.core.Box2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Curve2d#evaluate" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="evaluate(parameterValue:Double):org.opensolid.core.Point2d"></a>
-      <a id="evaluate(Double):Point2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">evaluate</span><span class="params">(<span name="parameterValue">parameterValue: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Curve2d@evaluate(parameterValue:Double):org.opensolid.core.Point2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Curve2d#expression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="expression:org.opensolid.core.Curve2d.Expression"></a>
-      <a id="expression:Expression"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">expression</span><span class="result">: <a href="Curve2d$.html#Expression=org.opensolid.core.Expression2d[org.opensolid.core.Expression1d.CurveParameter]" class="extmbr" name="org.opensolid.core.Curve2d.Expression">Expression</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Curve2d@expression:org.opensolid.core.Curve2d.Expression" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Curve2d@parameterized:org.opensolid.core.ParametricCurve2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -434,6 +384,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.opensolid.core.Curve2d#parameterizedBy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="parameterizedBy(expression:org.opensolid.core.PointExpression2d[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve2d"></a>
+      <a id="parameterizedBy(PointExpression2d[CurveParameter],Interval):ParametricCurve2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">parameterizedBy</span><span class="params">(<span name="expression">expression: <a href="PointExpression2d.html" class="extype" name="org.opensolid.core.PointExpression2d">PointExpression2d</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>, <span name="domain">domain: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="ParametricCurve2d.html" class="extype" name="org.opensolid.core.ParametricCurve2d">ParametricCurve2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Curve2d@parameterizedBy(expression:org.opensolid.core.PointExpression2d[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
@@ -546,7 +513,9 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="org.opensolid.core.Bounded">
+              <h3>Inherited from <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

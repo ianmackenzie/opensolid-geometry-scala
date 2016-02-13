@@ -47,7 +47,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Direction2d</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span><span class="result"> extends <a href="VectorTransformable2d.html" class="extype" name="org.opensolid.core.VectorTransformable2d">VectorTransformable2d</a>[<a href="" class="extype" name="org.opensolid.core.Direction2d">Direction2d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Direction2d</span><span class="params">(<span name="x">x: <span class="extype" name="scala.Double">Double</span></span>, <span name="y">y: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="VectorTransformable2d.html" class="extype" name="org.opensolid.core.VectorTransformable2d">VectorTransformable2d</a>[<a href="" class="extype" name="org.opensolid.core.Direction2d">Direction2d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -91,7 +91,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.opensolid.core.Direction2d#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(components:(Double,Double)):org.opensolid.core.Direction2d"></a>
+      <a id="&lt;init&gt;(vector:org.opensolid.core.Vector2d):org.opensolid.core.Direction2d"></a>
       <a id="&lt;init&gt;:Direction2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -99,10 +99,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Direction2d</span><span class="params">(<span name="components">components: (<span class="extype" name="scala.Double">Double</span>, <span class="extype" name="scala.Double">Double</span>)</span>)</span>
+        <span class="name">Direction2d</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@&lt;init&gt;(components:(Double,Double)):org.opensolid.core.Direction2d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Direction2d@&lt;init&gt;(vector:org.opensolid.core.Vector2d):org.opensolid.core.Direction2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -120,23 +120,6 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Direction2d@&lt;init&gt;(x:Double,y:Double):org.opensolid.core.Direction2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(vector:org.opensolid.core.Vector2d):org.opensolid.core.Direction2d"></a>
-      <a id="&lt;init&gt;:Direction2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Direction2d</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@&lt;init&gt;(vector:org.opensolid.core.Vector2d):org.opensolid.core.Direction2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -185,23 +168,6 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="org.opensolid.core.Direction2d#*" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="*(interval:org.opensolid.core.Interval):org.opensolid.core.VectorBox2d"></a>
-      <a id="*(Interval):VectorBox2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $times" class="name">*</span><span class="params">(<span name="interval">interval: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@*(interval:org.opensolid.core.Interval):org.opensolid.core.VectorBox2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#*" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="*(value:Double):org.opensolid.core.Vector2d"></a>
       <a id="*(Double):Vector2d"></a>
       <h4 class="signature">
@@ -214,40 +180,6 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Direction2d@*(value:Double):org.opensolid.core.Vector2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#/" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="/(interval:org.opensolid.core.Interval):org.opensolid.core.VectorBox2d"></a>
-      <a id="/(Interval):VectorBox2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $div" class="name">/</span><span class="params">(<span name="interval">interval: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@/(interval:org.opensolid.core.Interval):org.opensolid.core.VectorBox2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#/" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="/(value:Double):org.opensolid.core.Vector2d"></a>
-      <a id="/(Double):Vector2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span title="gt4s: $div" class="name">/</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@/(value:Double):org.opensolid.core.Vector2d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -360,142 +292,6 @@
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Direction2d#cross" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cross(directionBox:org.opensolid.core.DirectionBox2d):org.opensolid.core.Interval"></a>
-      <a id="cross(DirectionBox2d):Interval"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">cross</span><span class="params">(<span name="directionBox">directionBox: <a href="DirectionBox2d.html" class="extype" name="org.opensolid.core.DirectionBox2d">DirectionBox2d</a></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@cross(directionBox:org.opensolid.core.DirectionBox2d):org.opensolid.core.Interval" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#cross" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cross(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Interval"></a>
-      <a id="cross(VectorBox2d):Interval"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">cross</span><span class="params">(<span name="vectorBox">vectorBox: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@cross(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Interval" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#cross" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cross(that:org.opensolid.core.Direction2d):Double"></a>
-      <a id="cross(Direction2d):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">cross</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Direction2d">Direction2d</a></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@cross(that:org.opensolid.core.Direction2d):Double" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#cross" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cross(vector:org.opensolid.core.Vector2d):Double"></a>
-      <a id="cross(Vector2d):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">cross</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@cross(vector:org.opensolid.core.Vector2d):Double" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#dot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dot(directionBox:org.opensolid.core.DirectionBox2d):org.opensolid.core.Interval"></a>
-      <a id="dot(DirectionBox2d):Interval"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dot</span><span class="params">(<span name="directionBox">directionBox: <a href="DirectionBox2d.html" class="extype" name="org.opensolid.core.DirectionBox2d">DirectionBox2d</a></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@dot(directionBox:org.opensolid.core.DirectionBox2d):org.opensolid.core.Interval" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#dot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dot(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Interval"></a>
-      <a id="dot(VectorBox2d):Interval"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dot</span><span class="params">(<span name="vectorBox">vectorBox: <a href="VectorBox2d.html" class="extype" name="org.opensolid.core.VectorBox2d">VectorBox2d</a></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@dot(vectorBox:org.opensolid.core.VectorBox2d):org.opensolid.core.Interval" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#dot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dot(that:org.opensolid.core.Direction2d):Double"></a>
-      <a id="dot(Direction2d):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dot</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Direction2d">Direction2d</a></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@dot(that:org.opensolid.core.Direction2d):Double" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Direction2d#dot" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dot(vector:org.opensolid.core.Vector2d):Double"></a>
-      <a id="dot(Vector2d):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">dot</span><span class="params">(<span name="vector">vector: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@dot(vector:org.opensolid.core.Vector2d):Double" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="scala.AnyRef#eq" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a>
       <a id="eq(AnyRef):Boolean"></a>
@@ -604,6 +400,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.opensolid.core.Direction2d#negated" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="negated:org.opensolid.core.Direction2d"></a>
+      <a id="negated:Direction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">negated</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Direction2d">Direction2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Direction2d@negated:org.opensolid.core.Direction2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Direction2d#normalDirection" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="normalDirection:org.opensolid.core.Direction2d"></a>
       <a id="normalDirection:Direction2d"></a>
@@ -689,23 +502,6 @@
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Direction2d#projectedOnto" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="projectedOnto(axis:org.opensolid.core.Axis2d):org.opensolid.core.Vector2d"></a>
-      <a id="projectedOnto(Axis2d):Vector2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">projectedOnto</span><span class="params">(<span name="axis">axis: <a href="Axis2d.html" class="extype" name="org.opensolid.core.Axis2d">Axis2d</a></span>)</span><span class="result">: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Direction2d@projectedOnto(axis:org.opensolid.core.Axis2d):org.opensolid.core.Vector2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="org.opensolid.core.VectorTransformable2d#relativeTo" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="relativeTo(frame:org.opensolid.core.Frame2d):T"></a>
       <a id="relativeTo(Frame2d):Direction2d"></a>
@@ -757,6 +553,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.opensolid.core.Direction2d#times" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="times(value:Double):org.opensolid.core.Vector2d"></a>
+      <a id="times(Double):Vector2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">times</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Direction2d@times(value:Double):org.opensolid.core.Vector2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Direction2d#transformedBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="transformedBy(transformation:org.opensolid.core.Transformation2d):org.opensolid.core.Direction2d"></a>
       <a id="transformedBy(Transformation2d):Direction2d"></a>
@@ -797,7 +610,7 @@
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
         <span class="name">vector</span><span class="result">: <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
@@ -883,7 +696,7 @@
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
         <span class="name">x</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
@@ -900,7 +713,7 @@
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
         <span class="name">y</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>

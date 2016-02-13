@@ -28,12 +28,10 @@
         </head>
         <body class="type">
       <div id="definition">
-        <a href="Rotation3d$.html" title="See companion object"><img alt="Class/Object" src="../../../lib/class_to_object_big.png" /></a>
+        <img alt="Class" src="../../../lib/class_big.png" />
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.opensolid">opensolid</a>.<a href="package.html" class="extype" name="org.opensolid.core">core</a></p>
-        <h1><a href="Rotation3d$.html" title="See companion object">Rotation3d</a></h1><h3><span class="morelinks"><div>
-            Related Docs:
-            <a href="Rotation3d$.html" title="See companion object">object Rotation3d</a>
-            | <a href="package.html" class="extype" name="org.opensolid.core">package core</a>
+        <h1>Rotation3d</h1><h3><span class="morelinks"><div>Related Doc:
+            <a href="package.html" class="extype" name="org.opensolid.core">package core</a>
           </div></span></h3><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Rotation3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
@@ -47,7 +45,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Rotation3d</span><span class="params">(<span name="point">point: <a href="Point3d.html" class="extype" name="org.opensolid.core.Point3d">Point3d</a></span>, <span name="basis">basis: (<a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>, <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>, <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>)</span>)</span><span class="result"> extends <a href="Transformation3d.html" class="extype" name="org.opensolid.core.Transformation3d">Transformation3d</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Rotation3d</span><span class="params">(<span name="axis">axis: <a href="Axis3d.html" class="extype" name="org.opensolid.core.Axis3d">Axis3d</a></span>, <span name="angle">angle: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Transformation3d.html" class="extype" name="org.opensolid.core.Transformation3d">Transformation3d</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -103,23 +101,6 @@
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.Rotation3d@&lt;init&gt;(axis:org.opensolid.core.Axis3d,angle:Double):org.opensolid.core.Rotation3d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Rotation3d#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(point:org.opensolid.core.Point3d,basis:(org.opensolid.core.Direction3d,org.opensolid.core.Direction3d,org.opensolid.core.Direction3d)):org.opensolid.core.Rotation3d"></a>
-      <a id="&lt;init&gt;:Rotation3d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Rotation3d</span><span class="params">(<span name="point">point: <a href="Point3d.html" class="extype" name="org.opensolid.core.Point3d">Point3d</a></span>, <span name="basis">basis: (<a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>, <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>, <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>)</span>)</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Rotation3d@&lt;init&gt;(point:org.opensolid.core.Point3d,basis:(org.opensolid.core.Direction3d,org.opensolid.core.Direction3d,org.opensolid.core.Direction3d)):org.opensolid.core.Rotation3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -201,6 +182,40 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Transformation3d.html" class="extype" name="org.opensolid.core.Transformation3d">Transformation3d</a></dd></dl></div>
+    </li><li name="org.opensolid.core.Rotation3d#angle" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="angle:Double"></a>
+      <a id="angle:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">angle</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Rotation3d@angle:Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Rotation3d#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="apply(direction:org.opensolid.core.Direction3d):org.opensolid.core.Direction3d"></a>
+      <a id="apply(Direction3d):Direction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="direction">direction: <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a></span>)</span><span class="result">: <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Rotation3d@apply(direction:org.opensolid.core.Direction3d):org.opensolid.core.Direction3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Rotation3d">Rotation3d</a> → <a href="Transformation3d.html" class="extype" name="org.opensolid.core.Transformation3d">Transformation3d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Rotation3d#apply" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="apply(vector:org.opensolid.core.Vector3d):org.opensolid.core.Vector3d"></a>
       <a id="apply(Vector3d):Vector3d"></a>
@@ -252,19 +267,19 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.opensolid.core.Rotation3d#basis" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="basis:(org.opensolid.core.Direction3d,org.opensolid.core.Direction3d,org.opensolid.core.Direction3d)"></a>
-      <a id="basis:(Direction3d,Direction3d,Direction3d)"></a>
+    </li><li name="org.opensolid.core.Rotation3d#axis" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="axis:org.opensolid.core.Axis3d"></a>
+      <a id="axis:Axis3d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">basis</span><span class="result">: (<a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>, <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>, <a href="Direction3d.html" class="extype" name="org.opensolid.core.Direction3d">Direction3d</a>)</span>
+        <span class="name">axis</span><span class="result">: <a href="Axis3d.html" class="extype" name="org.opensolid.core.Axis3d">Axis3d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Rotation3d@basis:(org.opensolid.core.Direction3d,org.opensolid.core.Direction3d,org.opensolid.core.Direction3d)" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Rotation3d@axis:org.opensolid.core.Axis3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -434,23 +449,6 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="org.opensolid.core.Rotation3d#point" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="point:org.opensolid.core.Point3d"></a>
-      <a id="point:Point3d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">point</span><span class="result">: <a href="Point3d.html" class="extype" name="org.opensolid.core.Point3d">Point3d</a></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Rotation3d@point:org.opensolid.core.Point3d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a>
       <a id="synchronized[T0](⇒T0):T0"></a>
