@@ -132,6 +132,9 @@ class Scalar(val value: Double) extends AnyVal {
   def times[P](vectorExpression: VectorExpression2d[P]): VectorExpression2d[P] =
     value * vectorExpression
 
+  def times[P](vectorExpression: VectorExpression3d[P]): VectorExpression3d[P] =
+    value * vectorExpression
+
   def hull(that: Double): Interval =
     value.hull(that)
 
