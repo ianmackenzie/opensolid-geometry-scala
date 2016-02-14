@@ -402,6 +402,19 @@ object ScalarExpression {
       firstExpression.condition * secondExpression.condition
   }
 
+  case class CrossProduct2d[P](
+    firstExpression: VectorExpression2d[P],
+    secondExpression: VectorExpression2d[P]
+  ) extends ScalarExpression[P] {
+
+    override def derivative(parameter: P): ScalarExpression[P] =
+      firstExpression.derivative(parameter).cross(secondExpression) +
+      firstExpression.cross(secondExpression.derivative(parameter))
+
+    override def condition: ScalarExpression[P] =
+      firstExpression.condition * secondExpression.condition
+  }
+
   case class SquaredLength2d[P](expression: VectorExpression2d[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
       2 * expression.dot(expression.derivative(parameter))

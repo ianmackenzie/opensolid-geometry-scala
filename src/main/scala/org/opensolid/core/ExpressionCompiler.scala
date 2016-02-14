@@ -114,6 +114,8 @@ private class ExpressionCompiler(numParameters: Int) {
       dotProduct2d(evaluate(firstArgument), evaluate(secondArgument))
     case ScalarExpression.DotProduct3d(firstArgument, secondArgument) =>
       dotProduct3d(evaluate(firstArgument), evaluate(secondArgument))
+    case ScalarExpression.CrossProduct2d(firstArgument, secondArgument) =>
+      crossProduct2d(evaluate(firstArgument), evaluate(secondArgument))
     case ScalarExpression.SquaredLength2d(argument) =>
       squaredNorm2d(evaluate(argument))
     case ScalarExpression.SquaredLength3d(argument) =>
@@ -380,6 +382,21 @@ private class ExpressionCompiler(numParameters: Int) {
       arrayOperations += new DotProduct3d(firstArgumentIndices, secondArgumentIndices, resultIndex)
       dotProduct3dMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndex)
       dotProduct3dMap += ((secondArgumentIndices, firstArgumentIndices) -> resultIndex)
+      resultIndex
+    }
+  }
+
+  private[this] def crossProduct2d(
+    firstArgumentIndices: (Int, Int),
+    secondArgumentIndices: (Int, Int)
+  ): Int = crossProduct2dMap.get((firstArgumentIndices, secondArgumentIndices)) match {
+    case Some(index) => index
+    case None => {
+      val resultIndex = arraySize
+      arraySize += 1
+      arrayOperations +=
+        new CrossProduct2d(firstArgumentIndices, secondArgumentIndices, resultIndex)
+      crossProduct2dMap += ((firstArgumentIndices, secondArgumentIndices) -> resultIndex)
       resultIndex
     }
   }
