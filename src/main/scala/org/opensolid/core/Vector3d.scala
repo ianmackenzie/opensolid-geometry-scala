@@ -104,29 +104,56 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def +(that: Vector3d): Vector3d =
     Vector3d(this.x + that.x, this.y + that.y, this.z + that.z)
 
+  def +[P](expression: VectorExpression3d[P]): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](this) + expression
+
   def plus(that: Vector3d): Vector3d =
     this + that
+
+  def plus[P](expression: VectorExpression3d[P]): VectorExpression3d[P] =
+    this + expression
 
   def -(that: Vector3d): Vector3d =
     Vector3d(this.x - that.x, this.y - that.y, this.z - that.z)
 
+  def -[P](expression: VectorExpression3d[P]): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](this) - expression
+
   def minus(that: Vector3d): Vector3d =
     this - that
+
+  def minus[P](expression: VectorExpression3d[P]): VectorExpression3d[P] =
+    this - expression
 
   def *(value: Double): Vector3d =
     Vector3d(x * value, y * value, z * value)
 
+  def *[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](this) * expression
+
   def times(value: Double): Vector3d =
     this * value
+
+  def times[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+    this * expression
 
   def /(value: Double): Vector3d =
     Vector3d(x / value, y / value, z / value)
 
+  def /[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](this) / expression
+
   def dividedBy(value: Double): Vector3d =
     this / value
 
+  def dividedBy[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+    this / expression
+
   def dot(that: Vector3d): Double =
     this.x * that.x + this.y * that.y + this.z * that.z
+
+  def dot[P](expression: VectorExpression3d[P]): ScalarExpression[P] =
+    VectorExpression3d.Constant[P](this).dot(expression)
 
   def cross(that: Vector3d): Vector3d =
     Vector3d(
@@ -134,6 +161,9 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.z * that.x - this.x * that.z,
       this.x * that.y - this.y * that.x
     )
+
+  def cross[P](expression: VectorExpression3d[P]): VectorExpression3d[P] =
+    VectorExpression3d.Constant[P](this).cross(expression)
 
   def componentIn(direction: Direction3d): Double =
     x * direction.x + y * direction.y + z * direction.z
