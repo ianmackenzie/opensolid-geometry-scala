@@ -198,16 +198,6 @@ object ScalarExpression {
     secondExpression: ScalarExpression[P]
   ) extends ScalarExpression[P] {
 
-    override def equals(other: Any): Boolean = other match {
-      case Sum(otherFirst, otherSecond) =>
-        (firstExpression == otherFirst && secondExpression == otherSecond) ||
-        (firstExpression == otherSecond && secondExpression == otherFirst)
-      case _ => false
-    }
-
-    override def hashCode: Int =
-      firstExpression.hashCode * secondExpression.hashCode
-
     override def derivative(parameter: P): ScalarExpression[P] =
       firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
@@ -234,16 +224,6 @@ object ScalarExpression {
     firstExpression: ScalarExpression[P],
     secondExpression: ScalarExpression[P]
   ) extends ScalarExpression[P] {
-
-    override def equals(other: Any): Boolean = other match {
-      case Product(otherFirst, otherSecond) =>
-        (firstExpression == otherFirst && secondExpression == otherSecond) ||
-        (firstExpression == otherSecond && secondExpression == otherFirst)
-      case _ => false
-    }
-
-    override def hashCode: Int =
-      firstExpression.hashCode * secondExpression.hashCode
 
     override def derivative(parameter: P): ScalarExpression[P] =
       firstExpression.derivative(parameter) * secondExpression +
@@ -361,16 +341,6 @@ object ScalarExpression {
     secondExpression: VectorExpression2d[P]
   ) extends ScalarExpression[P] {
 
-    override def equals(other: Any): Boolean = other match {
-      case DotProduct2d(otherFirst, otherSecond) =>
-        (firstExpression == otherFirst && secondExpression == otherSecond) ||
-        (firstExpression == otherSecond && secondExpression == otherFirst)
-      case _ => false
-    }
-
-    override def hashCode: Int =
-      firstExpression.hashCode * secondExpression.hashCode
-
     override def derivative(parameter: P): ScalarExpression[P] =
       firstExpression.derivative(parameter).dot(secondExpression) +
       firstExpression.dot(secondExpression.derivative(parameter))
@@ -383,16 +353,6 @@ object ScalarExpression {
     firstExpression: VectorExpression3d[P],
     secondExpression: VectorExpression3d[P]
   ) extends ScalarExpression[P] {
-
-    override def equals(other: Any): Boolean = other match {
-      case DotProduct3d(otherFirst, otherSecond) =>
-        (firstExpression == otherFirst && secondExpression == otherSecond) ||
-        (firstExpression == otherSecond && secondExpression == otherFirst)
-      case _ => false
-    }
-
-    override def hashCode: Int =
-      firstExpression.hashCode * secondExpression.hashCode
 
     override def derivative(parameter: P): ScalarExpression[P] =
       firstExpression.derivative(parameter).dot(secondExpression) +

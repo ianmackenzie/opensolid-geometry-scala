@@ -248,16 +248,6 @@ object VectorExpression3d {
     secondExpression: VectorExpression3d[P]
   ) extends VectorExpression3d[P] {
 
-    override def equals(other: Any): Boolean = other match {
-      case Sum(otherFirst, otherSecond) =>
-        (firstExpression == otherFirst && secondExpression == otherSecond) ||
-        (firstExpression == otherSecond && secondExpression == otherFirst)
-      case _ => false
-    }
-
-    override def hashCode: Int =
-      firstExpression.hashCode * secondExpression.hashCode
-
     override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
