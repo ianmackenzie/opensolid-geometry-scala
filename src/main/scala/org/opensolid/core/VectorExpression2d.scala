@@ -121,9 +121,13 @@ sealed abstract class VectorExpression2d[P] {
     case (Constant(Vector2d.Zero), _) => ScalarExpression.Constant(0)
     case (_, Constant(Vector2d.Zero)) => ScalarExpression.Constant(0)
     case (Constant(Vector2d(1, 0)), expression) => expression.x
+    case (Constant(Vector2d(-1, 0)), expression) => -expression.x
     case (Constant(Vector2d(0, 1)), expression) => expression.y
+    case (Constant(Vector2d(0, -1)), expression) => -expression.y
     case (expression, Constant(Vector2d(1, 0))) => expression.x
+    case (expression, Constant(Vector2d(-1, 0))) => -expression.x
     case (expression, Constant(Vector2d(0, 1))) => expression.y
+    case (expression, Constant(Vector2d(0, -1))) => -expression.y
     case (first, second) if (first == second) => first.squaredLength
     case _ => ScalarExpression.DotProduct2d(this, that)
   }
