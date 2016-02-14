@@ -81,32 +81,62 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def +(that: Vector2d): Vector2d =
     Vector2d(this.x + that.x, this.y + that.y)
 
+  def +[P](expression: VectorExpression2d[P]): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](this) + expression
+
   def plus(that: Vector2d): Vector2d =
     this + that
+
+  def plus[P](expression: VectorExpression2d[P]): VectorExpression2d[P] =
+    this + expression
 
   def -(that: Vector2d): Vector2d =
     Vector2d(this.x - that.x, this.y - that.y)
 
+  def -[P](expression: VectorExpression2d[P]): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](this) - expression
+
   def minus(that: Vector2d): Vector2d =
     this - that
+
+  def minus[P](expression: VectorExpression2d[P]): VectorExpression2d[P] =
+    this - expression
 
   def *(value: Double): Vector2d =
     Vector2d(x * value, y * value)
 
+  def *[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](this) * expression
+
   def times(value: Double): Vector2d =
     this * value
+
+  def times[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](this) * expression
 
   def /(value: Double): Vector2d =
     Vector2d(x / value, y / value)
 
+  def /[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+    VectorExpression2d.Constant[P](this) / expression
+
   def dividedBy(value: Double): Vector2d =
     this / value
+
+  def dividedBy[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+    this / expression
 
   def dot(that: Vector2d): Double =
     this.x * that.x + this.y * that.y
 
+  def dot[P](expression: VectorExpression2d[P]): ScalarExpression[P] =
+    VectorExpression2d.Constant[P](this).dot(expression)
+
   def cross(that: Vector2d): Double =
     this.x * that.y - this.y * that.x
+
+  def cross[P](expression: VectorExpression2d[P]): ScalarExpression[P] =
+    VectorExpression2d.Constant[P](this).cross(expression)
 
   def componentIn(direction: Direction2d): Double =
     x * direction.x + y * direction.y
