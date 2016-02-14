@@ -129,6 +129,7 @@ sealed abstract class VectorExpression2d[P] {
     case (expression, Constant(Vector2d(0, 1))) => expression.y
     case (expression, Constant(Vector2d(0, -1))) => -expression.y
     case (first, second) if (first == second) => first.squaredLength
+    case (first, second) if (first == -second) => -first.squaredLength
     case _ => ScalarExpression.DotProduct2d(this, that)
   }
 

@@ -121,12 +121,19 @@ sealed abstract class VectorExpression3d[P] {
     case (Constant(Vector3d.Zero), _) => ScalarExpression.Constant(0)
     case (_, Constant(Vector3d.Zero)) => ScalarExpression.Constant(0)
     case (Constant(Vector3d(1, 0, 0)), expression) => expression.x
+    case (Constant(Vector3d(-1, 0, 0)), expression) => -expression.x
     case (Constant(Vector3d(0, 1, 0)), expression) => expression.y
+    case (Constant(Vector3d(0, -1, 0)), expression) => -expression.y
     case (Constant(Vector3d(0, 0, 1)), expression) => expression.z
+    case (Constant(Vector3d(0, 0, -1)), expression) => -expression.z
     case (expression, Constant(Vector3d(1, 0, 0))) => expression.x
+    case (expression, Constant(Vector3d(-1, 0, 0))) => -expression.x
     case (expression, Constant(Vector3d(0, 1, 0))) => expression.y
+    case (expression, Constant(Vector3d(0, -1, 0))) => -expression.y
     case (expression, Constant(Vector3d(0, 0, 1))) => expression.z
+    case (expression, Constant(Vector3d(0, 0, -1))) => -expression.z
     case (first, second) if (first == second) => first.squaredLength
+    case (first, second) if (first == -second) => -first.squaredLength
     case _ => ScalarExpression.DotProduct3d(this, that)
   }
 
