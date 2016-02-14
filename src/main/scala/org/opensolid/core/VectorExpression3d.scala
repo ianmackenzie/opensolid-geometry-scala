@@ -137,6 +137,16 @@ sealed abstract class VectorExpression3d[P] {
     case _ => ScalarExpression.DotProduct3d(this, that)
   }
 
+  final def cross(that: VectorExpression3d[P]): VectorExpression3d[P] = (this, that) match {
+    case (Constant(firstVector), Constant(secondVector)) =>
+      Constant(firstVector.cross(secondVector))
+    case (Constant(Vector3d.Zero), _) => Constant[P](Vector3d.Zero)
+    case (_, Constant(Vector3d.Zero)) => Constant[P](Vector3d.Zero)
+    case (first, second) if (first == second) => Constant[P](Vector3d.Zero)
+    case (first, second) if (first == -second) => Constant[P](Vector3d.Zero)
+    case _ => CrossProduct(this, that)
+  }
+
   def x: ScalarExpression[P] =
     ScalarExpression.VectorXComponent3d(this)
 
@@ -356,5 +366,27 @@ object VectorExpression3d {
 
     override def z: ScalarExpression[P] =
       vectorExpression.z / scalarExpression
+  }
+
+  case class CrossProduct[P](
+    firstExpression: VectorExpression3d[P],
+    secondExpression: VectorExpression3d[P]
+  ) extends VectorExpression3d[P] {
+
+    override def derivative(parameter: P): VectorExpression3d[P] =
+      firstExpression.derivative(parameter).cross(secondExpression) +
+      firstExpression.cross(secondExpression.derivative(parameter))
+
+    override def condition: ScalarExpression[P] =
+      firstExpression.condition * secondExpression.condition
+
+    override def x: ScalarExpression[P] =
+      firstExpression.y * secondExpression.z - firstExpression.z * secondExpression.y
+
+    override def y: ScalarExpression[P] =
+      firstExpression.z * secondExpression.x - firstExpression.x * secondExpression.z
+
+    override def z: ScalarExpression[P] =
+      firstExpression.x * secondExpression.y - firstExpression.y * secondExpression.x
   }
 }

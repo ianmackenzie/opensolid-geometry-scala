@@ -158,6 +158,8 @@ private class ExpressionCompiler(numParameters: Int) {
       product3d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression3d.Quotient(firstArgument, secondArgument) =>
       quotient3d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression3d.CrossProduct(firstArgument, secondArgument) =>
+      crossProduct3d(evaluate(firstArgument), evaluate(secondArgument))
   }
 
   def evaluate(expression: PointExpression2d[_]): (Int, Int) = expression match {
@@ -623,6 +625,17 @@ private class ExpressionCompiler(numParameters: Int) {
       resultIndices
     }
   }
+
+  private[this] def crossProduct3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int)
+  ): (Int, Int, Int) =
+    binaryOperation3d(
+      firstArgumentIndices,
+      secondArgumentIndices,
+      crossProduct3dMap,
+      new CrossProduct3d(firstArgumentIndices, secondArgumentIndices, _)
+    )
 }
 
 object ExpressionCompiler {
@@ -1200,6 +1213,43 @@ object ExpressionCompiler {
       values(resultXIndex) = values(firstArgumentXIndex) / divisor
       values(resultYIndex) = values(firstArgumentYIndex) / divisor
       values(resultZIndex) = values(firstArgumentZIndex) / divisor
+    }
+  }
+
+  private[ExpressionCompiler] class CrossProduct3d(
+    firstArgumentIndices: (Int, Int, Int),
+    secondArgumentIndices: (Int, Int, Int),
+    resultIndices: (Int, Int, Int)
+  ) extends ArrayOperation {
+
+    private[this] val (firstArgumentXIndex, firstArgumentYIndex, firstArgumentZIndex) =
+      firstArgumentIndices
+    private[this] val (secondArgumentXIndex, secondArgumentYIndex, secondArgumentZIndex) =
+      secondArgumentIndices
+    private[this] val (resultXIndex, resultYIndex, resultZIndex) = resultIndices
+
+    override def execute(values: Array[Double]): Unit = {
+      val x1 = values(firstArgumentXIndex)
+      val y1 = values(firstArgumentYIndex)
+      val z1 = values(firstArgumentZIndex)
+      val x2 = values(secondArgumentXIndex)
+      val y2 = values(secondArgumentYIndex)
+      val z2 = values(secondArgumentZIndex)
+      values(resultXIndex) = y1 * z2 - z1 * y2
+      values(resultYIndex) = z1 * x2 - x1 * z2
+      values(resultZIndex) = x1 * y2 - y1 * x2
+    }
+
+    override def execute(values: Array[Interval]): Unit = {
+      val x1 = values(firstArgumentXIndex)
+      val y1 = values(firstArgumentYIndex)
+      val z1 = values(firstArgumentZIndex)
+      val x2 = values(secondArgumentXIndex)
+      val y2 = values(secondArgumentYIndex)
+      val z2 = values(secondArgumentZIndex)
+      values(resultXIndex) = y1 * z2 - z1 * y2
+      values(resultYIndex) = z1 * x2 - x1 * z2
+      values(resultZIndex) = x1 * y2 - y1 * x2
     }
   }
 }
