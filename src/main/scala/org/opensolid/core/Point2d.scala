@@ -79,9 +79,6 @@ final case class Point2d(x: Double, y: Double)
   def +(vector: Vector2d): Point2d =
     Point2d(x + vector.x, y + vector.y)
 
-  def +(vectorBounds: VectorBounds2d): Bounds2d =
-    Bounds2d(x + vectorBounds.x, y + vectorBounds.y)
-
   def +[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
     PointExpression2d.Constant[P](this) + vectorExpression
 
