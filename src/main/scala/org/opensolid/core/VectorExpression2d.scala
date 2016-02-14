@@ -132,6 +132,9 @@ sealed abstract class VectorExpression2d[P] {
     case _ => ScalarExpression.DotProduct2d(this, that)
   }
 
+  final def dot(vector: Vector2d): ScalarExpression[P] =
+    dot(Constant[P](vector))
+
   final def cross(that: VectorExpression2d[P]): ScalarExpression[P] = (this, that) match {
     case (Constant(firstVector), Constant(secondVector)) =>
       ScalarExpression.Constant(firstVector.cross(secondVector))
@@ -149,6 +152,9 @@ sealed abstract class VectorExpression2d[P] {
     case (first, second) if (first == -second) => ScalarExpression.Constant(0)
     case _ => ScalarExpression.CrossProduct2d(this, that)
   }
+
+  final def cross(vector: Vector2d): ScalarExpression[P] =
+    cross(Constant[P](vector))
 
   def x: ScalarExpression[P] =
     ScalarExpression.VectorXComponent2d(this)
