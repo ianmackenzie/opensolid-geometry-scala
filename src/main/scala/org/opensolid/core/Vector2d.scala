@@ -112,7 +112,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
     this * value
 
   def times[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
-    VectorExpression2d.Constant[P](this) * expression
+    this * expression
 
   def /(value: Double): Vector2d =
     Vector2d(x / value, y / value)
