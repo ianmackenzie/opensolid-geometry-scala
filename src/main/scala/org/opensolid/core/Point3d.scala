@@ -38,8 +38,14 @@ final case class Point3d(x: Double, y: Double, z: Double)
   def squaredDistanceTo(that: Point3d): Double =
     (this - that).squaredLength
 
+  def squaredDistanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
+    PointExpression3d.Constant[P](this).squaredDistanceTo(expression)
+
   def distanceTo(that: Point3d): Double =
     (this - that).length
+
+  def distanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
+    PointExpression3d.Constant[P](this).distanceTo(expression)
 
   def isOrigin(tolerance: Double): Boolean =
     x * x + y * y + z * z <= tolerance * tolerance

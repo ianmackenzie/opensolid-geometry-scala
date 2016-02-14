@@ -37,8 +37,14 @@ final case class Point2d(x: Double, y: Double)
   def squaredDistanceTo(that: Point2d): Double =
     (this - that).squaredLength
 
+  def squaredDistanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
+    PointExpression2d.Constant[P](this).squaredDistanceTo(expression)
+
   def distanceTo(that: Point2d): Double =
     (this - that).length
+
+  def distanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
+    PointExpression2d.Constant[P](this).distanceTo(expression)
 
   def isOrigin(tolerance: Double): Boolean =
     x * x + y * y <= tolerance * tolerance

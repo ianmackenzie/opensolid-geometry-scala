@@ -81,6 +81,12 @@ sealed abstract class PointExpression3d[P] {
 
   def z: ScalarExpression[P] =
     ScalarExpression.PointZComponent3d(this)
+
+  final def squaredDistanceTo(that: PointExpression3d[P]): ScalarExpression[P] =
+    (this - that).squaredLength
+
+  final def distanceTo(that: PointExpression3d[P]): ScalarExpression[P] =
+    (this - that).length
 }
 
 object PointExpression3d {
