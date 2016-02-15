@@ -69,9 +69,16 @@ object Numerics {
     (xDirection, yDirection, zDirection)
   }
 
+  def binormalToBasis(xDirection: Direction3d, yDirection: Direction3d): Direction3d =
+    Direction3d(
+      xDirection.y * yDirection.z - xDirection.z * yDirection.y,
+      xDirection.z * yDirection.x - xDirection.x * yDirection.z,
+      xDirection.x * yDirection.y - xDirection.y * yDirection.x
+    )
+
   def normalBasis(direction: Direction3d): (Direction3d, Direction3d) = {
     val xDirection = direction.normalDirection
-    val yDirection = Direction3d(direction.vector.cross(xDirection.vector))
+    val yDirection = binormalToBasis(direction, xDirection)
     (xDirection, yDirection)
   }
 }

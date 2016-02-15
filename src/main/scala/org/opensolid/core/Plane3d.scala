@@ -51,7 +51,7 @@ object Plane3d {
     xDirection: Direction3d,
     yDirection: Direction3d
   ): Plane3d = {
-    val normalDirection = Direction3d(xDirection.vector.cross(yDirection.vector))
+    val normalDirection = Numerics.binormalToBasis(xDirection, yDirection)
     Plane3d(originPoint, xDirection, yDirection, normalDirection)
   }
 
@@ -66,14 +66,14 @@ object Plane3d {
       case Vector3d.Zero => normalDirection.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
-    val yDirection = Direction3d(normalDirection.vector.cross(xDirection.vector))
+    val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
     Plane3d(firstPoint, xDirection, yDirection, normalDirection)
   }
 
   def throughAxis(axis: Axis3d): Plane3d = {
     val xDirection = axis.direction
     val yDirection = axis.normalDirection
-    val normalDirection = Direction3d(xDirection.vector.cross(yDirection.vector))
+    val normalDirection = Numerics.binormalToBasis(xDirection, yDirection)
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
@@ -84,7 +84,7 @@ object Plane3d {
       case Vector3d.Zero => axis.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
-    val yDirection = Direction3d(normalDirection.vector.cross(xDirection.vector))
+    val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 

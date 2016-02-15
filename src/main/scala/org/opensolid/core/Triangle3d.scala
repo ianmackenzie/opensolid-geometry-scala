@@ -77,7 +77,7 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
   def plane: Plane3d = {
     val normalDirection = this.normalDirection
     val xDirection = (secondVertex - firstVertex).direction
-    val yDirection = Direction3d(normalDirection.vector.cross(xDirection.vector))
+    val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
     Plane3d(firstVertex, xDirection, yDirection, normalDirection)
   }
 
