@@ -42,3 +42,8 @@ class ParametricCurve1d(
     array(resultIndex)
   }
 }
+
+object ParametricCurve1d {
+  def apply(expression: ScalarExpression[CurveParameter], domain: Interval): ParametricCurve1d =
+    new ParametricCurve1d(expression, domain)
+}
