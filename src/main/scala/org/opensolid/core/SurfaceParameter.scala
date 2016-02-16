@@ -26,4 +26,8 @@ object SurfaceParameter {
     override def index: Int =
       1
   }
+
+  implicit object Traits extends ParameterTraits[SurfaceParameter] {
+    override val NumDimensions = 2
+  }
 }

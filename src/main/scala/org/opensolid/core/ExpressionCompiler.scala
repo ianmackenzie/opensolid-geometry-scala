@@ -639,47 +639,42 @@ private class ExpressionCompiler(numParameters: Int) {
 }
 
 object ExpressionCompiler {
-  def compile(
-    expression: ScalarExpression[_],
-    numParameters: Int
+  def compile[P : ParameterTraits](
+    expression: ScalarExpression[P]
   ): (Array[ArrayOperation], Int, Int) = {
-    val compiler = new ExpressionCompiler(numParameters)
+    val compiler = new ExpressionCompiler(implicitly[ParameterTraits[P]].NumDimensions)
     val resultIndex = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
   }
 
-  def compile(
-    expression: VectorExpression2d[_],
-    numParameters: Int
+  def compile[P : ParameterTraits](
+    expression: VectorExpression2d[P]
   ): (Array[ArrayOperation], Int, (Int, Int)) = {
-    val compiler = new ExpressionCompiler(numParameters)
+    val compiler = new ExpressionCompiler(implicitly[ParameterTraits[P]].NumDimensions)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }
 
-  def compile(
-    expression: VectorExpression3d[_],
-    numParameters: Int
+  def compile[P : ParameterTraits](
+    expression: VectorExpression3d[P]
   ): (Array[ArrayOperation], Int, (Int, Int, Int)) = {
-    val compiler = new ExpressionCompiler(numParameters)
+    val compiler = new ExpressionCompiler(implicitly[ParameterTraits[P]].NumDimensions)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }
 
-  def compile(
-    expression: PointExpression2d[_],
-    numParameters: Int
+  def compile[P : ParameterTraits](
+    expression: PointExpression2d[P]
   ): (Array[ArrayOperation], Int, (Int, Int)) = {
-    val compiler = new ExpressionCompiler(numParameters)
+    val compiler = new ExpressionCompiler(implicitly[ParameterTraits[P]].NumDimensions)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }
 
-  def compile(
-    expression: PointExpression3d[_],
-    numParameters: Int
+  def compile[P : ParameterTraits](
+    expression: PointExpression3d[P]
   ): (Array[ArrayOperation], Int, (Int, Int, Int)) = {
-    val compiler = new ExpressionCompiler(numParameters)
+    val compiler = new ExpressionCompiler(implicitly[ParameterTraits[P]].NumDimensions)
     val resultIndices = compiler.evaluate(expression)
     (compiler.arrayOperations.toArray, compiler.arraySize, resultIndices)
   }

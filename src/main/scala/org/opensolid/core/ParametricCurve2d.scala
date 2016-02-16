@@ -20,7 +20,7 @@ class ParametricCurve2d(
 ) extends Curve2d {
 
   private[this] val (arrayOperations, arraySize, (xIndex, yIndex)) =
-    ExpressionCompiler.compile(expression, 1)
+    ExpressionCompiler.compile(expression)
 
   override def bounds: Bounds2d =
     evaluate(domain)
