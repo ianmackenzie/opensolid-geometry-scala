@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 class ParametricCurve1d(
-  val expression: ScalarExpression[CurveParameter],
+  val expression: ScalarExpression[Double],
   val domain: Interval
 ) extends Curve1d {
 
@@ -44,6 +44,6 @@ class ParametricCurve1d(
 }
 
 object ParametricCurve1d {
-  def apply(expression: ScalarExpression[CurveParameter], domain: Interval): ParametricCurve1d =
+  def apply(expression: ScalarExpression[Double], domain: Interval): ParametricCurve1d =
     new ParametricCurve1d(expression, domain)
 }

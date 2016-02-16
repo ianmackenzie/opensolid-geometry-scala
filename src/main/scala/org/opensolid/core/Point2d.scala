@@ -121,4 +121,8 @@ object Point2d {
     firstPoint + 0.5 * (secondPoint - firstPoint)
 
   val Origin: Point2d = Point2d(0.0, 0.0)
+
+  implicit object Traits extends ParameterTraits[Point2d] {
+    override val NumDimensions = 2
+  }
 }
