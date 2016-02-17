@@ -29,7 +29,7 @@ final case class Point2d(x: Double, y: Double)
   }
 
   override def bounds: Bounds2d =
-    Bounds2d(Interval.singleton(x), Interval.singleton(y))
+    Bounds2d.singleton(this)
 
   override def equals(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
