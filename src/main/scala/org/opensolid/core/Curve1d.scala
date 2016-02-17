@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-trait Curve1d extends Bounded[Interval] {
+trait Curve1d extends Bounded1d {
   def parameterized: ParametricCurve1d
 
   def parameterizedBy(expression: ScalarExpression[Double], domain: Interval): ParametricCurve1d =

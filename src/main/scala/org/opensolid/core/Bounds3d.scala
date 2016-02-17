@@ -17,19 +17,20 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class Bounds3d(x: Interval, y: Interval, z: Interval)
-  extends Bounded[Bounds3d] {
+  extends Bounds[Bounds3d] with Bounded3d {
 
   def components: (Interval, Interval, Interval) =
     (x, y, z)
 
-  def component(index: Int): Interval = index match {
+  override def component(index: Int): Interval = index match {
     case 0 => x
     case 1 => y
     case 2 => z
     case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for Bounds3d")
   }
 
-  override def bounds: Bounds3d = this
+  override def bounds: Bounds3d =
+    this
 
   def isEmpty: Boolean =
     x.isEmpty || y.isEmpty || z.isEmpty
@@ -43,7 +44,7 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   def hull(point: Point3d): Bounds3d =
     Bounds3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
-  def hull(that: Bounds3d): Bounds3d =
+  override def hull(that: Bounds3d): Bounds3d =
     Bounds3d(this.x.hull(that.x), this.y.hull(that.y), this.z.hull(that.z))
 
   def intersection(that: Bounds3d): Bounds3d = {
@@ -56,7 +57,7 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   def overlaps(that: Bounds3d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
 
-  def overlaps(that: Bounds3d, tolerance: Double): Boolean =
+  override def overlaps(that: Bounds3d, tolerance: Double): Boolean =
     this.x.overlaps(that.x, tolerance) &&
     this.y.overlaps(that.y, tolerance) &&
     this.z.overlaps(that.z, tolerance)
@@ -72,12 +73,12 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   def contains(that: Bounds3d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
 
-  def contains(that: Bounds3d, tolerance: Double): Boolean =
+  override def contains(that: Bounds3d, tolerance: Double): Boolean =
     this.x.contains(that.x, tolerance) &&
     this.y.contains(that.y, tolerance) &&
     this.z.contains(that.z, tolerance)
 
-  def bisected(index: Int): (Bounds3d, Bounds3d) =
+  override def bisected(index: Int): (Bounds3d, Bounds3d) =
     (index % 3) match {
       case 0 => {
         val (xLower, xUpper) = x.bisected
@@ -107,25 +108,4 @@ object Bounds3d {
   val Whole: Bounds3d = Bounds3d(Interval.Whole, Interval.Whole, Interval.Whole)
 
   val Unit: Bounds3d = Bounds3d(Interval.Unit, Interval.Unit, Interval.Unit)
-
-  implicit val Traits: Bounds[Bounds3d] = new Bounds[Bounds3d] {
-    override def component(bounds: Bounds3d, index: Int): Interval =
-      bounds.component(index)
-
-    override def overlaps(first: Bounds3d, second: Bounds3d, tolerance: Double): Boolean =
-      first.overlaps(second, tolerance)
-
-    override def contains(first: Bounds3d, second: Bounds3d, tolerance: Double): Boolean =
-      first.contains(second, tolerance)
-
-    override def bisected(bounds: Bounds3d, index: Int): (Bounds3d, Bounds3d) =
-      bounds.bisected(index)
-
-    override def hull(first: Bounds3d, second: Bounds3d): Bounds3d =
-      first.hull(second)
-
-    override val NumDimensions: Int = 3
-
-    override val Empty: Bounds3d = Bounds3d.Empty
-  }
 }

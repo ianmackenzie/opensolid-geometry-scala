@@ -67,7 +67,7 @@ import scala.util.Random
   * }}}
   */
 final case class Interval(lowerBound: Double, upperBound: Double)
-  extends Bounded[Interval] with GeometricallyComparable[Interval] {
+  extends Bounds[Interval] with Bounded1d with GeometricallyComparable[Interval] {
 
   /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) =
@@ -228,6 +228,9 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     }
   }
 
+  override def bisected(index: Int): (Interval, Interval) =
+    bisected
+
   /** Returns a new interval that contains both this interval and the given value. */
   def hull(value: Double): Interval = {
     if (isEmpty) {
@@ -238,7 +241,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
   }
 
   /** Returns a new interval that contains both this interval and the given interval. */
-  def hull(that: Interval): Interval = {
+  override def hull(that: Interval): Interval = {
     if (isEmpty) {
       that
     } else if (that.isEmpty) {
@@ -325,7 +328,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     * res3: Boolean = false
     * }}}
     */
-  def contains(that: Interval, tolerance: Double): Boolean =
+  override def contains(that: Interval, tolerance: Double): Boolean =
     that.lowerBound >= this.lowerBound - tolerance && that.upperBound <= this.upperBound + tolerance
 
   /** Returns true if this interval overlaps the given interval.
@@ -373,8 +376,11 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     * res3: Boolean = false
     * }}}
     */
-  def overlaps(that: Interval, tolerance: Double): Boolean =
+  override def overlaps(that: Interval, tolerance: Double): Boolean =
     that.lowerBound <= this.upperBound + tolerance && that.upperBound >= this.lowerBound - tolerance
+
+  override def component(index: Int): Interval =
+    this
 
   def unary_- : Interval =
     Interval(-upperBound, -lowerBound)
@@ -649,29 +655,6 @@ object Interval {
   val Unit: Interval = new Interval(0.0, 1.0)
 
   val Zero: Interval = new Interval(0.0, 0.0)
-
-  implicit val Traits: Bounds[Interval] = new Bounds[Interval] {
-    override def component(interval: Interval, index: Int): Interval = index match {
-      case 0 => interval
-      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of range for Interval")
-    }
-
-    override def overlaps(first: Interval, second: Interval, tolerance: Double): Boolean =
-      first.overlaps(second, tolerance)
-
-    override def contains(first: Interval, second: Interval, tolerance: Double): Boolean =
-      first.contains(second, tolerance)
-
-    override def bisected(interval: Interval, index: Int): (Interval, Interval) =
-      interval.bisected
-
-    override def hull(first: Interval, second: Interval): Interval =
-      first.hull(second)
-
-    override val NumDimensions: Int = 1
-
-    override val Empty: Interval = Interval.Empty
-  }
 
   private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
     val result = firstValue * secondValue

@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVertex: Point3d)
-  extends Scalable3d[Triangle3d] with Bounded[Bounds3d] with GeometricallyComparable[Triangle3d] {
+  extends Scalable3d[Triangle3d] with Bounded3d with GeometricallyComparable[Triangle3d] {
 
   def vertices: (Point3d, Point3d, Point3d) =
     (firstVertex, secondVertex, thirdVertex)

@@ -14,33 +14,29 @@
 
 package org.opensolid.core
 
-abstract class Bounds[T] {
-  def component(bounds: T, index: Int): Interval
+abstract class Bounds[B <: Bounds[B]] {
+  def component(index: Int): Interval
 
-  def overlaps(firstBounds: T, secondBounds: T, tolerance: Double): Boolean
+  def overlaps(that: B, tolerance: Double): Boolean
 
-  def contains(firstBounds: T, secondBounds: T, tolerance: Double): Boolean
+  def contains(that: B, tolerance: Double): Boolean
 
-  def bisected(bounds: T, index: Int): (T, T)
+  def bisected(index: Int): (B, B)
 
-  def hull(firstBounds: T, secondBounds: T): T
+  def hull(that: B): B
 
-  def hasLesserMedian(firstBounds: T, secondBounds: T, index: Int): Boolean = {
-    val difference = component(firstBounds, index) - component(secondBounds, index)
+  def hasLesserMedianThan(that: B, index: Int): Boolean = {
+    val difference = component(index) - that.component(index)
     difference.upperBound < -difference.lowerBound
   }
 
-  def hasEqualMedian(firstBounds: T, secondBounds: T, index: Int): Boolean = {
-    val difference = component(firstBounds, index) - component(secondBounds, index)
+  def hasEqualMedianTo(that: B, index: Int): Boolean = {
+    val difference = component(index) - that.component(index)
     difference.upperBound == -difference.lowerBound
   }
 
-  def hasGreaterMedian(firstBounds: T, secondBounds: T, index: Int): Boolean = {
-    val difference = component(firstBounds, index) - component(secondBounds, index)
+  def hasGreaterMedianThan(that: B, index: Int): Boolean = {
+    val difference = component(index) - that.component(index)
     difference.upperBound > -difference.lowerBound
   }
-
-  val NumDimensions: Int
-
-  val Empty: T
 }

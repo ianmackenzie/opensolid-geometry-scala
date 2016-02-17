@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Circle2d(centerPoint: Point2d, radius: Double)
-  extends Scalable2d[Circle2d] with Bounded[Bounds2d] with GeometricallyComparable[Circle2d] {
+  extends Scalable2d[Circle2d] with Bounded2d with GeometricallyComparable[Circle2d] {
 
   require(radius >= 0.0)
 

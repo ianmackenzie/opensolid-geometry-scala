@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Circle3d(centerPoint: Point3d, normalDirection: Direction3d, radius: Double)
-  extends Scalable3d[Circle3d] with Bounded[Bounds3d] {
+  extends Scalable3d[Circle3d] with Bounded3d {
 
   require(radius >= 0.0)
 
