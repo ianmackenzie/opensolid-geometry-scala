@@ -27,7 +27,5 @@ object SurfaceParameter {
       1
   }
 
-  implicit object Traits extends ParameterTraits[SurfaceParameter] {
-    override val NumDimensions = 2
-  }
+  implicit object Dimensionality extends TwoDimensional[SurfaceParameter]
 }

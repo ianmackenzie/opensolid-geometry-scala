@@ -20,7 +20,5 @@ abstract class CurveParameter extends ScalarExpression.Parameter[CurveParameter]
 }
 
 object CurveParameter extends CurveParameter {
-  implicit object Traits extends ParameterTraits[CurveParameter] {
-    override val NumDimensions = 1
-  }
+  implicit object Dimensionality extends OneDimensional[CurveParameter]
 }
