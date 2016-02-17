@@ -174,6 +174,66 @@ object VectorExpression2d {
     case _ => FromComponents(xExpression, yExpression)
   }
 
+  def compile[P <: CurveParameter : OneDimensional](
+    expression: VectorExpression2d[P]
+  ): CompiledCurve = {
+    val compiler = new ExpressionCompiler(1)
+    val (xIndex, yIndex) = compiler.evaluate(expression)
+    new CompiledCurve(compiler.arrayOperations.toArray, compiler.arraySize, xIndex, yIndex)
+  }
+
+  def compile[P <: SurfaceParameter : TwoDimensional](
+    expression: VectorExpression2d[P]
+  ): CompiledSurface = {
+    val compiler = new ExpressionCompiler(2)
+    val (xIndex, yIndex) = compiler.evaluate(expression)
+    new CompiledSurface(compiler.arrayOperations.toArray, compiler.arraySize, xIndex, yIndex)
+  }
+
+  class CompiledCurve private[VectorExpression2d] (
+    arrayOperations: Array[ExpressionCompiler.ArrayOperation],
+    arraySize: Int,
+    xIndex: Int,
+    yIndex: Int
+  ) {
+    def evaluate(parameterValue: Double): Vector2d = {
+      val array = Array.ofDim[Double](arraySize)
+      array(0) = parameterValue
+      for { operation <- arrayOperations } operation.execute(array)
+      Vector2d(array(xIndex), array(yIndex))
+    }
+
+    def evaluate(parameterBounds: Interval): VectorBounds2d = {
+      val array = Array.ofDim[Interval](arraySize)
+      array(0) = parameterBounds
+      for { operation <- arrayOperations } operation.execute(array)
+      VectorBounds2d(array(xIndex), array(yIndex))
+    }
+  }
+
+  class CompiledSurface private[VectorExpression2d] (
+    arrayOperations: Array[ExpressionCompiler.ArrayOperation],
+    arraySize: Int,
+    xIndex: Int,
+    yIndex: Int
+  ) {
+    def evaluate(parameterValue: Point2d): Vector2d = {
+      val array = Array.ofDim[Double](arraySize)
+      array(0) = parameterValue.x
+      array(1) = parameterValue.y
+      for { operation <- arrayOperations } operation.execute(array)
+      Vector2d(array(xIndex), array(yIndex))
+    }
+
+    def evaluate(parameterBounds: Bounds2d): VectorBounds2d = {
+      val array = Array.ofDim[Interval](arraySize)
+      array(0) = parameterBounds.x
+      array(1) = parameterBounds.y
+      for { operation <- arrayOperations } operation.execute(array)
+      VectorBounds2d(array(xIndex), array(yIndex))
+    }
+  }
+
   case class Constant[P](val vector: Vector2d) extends VectorExpression2d[P] {
     override def derivative(parameter: P): VectorExpression2d[P] =
       Constant(Vector2d.Zero)

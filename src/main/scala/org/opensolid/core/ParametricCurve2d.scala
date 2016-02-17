@@ -19,8 +19,7 @@ class ParametricCurve2d(
   val domain: Interval
 ) extends Curve2d {
 
-  private[this] val (arrayOperations, arraySize, (xIndex, yIndex)) =
-    ExpressionCompiler.compile(expression)
+  private[this] val compiled = PointExpression2d.compile(expression)
 
   override def bounds: Bounds2d =
     evaluate(domain)
@@ -28,17 +27,9 @@ class ParametricCurve2d(
   override def parameterized: ParametricCurve2d =
     this
 
-  def evaluate(parameterValue: Double): Point2d = {
-    val array = Array.ofDim[Double](arraySize)
-    array(0) = parameterValue
-    for { operation <- arrayOperations } operation.execute(array)
-    Point2d(array(xIndex), array(yIndex))
-  }
+  def evaluate(parameterValue: Double): Point2d =
+    compiled.evaluate(parameterValue)
 
-  def evaluate(parameterBounds: Interval): Bounds2d = {
-    val array = Array.ofDim[Interval](arraySize)
-    array(0) = parameterBounds
-    for { operation <- arrayOperations } operation.execute(array)
-    Bounds2d(array(xIndex), array(yIndex))
-  }
+  def evaluate(parameterBounds: Interval): Bounds2d =
+    compiled.evaluate(parameterBounds)
 }

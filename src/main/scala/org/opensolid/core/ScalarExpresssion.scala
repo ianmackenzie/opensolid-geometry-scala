@@ -155,6 +155,64 @@ object ScalarExpression {
   def atan[P](expression: ScalarExpression[P]): ScalarExpression[P] =
     Arctangent(expression)
 
+  def compile[P <: CurveParameter : OneDimensional](
+    expression: ScalarExpression[P]
+  ): CompiledCurve = {
+    val compiler = new ExpressionCompiler(1)
+    val resultIndex = compiler.evaluate(expression)
+    new CompiledCurve(compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
+  }
+
+  def compile[P <: SurfaceParameter : TwoDimensional](
+    expression: ScalarExpression[P]
+  ): CompiledSurface = {
+    val compiler = new ExpressionCompiler(2)
+    val resultIndex = compiler.evaluate(expression)
+    new CompiledSurface(compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
+  }
+
+  class CompiledCurve private[ScalarExpression] (
+    arrayOperations: Array[ExpressionCompiler.ArrayOperation],
+    arraySize: Int,
+    resultIndex: Int
+  ) {
+    def evaluate(parameterValue: Double): Double = {
+      val array = Array.ofDim[Double](arraySize)
+      array(0) = parameterValue
+      for { operation <- arrayOperations } operation.execute(array)
+      array(resultIndex)
+    }
+
+    def evaluate(parameterBounds: Interval): Interval = {
+      val array = Array.ofDim[Interval](arraySize)
+      array(0) = parameterBounds
+      for { operation <- arrayOperations } operation.execute(array)
+      array(resultIndex)
+    }
+  }
+
+  class CompiledSurface private[ScalarExpression] (
+    arrayOperations: Array[ExpressionCompiler.ArrayOperation],
+    arraySize: Int,
+    resultIndex: Int
+  ) {
+    def evaluate(parameterValue: Point2d): Double = {
+      val array = Array.ofDim[Double](arraySize)
+      array(0) = parameterValue.x
+      array(1) = parameterValue.y
+      for { operation <- arrayOperations } operation.execute(array)
+      array(resultIndex)
+    }
+
+    def evaluate(parameterBounds: Bounds2d): Interval = {
+      val array = Array.ofDim[Interval](arraySize)
+      array(0) = parameterBounds.x
+      array(1) = parameterBounds.y
+      for { operation <- arrayOperations } operation.execute(array)
+      array(resultIndex)
+    }
+  }
+
   abstract class Parameter[P <: Parameter[P]] extends ScalarExpression[P] {
     def index: Int
 
