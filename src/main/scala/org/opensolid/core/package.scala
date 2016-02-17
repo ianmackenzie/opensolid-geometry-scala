@@ -230,10 +230,6 @@ package object core {
       interval.hull(value)
   }
 
-  implicit object DoubleTraits extends ParameterTraits[Double] {
-    override val NumDimensions = 1
-  }
-
   implicit class Tuple2Extensions[T](val tuple: (T, T)) extends AnyVal {
     def first: T =
       tuple match { case (first, second) => first }

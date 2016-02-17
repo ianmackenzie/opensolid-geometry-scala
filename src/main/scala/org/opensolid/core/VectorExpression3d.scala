@@ -19,7 +19,7 @@ import scala.math
 sealed abstract class VectorExpression3d[P] {
   import VectorExpression3d._
 
-  def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P]
+  def derivative(parameter: P): VectorExpression3d[P]
 
   def condition: ScalarExpression[P]
 
@@ -172,7 +172,7 @@ object VectorExpression3d {
   }
 
   case class Constant[P](val vector: Vector3d) extends VectorExpression3d[P] {
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       Constant(Vector3d.Zero)
 
     override def condition: ScalarExpression[P] =
@@ -203,7 +203,7 @@ object VectorExpression3d {
     override val z: ScalarExpression[P]
   ) extends VectorExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       VectorExpression3d.fromComponents(
         x.derivative(parameter),
         y.derivative(parameter),
@@ -221,7 +221,7 @@ object VectorExpression3d {
   }
 
   case class Negation[P](expression: VectorExpression3d[P]) extends VectorExpression3d[P] {
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       -expression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
@@ -248,7 +248,7 @@ object VectorExpression3d {
     secondExpression: VectorExpression3d[P]
   ) extends VectorExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
@@ -272,7 +272,7 @@ object VectorExpression3d {
     override def unary_- : VectorExpression3d[P] =
       Difference[P](secondExpression, firstExpression)
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
@@ -296,7 +296,7 @@ object VectorExpression3d {
     override def unary_- : VectorExpression3d[P] =
       PointDifference[P](secondExpression, firstExpression)
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
@@ -317,7 +317,7 @@ object VectorExpression3d {
     vectorExpression: VectorExpression3d[P]
   ) extends VectorExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       scalarExpression.derivative(parameter) * vectorExpression +
       scalarExpression * vectorExpression.derivative(parameter)
 
@@ -339,7 +339,7 @@ object VectorExpression3d {
     scalarExpression: ScalarExpression[P]
   ) extends VectorExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       (
         vectorExpression.derivative(parameter) * scalarExpression -
         vectorExpression * scalarExpression.derivative(parameter)
@@ -363,7 +363,7 @@ object VectorExpression3d {
     secondExpression: VectorExpression3d[P]
   ) extends VectorExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter).cross(secondExpression) +
       firstExpression.cross(secondExpression.derivative(parameter))
 

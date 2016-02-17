@@ -14,7 +14,8 @@
 
 package org.opensolid.core
 
-abstract class SurfaceParameter extends ScalarExpression.Parameter[Point2d]
+abstract class SurfaceParameter extends ScalarExpression.Parameter[SurfaceParameter]
+
 object SurfaceParameter {
   object U extends SurfaceParameter {
     override def index: Int =
@@ -24,5 +25,9 @@ object SurfaceParameter {
   object V extends SurfaceParameter {
     override def index: Int =
       1
+  }
+
+  implicit object Traits extends ParameterTraits[SurfaceParameter] {
+    override val NumDimensions = 2
   }
 }

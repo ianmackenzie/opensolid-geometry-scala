@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 class ParametricCurve2d(
-  val expression: PointExpression2d[Double],
+  val expression: PointExpression2d[CurveParameter],
   val domain: Interval
 ) extends Curve2d {
 

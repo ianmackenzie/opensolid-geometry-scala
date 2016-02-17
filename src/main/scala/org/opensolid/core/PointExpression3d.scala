@@ -19,7 +19,7 @@ import scala.math
 sealed abstract class PointExpression3d[P] {
   import PointExpression3d._
 
-  def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P]
+  def derivative(parameter: P): VectorExpression3d[P]
 
   def condition: ScalarExpression[P]
 
@@ -104,7 +104,7 @@ object PointExpression3d {
   }
 
   case class Constant[P](val point: Point3d) extends PointExpression3d[P] {
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       VectorExpression3d.Constant(Vector3d.Zero)
 
     override def condition: ScalarExpression[P] =
@@ -126,7 +126,7 @@ object PointExpression3d {
     override val z: ScalarExpression[P]
   ) extends PointExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       VectorExpression3d.fromComponents(
         x.derivative(parameter),
         y.derivative(parameter),
@@ -142,7 +142,7 @@ object PointExpression3d {
     vectorExpression: VectorExpression3d[P]
   ) extends PointExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       pointExpression.derivative(parameter) + vectorExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
@@ -163,7 +163,7 @@ object PointExpression3d {
     vectorExpression: VectorExpression3d[P]
   ) extends PointExpression3d[P] {
 
-    override def derivative(parameter: ScalarExpression.Parameter[P]): VectorExpression3d[P] =
+    override def derivative(parameter: P): VectorExpression3d[P] =
       pointExpression.derivative(parameter) - vectorExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
