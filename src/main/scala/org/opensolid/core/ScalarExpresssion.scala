@@ -183,7 +183,7 @@ object ScalarExpression {
       array(resultIndex)
     }
 
-    def evaluate(parameterBounds: Interval): Interval = {
+    def evaluateBounds(parameterBounds: Interval): Interval = {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds
       for { operation <- arrayOperations } operation.execute(array)
@@ -204,7 +204,7 @@ object ScalarExpression {
       array(resultIndex)
     }
 
-    def evaluate(parameterBounds: Bounds2d): Interval = {
+    def evaluateBounds(parameterBounds: Bounds2d): Interval = {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds.x
       array(1) = parameterBounds.y

@@ -125,7 +125,7 @@ object PointExpression2d {
       Point2d(array(xIndex), array(yIndex))
     }
 
-    def evaluate(parameterBounds: Interval): Bounds2d = {
+    def evaluateBounds(parameterBounds: Interval): Bounds2d = {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds
       for { operation <- arrayOperations } operation.execute(array)
@@ -147,7 +147,7 @@ object PointExpression2d {
       Point2d(array(xIndex), array(yIndex))
     }
 
-    def evaluate(parameterBounds: Bounds2d): Bounds2d = {
+    def evaluateBounds(parameterBounds: Bounds2d): Bounds2d = {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds.x
       array(1) = parameterBounds.y

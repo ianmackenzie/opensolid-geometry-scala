@@ -213,7 +213,7 @@ object VectorExpression3d {
       Vector3d(array(xIndex), array(yIndex), array(zIndex))
     }
 
-    def evaluate(parameterBounds: Interval): VectorBounds3d = {
+    def evaluateBounds(parameterBounds: Interval): VectorBounds3d = {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds
       for { operation <- arrayOperations } operation.execute(array)
@@ -236,7 +236,7 @@ object VectorExpression3d {
       Vector3d(array(xIndex), array(yIndex), array(zIndex))
     }
 
-    def evaluate(parameterBounds: Bounds2d): VectorBounds3d = {
+    def evaluateBounds(parameterBounds: Bounds2d): VectorBounds3d = {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds.x
       array(1) = parameterBounds.y

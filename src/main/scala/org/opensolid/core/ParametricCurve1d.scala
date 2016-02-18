@@ -22,7 +22,7 @@ class ParametricCurve1d(
   private[this] val compiled = ScalarExpression.compile(expression)
 
   override def bounds: Interval =
-    evaluate(domain)
+    evaluateBounds(domain)
 
   override def parameterized: ParametricCurve1d =
     this
@@ -30,8 +30,8 @@ class ParametricCurve1d(
   def evaluate(parameterValue: Double): Double =
     compiled.evaluate(parameterValue)
 
-  def evaluate(parameterBounds: Interval): Interval =
-    compiled.evaluate(parameterBounds)
+  def evaluateBounds(parameterBounds: Interval): Interval =
+    compiled.evaluateBounds(parameterBounds)
 }
 
 object ParametricCurve1d {

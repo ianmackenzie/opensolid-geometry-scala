@@ -22,7 +22,7 @@ class ParametricCurve2d(
   private[this] val compiled = PointExpression2d.compile(expression)
 
   override def bounds: Bounds2d =
-    evaluate(domain)
+    evaluateBounds(domain)
 
   override def parameterized: ParametricCurve2d =
     this
@@ -30,6 +30,6 @@ class ParametricCurve2d(
   def evaluate(parameterValue: Double): Point2d =
     compiled.evaluate(parameterValue)
 
-  def evaluate(parameterBounds: Interval): Bounds2d =
-    compiled.evaluate(parameterBounds)
+  def evaluateBounds(parameterBounds: Interval): Bounds2d =
+    compiled.evaluateBounds(parameterBounds)
 }
