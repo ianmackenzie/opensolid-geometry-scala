@@ -23,9 +23,9 @@ trait IntervalGenerators {
 
   val randomWidthInterval: Gen[Interval] =
     for {
-      median <- randomDouble
+      midpoint <- randomDouble
       halfWidth <- randomDouble.map(math.abs(_))
-      interval = Interval(median - halfWidth, median + halfWidth)
+      interval = Interval(midpoint - halfWidth, midpoint + halfWidth)
       if (!interval.width.isInfinity)
     } yield interval
 

@@ -59,7 +59,7 @@ import scala.util.Random
   * scala> c.upperBound
   * res3: Double = -1.0
   *
-  * scala> c.median
+  * scala> c.midpoint
   * res4: Double = -2.5
   *
   * scala> c.width
@@ -152,7 +152,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     lowerBound + value * width
 
   /** Returns a value halfway between the lower and upper bounds of this interval. */
-  def median: Double =
+  def midpoint: Double =
     interpolated(0.5)
 
   /** Returns a random value within this interval. */
@@ -171,9 +171,10 @@ final case class Interval(lowerBound: Double, upperBound: Double)
 
   /** Returns a pair of intervals equal to this interval split into two halves.
     *
-    * If this interval has finite width, then the split point is this interval's median and the two
-    * returned intervals are `Interval(lowerBound, median)` and `Interval(median, upperBound)`.
-    * Otherwise, a set of heuristics is used to find a reasonable split point.
+    * If this interval has finite width, then the split point is this interval's midpoint and the
+    * two returned intervals are `Interval(lowerBound, midpoint)` and
+    * `Interval(midpoint, upperBound)`. Otherwise, a set of heuristics is used to find a reasonable
+    * split point.
     *
     * Examples:
     * {{{
@@ -222,7 +223,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
             1.0
           }
         } else {
-          this.median
+          this.midpoint
         }
       (Interval(lowerBound, mid), Interval(mid, upperBound))
     }
