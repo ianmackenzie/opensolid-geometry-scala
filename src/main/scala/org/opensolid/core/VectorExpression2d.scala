@@ -174,64 +174,60 @@ object VectorExpression2d {
     case _ => FromComponents(xExpression, yExpression)
   }
 
+  case class CompiledCurve(
+    evaluate: (Double) => Vector2d,
+    evaluateBounds: (Interval) => VectorBounds2d
+  )
+
   def compile[P <: CurveParameter : OneDimensional](
     expression: VectorExpression2d[P]
   ): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val (xIndex, yIndex) = compiler.evaluate(expression)
-    new CompiledCurve(compiler.arrayOperations.toArray, compiler.arraySize, xIndex, yIndex)
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
+    val evaluate = (parameterValue: Double) => {
+      val array = Array.ofDim[Double](arraySize)
+      array(0) = parameterValue
+      for { operation <- arrayOperations } operation.execute(array)
+      Vector2d(array(xIndex), array(yIndex))
+    }
+    val evaluateBounds = (parameterBounds: Interval) => {
+      val array = Array.ofDim[Interval](arraySize)
+      array(0) = parameterBounds
+      for { operation <- arrayOperations } operation.execute(array)
+      VectorBounds2d(array(xIndex), array(yIndex))
+    }
+    CompiledCurve(evaluate, evaluateBounds)
   }
+
+  case class CompiledSurface(
+    evaluate: (Point2d) => Vector2d,
+    evaluateBounds: (Bounds2d) => VectorBounds2d
+  )
 
   def compile[P <: SurfaceParameter : TwoDimensional](
     expression: VectorExpression2d[P]
   ): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val (xIndex, yIndex) = compiler.evaluate(expression)
-    new CompiledSurface(compiler.arrayOperations.toArray, compiler.arraySize, xIndex, yIndex)
-  }
-
-  class CompiledCurve private[VectorExpression2d] (
-    arrayOperations: Array[ExpressionCompiler.ArrayOperation],
-    arraySize: Int,
-    xIndex: Int,
-    yIndex: Int
-  ) {
-    def evaluate(parameterValue: Double): Vector2d = {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue
-      for { operation <- arrayOperations } operation.execute(array)
-      Vector2d(array(xIndex), array(yIndex))
-    }
-
-    def evaluateBounds(parameterBounds: Interval): VectorBounds2d = {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds
-      for { operation <- arrayOperations } operation.execute(array)
-      VectorBounds2d(array(xIndex), array(yIndex))
-    }
-  }
-
-  class CompiledSurface private[VectorExpression2d] (
-    arrayOperations: Array[ExpressionCompiler.ArrayOperation],
-    arraySize: Int,
-    xIndex: Int,
-    yIndex: Int
-  ) {
-    def evaluate(parameterValue: Point2d): Vector2d = {
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
+    val evaluate = (parameterValue: Point2d) => {
       val array = Array.ofDim[Double](arraySize)
       array(0) = parameterValue.x
       array(1) = parameterValue.y
       for { operation <- arrayOperations } operation.execute(array)
       Vector2d(array(xIndex), array(yIndex))
     }
-
-    def evaluateBounds(parameterBounds: Bounds2d): VectorBounds2d = {
+    val evaluateBounds = (parameterBounds: Bounds2d) => {
       val array = Array.ofDim[Interval](arraySize)
       array(0) = parameterBounds.x
       array(1) = parameterBounds.y
       for { operation <- arrayOperations } operation.execute(array)
       VectorBounds2d(array(xIndex), array(yIndex))
     }
+    CompiledSurface(evaluate, evaluateBounds)
   }
 
   case class Constant[P](val vector: Vector2d) extends VectorExpression2d[P] {
