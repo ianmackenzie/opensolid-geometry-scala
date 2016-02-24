@@ -63,6 +63,9 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def angleTo(that: Direction3d): Double =
     math.acos(x * that.x + y * that.y + z * that.z)
+
+  def componentIn(that: Direction3d): Double =
+    this.x * that.x + this.y * that.y + this.z * that.z
 }
 
 object Direction3d {

@@ -57,6 +57,9 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 
   def angleTo(that: Direction2d): Double =
     math.atan2(x * that.y - y * that.x, x * that.x + y * that.y)
+
+  def componentIn(that: Direction2d): Double =
+    this.x * that.x + this.y * that.y
 }
 
 object Direction2d {
