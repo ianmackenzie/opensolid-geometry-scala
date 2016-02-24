@@ -60,6 +60,12 @@ final case class Direction2d(x: Double, y: Double) extends VectorTransformable2d
 
   def componentIn(that: Direction2d): Double =
     this.x * that.x + this.y * that.y
+
+  def cross(vector: Vector2d): Double =
+    x * vector.y - y * vector.x
+
+  def cross(that: Direction2d): Double =
+    this.x * that.y - this.y * that.x
 }
 
 object Direction2d {

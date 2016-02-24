@@ -162,6 +162,13 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.x * that.y - this.y * that.x
     )
 
+  def cross(direction: Direction3d): Vector3d =
+    Vector3d(
+      y * direction.z - z * direction.y,
+      z * direction.x - x * direction.z,
+      x * direction.y - y * direction.x
+    )
+
   def cross[P](expression: VectorExpression3d[P]): VectorExpression3d[P] =
     VectorExpression3d.Constant[P](this).cross(expression)
 

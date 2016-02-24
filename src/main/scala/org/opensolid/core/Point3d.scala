@@ -54,7 +54,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
     (this - axis.originPoint).componentIn(axis.direction)
 
   def squaredDistanceTo(axis: Axis3d): Double =
-    (this - axis.originPoint).cross(axis.direction.vector).squaredLength
+    (this - axis.originPoint).cross(axis.direction).squaredLength
 
   def distanceTo(axis: Axis3d): Double =
     math.sqrt(squaredDistanceTo(axis))

@@ -135,6 +135,9 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def cross(that: Vector2d): Double =
     this.x * that.y - this.y * that.x
 
+  def cross(direction: Direction2d): Double =
+    x * direction.y - y * direction.x
+
   def cross[P](expression: VectorExpression2d[P]): ScalarExpression[P] =
     VectorExpression2d.Constant[P](this).cross(expression)
 
