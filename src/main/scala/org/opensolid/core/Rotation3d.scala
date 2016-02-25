@@ -17,19 +17,26 @@ package org.opensolid.core
 import scala.math
 
 final case class Rotation3d(axis: Axis3d, angle: Double) extends Transformation3d {
-  private[this] val (xDirection, yDirection, zDirection) =
-    Numerics.rotationBasis(axis.direction, angle)
+  private[this] val (
+    Direction3d(a00, a10, a20),
+    Direction3d(a01, a11, a21),
+    Direction3d(a02, a12, a22)
+  ) = Numerics.rotationBasis(axis.direction, angle)
 
   override def apply(point: Point3d): Point3d =
     axis.originPoint + apply(point - axis.originPoint)
 
   override def apply(vector: Vector3d): Vector3d =
-    vector.x * xDirection + vector.y * yDirection + vector.z * zDirection
+    Vector3d(
+      a00 * vector.x + a01 * vector.y + a02 * vector.z,
+      a10 * vector.x + a11 * vector.y + a12 * vector.z,
+      a20 * vector.x + a21 * vector.y + a22 * vector.z
+    )
 
   override def apply(direction: Direction3d): Direction3d =
     Direction3d(
-      direction.x * xDirection.x + direction.y * yDirection.x + direction.z * zDirection.x,
-      direction.x * xDirection.y + direction.y * yDirection.y + direction.z * zDirection.y,
-      direction.x * xDirection.z + direction.y * yDirection.z + direction.z * zDirection.z
+      a00 * direction.x + a01 * direction.y + a02 * direction.z,
+      a10 * direction.x + a11 * direction.y + a12 * direction.z,
+      a20 * direction.x + a21 * direction.y + a22 * direction.z
     )
 }
