@@ -90,6 +90,9 @@ package object core {
     def isNotZero(tolerance: Double): Boolean =
       value < -tolerance || value > tolerance
 
+    def isEqualTo(that: Double, tolerance: Double): Boolean =
+      (this.value - that.value).isZero(tolerance)
+
     def meters: Double =
       value
 
