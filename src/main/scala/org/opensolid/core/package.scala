@@ -52,14 +52,14 @@ import scala.math
   * === Naming conventions ===
   *
   * OpenSolid uses standard Scala naming conventions: values and functions are camelCase, types and
-  * constants (such as `Point3d.Origin`) are PascalCase. Other than well-established function names
-  * such as `equals` and `contains` (and, for symmetry, `overlaps`), functions returning Boolean
-  * results start with 'is' or 'has' (e.g. `point.isOn(plane, tolerance)`).
+  * constants (such as `Point3d.Origin`) are PascalCase. Other than some well-established function
+  * names such as `contains` (and, for symmetry, `overlaps`), functions returning Boolean results
+  * start with 'is' or 'has' (e.g. `point.isOn(plane, tolerance)`).
   *
   * Functions transforming an object usually belong to the object being transformed, so for example
   * one uses `point.projectedOnto(plane)` instead of something like `plane.project(point)`.
   * In general, names have been chosen to make entire expressions read as naturally as possible as
-  * 'noun phrases', for example `if (bounds.contains(lineSegment.rotatedAbout(axis, angle)) ...`.
+  * noun phrases, for example `if (boundingBox.contains(lineSegment.rotatedAbout(axis, angle)) ...`.
   *
   * === Transformations framework ===
   *

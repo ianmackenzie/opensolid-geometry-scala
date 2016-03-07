@@ -60,10 +60,10 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
   override def bounds: Bounds3d =
     firstVertex.hull(secondVertex).hull(thirdVertex)
 
-  override def equals(that: Triangle3d, tolerance: Double): Boolean =
-    this.firstVertex.equals(that.firstVertex, tolerance) &&
-    this.secondVertex.equals(that.secondVertex, tolerance) &&
-    this.thirdVertex.equals(that.thirdVertex, tolerance)
+  override def isEqualTo(that: Triangle3d, tolerance: Double): Boolean =
+    this.firstVertex.isEqualTo(that.firstVertex, tolerance) &&
+    this.secondVertex.isEqualTo(that.secondVertex, tolerance) &&
+    this.thirdVertex.isEqualTo(that.thirdVertex, tolerance)
 
   def area: Double =
     0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex).length
