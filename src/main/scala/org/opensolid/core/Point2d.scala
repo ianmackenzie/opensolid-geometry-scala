@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Point2d(x: Double, y: Double)
-  extends Scalable2d[Point2d] with Bounded2d with GeometricallyComparable[Point2d] {
+  extends Scalable2d[Point2d] with Bounded[Bounds2d] with GeometricallyComparable[Point2d] {
 
   def components: (Double, Double) =
     (x, y)
@@ -31,7 +31,7 @@ final case class Point2d(x: Double, y: Double)
   override def bounds: Bounds2d =
     Bounds2d.singleton(this)
 
-  override def equals(that: Point2d, tolerance: Double): Boolean =
+  override def isEqualTo(that: Point2d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point2d): Double =

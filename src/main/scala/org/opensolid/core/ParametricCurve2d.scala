@@ -19,7 +19,7 @@ class ParametricCurve2d(
   val domain: Interval
 ) extends Curve2d {
 
-  private[this] val compiled = PointExpression2d.compile(expression)
+  private[this] val compiled = PointExpression2d.compileCurve(expression)
 
   override def bounds: Bounds2d =
     evaluateBounds(domain)

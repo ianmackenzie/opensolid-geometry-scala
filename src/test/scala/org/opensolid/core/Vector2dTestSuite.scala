@@ -51,7 +51,7 @@ class Vector2dTestSuite
         val projected = vector.projectedOnto(axis)
         val tolerance = 4 * eps(vector.length)
         projected.length.should(beEqualTo(vector.componentIn(axis.direction).abs, tolerance))
-        projected.cross(axis.direction.vector).should(beEqualTo(0.0, tolerance))
+        projected.cross(axis.direction).should(beEqualTo(0.0, tolerance))
         val projectedTolerance = 8 * eps(projected.length)
         projected.projectedOnto(axis).should(beEqualTo(projected, tolerance))
         (vector - projected).componentIn(axis.direction).should(beEqualTo(0.0, tolerance))

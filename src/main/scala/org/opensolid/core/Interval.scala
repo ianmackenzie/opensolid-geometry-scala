@@ -67,7 +67,7 @@ import scala.util.Random
   * }}}
   */
 final case class Interval(lowerBound: Double, upperBound: Double)
-  extends Bounds[Interval] with Bounded1d with GeometricallyComparable[Interval] {
+  extends Bounds[Interval] with Bounded[Interval] with GeometricallyComparable[Interval] {
 
   /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) =
@@ -101,7 +101,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     * Returns true if each endpoint of this interval is equal the corresponding endpoint of the
     * other interval, to within the given tolerance.
     */
-  override def equals(that: Interval, tolerance: Double): Boolean =
+  override def isEqualTo(that: Interval, tolerance: Double): Boolean =
     (this.lowerBound - that.lowerBound).isZero(tolerance) &&
     (this.upperBound - that.upperBound).isZero(tolerance)
 

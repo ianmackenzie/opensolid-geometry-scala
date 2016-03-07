@@ -157,9 +157,7 @@ object ScalarExpression {
 
   case class CompiledCurve(evaluate: (Double) => Double, evaluateBounds: (Interval) => Interval)
 
-  def compile[P <: CurveParameter : OneDimensional](
-    expression: ScalarExpression[P]
-  ): CompiledCurve = {
+  def compileCurve[P <: CurveParameter](expression: ScalarExpression[P]): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val resultIndex = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray
@@ -181,9 +179,7 @@ object ScalarExpression {
 
   case class CompiledSurface(evaluate: (Point2d) => Double, evaluateBounds: (Bounds2d) => Interval)
 
-  def compile[P <: SurfaceParameter : TwoDimensional](
-    expression: ScalarExpression[P]
-  ): CompiledSurface = {
+  def compileSurface[P <: SurfaceParameter](expression: ScalarExpression[P]): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val resultIndex = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray

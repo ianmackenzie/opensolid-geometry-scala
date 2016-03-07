@@ -176,9 +176,7 @@ object VectorExpression3d {
     evaluateBounds: (Interval) => VectorBounds3d
   )
 
-  def compile[P <: CurveParameter : OneDimensional](
-    expression: VectorExpression3d[P]
-  ): CompiledCurve = {
+  def compileCurve[P <: CurveParameter](expression: VectorExpression3d[P]): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray
@@ -203,9 +201,7 @@ object VectorExpression3d {
     evaluateBounds: (Bounds2d) => VectorBounds3d
   )
 
-  def compile[P <: SurfaceParameter : TwoDimensional](
-    expression: VectorExpression3d[P]
-  ): CompiledSurface = {
+  def compileSurface[P <: SurfaceParameter](expression: VectorExpression3d[P]): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray

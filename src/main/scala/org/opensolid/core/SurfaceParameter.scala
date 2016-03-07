@@ -26,6 +26,4 @@ object SurfaceParameter {
     override def index: Int =
       1
   }
-
-  implicit object Dimensionality extends TwoDimensional[SurfaceParameter]
 }

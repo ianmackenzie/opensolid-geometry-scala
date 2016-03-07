@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVertex: Point2d)
-  extends Scalable2d[Triangle2d] with Bounded2d with GeometricallyComparable[Triangle2d] {
+  extends Scalable2d[Triangle2d] with Bounded[Bounds2d] with GeometricallyComparable[Triangle2d] {
 
   def vertices: (Point2d, Point2d, Point2d) =
     (firstVertex, secondVertex, thirdVertex)
@@ -60,10 +60,10 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
   override def bounds: Bounds2d =
     firstVertex.hull(secondVertex).hull(thirdVertex)
 
-  override def equals(that: Triangle2d, tolerance: Double): Boolean =
-    this.firstVertex.equals(that.firstVertex, tolerance) &&
-    this.secondVertex.equals(that.secondVertex, tolerance) &&
-    this.thirdVertex.equals(that.thirdVertex, tolerance)
+  override def isEqualTo(that: Triangle2d, tolerance: Double): Boolean =
+    this.firstVertex.isEqualTo(that.firstVertex, tolerance) &&
+    this.secondVertex.isEqualTo(that.secondVertex, tolerance) &&
+    this.thirdVertex.isEqualTo(that.thirdVertex, tolerance)
 
   def area: Double =
     0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex)

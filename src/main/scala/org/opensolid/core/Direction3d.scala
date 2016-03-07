@@ -63,6 +63,23 @@ final case class Direction3d(x: Double, y: Double, z: Double)
 
   def angleTo(that: Direction3d): Double =
     math.acos(x * that.x + y * that.y + z * that.z)
+
+  def componentIn(that: Direction3d): Double =
+    this.x * that.x + this.y * that.y + this.z * that.z
+
+  def cross(vector: Vector3d): Vector3d =
+    Vector3d(
+      y * vector.z - z * vector.y,
+      z * vector.x - x * vector.z,
+      x * vector.y - y * vector.x
+    )
+
+  def cross(that: Direction3d): Vector3d =
+    Vector3d(
+      this.y * that.z - this.z * that.y,
+      this.z * that.x - this.x * that.z,
+      this.x * that.y - this.y * that.x
+    )
 }
 
 object Direction3d {

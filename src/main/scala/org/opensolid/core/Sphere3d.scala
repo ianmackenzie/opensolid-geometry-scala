@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Sphere3d(centerPoint: Point3d, radius: Double)
-  extends Scalable3d[Sphere3d] with Bounded3d with GeometricallyComparable[Sphere3d] {
+  extends Scalable3d[Sphere3d] with Bounded[Bounds3d] with GeometricallyComparable[Sphere3d] {
 
   require(radius >= 0.0)
 
@@ -37,7 +37,7 @@ final case class Sphere3d(centerPoint: Point3d, radius: Double)
       Interval(centerPoint.z - radius, centerPoint.z + radius)
     )
 
-  override def equals(that: Sphere3d, tolerance: Double): Boolean = {
+  override def isEqualTo(that: Sphere3d, tolerance: Double): Boolean = {
     val centerDistance = this.centerPoint.distanceTo(that.centerPoint)
     val radiusDifference = (this.radius - that.radius).abs
     (centerDistance + radiusDifference).isZero(tolerance)

@@ -14,6 +14,6 @@
 
 package org.opensolid.core
 
-trait GeometricallyComparable[T] {
-  def equals(that: T, tolerance: Double): Boolean
+trait GeometricallyComparable[T] extends Any {
+  def isEqualTo(that: T, tolerance: Double): Boolean
 }

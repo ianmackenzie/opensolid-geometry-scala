@@ -105,9 +105,7 @@ object PointExpression3d {
 
   case class CompiledCurve(evaluate: (Double) => Point3d, evaluateBounds: (Interval) => Bounds3d)
 
-  def compile[P <: CurveParameter : OneDimensional](
-    expression: PointExpression3d[P]
-  ): CompiledCurve = {
+  def compileCurve[P <: CurveParameter](expression: PointExpression3d[P]): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray
@@ -129,9 +127,7 @@ object PointExpression3d {
 
   case class CompiledSurface(evaluate: (Point2d) => Point3d, evaluateBounds: (Bounds2d) => Bounds3d)
 
-  def compile[P <: SurfaceParameter : TwoDimensional](
-    expression: PointExpression3d[P]
-  ): CompiledSurface = {
+  def compileSurface[P <: SurfaceParameter](expression: PointExpression3d[P]): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray

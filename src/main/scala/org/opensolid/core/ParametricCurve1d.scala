@@ -19,7 +19,7 @@ class ParametricCurve1d(
   val domain: Interval
 ) extends Curve1d {
 
-  private[this] val compiled = ScalarExpression.compile(expression)
+  private[this] val compiled = ScalarExpression.compileCurve(expression)
 
   override def bounds: Interval =
     evaluateBounds(domain)

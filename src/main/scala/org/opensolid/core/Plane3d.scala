@@ -79,7 +79,7 @@ object Plane3d {
 
   def throughAxisAndPoint(axis: Axis3d, point: Point3d): Plane3d = {
     val xDirection = axis.direction
-    val crossProduct = xDirection.vector.cross(point - axis.originPoint)
+    val crossProduct = xDirection.cross(point - axis.originPoint)
     val normalDirection = crossProduct match {
       case Vector3d.Zero => axis.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction

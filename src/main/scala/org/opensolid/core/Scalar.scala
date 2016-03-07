@@ -14,12 +14,22 @@
 
 package org.opensolid.core
 
-class Scalar(val value: Double) extends AnyVal {
+case class Scalar(val value: Double)
+  extends AnyVal
+  with Bounded[Interval]
+  with GeometricallyComparable[Scalar] {
+
   def isZero(tolerance: Double): Boolean =
     value.isZero(tolerance)
 
   def isNotZero(tolerance: Double): Boolean =
     value.isNotZero(tolerance)
+
+  def bounds: Interval =
+    Interval.singleton(value)
+
+  def isEqualTo(that: Scalar, tolerance: Double): Boolean =
+    this.value.isEqualTo(that.value, tolerance)
 
   def meters: Double =
     value.meters

@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.math
 
 final case class Point3d(x: Double, y: Double, z: Double)
-  extends Scalable3d[Point3d] with Bounded3d with GeometricallyComparable[Point3d] {
+  extends Scalable3d[Point3d] with Bounded[Bounds3d] with GeometricallyComparable[Point3d] {
 
   def components: (Double, Double, Double) =
     (x, y, z)
@@ -32,7 +32,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
   override def bounds: Bounds3d =
     Bounds3d.singleton(this)
 
-  override def equals(that: Point3d, tolerance: Double): Boolean =
+  override def isEqualTo(that: Point3d, tolerance: Double): Boolean =
     this.squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point3d): Double =
@@ -54,7 +54,7 @@ final case class Point3d(x: Double, y: Double, z: Double)
     (this - axis.originPoint).componentIn(axis.direction)
 
   def squaredDistanceTo(axis: Axis3d): Double =
-    (this - axis.originPoint).cross(axis.direction.vector).squaredLength
+    (this - axis.originPoint).cross(axis.direction).squaredLength
 
   def distanceTo(axis: Axis3d): Double =
     math.sqrt(squaredDistanceTo(axis))

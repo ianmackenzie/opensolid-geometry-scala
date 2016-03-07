@@ -16,7 +16,7 @@ package org.opensolid.core
 
 import scala.math
 
-trait Curve1d extends Bounded1d {
+trait Curve1d extends Bounded[Interval] {
   import Curve1d._
 
   def parameterized: ParametricCurve1d
@@ -36,7 +36,7 @@ trait Curve1d extends Bounded1d {
     val expression = parameterizedCurve.expression
     val domain = parameterizedCurve.domain
     val derivatives = Array.iterate(expression, maxOrder + 2)(_.derivative(CurveParameter))
-    val compiled = derivatives.map(ScalarExpression.compile(_))
+    val compiled = derivatives.map(ScalarExpression.compileCurve(_))
     val tolerances = derivativeTolerances(tolerance, maxOrder, domain)
     val compiledExpression = compiled(0)
     val leftXValue = domain.lowerBound

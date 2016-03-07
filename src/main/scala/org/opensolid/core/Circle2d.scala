@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Circle2d(centerPoint: Point2d, radius: Double)
-  extends Scalable2d[Circle2d] with Bounded2d with GeometricallyComparable[Circle2d] {
+  extends Scalable2d[Circle2d] with Bounded[Bounds2d] with GeometricallyComparable[Circle2d] {
 
   require(radius >= 0.0)
 
@@ -34,7 +34,7 @@ final case class Circle2d(centerPoint: Point2d, radius: Double)
       Interval(centerPoint.y - radius, centerPoint.y + radius)
     )
 
-  override def equals(that: Circle2d, tolerance: Double): Boolean = {
+  override def isEqualTo(that: Circle2d, tolerance: Double): Boolean = {
     val centerDistance = this.centerPoint.distanceTo(that.centerPoint)
     val radiusDifference = (this.radius - that.radius).abs
     (centerDistance + radiusDifference).isZero(tolerance)
