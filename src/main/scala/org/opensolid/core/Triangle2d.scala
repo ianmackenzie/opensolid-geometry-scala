@@ -15,7 +15,7 @@
 package org.opensolid.core
 
 final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVertex: Point2d)
-  extends Scalable2d[Triangle2d] with Bounded2d with GeometricallyComparable[Triangle2d] {
+  extends Scalable2d[Triangle2d] with Bounded[Bounds2d] with GeometricallyComparable[Triangle2d] {
 
   def vertices: (Point2d, Point2d, Point2d) =
     (firstVertex, secondVertex, thirdVertex)

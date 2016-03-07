@@ -17,7 +17,7 @@ package org.opensolid.core
 import scala.util.Random
 
 final case class Bounds3d(x: Interval, y: Interval, z: Interval)
-  extends Bounds[Bounds3d] with Bounded3d {
+  extends Bounds[Bounds3d] with Bounded[Bounds3d] {
 
   def components: (Interval, Interval, Interval) =
     (x, y, z)

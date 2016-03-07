@@ -29,21 +29,21 @@ sealed abstract class SpatialTree[T <: Bounded[B] with GeometricallyComparable[T
 }
 
 object SpatialTree {
-  def build[T <: Bounded1d with GeometricallyComparable[T] : OneDimensional](
+  def build1d[T <: Bounded[Interval] with GeometricallyComparable[T]](
     items: Seq[T]
   ): SpatialTree[T, Interval] = {
     val leaves = items.map(item => new Leaf[T, Interval](item, item.bounds)).toArray
     build(leaves, Interval.Empty, 0, leaves.size, 0, 1)
   }
 
-  def build[T <: Bounded2d with GeometricallyComparable[T] : TwoDimensional](
+  def build2d[T <: Bounded[Bounds2d] with GeometricallyComparable[T]](
     items: Seq[T]
   ): SpatialTree[T, Bounds2d] = {
     val leaves = items.map(item => new Leaf[T, Bounds2d](item, item.bounds)).toArray
     build(leaves, Bounds2d.Empty, 0, leaves.size, 0, 2)
   }
 
-  def build[T <: Bounded3d with GeometricallyComparable[T] : ThreeDimensional](
+  def build3d[T <: Bounded[Bounds3d] with GeometricallyComparable[T]](
     items: Seq[T]
   ): SpatialTree[T, Bounds3d] = {
     val leaves = items.map(item => new Leaf[T, Bounds3d](item, item.bounds)).toArray

@@ -19,6 +19,4 @@ abstract class CurveParameter extends ScalarExpression.Parameter[CurveParameter]
     0
 }
 
-object CurveParameter extends CurveParameter {
-  implicit object Dimensionality extends OneDimensional[CurveParameter]
-}
+object CurveParameter extends CurveParameter

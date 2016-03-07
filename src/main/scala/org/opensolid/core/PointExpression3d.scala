@@ -103,9 +103,7 @@ object PointExpression3d {
     case _ => FromComponents(xExpression, yExpression, zExpression)
   }
 
-  def compile[P <: CurveParameter : OneDimensional](
-    expression: PointExpression3d[P]
-  ): CompiledCurve = {
+  def compileCurve[P <: CurveParameter](expression: PointExpression3d[P]): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     new CompiledCurve(
@@ -117,9 +115,7 @@ object PointExpression3d {
     )
   }
 
-  def compile[P <: SurfaceParameter : TwoDimensional](
-    expression: PointExpression3d[P]
-  ): CompiledSurface = {
+  def compileSurface[P <: SurfaceParameter](expression: PointExpression3d[P]): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     new CompiledSurface(

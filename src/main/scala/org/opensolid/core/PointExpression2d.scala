@@ -96,17 +96,13 @@ object PointExpression2d {
     case _ => FromComponents(xExpression, yExpression)
   }
 
-  def compile[P <: CurveParameter : OneDimensional](
-    expression: PointExpression2d[P]
-  ): CompiledCurve = {
+  def compileCurve[P <: CurveParameter](expression: PointExpression2d[P]): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val (xIndex, yIndex) = compiler.evaluate(expression)
     new CompiledCurve(compiler.arrayOperations.toArray, compiler.arraySize, xIndex, yIndex)
   }
 
-  def compile[P <: SurfaceParameter : TwoDimensional](
-    expression: PointExpression2d[P]
-  ): CompiledSurface = {
+  def compileSurface[P <: SurfaceParameter](expression: PointExpression2d[P]): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val (xIndex, yIndex) = compiler.evaluate(expression)
     new CompiledSurface(compiler.arrayOperations.toArray, compiler.arraySize, xIndex, yIndex)

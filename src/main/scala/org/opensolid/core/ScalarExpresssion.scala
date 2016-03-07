@@ -155,17 +155,13 @@ object ScalarExpression {
   def atan[P](expression: ScalarExpression[P]): ScalarExpression[P] =
     Arctangent(expression)
 
-  def compile[P <: CurveParameter : OneDimensional](
-    expression: ScalarExpression[P]
-  ): CompiledCurve = {
+  def compileCurve[P <: CurveParameter](expression: ScalarExpression[P]): CompiledCurve = {
     val compiler = new ExpressionCompiler(1)
     val resultIndex = compiler.evaluate(expression)
     new CompiledCurve(compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)
   }
 
-  def compile[P <: SurfaceParameter : TwoDimensional](
-    expression: ScalarExpression[P]
-  ): CompiledSurface = {
+  def compileSurface[P <: SurfaceParameter](expression: ScalarExpression[P]): CompiledSurface = {
     val compiler = new ExpressionCompiler(2)
     val resultIndex = compiler.evaluate(expression)
     new CompiledSurface(compiler.arrayOperations.toArray, compiler.arraySize, resultIndex)

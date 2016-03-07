@@ -16,7 +16,7 @@ package org.opensolid.core
 
 final case class LineSegment3d(startPoint: Point3d, endPoint: Point3d)
   extends Scalable3d[LineSegment3d]
-  with Bounded3d
+  with Bounded[Bounds3d]
   with GeometricallyComparable[LineSegment3d] {
 
   def endpoints: (Point3d, Point3d) =
