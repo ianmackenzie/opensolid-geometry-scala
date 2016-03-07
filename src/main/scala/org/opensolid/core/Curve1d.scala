@@ -104,7 +104,7 @@ object Curve1d {
           throw new MatchError(s"Radius of influence not implemented for order $order")
       }
     }
-    (1 to derivatives.size - 1).map(radiusOfInfluence(_)).max
+    (1 to derivatives.size - 1).map(radiusOfInfluence(_)).min
   }
 
   private[Curve1d] def rootAt(
