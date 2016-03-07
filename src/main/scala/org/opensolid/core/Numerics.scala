@@ -15,6 +15,7 @@
 package org.opensolid.core
 
 import scala.math
+import java.lang.Math
 
 object Numerics {
   def normalDirection(
@@ -80,5 +81,43 @@ object Numerics {
     val xDirection = direction.normalDirection
     val yDirection = binormalToBasis(direction, xDirection)
     (xDirection, yDirection)
+  }
+
+  def newtonRaphson(
+    expression: (Double) => Double,
+    derivative: (Double) => Double,
+    interval: Interval
+  ): Option[Double] = {
+    val xMin = interval.lowerBound
+    val xMax = interval.upperBound
+    var x = interval.midpoint
+    var y = expression(x)
+    var error = y.abs
+    var nonImprovementCount = 0
+    var xWithinInterval = true
+    while (xWithinInterval && nonImprovementCount < 2) {
+      val yPrime = derivative(x)
+      val xNew = x - y / yPrime
+      if (xMin < xNew && xNew < xMax) {
+        val yNew = expression(xNew)
+        val errorNew = yNew.abs
+        if (errorNew >= error) nonImprovementCount += 1
+        x = xNew
+        y = yNew
+        error = errorNew
+      } else {
+        xWithinInterval = false
+      }
+    }
+    if (xWithinInterval) {
+      // Check for convergence - Y values adjacent to root should bracket 0
+      val xPrev = Math.nextAfter(x, Double.NegativeInfinity)
+      val xNext = Math.nextAfter(x, Double.PositiveInfinity)
+      val yPrev = expression(xPrev)
+      val yNext = expression(xNext)
+      if ((yPrev < 0.0 && 0.0 < yNext) || (yPrev > 0.0 && 0.0 > yNext)) Some(x) else None
+    } else {
+      None
+    }
   }
 }

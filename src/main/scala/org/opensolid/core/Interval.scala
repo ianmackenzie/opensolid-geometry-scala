@@ -199,7 +199,7 @@ final case class Interval(lowerBound: Double, upperBound: Double)
     *   (Interval.Empty,Interval.Empty)
     * }}}
     */
-  def bisected: (Interval, Interval) = {
+  def bisected: (Interval, Interval) =
     if (isEmpty) {
       (Interval.Empty, Interval.Empty)
     } else {
@@ -227,7 +227,17 @@ final case class Interval(lowerBound: Double, upperBound: Double)
         }
       (Interval(lowerBound, mid), Interval(mid, upperBound))
     }
-  }
+
+  def bisectedAt(value: Double): (Interval, Interval) =
+    if (isEmpty) {
+      (Interval.Empty, Interval.Empty)
+    } else if (value < lowerBound) {
+      (Interval.Empty, this)
+    } else if (value > upperBound) {
+      (this, Interval.Empty)
+    } else {
+      (Interval(lowerBound, value), Interval(value, upperBound))
+    }
 
   override def bisected(index: Int): (Interval, Interval) =
     bisected
