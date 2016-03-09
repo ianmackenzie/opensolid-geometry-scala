@@ -177,21 +177,46 @@ package object core {
     def /(interval: Interval): Interval = {
       if (interval.isEmpty) {
         Interval.Empty
-      } else if (interval.lowerBound > 0.0) {
-        if (value >= 0.0) {
+      } else if (java.lang.Double.doubleToRawLongBits(interval.lowerBound) >= 0) {
+        // Interval lower bound is positive zero or greater
+        if (value > 0.0) {
+          // Positive value divided by positive interval
           Interval(value / interval.upperBound, value / interval.lowerBound)
-        } else {
+        } else if (value < 0.0) {
+          // Negative value divided by positive interval
           Interval(value / interval.lowerBound, value / interval.upperBound)
+        } else if (interval.upperBound == 0.0) {
+          // Zero divided by zero is NaN
+          Interval.Empty
+        } else {
+          // Zero divided by nonzero is zero
+          Interval.Zero
         }
-      } else if (interval.upperBound < 0.0) {
-        if (value >= 0.0) {
+      } else if (java.lang.Double.doubleToRawLongBits(interval.upperBound) < 0) {
+        // Interval upper bound is negative zero or lesser
+        if (value > 0.0) {
+          // Positive value divided by negative interval
           Interval(value / interval.upperBound, value / interval.lowerBound)
-        } else {
+        } else if (value < 0.0) {
+          // Negative value divided by negative interval
           Interval(value / interval.lowerBound, value / interval.upperBound)
+        } else if (interval.lowerBound == 0.0) {
+          // Zero divided by zero is NaN
+          Interval.Empty
+        } else {
+          // Zero divided by nonzero is zero
+          Interval.Zero
         }
       } else if (value == 0.0) {
-        Interval.Zero
+        if (interval == Interval.Zero) {
+          // Zero divided by zero is NaN
+          Interval.Empty
+        } else {
+          // Zero divided by nonzero is zero
+          Interval.Zero
+        }
       } else {
+        // Nonzero value divided by interval that spans zero results in [-Infinity, Infinity]
         Interval.Whole
       }
     }
