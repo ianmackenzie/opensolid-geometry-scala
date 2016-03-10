@@ -151,3 +151,25 @@ case class Scalar(val value: Double)
   def hull(interval: Interval): Interval =
     value.hull(interval)
 }
+
+object Scalar {
+  object PositiveSign {
+    def unapply(value: Double): Boolean =
+      java.lang.Double.doubleToRawLongBits(value) >= 0
+  }
+
+  object NegativeSign {
+    def unapply(value: Double): Boolean =
+      java.lang.Double.doubleToRawLongBits(value) < 0
+  }
+
+  object PositiveZero {
+    def unapply(value: Double): Boolean =
+      value == 0.0 && PositiveSign.unapply(value)
+  }
+
+  object NegativeZero {
+    def unapply(value: Double): Boolean =
+      value == 0.0 && NegativeSign.unapply(value)
+  }
+}
