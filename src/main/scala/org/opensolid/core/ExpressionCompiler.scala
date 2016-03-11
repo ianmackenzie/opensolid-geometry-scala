@@ -65,25 +65,25 @@ private class ExpressionCompiler(numParameters: Int) {
     case ScalarExpression.Constant(value) =>
       constant1d(value)
     case ScalarExpression.VectorXComponent2d(expression) =>
-      evaluate(expression).first
+      evaluate(expression) match { case (xIndex, yIndex) => xIndex }
     case ScalarExpression.VectorYComponent2d(expression) =>
-      evaluate(expression).second
+      evaluate(expression) match { case (xIndex, yIndex) => yIndex }
     case ScalarExpression.VectorXComponent3d(expression) =>
-      evaluate(expression).first
+      evaluate(expression) match { case (xIndex, yIndex, zIndex) => xIndex }
     case ScalarExpression.VectorYComponent3d(expression) =>
-      evaluate(expression).second
+      evaluate(expression) match { case (xIndex, yIndex, zIndex) => yIndex }
     case ScalarExpression.VectorZComponent3d(expression) =>
-      evaluate(expression).third
+      evaluate(expression) match { case (xIndex, yIndex, zIndex) => zIndex }
     case ScalarExpression.PointXComponent2d(expression) =>
-      evaluate(expression).first
+      evaluate(expression) match { case (xIndex, yIndex) => xIndex }
     case ScalarExpression.PointYComponent2d(expression) =>
-      evaluate(expression).second
+      evaluate(expression) match { case (xIndex, yIndex) => yIndex }
     case ScalarExpression.PointXComponent3d(expression) =>
-      evaluate(expression).first
+      evaluate(expression) match { case (xIndex, yIndex, zIndex) => xIndex }
     case ScalarExpression.PointYComponent3d(expression) =>
-      evaluate(expression).second
+      evaluate(expression) match { case (xIndex, yIndex, zIndex) => yIndex }
     case ScalarExpression.PointZComponent3d(expression) =>
-      evaluate(expression).third
+      evaluate(expression) match { case (xIndex, yIndex, zIndex) => zIndex }
     case ScalarExpression.Negation(argument) =>
       negation1d(evaluate(argument))
     case ScalarExpression.Sum(firstArgument, secondArgument) =>
@@ -403,14 +403,16 @@ private class ExpressionCompiler(numParameters: Int) {
     }
   }
 
-  private[this] def squaredNorm2d(argumentIndices: (Int, Int)): Int =
-    binaryOperation1d(
-      argumentIndices.first,
-      argumentIndices.second,
-      squaredNorm2dMap,
-      new SquaredNorm2d(argumentIndices, _),
-      true
-    )
+  private[this] def squaredNorm2d(argumentIndices: (Int, Int)): Int = argumentIndices match {
+    case (xIndex, yIndex) =>
+      binaryOperation1d(
+        xIndex,
+        yIndex,
+        squaredNorm2dMap,
+        new SquaredNorm2d(argumentIndices, _),
+        true
+      )
+  }
 
   private[this] def squaredNorm3d(argumentIndices: (Int, Int, Int)): Int =
     squaredNorm3dMap.get(argumentIndices) match {
@@ -443,11 +445,13 @@ private class ExpressionCompiler(numParameters: Int) {
         (xIndex, yIndex)
       }
       case (None, None) => {
-        val resultIndices = (arraySize, arraySize + 1)
+        val xIndex = arraySize
+        val yIndex = arraySize + 1
+        val resultIndices = (xIndex, yIndex)
         arraySize += 2
         arrayOperations += new Constant2d((xValue, yValue), resultIndices)
-        constantMap += (xValue -> resultIndices.first)
-        constantMap += (yValue -> resultIndices.second)
+        constantMap += (xValue -> xIndex)
+        constantMap += (yValue -> yIndex)
         resultIndices
       }
     }

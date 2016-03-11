@@ -518,8 +518,9 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
 }
 
 object Interval {
-  def fromEndpoints(endpoints: (Double, Double)): Interval =
-    Interval(endpoints.first, endpoints.second)
+  def fromEndpoints(endpoints: (Double, Double)): Interval = endpoints match {
+    case (lowerBound, upperBound) => Interval(lowerBound, upperBound)
+  }
 
   def singleton(value: Double): Interval =
     Interval(value, value)

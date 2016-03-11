@@ -289,71 +289,56 @@ package object core {
   }
 
   implicit class Tuple2Extensions[T](val tuple: (T, T)) extends AnyVal {
-    def first: T =
-      tuple match { case (first, second) => first }
-
-    def second: T =
-      tuple match { case (first, second) => second }
-
-    def map[U](function: (T) => U): (U, U) =
-      (function(first), function(second))
-
-    def foreach(function: (T) => Unit): Unit = {
-      function(first)
-      function(second)
+    def map[U](function: (T) => U): (U, U) = tuple match {
+      case (first, second) => (function(first), function(second))
     }
 
-    def apply(index: Int): T = index match {
-      case 0 => first
-      case 1 => second
-      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a pair")
+    def foreach(function: (T) => Unit): Unit = tuple match {
+      case (first, second) => {
+        function(first)
+        function(second)
+      }
     }
 
-    def count(function: (T) => Boolean): Int =
-      (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
+    def count(function: (T) => Boolean): Int = tuple match {
+      case (first, second) => (if (function(first)) 1 else 0) + (if (function(second)) 1 else 0)
+    }
 
-    def reduce[R](function: (T, T) => R): R =
-      function(first, second)
+    def reduce[R](function: (T, T) => R): R = tuple match {
+      case (first, second) => function(first, second)
+    }
 
-    def reverse: (T, T) =
-      (second, first)
+    def reverse: (T, T) = tuple match {
+      case (first, second) => (second, first)
+    }
   }
 
   implicit class Tuple3Extensions[T](val tuple: (T, T, T)) extends AnyVal {
-    def first: T =
-      tuple match { case (first, second, third) => first }
-
-    def second: T =
-      tuple match { case (first, second, third) => second }
-
-    def third: T =
-      tuple match { case (first, second, third) => third }
-
-    def map[U](function: (T) => U): (U, U, U) =
-      (function(first), function(second), function(third))
-
-    def foreach(function: (T) => Unit): Unit = {
-      function(first)
-      function(second)
-      function(third)
+    def map[U](function: (T) => U): (U, U, U) = tuple match {
+      case (first, second, third) => (function(first), function(second), function(third))
     }
 
-    def apply(index: Int): T = index match {
-      case 0 => first
-      case 1 => second
-      case 2 => third
-      case _ => throw new IndexOutOfBoundsException(s"Index $index is out of bounds for a triple")
+    def foreach(function: (T) => Unit): Unit = tuple match {
+      case (first, second, third) => {
+        function(first)
+        function(second)
+        function(third)
+      }
     }
 
-    def count(function: (T) => Boolean): Int =
-      (if (function(first)) 1 else 0) +
-      (if (function(second)) 1 else 0) +
-      (if (function(third)) 1 else 0)
+    def count(function: (T) => Boolean): Int = tuple match {
+      case (first, second, third) =>
+        (if (function(first)) 1 else 0) +
+        (if (function(second)) 1 else 0) +
+        (if (function(third)) 1 else 0)
+    }
 
-    def reduce[R](function: (T, T, T) => R): R =
-      function(first, second, third)
+    def reduce[R](function: (T, T, T) => R): R = tuple match {
+      case (first, second, third) => function(first, second, third)
+    }
 
-    def reverse: (T, T, T) =
-      (third, second, first)
+    def reverse: (T, T, T) = tuple match {
+      case (first, second, third) => (third, second, first)
+    }
   }
 }
