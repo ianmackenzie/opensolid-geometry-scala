@@ -19,8 +19,7 @@ import org.scalatest._
 import org.scalatest.matchers._
 import org.scalatest.prop._
 
-class Vector2dTestSuite
-  extends TestSuite
+class Vector2dTestSuite extends TestSuite
   with Vector2dGenerators
   with Axis2dGenerators
   with Plane3dGenerators

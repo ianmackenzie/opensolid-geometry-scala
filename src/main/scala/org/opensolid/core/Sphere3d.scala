@@ -16,8 +16,9 @@ package org.opensolid.core
 
 import scala.math
 
-final case class Sphere3d(centerPoint: Point3d, radius: Double)
-  extends Scalable3d[Sphere3d] with Bounded[Bounds3d] with GeometricallyComparable[Sphere3d] {
+final case class Sphere3d(centerPoint: Point3d, radius: Double) extends Scalable3d[Sphere3d]
+  with Bounded[Bounds3d]
+  with GeometricallyComparable[Sphere3d] {
 
   require(radius >= 0.0)
 

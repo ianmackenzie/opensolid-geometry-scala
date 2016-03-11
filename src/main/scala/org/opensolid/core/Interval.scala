@@ -66,8 +66,9 @@ import scala.util.Random
   * res5: Double = 3.0
   * }}}
   */
-final case class Interval(lowerBound: Double, upperBound: Double)
-  extends Bounds[Interval] with Bounded[Interval] with GeometricallyComparable[Interval] {
+final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds[Interval]
+  with Bounded[Interval]
+  with GeometricallyComparable[Interval] {
 
   /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) =

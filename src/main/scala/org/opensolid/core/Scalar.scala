@@ -14,8 +14,7 @@
 
 package org.opensolid.core
 
-case class Scalar(val value: Double)
-  extends AnyVal
+case class Scalar(val value: Double) extends AnyVal
   with Bounded[Interval]
   with GeometricallyComparable[Scalar] {
 
