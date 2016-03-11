@@ -668,41 +668,6 @@ object Interval {
 
   val Zero: Interval = new Interval(0.0, 0.0)
 
-  object PositiveSign {
-    def unapply(interval: Interval): Boolean = interval.lowerBound match {
-      case Scalar.PositiveSign() => true
-      case _ => false
-    }
-  }
-
-  object NegativeSign {
-    def unapply(interval: Interval): Boolean = interval.upperBound match {
-      case Scalar.NegativeSign() => true
-      case _ => false
-    }
-  }
-
-  object PositiveZero {
-    def unapply(interval: Interval): Boolean = interval match {
-      case Interval(Scalar.PositiveZero(), Scalar.PositiveZero()) => true
-      case _ => false
-    }
-  }
-
-  object NegativeZero {
-    def unapply(interval: Interval): Boolean = interval match {
-      case Interval(Scalar.NegativeZero(), Scalar.NegativeZero()) => true
-      case _ => false
-    }
-  }
-
-  object SymmetricZero {
-    def unapply(interval: Interval): Boolean = interval match {
-      case Interval(Scalar.NegativeZero(), Scalar.PositiveZero()) => true
-      case _ => false
-    }
-  }
-
   private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
     val result = firstValue * secondValue
     if (java.lang.Double.isFinite(result)) {
