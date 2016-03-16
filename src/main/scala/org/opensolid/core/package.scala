@@ -258,36 +258,6 @@ package object core {
       interval.hull(value)
   }
 
-  object Positive {
-    def unapply(value: Double): Boolean =
-      value > 0.0
-  }
-
-  object Negative {
-    def unapply(value: Double): Boolean =
-      value < 0.0
-  }
-
-  object Nonpositive {
-    def unapply(value: Double): Boolean =
-      value <= 0.0
-  }
-
-  object Nonnegative {
-    def unapply(value: Double): Boolean =
-      value >= 0.0
-  }
-
-  object PositiveZero {
-    def unapply(value: Double): Boolean =
-      value == 0.0 && java.lang.Double.doubleToRawLongBits(value) == 0
-  }
-
-  object NegativeZero {
-    def unapply(value: Double): Boolean =
-      value == 0.0 && java.lang.Double.doubleToRawLongBits(value) != 0
-  }
-
   implicit class Tuple2Extensions[T](val tuple: (T, T)) extends AnyVal {
     def map[U](function: (T) => U): (U, U) = tuple match {
       case (first, second) => (function(first), function(second))
