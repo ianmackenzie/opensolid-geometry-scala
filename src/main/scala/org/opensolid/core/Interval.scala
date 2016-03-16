@@ -400,6 +400,19 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def negated: Interval =
     -this
 
+  def reciprocal: Interval =
+    if (isEmpty) {
+      Interval.Empty
+    } else if (lowerBound > 0.0 || upperBound < 0.0) {
+      Interval(1.0 / upperBound, 1.0 / lowerBound)
+    } else if (lowerBound < 0.0 && upperBound == 0.0) {
+      Interval(Double.NegativeInfinity, 1.0 / lowerBound)
+    } else if (lowerBound == 0.0 && upperBound > 0.0) {
+      Interval(1.0 / upperBound, Double.PositiveInfinity)
+    } else {
+      Interval.Whole
+    }
+
   def +(value: Double): Interval =
     Interval(lowerBound + value, upperBound + value)
 
