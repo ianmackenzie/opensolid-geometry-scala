@@ -669,6 +669,14 @@ object Interval {
 
   val Zero: Interval = new Interval(0.0, 0.0)
 
+  val NegativeInfinity: Interval = Interval(Double.NegativeInfinity, Double.NegativeInfinity)
+
+  val PositiveInfinity: Interval = Interval(Double.PositiveInfinity, Double.PositiveInfinity)
+
+  val PositiveHalf: Interval = Interval(0.0, Double.PositiveInfinity)
+
+  val NegativeHalf: Interval = Interval(Double.NegativeInfinity, 0.0)
+
   private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
     val result = firstValue * secondValue
     if (java.lang.Double.isFinite(result)) {
