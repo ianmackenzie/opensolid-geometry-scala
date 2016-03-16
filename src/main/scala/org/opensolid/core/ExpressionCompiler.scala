@@ -214,7 +214,7 @@ private class ExpressionCompiler(numParameters: Int) {
         arraySize += 1
         arrayOperations += newOperation(resultIndex)
         resultMap += (argumentIndices -> resultIndex)
-        if (symmetric) resultMap += (argumentIndices.reverse -> resultIndex)
+        if (symmetric) resultMap += ((secondArgumentIndex, firstArgumentIndex) -> resultIndex)
         resultIndex
       }
     }
