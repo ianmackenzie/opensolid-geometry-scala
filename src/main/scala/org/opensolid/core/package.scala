@@ -178,34 +178,86 @@ package object core {
       if (interval.isEmpty || value.isNaN) {
         // If either argument is invalid, result is invalid
         Interval.Empty
-      } else if (value == 0.0) {
-        // If the value and interval are both identically zero, then there are no valid quotients
-        // and the result is empty. If the value is zero and the interval is non-zero, then all
-        // valid quotients are zero so the result is identically zero.
-        if (interval == Interval.Zero) Interval.Empty else Interval.Zero
-      } else if (!interval.contains(0.0)) {
-        // 1/x is monotonic except at 0, so can take hull of endpoints if 0 is not in the interval
-        (value / interval.lowerBound).hull(value / interval.upperBound)
-      } else if (interval == Interval.Zero) {
-        // Value is non-zero, interval is zero - assume infinity of either sign is possible
-        Interval.Whole
-      } else if (interval.lowerBound == 0.0) {
-        // Upper bound must be greater than zero since we know the interval is non-zero
-        if (value > 0.0) {
-          Interval(value / interval.upperBound, Double.PositiveInfinity)
-        } else {
-          Interval(Double.NegativeInfinity, value / interval.upperBound)
-        }
-      } else if (interval.upperBound == 0.0) {
-        // Lower bound must be less than zero since we know the interval is non-zero
-        if (value > 0.0) {
-          Interval(Double.NegativeInfinity, value / interval.lowerBound)
-        } else {
-          Interval(value / interval.lowerBound, Double.PositiveInfinity)
-        }
       } else {
-        // Value is non-zero, interval spans zero - all result values are possible
-        Interval.Whole
+        if (interval.lowerBound > 0.0) {
+          if (value.isInfinity && interval.upperBound.isInfinity) {
+            if (value > 0.0) {
+              // Positive infinity divided by positive infinity: could be any positive value
+              Interval.PositiveHalf
+            } else {
+              // Negative infinity divided by positive infinity: could be any negative value
+              Interval.NegativeHalf
+            }
+          } else {
+            (value / interval.lowerBound).hull(value / interval.upperBound)
+          }
+        } else if (interval.upperBound < 0.0) {
+          if (value.isInfinity && interval.lowerBound.isInfinity) {
+            if (value > 0.0) {
+              // Positive infinity divided by negative infinity: could be any negative value
+              Interval.NegativeHalf
+            } else {
+              // Negative infinity divided by negative infinity: could be any positive value
+              Interval.PositiveHalf
+            }
+          } else {
+            (value / interval.lowerBound).hull(value / interval.upperBound)
+          }
+        } else {
+          // Slow path: interval contains zero, so have to handle discontinuity
+          if (value == 0.0) {
+            // Determine the hull of all possible results: empty if the interval is identically zero
+            // (since 0/0 == NaN), and identically zero otherwise (even if the interval contains
+            // zero, all *possible* quotients will be zero)
+            if (interval == Interval.Zero) Interval.Empty else Interval.Zero
+          } else {
+            // Value is non-zero
+            if (interval == Interval.Zero) {
+              // Assume the zero interval could be of either sign, so both positive and negative
+              // infinity are possible quotients
+              Interval.Whole
+            } else if (interval.lowerBound == 0.0) {
+              // Upper bound must be greater than zero since we know the interval is non-zero; treat
+              // the lower bound as positive zero
+              if (value > 0.0) {
+                if (value.isInfinity && interval.upperBound.isInfinity) {
+                  // Positive infinity divided by positive infinity: could be any positive value
+                  Interval.PositiveHalf
+                } else {
+                  Interval(value / interval.upperBound, Double.PositiveInfinity)
+                }
+              } else {
+                if (value.isInfinity && interval.upperBound.isInfinity) {
+                  // Negative infinity divided by positive infinity: could be any negative value
+                  Interval.NegativeHalf
+                } else {
+                  Interval(Double.NegativeInfinity, value / interval.upperBound)
+                }
+              }
+            } else if (interval.upperBound == 0.0) {
+              // Lower bound must be less than zero since we know the interval is non-zero; treat
+              // the upper bound as negative zero
+              if (value > 0.0) {
+                if (value.isInfinity && interval.lowerBound.isInfinity) {
+                  // Positive infinity divided by negative infinity: could be any negative value
+                  Interval.NegativeHalf
+                } else {
+                  Interval(Double.NegativeInfinity, value / interval.lowerBound)
+                }
+              } else {
+                if (value.isInfinity && interval.lowerBound.isInfinity) {
+                  // Negative infinity divided by negative infinity: could be any positive value
+                  Interval.PositiveHalf
+                } else {
+                  Interval(value / interval.lowerBound, Double.PositiveInfinity)
+                }
+              }
+            } else {
+              // Value is non-zero, interval crosses zero - all quotient values are possible
+              Interval.Whole
+            }
+          }
+        }
       }
 
     def *(vector: Vector2d): Vector2d =
