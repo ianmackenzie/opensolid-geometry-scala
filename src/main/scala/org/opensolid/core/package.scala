@@ -174,52 +174,39 @@ package object core {
     def *(interval: Interval): Interval =
       interval * value
 
-    def /(interval: Interval): Interval = {
-      if (interval.isEmpty) {
+    def /(interval: Interval): Interval =
+      if (interval.isEmpty || value.isNaN) {
+        // If either argument is invalid, result is invalid
         Interval.Empty
-      } else if (java.lang.Double.doubleToRawLongBits(interval.lowerBound) >= 0) {
-        // Interval lower bound is positive zero or greater
-        if (value > 0.0) {
-          // Positive value divided by positive interval
-          Interval(value / interval.upperBound, value / interval.lowerBound)
-        } else if (value < 0.0) {
-          // Negative value divided by positive interval
-          Interval(value / interval.lowerBound, value / interval.upperBound)
-        } else if (interval.upperBound == 0.0) {
-          // Zero divided by zero is NaN
-          Interval.Empty
-        } else {
-          // Zero divided by nonzero is zero
-          Interval.Zero
-        }
-      } else if (java.lang.Double.doubleToRawLongBits(interval.upperBound) < 0) {
-        // Interval upper bound is negative zero or lesser
-        if (value > 0.0) {
-          // Positive value divided by negative interval
-          Interval(value / interval.upperBound, value / interval.lowerBound)
-        } else if (value < 0.0) {
-          // Negative value divided by negative interval
-          Interval(value / interval.lowerBound, value / interval.upperBound)
-        } else if (interval.lowerBound == 0.0) {
-          // Zero divided by zero is NaN
-          Interval.Empty
-        } else {
-          // Zero divided by nonzero is zero
-          Interval.Zero
-        }
       } else if (value == 0.0) {
-        if (interval == Interval.Zero) {
-          // Zero divided by zero is NaN
-          Interval.Empty
+        // If the value and interval are both identically zero, then there are no valid quotients
+        // and the result is empty. If the value is zero and the interval is non-zero, then all
+        // valid quotients are zero so the result is identically zero.
+        if (interval == Interval.Zero) Interval.Empty else Interval.Zero
+      } else if (!interval.contains(0.0)) {
+        // 1/x is monotonic except at 0, so can take hull of endpoints if 0 is not in the interval
+        (value / interval.lowerBound).hull(value / interval.upperBound)
+      } else if (interval == Interval.Zero) {
+        // Value is non-zero, interval is zero - assume infinity of either sign is possible
+        Interval.Whole
+      } else if (interval.lowerBound == 0.0) {
+        // Upper bound must be greater than zero since we know the interval is non-zero
+        if (value > 0.0) {
+          Interval(value / interval.upperBound, Double.PositiveInfinity)
         } else {
-          // Zero divided by nonzero is zero
-          Interval.Zero
+          Interval(Double.NegativeInfinity, value / interval.upperBound)
+        }
+      } else if (interval.upperBound == 0.0) {
+        // Lower bound must be less than zero since we know the interval is non-zero
+        if (value > 0.0) {
+          Interval(Double.NegativeInfinity, value / interval.lowerBound)
+        } else {
+          Interval(value / interval.lowerBound, Double.PositiveInfinity)
         }
       } else {
-        // Nonzero value divided by interval that spans zero results in [-Infinity, Infinity]
+        // Value is non-zero, interval spans zero - all result values are possible
         Interval.Whole
       }
-    }
 
     def *(vector: Vector2d): Vector2d =
       vector * value
