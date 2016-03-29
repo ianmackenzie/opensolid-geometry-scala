@@ -135,34 +135,49 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     * scala> interval.interpolated(2.0)
     * res3: Double = 4.0
     * }}}
-    *
-    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
-    * infinite).
     */
-  def interpolated(value: Double): Double =
-    lowerBound + value * width
+  def interpolated(value: Double): Double = {
+    val width = this.width
+    if (width < Double.PositiveInfinity) {
+      lowerBound + value * width
+    } else if (width.isNaN || value.isNaN) {
+      Double.NaN
+    } else if (isWhole) {
+      if (value <= 0.0) {
+        Double.NegativeInfinity
+      } else if (value >= 1.0) {
+        Double.PositiveInfinity
+      } else {
+        Double.NaN
+      }
+    } else if (lowerBound.isInfinity) {
+      if (value < 1.0) {
+        Double.NegativeInfinity
+      } else if (value > 1.0) {
+        Double.PositiveInfinity
+      } else {
+        upperBound
+      }
+    } else {
+      if (value < 0.0) {
+        Double.NegativeInfinity
+      } else if (value > 0.0) {
+        Double.PositiveInfinity
+      } else {
+        lowerBound
+      }
+    }
+  }
 
-  /** Returns a value halfway between the lower and upper bounds of this interval.
-    *
-    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
-    * infinite).
-    */
+  /** Returns a value halfway between the lower and upper bounds of this interval. */
   def midpoint: Double =
     interpolated(0.5)
 
-  /** Returns a random value within this interval.
-    *
-    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
-    * infinite).
-    */
+  /** Returns a random value within this interval. */
   def randomValue: Double =
     randomValue(Random)
 
-  /** Returns a random value within this interval, using the provided generator.
-    *
-    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
-    * infinite).
-    */
+  /** Returns a random value within this interval, using the provided generator. */
   def randomValue(generator: Random): Double =
     interpolated(generator.nextDouble)
 
