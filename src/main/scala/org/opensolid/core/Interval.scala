@@ -261,13 +261,17 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     bisected
 
   /** Returns a new interval that contains both this interval and the given value. */
-  def hull(value: Double): Interval = {
-    if (isEmpty) {
+  def hull(value: Double): Interval =
+    if (value < lowerBound) {
+      Interval(value, upperBound)
+    } else if (value > upperBound) {
+      Interval(lowerBound, value)
+    } else if (isEmpty) {
       Interval.singleton(value)
     } else {
-      Interval(lowerBound.min(value), upperBound.max(value))
+      // value is NaN or inside interval
+      this
     }
-  }
 
   /** Returns a new interval that contains both this interval and the given interval. */
   override def hull(that: Interval): Interval = {
