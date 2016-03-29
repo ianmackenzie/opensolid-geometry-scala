@@ -142,15 +142,27 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def interpolated(value: Double): Double =
     lowerBound + value * width
 
-  /** Returns a value halfway between the lower and upper bounds of this interval. */
+  /** Returns a value halfway between the lower and upper bounds of this interval.
+    *
+    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
+    * infinite).
+    */
   def midpoint: Double =
     interpolated(0.5)
 
-  /** Returns a random value within this interval. */
+  /** Returns a random value within this interval.
+    *
+    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
+    * infinite).
+    */
   def randomValue: Double =
     randomValue(Random)
 
-  /** Returns a random value within this interval, using the provided generator. */
+  /** Returns a random value within this interval, using the provided generator.
+    *
+    * Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
+    * infinite).
+    */
   def randomValue(generator: Random): Double =
     interpolated(generator.nextDouble)
 
