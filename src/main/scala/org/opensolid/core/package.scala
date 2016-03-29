@@ -166,10 +166,22 @@ package object core {
       math.toDegrees(value)
 
     def +(interval: Interval): Interval =
-      interval + value
+      if (interval.isEmpty || value.isNaN) {
+        Interval.Empty
+      } else if (value.isInfinity) {
+        Interval.singleton(value)
+      } else {
+        Interval(value + interval.lowerBound, value + interval.upperBound)
+      }
 
     def -(interval: Interval): Interval =
-      Interval(value - interval.upperBound, value - interval.lowerBound)
+      if (interval.isEmpty || value.isNaN) {
+        Interval.Empty
+      } else if (value.isInfinity) {
+        Interval.singleton(value)
+      } else {
+        Interval(value - interval.upperBound, value - interval.lowerBound)
+      }
 
     def *(interval: Interval): Interval =
       interval * value
@@ -178,84 +190,41 @@ package object core {
       if (interval.isEmpty || value.isNaN) {
         // If either argument is invalid, result is invalid
         Interval.Empty
+      } else if (interval.lowerBound > 0.0 || interval.upperBound < 0.0) {
+        // Fast path: interval does not contain zero
+        (value / interval.lowerBound).hull(value / interval.upperBound)
       } else {
-        if (interval.lowerBound > 0.0) {
-          if (value.isInfinity && interval.upperBound.isInfinity) {
-            if (value > 0.0) {
-              // Positive infinity divided by positive infinity: could be any positive value
-              Interval.PositiveHalf
-            } else {
-              // Negative infinity divided by positive infinity: could be any negative value
-              Interval.NegativeHalf
-            }
-          } else {
-            (value / interval.lowerBound).hull(value / interval.upperBound)
-          }
-        } else if (interval.upperBound < 0.0) {
-          if (value.isInfinity && interval.lowerBound.isInfinity) {
-            if (value > 0.0) {
-              // Positive infinity divided by negative infinity: could be any negative value
-              Interval.NegativeHalf
-            } else {
-              // Negative infinity divided by negative infinity: could be any positive value
-              Interval.PositiveHalf
-            }
-          } else {
-            (value / interval.lowerBound).hull(value / interval.upperBound)
-          }
+        // Slow path: interval contains zero, so have to handle discontinuity
+        if (value == 0.0) {
+          // Determine the hull of all possible results: empty if the interval is identically zero
+          // (since 0/0 == NaN), and identically zero otherwise (even if the interval contains
+          // zero, all *possible* quotients will be zero)
+          if (interval == Interval.Zero) Interval.Empty else Interval.Zero
         } else {
-          // Slow path: interval contains zero, so have to handle discontinuity
-          if (value == 0.0) {
-            // Determine the hull of all possible results: empty if the interval is identically zero
-            // (since 0/0 == NaN), and identically zero otherwise (even if the interval contains
-            // zero, all *possible* quotients will be zero)
-            if (interval == Interval.Zero) Interval.Empty else Interval.Zero
-          } else {
-            // Value is non-zero
-            if (interval == Interval.Zero) {
-              // Assume the zero interval could be of either sign, so both positive and negative
-              // infinity are possible quotients
-              Interval.Whole
-            } else if (interval.lowerBound == 0.0) {
-              // Upper bound must be greater than zero since we know the interval is non-zero; treat
-              // the lower bound as positive zero
-              if (value > 0.0) {
-                if (value.isInfinity && interval.upperBound.isInfinity) {
-                  // Positive infinity divided by positive infinity: could be any positive value
-                  Interval.PositiveHalf
-                } else {
-                  Interval(value / interval.upperBound, Double.PositiveInfinity)
-                }
-              } else {
-                if (value.isInfinity && interval.upperBound.isInfinity) {
-                  // Negative infinity divided by positive infinity: could be any negative value
-                  Interval.NegativeHalf
-                } else {
-                  Interval(Double.NegativeInfinity, value / interval.upperBound)
-                }
-              }
-            } else if (interval.upperBound == 0.0) {
-              // Lower bound must be less than zero since we know the interval is non-zero; treat
-              // the upper bound as negative zero
-              if (value > 0.0) {
-                if (value.isInfinity && interval.lowerBound.isInfinity) {
-                  // Positive infinity divided by negative infinity: could be any negative value
-                  Interval.NegativeHalf
-                } else {
-                  Interval(Double.NegativeInfinity, value / interval.lowerBound)
-                }
-              } else {
-                if (value.isInfinity && interval.lowerBound.isInfinity) {
-                  // Negative infinity divided by negative infinity: could be any positive value
-                  Interval.PositiveHalf
-                } else {
-                  Interval(value / interval.lowerBound, Double.PositiveInfinity)
-                }
-              }
+          // Value is non-zero
+          if (interval == Interval.Zero) {
+            // Assume the zero interval could be of either sign, so both positive and negative
+            // infinity are possible quotients
+            Interval.Whole
+          } else if (interval.lowerBound == 0.0) {
+            // Upper bound must be greater than zero since we know the interval is non-zero; treat
+            // the lower bound as positive zero
+            if (value > 0.0) {
+              Interval(value / interval.upperBound, Double.PositiveInfinity)
             } else {
-              // Value is non-zero, interval crosses zero - all quotient values are possible
-              Interval.Whole
+              Interval(Double.NegativeInfinity, value / interval.upperBound)
             }
+          } else if (interval.upperBound == 0.0) {
+            // Lower bound must be less than zero since we know the interval is non-zero; treat
+            // the upper bound as negative zero
+            if (value > 0.0) {
+              Interval(Double.NegativeInfinity, value / interval.lowerBound)
+            } else {
+              Interval(value / interval.lowerBound, Double.PositiveInfinity)
+            }
+          } else {
+            // Value is non-zero, interval crosses zero - all quotient values are possible
+            Interval.Whole
           }
         }
       }
@@ -291,7 +260,16 @@ package object core {
       ScalarExpression.Constant[P](value) * vectorExpression
 
     def hull(that: Double): Interval =
-      Interval(value.min(that), value.max(that))
+      if (value <= that) {
+        Interval(value, that)
+      } else if (that < value) {
+        Interval(that, value)
+      } else if (that.isNaN) {
+        Interval.singleton(value)
+      } else {
+        // value is NaN
+        Interval.singleton(that)
+      }
 
     def hull(interval: Interval): Interval =
       interval.hull(value)
