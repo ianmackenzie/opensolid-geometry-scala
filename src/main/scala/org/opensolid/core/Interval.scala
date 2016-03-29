@@ -67,8 +67,7 @@ import scala.util.Random
   * }}}
   */
 final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds[Interval]
-  with Bounded[Interval]
-  with GeometricallyComparable[Interval] {
+  with Bounded[Interval] {
 
   /** Returns a tuple containing the lower and upper bounds of this interval. */
   def endpoints: (Double, Double) =
@@ -96,15 +95,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
       s"Interval($lowerBound, $upperBound)"
     }
   }
-
-  /** Performs a tolerant equality check.
-    *
-    * Returns true if each endpoint of this interval is equal the corresponding endpoint of the
-    * other interval, to within the given tolerance.
-    */
-  override def isEqualTo(that: Interval, tolerance: Double): Boolean =
-    (this.lowerBound - that.lowerBound).isZero(tolerance) &&
-    (this.upperBound - that.upperBound).isZero(tolerance)
 
   /** Returns true if this is the empty interval (contains no values). Note that a singleton
     * interval (one with zero width) is not considered empty since it contains a single value.
