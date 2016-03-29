@@ -247,7 +247,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     }
 
   def bisectedAt(value: Double): (Interval, Interval) =
-    if (isEmpty) {
+    if (isEmpty || value.isNaN) {
       (Interval.Empty, Interval.Empty)
     } else if (value < lowerBound) {
       (Interval.Empty, this)
