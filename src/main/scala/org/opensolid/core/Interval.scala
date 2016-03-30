@@ -260,6 +260,17 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   override def bisected(index: Int): (Interval, Interval) =
     bisected
 
+  def expandedBy(value: Double): Interval =
+    if (isEmpty || value.isNaN || value.isNegInfinity) {
+      Interval.Empty
+    } else if (value.isPosInfinity) {
+      if (lowerBound.isPosInfinity) this else Interval.Whole
+    } else {
+      val lowerBound = this.lowerBound - value
+      val upperBound = this.upperBound + value
+      if (lowerBound <= upperBound) Interval(lowerBound, upperBound) else Interval.Empty
+    }
+
   /** Returns a new interval that contains both this interval and the given value. */
   def hull(value: Double): Interval =
     if (value < lowerBound) {
