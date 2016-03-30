@@ -41,6 +41,9 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
   def isSingleton: Boolean =
     x.isSingleton && y.isSingleton && z.isSingleton
 
+  override def expandedBy(value: Double): Bounds3d =
+    Bounds3d(x.expandedBy(value), y.expandedBy(value), z.expandedBy(value))
+
   def hull(point: Point3d): Bounds3d =
     Bounds3d(x.hull(point.x), y.hull(point.y), z.hull(point.z))
 
@@ -54,29 +57,14 @@ final case class Bounds3d(x: Interval, y: Interval, z: Interval)
     if (x.isEmpty || y.isEmpty || z.isEmpty) Bounds3d.Empty else Bounds3d(x, y, z)
   }
 
-  def overlaps(that: Bounds3d): Boolean =
+  override def overlaps(that: Bounds3d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
-
-  override def overlaps(that: Bounds3d, tolerance: Double): Boolean =
-    this.x.overlaps(that.x, tolerance) &&
-    this.y.overlaps(that.y, tolerance) &&
-    this.z.overlaps(that.z, tolerance)
 
   def contains(point: Point3d): Boolean =
     x.contains(point.x) && y.contains(point.y) && z.contains(point.z)
 
-  def contains(point: Point3d, tolerance: Double): Boolean =
-    x.contains(point.x, tolerance) &&
-    y.contains(point.y, tolerance) &&
-    z.contains(point.z, tolerance)
-
-  def contains(that: Bounds3d): Boolean =
+  override def contains(that: Bounds3d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
-
-  override def contains(that: Bounds3d, tolerance: Double): Boolean =
-    this.x.contains(that.x, tolerance) &&
-    this.y.contains(that.y, tolerance) &&
-    this.z.contains(that.z, tolerance)
 
   override def bisected(index: Int): (Bounds3d, Bounds3d) =
     (index % 3) match {

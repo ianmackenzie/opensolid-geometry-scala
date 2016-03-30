@@ -17,9 +17,11 @@ package org.opensolid.core
 abstract class Bounds[B <: Bounds[B]] {
   def component(index: Int): Interval
 
-  def overlaps(that: B, tolerance: Double): Boolean
+  def expandedBy(value: Double): B
 
-  def contains(that: B, tolerance: Double): Boolean
+  def overlaps(that: B): Boolean
+
+  def contains(that: B): Boolean
 
   def bisected(index: Int): (B, B)
 

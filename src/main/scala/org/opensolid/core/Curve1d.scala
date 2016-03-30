@@ -174,7 +174,9 @@ object Curve1d {
   ): List[RootWithRadius] = {
     val derivativeBounds = evaluateWithin(xInterval, derivatives)
     val lowerOrderNonZero =
-      (0 to order - 1).exists(index => !derivativeBounds(index).contains(0.0, tolerances(index)))
+      (0 to order - 1).exists(
+        index => !derivativeBounds(index).expandedBy(tolerances(index)).contains(0.0)
+      )
     if (lowerOrderNonZero || !derivativeBounds(order).contains(0.0)) {
       // No roots of the given order exist since a derivative of that order or lower is non-zero
       List.empty[RootWithRadius]

@@ -36,6 +36,9 @@ final case class VectorBounds2d(x: Interval, y: Interval) {
   def isSingleton: Boolean =
     x.isSingleton && y.isSingleton
 
+  def expandedBy(value: Double): VectorBounds2d =
+    VectorBounds2d(x.expandedBy(value), y.expandedBy(value))
+
   def hull(vector: Vector2d): VectorBounds2d =
     VectorBounds2d(x.hull(vector.x), y.hull(vector.y))
 
@@ -51,19 +54,11 @@ final case class VectorBounds2d(x: Interval, y: Interval) {
   def overlaps(that: VectorBounds2d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y)
 
-  def overlaps(that: VectorBounds2d, tolerance: Double): Boolean =
-    this.x.overlaps(that.x, tolerance) && this.y.overlaps(that.y, tolerance)
-
-  def contains(vector: Vector2d): Boolean = x.contains(vector.x) && y.contains(vector.y)
-
-  def contains(vector: Vector2d, tolerance: Double): Boolean =
-    x.contains(vector.x, tolerance) && y.contains(vector.y, tolerance)
+  def contains(vector: Vector2d): Boolean =
+    x.contains(vector.x) && y.contains(vector.y)
 
   def contains(that: VectorBounds2d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y)
-
-  def contains(that: VectorBounds2d, tolerance: Double): Boolean =
-    this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
 }
 
 object VectorBounds2d {

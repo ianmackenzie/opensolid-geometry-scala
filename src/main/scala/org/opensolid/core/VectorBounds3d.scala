@@ -37,6 +37,9 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
   def isSingleton: Boolean =
     x.isSingleton && y.isSingleton && z.isSingleton
 
+  def expandedBy(value: Double): VectorBounds3d =
+    VectorBounds3d(x.expandedBy(value), y.expandedBy(value), z.expandedBy(value))
+
   def hull(vector: Vector3d): VectorBounds3d =
     VectorBounds3d(x.hull(vector.x), y.hull(vector.y), z.hull(vector.z))
 
@@ -57,26 +60,11 @@ final case class VectorBounds3d(x: Interval, y: Interval, z: Interval) {
   def overlaps(that: VectorBounds3d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y) && this.z.overlaps(that.z)
 
-  def overlaps(that: VectorBounds3d, tolerance: Double): Boolean =
-    this.x.overlaps(that.x, tolerance) &&
-    this.y.overlaps(that.y, tolerance) &&
-    this.z.overlaps(that.z, tolerance)
-
   def contains(vector: Vector3d): Boolean =
     x.contains(vector.x) && y.contains(vector.y) && z.contains(vector.z)
 
-  def contains(vector: Vector3d, tolerance: Double): Boolean =
-    x.contains(vector.x, tolerance) &&
-    y.contains(vector.y, tolerance) &&
-    z.contains(vector.z, tolerance)
-
   def contains(that: VectorBounds3d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y) && this.z.contains(that.z)
-
-  def contains(that: VectorBounds3d, tolerance: Double): Boolean =
-    this.x.contains(that.x, tolerance) &&
-    this.y.contains(that.y, tolerance) &&
-    this.z.contains(that.z, tolerance)
 }
 
 object VectorBounds3d {

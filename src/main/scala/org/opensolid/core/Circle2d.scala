@@ -44,11 +44,6 @@ final case class Circle2d(centerPoint: Point2d, radius: Double) extends Scalable
   def contains(point: Point2d): Boolean =
     point.squaredDistanceTo(centerPoint) <= radius * radius
 
-  def contains(point: Point2d, tolerance: Double): Boolean = {
-    val tolerantRadius = radius + tolerance
-    point.squaredDistanceTo(centerPoint) <= tolerantRadius * tolerantRadius
-  }
-
   def projectedOnto(axis: Axis2d): LineSegment2d = {
     val projectedCenter = centerPoint.projectedOnto(axis)
     val offset = radius * axis.direction

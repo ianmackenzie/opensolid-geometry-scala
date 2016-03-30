@@ -260,7 +260,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   override def bisected(index: Int): (Interval, Interval) =
     bisected
 
-  def expandedBy(value: Double): Interval =
+  override def expandedBy(value: Double): Interval =
     if (isEmpty || value.isNaN || value.isNegInfinity) {
       Interval.Empty
     } else if (value.isPosInfinity) {
@@ -308,30 +308,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def contains(value: Double): Boolean =
     value >= lowerBound && value <= upperBound
 
-  /** Returns true if this interval, expanded by the given tolerance, contains the given value.
-    * `interval.contains(value, tolerance)` is equivalent to
-    * `Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance).contains(value)`.
-    * Note that this means it is also possible to use a negative tolerance to make the containment
-    * check more strict by not accepting values that are too close to this interval's endpoints.
-    *
-    * Examples:
-    * {{{
-    * scala> Interval(2, 3).contains(3.000001)
-    * res0: Boolean = false
-    *
-    * scala> Interval(2, 3).contains(3.000001, 0.001)
-    * res1: Boolean = true
-    *
-    * scala> Interval(2, 3).contains(2.000001)
-    * res2: Boolean = true
-    *
-    * scala> Interval(2, 3).contains(2.000001, -0.001)
-    * res3: Boolean = false
-    * }}}
-    */
-  def contains(value: Double, tolerance: Double): Boolean =
-    value >= lowerBound - tolerance && value <= upperBound + tolerance
-
   /** Returns true if this interval fully contains the given interval (that is, this interval
     * contains both the upper and lower bounds of the given interval).
     *
@@ -347,33 +323,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     * res2: Boolean = false
     * }}}
     */
-  def contains(that: Interval): Boolean =
+  override def contains(that: Interval): Boolean =
     that.lowerBound >= this.lowerBound && that.upperBound <= this.upperBound
-
-  /** Returns true if this interval, expanded by the given tolerance, fully contains the given
-    * interval. `interval.contains(that, tolerance)` is equivalent to
-    * `Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance).contains(that)`.
-    * Note that this means it is also possible to use a negative tolerance to make the containment
-    * check more strict by not accepting intervals that come too close to to this interval's
-    * endpoints.
-    *
-    * Examples:
-    * {{{
-    * scala> Interval(5, 10).contains(Interval(8, 10.000001))
-    * res0: Boolean = false
-    *
-    * scala> Interval(5, 10).contains(Interval(8, 10.000001), 0.001)
-    * res1: Boolean = true
-    *
-    * scala> Interval(5, 10).contains(Interval(8, 9.99999))
-    * res2: Boolean = true
-    *
-    * scala> Interval(5, 10).contains(Interval(8, 9.99999), -0.001)
-    * res3: Boolean = false
-    * }}}
-    */
-  override def contains(that: Interval, tolerance: Double): Boolean =
-    that.lowerBound >= this.lowerBound - tolerance && that.upperBound <= this.upperBound + tolerance
 
   /** Returns true if this interval overlaps the given interval.
     *
@@ -395,33 +346,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     * res4: Boolean = false
     * }}}
     */
-  def overlaps(that: Interval): Boolean =
+  override def overlaps(that: Interval): Boolean =
     that.lowerBound <= this.upperBound && that.upperBound >= this.lowerBound
-
-
-  /** Returns true if this interval, expanded by the given tolerance, overlaps the given interval.
-    * `interval.overlaps(that, tolerance)` is equivalent to
-    * `Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance).overlaps(that)`.
-    * Note that this means it is also possible to use a negative tolerance to make the overlap
-    * check more strict by not accepting intervals that only barely touch.
-    *
-    * Examples:
-    * {{{
-    * scala> Interval(2, 3).overlaps(Interval(3.000001, 4))
-    * res0: Boolean = false
-    *
-    * scala> Interval(2, 3).overlaps(Interval(3.000001, 4), 0.001)
-    * res1: Boolean = true
-    *
-    * scala> Interval(2, 3).overlaps(Interval(2.99999, 4))
-    * res2: Boolean = true
-    *
-    * scala> Interval(2, 3).overlaps(Interval(2.99999, 4), -0.001)
-    * res3: Boolean = false
-    * }}}
-    */
-  override def overlaps(that: Interval, tolerance: Double): Boolean =
-    that.lowerBound <= this.upperBound + tolerance && that.upperBound >= this.lowerBound - tolerance
 
   override def component(index: Int): Interval =
     this

@@ -23,8 +23,8 @@ sealed abstract class SpatialTree[T <: Bounded[B] with GeometricallyComparable[T
     new SpatialTree.Filtered[T, B](this, predicate)
 
   def contains(argument: T, tolerance: Double): Boolean = {
-    val argumentBounds = argument.bounds
-    withBoundsFilter(_.overlaps(argumentBounds, tolerance)).exists(_.isEqualTo(argument, tolerance))
+    val expandedBounds = argument.bounds.expandedBy(tolerance)
+    withBoundsFilter(_.overlaps(expandedBounds)).exists(_.isEqualTo(argument, tolerance))
   }
 }
 

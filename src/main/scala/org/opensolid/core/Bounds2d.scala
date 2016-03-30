@@ -40,6 +40,9 @@ final case class Bounds2d(x: Interval, y: Interval)
   def isSingleton: Boolean =
     x.isSingleton && y.isSingleton
 
+  override def expandedBy(value: Double): Bounds2d =
+    Bounds2d(x.expandedBy(value), y.expandedBy(value))
+
   def hull(point: Point2d): Bounds2d =
     Bounds2d(x.hull(point.x), y.hull(point.y))
 
@@ -52,23 +55,14 @@ final case class Bounds2d(x: Interval, y: Interval)
     if (x.isEmpty || y.isEmpty) Bounds2d.Empty else Bounds2d(x, y)
   }
 
-  def overlaps(that: Bounds2d): Boolean =
+  override def overlaps(that: Bounds2d): Boolean =
     this.x.overlaps(that.x) && this.y.overlaps(that.y)
-
-  override def overlaps(that: Bounds2d, tolerance: Double): Boolean =
-    this.x.overlaps(that.x, tolerance) && this.y.overlaps(that.y, tolerance)
 
   def contains(point: Point2d): Boolean =
     x.contains(point.x) && y.contains(point.y)
 
-  def contains(point: Point2d, tolerance: Double): Boolean =
-    x.contains(point.x, tolerance) && y.contains(point.y, tolerance)
-
-  def contains(that: Bounds2d): Boolean =
+  override def contains(that: Bounds2d): Boolean =
     this.x.contains(that.x) && this.y.contains(that.y)
-
-  override def contains(that: Bounds2d, tolerance: Double): Boolean =
-    this.x.contains(that.x, tolerance) && this.y.contains(that.y, tolerance)
 
   override def bisected(index: Int): (Bounds2d, Bounds2d) = {
     if (index % 2 == 0) {
