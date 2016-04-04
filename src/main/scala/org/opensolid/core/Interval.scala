@@ -285,7 +285,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     }
 
   /** Returns a new interval that contains both this interval and the given interval. */
-  override def hull(that: Interval): Interval = {
+  override def hull(that: Interval): Interval =
     if (isEmpty) {
       that
     } else if (that.isEmpty) {
@@ -293,7 +293,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     } else {
       Interval(lowerBound.min(that.lowerBound), upperBound.max(that.upperBound))
     }
-  }
 
   /** Returns a new interval that contains all values common to both this interval and the given
     * interval. If the two intervals do not overlap at all then the empty interval is returned.
