@@ -358,14 +358,14 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     -this
 
   def reciprocal: Interval =
-    if (isEmpty) {
-      Interval.Empty
-    } else if (lowerBound > 0.0 || upperBound < 0.0) {
+    if (lowerBound > 0.0 || upperBound < 0.0) {
       Interval(1.0 / upperBound, 1.0 / lowerBound)
     } else if (lowerBound < 0.0 && upperBound == 0.0) {
       Interval(Double.NegativeInfinity, 1.0 / lowerBound)
     } else if (lowerBound == 0.0 && upperBound > 0.0) {
       Interval(1.0 / upperBound, Double.PositiveInfinity)
+    } else if (isEmpty) {
+      Interval.Empty
     } else {
       Interval.Whole
     }
