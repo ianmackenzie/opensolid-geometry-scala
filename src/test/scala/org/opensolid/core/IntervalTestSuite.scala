@@ -267,12 +267,12 @@ class IntervalTestSuite extends TestSuite
         if (firstInterval.isEmpty || secondInterval.isEmpty) {
           intersection.shouldBe(empty)
         } else {
-          val firstValues = Gen.chooseNum(firstInterval.lowerBound, firstInterval.upperBound)
+          val firstValues = valueWithin(firstInterval)
           forAll(firstValues, minSuccessful(10)) {
             firstValue =>
               intersection.contains(firstValue).shouldBe(secondInterval.contains(firstValue))
           }
-          val secondValues = Gen.chooseNum(secondInterval.lowerBound, secondInterval.upperBound)
+          val secondValues = valueWithin(secondInterval)
           forAll(secondValues, minSuccessful(10)) {
             secondValue =>
               intersection.contains(secondValue).shouldBe(firstInterval.contains(secondValue))
