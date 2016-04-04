@@ -7,12 +7,13 @@ scala:
   - 2.11.7
 
 script:
-  - sbt clean coverage test
-  - find $HOME/.sbt -name "*.lock" | xargs rm
-  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
+  - sbt compile
+  # - sbt clean coverage test
+  # - find $HOME/.sbt -name "*.lock" | xargs rm
+  # - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
 
 after_success:
-  - pip install --user codecov && codecov
+  # - pip install --user codecov && codecov
 
 cache:
   directories:
