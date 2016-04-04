@@ -22,15 +22,18 @@ import org.scalatest.matchers._
 class ApproximatelyEqualMatcher[T](
   expected: T,
   tolerance: Double,
-  difference: (T, T) => Double
+  difference: (T, T) => Option[Double]
 ) extends Matcher[T] {
 
-  def apply(actual: T): MatchResult = {
-    val error = difference(actual, expected)
-    MatchResult(
-      error <= tolerance,
-      s"$actual is not equal to $expected to within $tolerance (error: $error)",
-      s"$actual is equal to $expected to within $tolerance (error: $error)"
-    )
-  }
+  def apply(actual: T): MatchResult =
+    difference(actual, expected) match {
+      case None =>
+        MatchResult(true, "", s"$actual is equal to $expected")
+      case Some(error) =>
+        MatchResult(
+          error <= tolerance,
+          s"$actual is not equal to $expected to within $tolerance (error: $error)",
+          s"$actual is equal to $expected to within $tolerance (error: $error)"
+        )
+    }
 }

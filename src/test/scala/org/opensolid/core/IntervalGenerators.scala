@@ -19,47 +19,57 @@ import org.scalacheck._
 import org.opensolid.core.DoubleGenerators._
 
 trait IntervalGenerators {
-  val singletonInterval: Gen[Interval] = randomDouble.map(Interval.singleton(_))
+  private[this] val finiteSingletonInterval: Gen[Interval] =
+    finiteDouble.map(Interval.singleton(_))
 
-  val randomWidthInterval: Gen[Interval] =
+  private[this] val validSingletonInterval: Gen[Interval] =
+    validDouble.map(Interval.singleton(_))
+
+  private[this] val oneUlpWidthInterval: Gen[Interval] =
+    finiteDouble.map(value => Interval(value, value + math.ulp(value)))
+
+  private[this] val twoUlpWidthInterval: Gen[Interval] =
+    finiteDouble.map(value => Interval(value - math.ulp(value), value + math.ulp(value)))
+
+  private[this] val finiteWidthInterval: Gen[Interval] =
     for {
-      midpoint <- randomDouble
-      halfWidth <- randomDouble.map(math.abs(_))
+      midpoint <- finiteDouble
+      halfWidth <- finiteDouble.map(math.abs(_))
       interval = Interval(midpoint - halfWidth, midpoint + halfWidth)
       if (!interval.width.isInfinity)
     } yield interval
 
-  val negativeHalfOpenInterval: Gen[Interval] =
-    randomDouble.map(Interval(Double.NegativeInfinity, _))
+  private[this] val upperBoundedInterval: Gen[Interval] =
+    finiteDouble.map(Interval(Double.NegativeInfinity, _))
 
-  val positiveHalfOpenInterval: Gen[Interval] =
-    randomDouble.map(Interval(_, Double.PositiveInfinity))
+  private[this] val lowerBoundedInterval: Gen[Interval] =
+    finiteDouble.map(Interval(_, Double.PositiveInfinity))
 
-  val oneUlpInterval: Gen[Interval] =
-    randomDouble.map(value => Interval(value, value + math.ulp(value)))
-
-  val twoUlpInterval: Gen[Interval] =
-    randomDouble.map(value => Interval(value - math.ulp(value), value + math.ulp(value)))
-
-  val closedInterval: Gen[Interval] =
-    Gen.frequency(1 -> oneUlpInterval, 1 -> twoUlpInterval, 10 -> randomWidthInterval)
-
-  val randomInterval: Gen[Interval] =
+  val finiteInterval: Gen[Interval] =
     Gen.frequency(
-      1 -> Interval.Empty,
-      1 -> Interval.Whole,
-      1 -> Interval.Zero,
-      1 -> Interval.singleton(1.0),
-      1 -> Interval.singleton(-1.0),
-      2 -> negativeHalfOpenInterval,
-      2 -> positiveHalfOpenInterval,
-      2 -> singletonInterval,
-      2 -> oneUlpInterval,
-      2 -> twoUlpInterval,
-      10 -> randomWidthInterval
+      8 -> finiteWidthInterval,
+      1 -> twoUlpWidthInterval,
+      1 -> oneUlpWidthInterval,
+      1 -> finiteSingletonInterval
     )
 
-  implicit val arbitraryInterval: Arbitrary[Interval] = Arbitrary(randomInterval)
+  val validInterval: Gen[Interval] =
+    Gen.frequency(
+      8 -> finiteInterval,
+      1 -> Interval.singleton(Double.NegativeInfinity),
+      1 -> Interval.singleton(Double.PositiveInfinity),
+      1 -> upperBoundedInterval,
+      1 -> lowerBoundedInterval,
+      1 -> Interval.Whole
+    )
+
+  val anyInterval: Gen[Interval] =
+    Gen.frequency(
+      8 -> validInterval,
+      1 -> Interval.Empty
+    )
+
+  implicit val arbitraryInterval: Arbitrary[Interval] = Arbitrary(anyInterval)
 }
 
 object IntervalGenerators extends IntervalGenerators

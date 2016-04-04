@@ -18,19 +18,25 @@ import org.opensolid.core.IntervalGenerators._
 import org.scalacheck._
 
 trait VectorBounds2dGenerators {
-  val randomVectorBounds2d: Gen[VectorBounds2d] =
+  val finiteVectorBounds2d: Gen[VectorBounds2d] =
     for {
-      x <- randomInterval
-      y <- randomInterval
+      x <- finiteInterval
+      y <- finiteInterval
     } yield VectorBounds2d(x, y)
 
-  implicit val arbitraryVectorBounds2d: Arbitrary[VectorBounds2d] = Arbitrary(randomVectorBounds2d)
-
-  val closedVectorBounds2d: Gen[VectorBounds2d] =
+  val validVectorBounds2d: Gen[VectorBounds2d] =
     for {
-      x <- closedInterval
-      y <- closedInterval
+      x <- validInterval
+      y <- validInterval
     } yield VectorBounds2d(x, y)
+
+  val anyVectorBounds2d: Gen[VectorBounds2d] =
+    for {
+      x <- anyInterval
+      y <- anyInterval
+    } yield VectorBounds2d(x, y)
+
+  implicit val arbitraryVectorBounds2d: Arbitrary[VectorBounds2d] = Arbitrary(anyVectorBounds2d)
 }
 
 object VectorBounds2dGenerators extends VectorBounds2dGenerators

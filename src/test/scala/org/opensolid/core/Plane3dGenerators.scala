@@ -19,13 +19,13 @@ import org.opensolid.core.Point3dGenerators._
 import org.scalacheck._
 
 trait Plane3dGenerators {
-  val randomPlane3d: Gen[Plane3d] =
+  val anyPlane3d: Gen[Plane3d] =
     for {
-      originPoint <- randomPoint3d
-      normalDirection <- randomDirection3d
+      originPoint <- anyPoint3d
+      normalDirection <- anyDirection3d
     } yield Plane3d.fromPointAndNormal(originPoint, normalDirection)
 
-  implicit val arbitraryPlane3d: Arbitrary[Plane3d] = Arbitrary(randomPlane3d)
+  implicit val arbitraryPlane3d: Arbitrary[Plane3d] = Arbitrary(anyPlane3d)
 }
 
 object Plane3dGenerators extends Plane3dGenerators

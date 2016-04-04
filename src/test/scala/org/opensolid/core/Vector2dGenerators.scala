@@ -18,13 +18,13 @@ import org.opensolid.core.DoubleGenerators._
 import org.scalacheck._
 
 trait Vector2dGenerators {
-  val randomVector2d: Gen[Vector2d] =
+  val anyVector2d: Gen[Vector2d] =
     for {
-      x <- randomDouble
-      y <- randomDouble
+      x <- finiteDouble
+      y <- finiteDouble
     } yield Vector2d(x, y)
 
-  implicit val arbitraryVector2d: Arbitrary[Vector2d] = Arbitrary(randomVector2d)
+  implicit val arbitraryVector2d: Arbitrary[Vector2d] = Arbitrary(anyVector2d)
 
   def vectorWithin(vectorBounds: VectorBounds2d): Gen[Vector2d] =
     for {

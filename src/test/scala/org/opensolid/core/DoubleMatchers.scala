@@ -26,7 +26,7 @@ trait DoubleMatchers {
     new ApproximatelyEqualMatcher[Double](
       expected,
       tolerance,
-      (firstValue: Double, secondValue: Double) => (firstValue - secondValue).abs
+      (firstValue: Double, secondValue: Double) => difference(firstValue, secondValue).map(_.abs)
     )
 
   def beLessThanOrEqualTo(expected: Double, tolerance: Double): Matcher[Double] =
@@ -37,25 +37,38 @@ trait DoubleMatchers {
 }
 
 object DoubleMatchers extends DoubleMatchers {
-  class LessThanOrEqualToMatcher(expected: Double, tolerance: Double) extends Matcher[Double] {
-    def apply(actual: Double): MatchResult = {
-      val delta = actual - expected
-      MatchResult(
-        delta <= tolerance,
-        s"$actual is greater than $expected by more than $tolerance (difference: $delta)",
-        s"$actual is less than or equal to $expected to within $tolerance (difference: $delta)"
-      )
+  private def difference(firstValue: Double, secondValue: Double): Option[Double] =
+    if (firstValue == secondValue || (firstValue.isNaN && secondValue.isNaN)) {
+      None
+    } else {
+      Some(firstValue - secondValue)
     }
+
+  class LessThanOrEqualToMatcher(expected: Double, tolerance: Double) extends Matcher[Double] {
+    def apply(actual: Double): MatchResult =
+      difference(actual, expected) match {
+        case None =>
+          MatchResult(true, "", s"$actual is equal to $expected")
+        case Some(delta) =>
+          MatchResult(
+            delta <= tolerance,
+            s"$actual is greater than $expected by more than $tolerance (difference: $delta)",
+            s"$actual is less than or equal to $expected to within $tolerance (difference: $delta)"
+          )
+      }
   }
 
   class GreaterThanOrEqualToMatcher(expected: Double, tolerance: Double) extends Matcher[Double] {
-    def apply(actual: Double): MatchResult = {
-      val delta = actual - expected
-      MatchResult(
-        delta >= -tolerance,
-        s"$actual is less than $expected by more than $tolerance (difference: $delta)",
-        s"$actual is greater than or equal to $expected to within $tolerance (difference: $delta)"
-      )
-    }
+    def apply(actual: Double): MatchResult =
+      difference(actual, expected) match {
+        case None =>
+          MatchResult(true, "", s"$actual is equal to $expected")
+        case Some(delta) =>
+          MatchResult(
+            delta >= tolerance,
+            s"$actual is greater than $expected by more than $tolerance (difference: $delta)",
+            s"$actual is less than or equal to $expected to within $tolerance (difference: $delta)"
+          )
+      }
   }
 }

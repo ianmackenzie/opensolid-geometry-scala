@@ -18,13 +18,13 @@ import org.opensolid.core.DoubleGenerators._
 import org.scalacheck._
 
 trait Point2dGenerators {
-  val randomPoint2d: Gen[Point2d] =
+  val anyPoint2d: Gen[Point2d] =
     for {
-      x <- randomDouble
-      y <- randomDouble
+      x <- finiteDouble
+      y <- finiteDouble
     } yield Point2d(x, y)
 
-  implicit val arbitraryPoint2d: Arbitrary[Point2d] = Arbitrary(randomPoint2d)
+  implicit val arbitraryPoint2d: Arbitrary[Point2d] = Arbitrary(anyPoint2d)
 
   def pointWithin(bounds: Bounds2d): Gen[Point2d] =
     for {

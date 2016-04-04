@@ -25,7 +25,13 @@ trait Vector2dMatchers {
     new ApproximatelyEqualMatcher[Vector2d](
       expected,
       tolerance,
-      (firstVector: Vector2d, secondVector: Vector2d) => (firstVector - secondVector).length
+      (firstVector: Vector2d, secondVector: Vector2d) =>
+        (firstVector - secondVector).length match {
+          case 0.0 =>
+            None
+          case difference: Double =>
+            Some(difference)
+        }
     )
 }
 

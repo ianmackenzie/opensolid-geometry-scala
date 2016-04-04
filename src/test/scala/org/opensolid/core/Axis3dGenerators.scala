@@ -19,13 +19,13 @@ import org.opensolid.core.Point3dGenerators._
 import org.scalacheck._
 
 trait Axis3dGenerators {
-  val randomAxis3d: Gen[Axis3d] =
+  val anyAxis3d: Gen[Axis3d] =
     for {
-      originPoint <- randomPoint3d
-      direction <- randomDirection3d
+      originPoint <- anyPoint3d
+      direction <- anyDirection3d
     } yield Axis3d(originPoint, direction)
 
-  implicit val arbitraryAxis3d: Arbitrary[Axis3d] = Arbitrary(randomAxis3d)
+  implicit val arbitraryAxis3d: Arbitrary[Axis3d] = Arbitrary(anyAxis3d)
 }
 
 object Axis3dGenerators extends Axis3dGenerators

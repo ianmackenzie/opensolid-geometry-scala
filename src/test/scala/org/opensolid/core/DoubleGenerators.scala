@@ -17,22 +17,41 @@ package org.opensolid.core
 import org.scalacheck._
 
 trait DoubleGenerators {
-  val randomDouble: Gen[Double] =
+  val finiteDouble: Gen[Double] =
     for {
       x <- Gen.chooseNum(-1.0, 1.0)
       y <- Gen.frequency(64 -> 1e0, 32 -> 1e1, 16 -> 1e2, 8 -> 1e3, 4 -> 1e4, 2 -> 1e5, 1 -> 1e6)
     } yield x * y
 
-  implicit val arbitraryDouble: Arbitrary[Double] = Arbitrary(randomDouble)
+  val validDouble: Gen[Double] =
+    Gen.frequency(
+      8 -> finiteDouble,
+      1 -> Double.PositiveInfinity,
+      1 -> Double.NegativeInfinity
+    )
+
+  val anyDouble: Gen[Double] =
+    Gen.frequency(
+      8 -> validDouble,
+      1 -> Double.NaN
+    )
+
+  implicit val arbitraryDouble: Arbitrary[Double] = Arbitrary(anyDouble)
 
   def sortedValues(count: Integer): Gen[List[Double]] =
-    Gen.listOfN[Double](count, randomDouble).map(list => list.sorted).suchThat(_.length == count)
+    Gen.listOfN[Double](count, validDouble).map(list => list.sorted).suchThat(_.length == count)
 
   def valueWithin(interval: Interval): Gen[Double] = interval match {
-    case Interval.Whole => randomDouble
-    case Interval(Double.NegativeInfinity, upper) => randomDouble.map(upper - _.abs)
-    case Interval(lower, Double.PositiveInfinity) => randomDouble.map(lower + _.abs)
-    case _ => Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
+    case Interval.Empty =>
+      Double.NaN
+    case Interval.Whole =>
+      validDouble
+    case Interval(Double.NegativeInfinity, upper) =>
+      Gen.frequency(8 -> finiteDouble.map(upper - _.abs), 1 -> Double.NegativeInfinity)
+    case Interval(lower, Double.PositiveInfinity) =>
+      Gen.frequency(8 -> finiteDouble.map(lower + _.abs), 1 -> Double.PositiveInfinity)
+    case _ =>
+      Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
   }
 }
 

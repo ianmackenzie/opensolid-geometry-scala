@@ -25,11 +25,15 @@ abstract class TestSuite extends FunSuite
 
   import TestSuite._
 
-  def eps(value: Double): Double = math.ulp(value).max(minEps)
+  def eps(value: Double): Double =
+    math.ulp(value).max(minEps).min(maxEps)
 
-  def eps(interval: Interval): Double = Interval.ulp(interval).max(minEps)
+  def eps(interval: Interval): Double =
+    Interval.ulp(interval).max(minEps).min(maxEps)
 }
 
 object TestSuite {
   val minEps: Double = math.ulp(1.0)
+
+  val maxEps: Double = Double.MaxValue
 }

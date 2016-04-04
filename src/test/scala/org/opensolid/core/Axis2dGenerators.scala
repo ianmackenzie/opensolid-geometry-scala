@@ -19,13 +19,13 @@ import org.opensolid.core.Point2dGenerators._
 import org.scalacheck._
 
 trait Axis2dGenerators {
-  val randomAxis2d: Gen[Axis2d] =
+  val anyAxis2d: Gen[Axis2d] =
     for {
-      originPoint <- randomPoint2d
-      direction <- randomDirection2d
+      originPoint <- anyPoint2d
+      direction <- anyDirection2d
     } yield Axis2d(originPoint, direction)
 
-  implicit val arbitraryAxis2d: Arbitrary[Axis2d] = Arbitrary(randomAxis2d)
+  implicit val arbitraryAxis2d: Arbitrary[Axis2d] = Arbitrary(anyAxis2d)
 }
 
 object Axis2dGenerators extends Axis2dGenerators

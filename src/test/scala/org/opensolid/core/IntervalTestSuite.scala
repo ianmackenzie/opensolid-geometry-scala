@@ -20,64 +20,60 @@ import org.scalatest.matchers._
 import org.scalatest.prop._
 
 class IntervalTestSuite extends TestSuite
-  with IntervalGenerators {
+  with IntervalGenerators
+  with DoubleGenerators {
 
   implicit override val generatorDrivenConfig =
     PropertyCheckConfig(minSuccessful = 500, maxDiscarded = 2500)
 
-  def expandedInterval(interval: Interval): Interval =
-    Interval(interval.lowerBound - interval.width / 2, interval.upperBound + interval.width / 2)
-
-  def intervalOverlapping(domain: Interval): Gen[Interval] = {
-    val expandedDomain = expandedInterval(domain)
-    for {
-      firstValue <- valueWithin(expandedDomain)
-      secondValue <- valueWithin(expandedDomain)
-      interval = firstValue.hull(secondValue)
-      if interval.overlaps(domain)
-    } yield interval
-  }
-
   def testIntervalForDomain(domain: Interval): Gen[Interval] = {
-    Gen.frequency(
-      1 -> Interval.Empty,
-      1 -> Interval.Whole,
-      10 -> intervalOverlapping(domain)
-    )
+    val candidateInterval =
+      domain match {
+        case Interval.Whole =>
+          validInterval
+        case Interval(Double.NegativeInfinity, upperBound) =>
+          validInterval.map(_ + upperBound)
+        case Interval(lowerBound, Double.PositiveInfinity) =>
+          validInterval.map(_ + lowerBound)
+        case _ =>
+          validInterval.map(_ * (domain.width / 2.0) + domain.midpoint)
+      }
+    candidateInterval.suchThat(_.overlaps(domain))
   }
 
-  def evaluateWithin(domain: Interval, unaryFunction: (Double) => Double): Gen[Double] = {
+  def testValueForDomain(domain: Interval): Gen[Double] =
+    Gen.frequency(16 -> valueWithin(domain), 1 -> Double.NaN)
+
+  def evaluateWithin(domain: Interval, unaryFunction: (Double) => Double): Gen[Double] =
     for {
       x <- valueWithin(domain)
       y = unaryFunction(x)
     } yield y
-  }
 
   def evaluateWithin(
     xDomain: Interval,
     yDomain: Interval,
     binaryFunction: (Double, Double) => Double
-  ): Gen[Double] = {
+  ): Gen[Double] =
     for {
       x <- valueWithin(xDomain)
       y <- valueWithin(yDomain)
       z = binaryFunction(x, y)
     } yield z
-  }
 
-  def approximatelyContain(value: Double): Matcher[Interval] = new Matcher[Interval] {
-    def apply(interval: Interval): MatchResult = {
-      val result =
-        interval.contains(value) || interval.contains(value, 2 * eps(interval)) || value.isNaN
-      MatchResult(result, s"$interval does not contain $value", s"$interval contains $value")
+  def approximatelyContain(value: Double): Matcher[Interval] =
+    new Matcher[Interval] {
+      def apply(interval: Interval): MatchResult = {
+        val result = interval.expandedBy(2 * eps(interval)).contains(value) || value.isNaN
+        MatchResult(result, s"$interval does not contain $value", s"$interval contains $value")
+      }
     }
-  }
 
   def testUnaryFunction(
     scalarFunction: (Double) => Double,
     intervalFunction: (Interval) => Interval,
     domain: Interval = Interval.Whole
-  ): Unit = {
+  ): Unit =
     forAll(testIntervalForDomain(domain), minSuccessful(50)) {
       (xInterval: Interval) => {
         val yInterval = intervalFunction(xInterval)
@@ -89,7 +85,7 @@ class IntervalTestSuite extends TestSuite
           forAll(valueWithin(xInterval.intersection(domain)), minSuccessful(10)) {
             (xValue: Double) => {
               val yValue = scalarFunction(xValue)
-              assert(yValue.isInfinity || yValue.isNaN)
+              assert(yValue.isNaN)
             }
           }
         } else {
@@ -100,7 +96,6 @@ class IntervalTestSuite extends TestSuite
         }
       }
     }
-  }
 
   def testMixedFunction(
     scalarFunction: (Double, Double) => Double,
@@ -119,7 +114,7 @@ class IntervalTestSuite extends TestSuite
           forAll(valueWithin(xInterval.intersection(xDomain)), minSuccessful(10)) {
             (xValue: Double) => {
               val zValue = scalarFunction(xValue, yValue)
-              assert(zValue.isInfinity || zValue.isNaN)
+              assert(zValue.isNaN)
             }
           }
         } else {
@@ -158,7 +153,7 @@ class IntervalTestSuite extends TestSuite
           ) {
             (xValue: Double, yValue: Double) => {
               val zValue = scalarFunction(xValue, yValue)
-              assert(zValue.isInfinity || zValue.isNaN)
+              assert(zValue.isNaN)
             }
           }
         } else {
@@ -188,19 +183,19 @@ class IntervalTestSuite extends TestSuite
   }
 
   test("interpolated(value)") {
-    forAll(closedInterval, Gen.chooseNum(0.0, 1.0), minSuccessful(500)) {
+    forAll(finiteInterval, Gen.chooseNum(0.0, 1.0), minSuccessful(500)) {
       (interval: Interval, value: Double) => {
         val interpolated = interval.interpolated(value)
-        assert(interval.contains(interpolated, 2 * eps(interval)))
+        assert(interval.expandedBy(2 * eps(interval)).contains(interpolated))
       }
     }
   }
 
   test("randomValue") {
-    forAll(closedInterval) {
+    forAll(finiteInterval) {
       (interval: Interval) => {
         val randomValue = interval.randomValue
-        assert(interval.contains(randomValue, 2 * eps(interval)))
+        assert(interval.isEmpty || interval.expandedBy(2 * eps(interval)).contains(randomValue))
       }
     }
   }
@@ -236,7 +231,9 @@ class IntervalTestSuite extends TestSuite
     forAll {
       (interval: Interval, value: Double) => {
         val hull = interval.hull(value)
-        if (interval.isEmpty) {
+        if (value.isNaN) {
+          hull.shouldBe(interval)
+        } else if (interval.isEmpty) {
           assert(hull.isSingleton)
           hull.lowerBound.shouldBe(value)
         } else {
@@ -264,7 +261,7 @@ class IntervalTestSuite extends TestSuite
   }
 
   test("intersection(that)") {
-    forAll(randomWidthInterval, randomWidthInterval, minSuccessful(50)) {
+    forAll(anyInterval, anyInterval, minSuccessful(50)) {
       (firstInterval: Interval, secondInterval: Interval) => {
         val intersection = firstInterval.intersection(secondInterval)
         if (firstInterval.isEmpty || secondInterval.isEmpty) {

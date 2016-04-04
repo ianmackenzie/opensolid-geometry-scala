@@ -18,21 +18,28 @@ import org.opensolid.core.IntervalGenerators._
 import org.scalacheck._
 
 trait VectorBounds3dGenerators {
-  val randomVectorBounds3d: Gen[VectorBounds3d] =
+  val finiteVectorBounds3d: Gen[VectorBounds3d] =
     for {
-      x <- randomInterval
-      y <- randomInterval
-      z <- randomInterval
+      x <- finiteInterval
+      y <- finiteInterval
+      z <- finiteInterval
     } yield VectorBounds3d(x, y, z)
 
-  implicit val arbitraryVectorBounds3d: Arbitrary[VectorBounds3d] = Arbitrary(randomVectorBounds3d)
-
-  val closedVectorBounds3d: Gen[VectorBounds3d] =
+  val validVectorBounds3d: Gen[VectorBounds3d] =
     for {
-      x <- closedInterval
-      y <- closedInterval
-      z <- closedInterval
+      x <- validInterval
+      y <- validInterval
+      z <- validInterval
     } yield VectorBounds3d(x, y, z)
+
+  val anyVectorBounds3d: Gen[VectorBounds3d] =
+    for {
+      x <- anyInterval
+      y <- anyInterval
+      z <- anyInterval
+    } yield VectorBounds3d(x, y, z)
+
+  implicit val arbitraryVectorBounds3d: Arbitrary[VectorBounds3d] = Arbitrary(anyVectorBounds3d)
 }
 
 object VectorBounds3dGenerators extends VectorBounds3dGenerators

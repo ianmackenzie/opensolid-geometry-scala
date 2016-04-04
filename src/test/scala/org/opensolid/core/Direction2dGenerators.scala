@@ -21,22 +21,22 @@ import org.opensolid.core.Vector2dGenerators._
 import org.scalacheck._
 
 trait Direction2dGenerators {
-  val randomDirection2d: Gen[Direction2d] = {
+  private[this] val randomDirection2d: Gen[Direction2d] = {
     val vectorGenerator = vectorWithin(VectorBounds2d(Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
     val radiusPredicate = (vector: Vector2d) => Interval(0.25, 1.0).contains(vector.squaredLength)
     vectorGenerator.retryUntil(radiusPredicate).map(_.direction)
   }
 
-  implicit val arbitraryVector2d: Arbitrary[Direction2d] =
-    Arbitrary(
-      Gen.frequency(
-        1 -> Direction2d.X,
-        1 -> Direction2d.Y,
-        1 -> -Direction2d.X,
-        1 -> -Direction2d.Y,
-        4 -> randomDirection2d
-      )
+  val anyDirection2d: Gen[Direction2d] =
+    Gen.frequency(
+      1 -> Direction2d.X,
+      1 -> Direction2d.Y,
+      1 -> -Direction2d.X,
+      1 -> -Direction2d.Y,
+      4 -> randomDirection2d
     )
+
+  implicit val arbitraryDirection2d: Arbitrary[Direction2d] = Arbitrary(anyDirection2d)
 }
 
 object Direction2dGenerators extends Direction2dGenerators

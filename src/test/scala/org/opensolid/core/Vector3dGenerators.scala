@@ -18,14 +18,14 @@ import org.opensolid.core.DoubleGenerators._
 import org.scalacheck._
 
 trait Vector3dGenerators {
-  val randomVector3d: Gen[Vector3d] =
+  val anyVector3d: Gen[Vector3d] =
     for {
-      x <- randomDouble
-      y <- randomDouble
-      z <- randomDouble
+      x <- finiteDouble
+      y <- finiteDouble
+      z <- finiteDouble
     } yield Vector3d(x, y, z)
 
-  implicit val arbitraryVector3d: Arbitrary[Vector3d] = Arbitrary(randomVector3d)
+  implicit val arbitraryVector3d: Arbitrary[Vector3d] = Arbitrary(anyVector3d)
 
   def vectorWithin(vectorBounds: VectorBounds3d): Gen[Vector3d] =
     for {

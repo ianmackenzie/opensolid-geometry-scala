@@ -21,25 +21,25 @@ import org.opensolid.core.Vector3dGenerators._
 import org.scalacheck._
 
 trait Direction3dGenerators {
-  val randomDirection3d: Gen[Direction3d] = {
+  private[this] val randomDirection3d: Gen[Direction3d] = {
     val vectorGenerator =
       vectorWithin(VectorBounds3d(Interval(-1.0, 1.0), Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
     val radiusPredicate = (vector: Vector3d) => Interval(0.25, 1.0).contains(vector.squaredLength)
     vectorGenerator.retryUntil(radiusPredicate).map(_.direction)
   }
 
-  implicit val arbitraryVector3d: Arbitrary[Direction3d] =
-    Arbitrary(
-      Gen.frequency(
-        1 -> Direction3d.X,
-        1 -> Direction3d.Y,
-        1 -> Direction3d.Z,
-        1 -> -Direction3d.X,
-        1 -> -Direction3d.Y,
-        1 -> -Direction3d.Z,
-        8 -> randomDirection3d
-      )
+  val anyDirection3d: Gen[Direction3d] =
+    Gen.frequency(
+      1 -> Direction3d.X,
+      1 -> Direction3d.Y,
+      1 -> Direction3d.Z,
+      1 -> -Direction3d.X,
+      1 -> -Direction3d.Y,
+      1 -> -Direction3d.Z,
+      8 -> randomDirection3d
     )
+
+  implicit val arbitraryDirection3d: Arbitrary[Direction3d] = Arbitrary(anyDirection3d)
 }
 
 object Direction3dGenerators extends Direction3dGenerators

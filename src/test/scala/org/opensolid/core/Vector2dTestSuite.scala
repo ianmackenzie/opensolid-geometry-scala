@@ -20,13 +20,14 @@ import org.scalatest.matchers._
 import org.scalatest.prop._
 
 class Vector2dTestSuite extends TestSuite
+  with DoubleGenerators
   with Vector2dGenerators
   with Axis2dGenerators
   with Plane3dGenerators
   with Vector2dMatchers {
 
   test("length") {
-    forAll {
+    forAll(anyVector2d, finiteDouble) {
       (vector: Vector2d, scale: Double) => {
         val scaledLength = vector.length * scale.abs
         val tolerance = 2 * eps(scaledLength)
