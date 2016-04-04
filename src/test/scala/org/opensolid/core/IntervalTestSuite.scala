@@ -292,47 +292,10 @@ class IntervalTestSuite extends TestSuite
     }
   }
 
-  test("contains(value, tolerance)") {
-    forAll(minSuccessful(50)) {
-      (interval: Interval) => {
-        whenever(interval.width > 1e-3) {
-          val randomTolerance: Gen[Double] = for {
-            candidateTolerance <- Gen.chooseNum(-1e-3, 1e-3)
-            if interval.lowerBound - candidateTolerance <= interval.upperBound + candidateTolerance
-          } yield candidateTolerance
-
-          forAll(randomTolerance, minSuccessful(2)) {
-            (tolerance: Double) => {
-              val expandedInterval =
-                Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance)
-              forAll(valueWithin(expandedInterval), minSuccessful(5)) {
-                (value: Double) => assert(interval.contains(value, tolerance))
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
   test("contains(that)") {
     forAll(sortedValues(4)) {
       case firstLower :: secondLower :: secondUpper :: firstUpper :: Nil =>
         assert(Interval(firstLower, firstUpper).contains(Interval(secondLower, secondUpper)))
-      case _ => fail
-    }
-  }
-
-  test("contains(that, tolerance)") {
-    forAll(sortedValues(4)) {
-      case first :: second :: third :: fourth :: Nil => {
-        val minTolerance = (second - first).min(fourth - third)
-        val maxTolerance = (second - first).max(fourth - third)
-        assert(Interval(first, fourth).contains(Interval(second, third), -minTolerance + 1e-3))
-        assert(Interval(second, third).contains(Interval(first, fourth), maxTolerance + 1e-3))
-        assert(!Interval(second, third).contains(Interval(first, fourth), maxTolerance - 1e-3))
-        assert(!Interval(first, fourth).contains(Interval(second, third), -minTolerance - 1e-3))
-      }
       case _ => fail
     }
   }
@@ -344,23 +307,6 @@ class IntervalTestSuite extends TestSuite
         val second = Interval(secondLower, secondUpper)
         assert(first.overlaps(second))
         assert(second.overlaps(first))
-      }
-      case _ => fail
-    }
-  }
-
-  test("overlaps(that, tolerance)") {
-    forAll(sortedValues(4)) {
-      case first :: second :: third :: fourth :: Nil => {
-        val tolerance = third - second
-        assert(Interval(first, third).overlaps(Interval(second, fourth), -tolerance + 1e-3))
-        assert(Interval(second, fourth).overlaps(Interval(first, third), -tolerance + 1e-3))
-        assert(!Interval(first, third).overlaps(Interval(second, fourth), -tolerance - 1e-3))
-        assert(!Interval(second, fourth).overlaps(Interval(first, third), -tolerance - 1e-3))
-        assert(Interval(first, second).overlaps(Interval(third, fourth), tolerance + 1e-3))
-        assert(Interval(third, fourth).overlaps(Interval(first, second), tolerance + 1e-3))
-        assert(!Interval(first, second).overlaps(Interval(third, fourth), tolerance - 1e-3))
-        assert(!Interval(third, fourth).overlaps(Interval(first, second), tolerance - 1e-3))
       }
       case _ => fail
     }
