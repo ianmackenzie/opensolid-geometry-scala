@@ -371,61 +371,45 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     }
 
   def +(value: Double): Interval =
-    Interval(lowerBound + value, upperBound + value)
+    Interval.nondecreasing(lowerBound + value, upperBound + value)
 
   def plus(value: Double): Interval =
     this + value
 
   def +(that: Interval): Interval =
-    Interval(lowerBound + that.lowerBound, upperBound + that.upperBound)
+    Interval.nondecreasing(this.lowerBound + that.lowerBound, this.upperBound + that.upperBound)
 
   def plus(that: Interval): Interval =
     this + that
 
   def -(value: Double): Interval =
-    Interval(lowerBound - value, upperBound - value)
+    Interval.nondecreasing(lowerBound - value, upperBound - value)
 
   def minus(value: Double): Interval =
     this - value
 
   def -(that: Interval): Interval =
-    Interval(lowerBound - that.upperBound, upperBound - that.lowerBound)
+    Interval.nondecreasing(this.lowerBound - that.upperBound, this.upperBound - that.lowerBound)
 
   def minus(that: Interval): Interval =
     this - that
 
-  def *(value: Double): Interval = {
-    val lowerProduct = value * lowerBound
-    val upperProduct = value * upperBound
-    if (!lowerProduct.isNaN && !upperProduct.isNaN) {
-      lowerProduct.hull(upperProduct)
+  def *(value: Double): Interval =
+    if (value > 0.0) {
+      Interval.nondecreasing(lowerBound * value, upperBound * value)
+    } else if (value < 0.0) {
+      Interval.nondecreasing(upperBound * value, lowerBound * value)
+    } else if (value == 0.0) {
+      Interval.Zero
     } else {
-      Interval.safeProduct(value, lowerBound).hull(Interval.safeProduct(value, upperBound))
+      Interval.Empty
     }
-  }
 
   def times(value: Double): Interval =
     this * value
 
-  def *(that: Interval): Interval = {
-    val ll = this.lowerBound * that.lowerBound
-    val lu = this.lowerBound * that.upperBound
-    val ul = this.upperBound * that.lowerBound
-    val uu = this.upperBound * that.upperBound
-    val lower = ll.min(lu).min(ul).min(uu)
-    val upper = ll.max(lu).max(ul).max(uu)
-    if (!lower.isNaN && !upper.isNaN) {
-      Interval(lower, upper)
-    } else {
-      val safeLL = Interval.safeProduct(this.lowerBound, that.lowerBound)
-      val safeLU = Interval.safeProduct(this.lowerBound, that.upperBound)
-      val safeUL = Interval.safeProduct(this.upperBound, that.lowerBound)
-      val safeUU = Interval.safeProduct(this.upperBound, that.upperBound)
-      val safeLower = safeLL.min(safeLU).min(safeUL).min(safeUU)
-      val safeUpper = safeLL.max(safeLU).max(safeUL).max(safeUU)
-      Interval(safeLower, safeUpper)
-    }
-  }
+  def *(that: Interval): Interval =
+    (this * that.lowerBound).hull(this * that.upperBound)
 
   def times(that: Interval): Interval =
     this * that
@@ -659,4 +643,15 @@ object Interval {
       result
     }
   }
+
+  private[Interval] def nondecreasing(lowerBound: Double, upperBound: Double): Interval =
+    if (lowerBound <= upperBound) {
+      Interval(lowerBound, upperBound)
+    } else if (!lowerBound.isNaN) {
+      singleton(lowerBound)
+    } else if (!upperBound.isNaN) {
+      singleton(upperBound)
+    } else {
+      Empty
+    }
 }
