@@ -374,7 +374,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     Interval(lowerBound + value, upperBound + value)
 
   def plus(value: Double): Interval =
-    this + value;
+    this + value
 
   def +(that: Interval): Interval =
     Interval(lowerBound + that.lowerBound, upperBound + that.upperBound)
