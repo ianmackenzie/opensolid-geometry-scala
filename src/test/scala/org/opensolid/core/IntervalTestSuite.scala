@@ -24,7 +24,7 @@ class IntervalTestSuite extends TestSuite
   with DoubleGenerators {
 
   implicit override val generatorDrivenConfig =
-    PropertyCheckConfig(minSuccessful = 500, maxDiscarded = 2500)
+    PropertyCheckConfig(minSuccessful = 10000, maxDiscarded = 2500)
 
   def testIntervalForDomain(domain: Interval): Gen[Interval] = {
     val candidateInterval =
