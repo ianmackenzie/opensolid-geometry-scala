@@ -34,6 +34,12 @@ final case class Axis2d(originPoint: Point2d, direction: Direction2d)
 
   def placedOnto(plane: Plane3d): Axis3d =
     Axis3d(originPoint.placedOnto(plane), direction.placedOnto(plane))
+
+  def signedDistanceTo(point: Point2d): Double =
+    originPoint.vectorTo(point).componentIn(normalDirection)
+
+  def signedDistanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
+    PointExpression2d.Constant[P](originPoint).vectorTo(expression).componentIn(normalDirection)
 }
 
 object Axis2d {

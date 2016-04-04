@@ -34,16 +34,16 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
     Bounds3d.singleton(this)
 
   override def isEqualTo(that: Point3d, tolerance: Double): Boolean =
-    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+    squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point3d): Double =
-    (this - that).squaredLength
+    vectorTo(that).squaredLength
 
   def squaredDistanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
     PointExpression3d.Constant[P](this).squaredDistanceTo(expression)
 
   def distanceTo(that: Point3d): Double =
-    (this - that).length
+    vectorTo(that).length
 
   def distanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
     PointExpression3d.Constant[P](this).distanceTo(expression)
@@ -52,10 +52,10 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
     x * x + y * y + z * z <= tolerance * tolerance
 
   def distanceAlong(axis: Axis3d): Double =
-    (this - axis.originPoint).componentIn(axis.direction)
+    axis.originPoint.vectorTo(this).componentIn(axis.direction)
 
   def squaredDistanceTo(axis: Axis3d): Double =
-    (this - axis.originPoint).cross(axis.direction).squaredLength
+    vectorTo(axis.originPoint).cross(axis.direction).squaredLength
 
   def distanceTo(axis: Axis3d): Double =
     math.sqrt(squaredDistanceTo(axis))
@@ -64,25 +64,25 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
     squaredDistanceTo(axis).isZero(tolerance * tolerance)
 
   def distanceTo(plane: Plane3d): Double =
-    (this - plane.originPoint).componentIn(plane.normalDirection)
+    plane.signedDistanceTo(this).abs
 
   def isOn(plane: Plane3d, tolerance: Double): Boolean =
-    distanceTo(plane).isZero(tolerance)
+    plane.signedDistanceTo(this).isZero(tolerance)
 
   override def transformedBy(transformation: Transformation3d): Point3d =
     transformation(this)
 
   override def scaledAbout(point: Point3d, scale: Double): Point3d =
-    point + scale * (this - point)
+    point + scale * point.vectorTo(this)
 
   def projectedOnto(axis: Axis3d): Point3d =
-    axis.originPoint + (this - axis.originPoint).projectedOnto(axis)
+    axis.originPoint + axis.originPoint.vectorTo(this).projectedOnto(axis)
 
   def projectedOnto(plane: Plane3d): Point3d =
-    this - (this - plane.originPoint).projectedOnto(plane.normalDirection)
+    this + vectorTo(plane.originPoint).projectedOnto(plane.normalDirection)
 
   def projectedInto(plane: Plane3d): Point2d = {
-    val displacement = this - plane.originPoint
+    val displacement = plane.originPoint.vectorTo(this)
     Point2d(displacement.componentIn(plane.xDirection), displacement.componentIn(plane.yDirection))
   }
 
@@ -107,31 +107,25 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
   def -(vector: Vector3d): Point3d =
     Point3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -(that: Point3d): Vector3d =
-    Vector3d(x - that.x, y - that.y, z - that.z)
-
   def -[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
     PointExpression3d.Constant[P](this) - vectorExpression
-
-  def -[P](pointExpression: PointExpression3d[P]): VectorExpression3d[P] =
-    PointExpression3d.Constant[P](this) - pointExpression
 
   def minus(vector: Vector3d): Point3d =
     this - vector
 
-  def minus(that: Point3d): Vector3d =
-    this - that
-
   def minus[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
     this - vectorExpression
 
-  def minus[P](pointExpression: PointExpression3d[P]): VectorExpression3d[P] =
-    this - pointExpression
+  def vectorTo(that: Point3d): Vector3d =
+    Vector3d(that.x - this.x, that.y - this.y, that.z - this.z)
+
+  def vectorTo[P](pointExpression: PointExpression3d[P]): VectorExpression3d[P] =
+    PointExpression3d.Constant[P](this).vectorTo(pointExpression)
 }
 
 object Point3d {
   def midpoint(firstPoint: Point3d, secondPoint: Point3d): Point3d =
-    firstPoint + 0.5 * (secondPoint - firstPoint)
+    firstPoint + 0.5 * firstPoint.vectorTo(secondPoint)
 
   val Origin: Point3d = Point3d(0.0, 0.0, 0.0)
 }

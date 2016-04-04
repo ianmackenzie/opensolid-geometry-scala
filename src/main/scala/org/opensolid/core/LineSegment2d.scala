@@ -24,7 +24,7 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
     (startPoint, endPoint)
 
   def vector: Vector2d =
-    endPoint - startPoint
+    startPoint.vectorTo(endPoint)
 
   def direction: Direction2d =
     vector.direction

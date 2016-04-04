@@ -157,6 +157,9 @@ sealed abstract class VectorExpression2d[P] {
   final def cross(vector: Vector2d): ScalarExpression[P] =
     cross(Constant[P](vector))
 
+  final def componentIn(direction: Direction2d): ScalarExpression[P] =
+    dot(direction.vector)
+
   def x: ScalarExpression[P] =
     ScalarExpression.VectorXComponent2d(this)
 
@@ -326,25 +329,25 @@ object VectorExpression2d {
       firstExpression.y - secondExpression.y
   }
 
-  case class PointDifference[P](
+  case class Displacement[P](
     firstExpression: PointExpression2d[P],
     secondExpression: PointExpression2d[P]
   ) extends VectorExpression2d[P] {
 
     override def unary_- : VectorExpression2d[P] =
-      PointDifference[P](secondExpression, firstExpression)
+      Displacement[P](secondExpression, firstExpression)
 
     override def derivative(parameter: P): VectorExpression2d[P] =
-      firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
+      secondExpression.derivative(parameter) - firstExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
       firstExpression.condition * secondExpression.condition
 
     override def x: ScalarExpression[P] =
-      firstExpression.x - secondExpression.x
+      secondExpression.x - firstExpression.x
 
     override def y: ScalarExpression[P] =
-      firstExpression.y - secondExpression.y
+      secondExpression.y - firstExpression.y
   }
 
   case class Product[P](

@@ -57,21 +57,17 @@ sealed abstract class PointExpression3d[P] {
   final def minus(vector: Vector3d): PointExpression3d[P] =
     this - VectorExpression3d.Constant[P](vector)
 
-  final def -(that: PointExpression3d[P]): VectorExpression3d[P] = (this, that) match {
+  final def vectorTo(that: PointExpression3d[P]): VectorExpression3d[P] = (this, that) match {
     case (Constant(firstPoint), Constant(secondPoint)) =>
-      VectorExpression3d.Constant(firstPoint - secondPoint)
-    case (first, second) if (first == second) => VectorExpression3d.Constant(Vector3d.Zero)
-    case _ => VectorExpression3d.PointDifference(this, that)
+      VectorExpression3d.Constant(firstPoint.vectorTo(secondPoint))
+    case (first, second) if (first == second) =>
+      VectorExpression3d.Constant(Vector3d.Zero)
+    case _ =>
+      VectorExpression3d.Displacement(this, that)
   }
 
-  final def -(point: Point3d): VectorExpression3d[P] =
-    this - Constant[P](point)
-
-  final def minus(that: PointExpression3d[P]): VectorExpression3d[P] =
-    this - that
-
-  final def minus(point: Point3d): VectorExpression3d[P] =
-    this - Constant[P](point)
+  final def vectorTo(point: Point3d): VectorExpression3d[P] =
+    this.vectorTo(Constant[P](point))
 
   def x: ScalarExpression[P] =
     ScalarExpression.PointXComponent3d(this)
@@ -83,10 +79,16 @@ sealed abstract class PointExpression3d[P] {
     ScalarExpression.PointZComponent3d(this)
 
   final def squaredDistanceTo(that: PointExpression3d[P]): ScalarExpression[P] =
-    (this - that).squaredLength
+    vectorTo(that).squaredLength
+
+  final def squaredDistanceTo(point: Point3d): ScalarExpression[P] =
+    squaredDistanceTo(Constant[P](point))
 
   final def distanceTo(that: PointExpression3d[P]): ScalarExpression[P] =
-    (this - that).length
+    vectorTo(that).length
+
+  final def distanceTo(point: Point3d): ScalarExpression[P] =
+    distanceTo(Constant[P](point))
 }
 
 object PointExpression3d {

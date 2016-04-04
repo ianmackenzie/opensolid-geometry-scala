@@ -23,7 +23,7 @@ final case class LineSegment3d(startPoint: Point3d, endPoint: Point3d)
     (startPoint, endPoint)
 
   def vector: Vector3d =
-    endPoint - startPoint
+    startPoint.vectorTo(endPoint)
 
   def direction: Direction3d =
     vector.direction

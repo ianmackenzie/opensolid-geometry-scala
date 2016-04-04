@@ -133,8 +133,8 @@ private class ExpressionCompiler(numParameters: Int) {
       sum2d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression2d.Difference(firstArgument, secondArgument) =>
       difference2d(evaluate(firstArgument), evaluate(secondArgument))
-    case VectorExpression2d.PointDifference(firstArgument, secondArgument) =>
-      difference2d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression2d.Displacement(firstArgument, secondArgument) =>
+      difference2d(evaluate(secondArgument), evaluate(firstArgument))
     case VectorExpression2d.Product(firstArgument, secondArgument) =>
       product2d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression2d.Quotient(firstArgument, secondArgument) =>
@@ -152,8 +152,8 @@ private class ExpressionCompiler(numParameters: Int) {
       sum3d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression3d.Difference(firstArgument, secondArgument) =>
       difference3d(evaluate(firstArgument), evaluate(secondArgument))
-    case VectorExpression3d.PointDifference(firstArgument, secondArgument) =>
-      difference3d(evaluate(firstArgument), evaluate(secondArgument))
+    case VectorExpression3d.Displacement(firstArgument, secondArgument) =>
+      difference3d(evaluate(secondArgument), evaluate(firstArgument))
     case VectorExpression3d.Product(firstArgument, secondArgument) =>
       product3d(evaluate(firstArgument), evaluate(secondArgument))
     case VectorExpression3d.Quotient(firstArgument, secondArgument) =>

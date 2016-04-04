@@ -19,7 +19,7 @@ final case class Mirror3d(plane: Plane3d) extends Transformation3d {
   private[this] val normalDirection = plane.normalDirection
 
   override def apply(point: Point3d): Point3d =
-    point - 2 * (point - originPoint).projectedOnto(normalDirection)
+    point - 2 * originPoint.vectorTo(point).projectedOnto(normalDirection)
 
   override def apply(vector: Vector3d): Vector3d =
     vector - 2 * vector.projectedOnto(normalDirection)

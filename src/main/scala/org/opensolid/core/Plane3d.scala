@@ -43,6 +43,12 @@ final case class Plane3d(
 
   def normalAxis: Axis3d =
     Axis3d(originPoint, normalDirection)
+
+  def signedDistanceTo(point: Point3d): Double =
+    originPoint.vectorTo(point).componentIn(normalDirection)
+
+  def signedDistanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
+    PointExpression3d.Constant(originPoint).vectorTo(expression).componentIn(normalDirection)
 }
 
 object Plane3d {
@@ -62,7 +68,7 @@ object Plane3d {
 
   def throughPoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
     val normalDirection = Numerics.normalDirection(firstPoint, secondPoint, thirdPoint)
-    val xDirection = (secondPoint - firstPoint) match {
+    val xDirection = firstPoint.vectorTo(secondPoint) match {
       case Vector3d.Zero => normalDirection.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction
     }
@@ -79,7 +85,7 @@ object Plane3d {
 
   def throughAxisAndPoint(axis: Axis3d, point: Point3d): Plane3d = {
     val xDirection = axis.direction
-    val crossProduct = xDirection.cross(point - axis.originPoint)
+    val crossProduct = xDirection.cross(axis.originPoint.vectorTo(point))
     val normalDirection = crossProduct match {
       case Vector3d.Zero => axis.normalDirection
       case nonZeroVector: Vector3d => nonZeroVector.direction
@@ -89,12 +95,12 @@ object Plane3d {
   }
 
   def midplaneBetweenPoints(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
-    val displacementVector = upperPoint - lowerPoint
+    val displacementVector = lowerPoint.vectorTo(upperPoint)
     Plane3d.fromPointAndNormal(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
   }
 
   def midplaneBetweenPlanes(lowerPlane: Plane3d, upperPlane: Plane3d): Plane3d = {
-    val displacementVector = upperPlane.originPoint - lowerPlane.originPoint
+    val displacementVector = lowerPlane.originPoint.vectorTo(upperPlane.originPoint)
 
     // Compute origin point equidistant from both planes
     val aboveDistance = upperPlane.originPoint.distanceTo(lowerPlane).abs

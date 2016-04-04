@@ -23,8 +23,8 @@ object Numerics {
     secondPoint: Point3d,
     thirdPoint: Point3d
   ): Direction3d = {
-    val firstVector = secondPoint - firstPoint
-    val secondVector = thirdPoint - firstPoint
+    val firstVector = firstPoint.vectorTo(secondPoint)
+    val secondVector = firstPoint.vectorTo(thirdPoint)
     val crossProduct = firstVector.cross(secondVector)
     val firstSquaredLength = firstVector.squaredLength
     val secondSquaredLength = secondVector.squaredLength

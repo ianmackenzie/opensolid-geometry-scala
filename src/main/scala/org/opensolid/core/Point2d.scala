@@ -33,16 +33,16 @@ final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d]
     Bounds2d.singleton(this)
 
   override def isEqualTo(that: Point2d, tolerance: Double): Boolean =
-    this.squaredDistanceTo(that).isZero(tolerance * tolerance)
+    squaredDistanceTo(that).isZero(tolerance * tolerance)
 
   def squaredDistanceTo(that: Point2d): Double =
-    (this - that).squaredLength
+    vectorTo(that).squaredLength
 
   def squaredDistanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
     PointExpression2d.Constant[P](this).squaredDistanceTo(expression)
 
   def distanceTo(that: Point2d): Double =
-    (this - that).length
+    vectorTo(that).length
 
   def distanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
     PointExpression2d.Constant[P](this).distanceTo(expression)
@@ -51,22 +51,22 @@ final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d]
     x * x + y * y <= tolerance * tolerance
 
   def distanceAlong(axis: Axis2d): Double =
-    (this - axis.originPoint).componentIn(axis.direction)
+    axis.originPoint.vectorTo(this).componentIn(axis.direction)
 
   def distanceTo(axis: Axis2d): Double =
-    (this - axis.originPoint).componentIn(axis.normalDirection)
+    axis.signedDistanceTo(this).abs
 
   def isOn(axis: Axis2d, tolerance: Double): Boolean =
-    distanceTo(axis).isZero(tolerance)
+    axis.signedDistanceTo(this).isZero(tolerance)
 
   override def transformedBy(transformation: Transformation2d): Point2d =
     transformation(this)
 
   override def scaledAbout(point: Point2d, scale: Double): Point2d =
-    point + scale * (this - point)
+    point + scale * point.vectorTo(this)
 
   def projectedOnto(axis: Axis2d): Point2d =
-    axis.originPoint + (this - axis.originPoint).projectedOnto(axis)
+    axis.originPoint + axis.originPoint.vectorTo(this).projectedOnto(axis)
 
   def placedOnto(plane: Plane3d): Point3d =
     plane.originPoint + x * plane.xDirection + y * plane.yDirection
@@ -92,26 +92,20 @@ final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d]
   def -(vector: Vector2d): Point2d =
     Point2d(x - vector.x, y - vector.y)
 
-  def -(that: Point2d): Vector2d =
-    Vector2d(x - that.x, y - that.y)
-
   def -[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
     PointExpression2d.Constant[P](this) - vectorExpression
-
-  def -[P](pointExpression: PointExpression2d[P]): VectorExpression2d[P] =
-    PointExpression2d.Constant[P](this) - pointExpression
 
   def minus(vector: Vector2d): Point2d =
     this - vector
 
-  def minus(that: Point2d): Vector2d =
-    this - that
-
   def minus[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
     this - vectorExpression
 
-  def minus[P](pointExpression: PointExpression2d[P]): VectorExpression2d[P] =
-    this - pointExpression
+  def vectorTo(that: Point2d): Vector2d =
+    Vector2d(that.x - this.x, that.y - this.y)
+
+  def vectorTo[P](pointExpression: PointExpression2d[P]): VectorExpression2d[P] =
+    PointExpression2d.Constant[P](this).vectorTo(pointExpression)
 }
 
 object Point2d {
@@ -119,7 +113,7 @@ object Point2d {
     Point2d(radius * math.cos(angle), radius * math.sin(angle))
 
   def midpoint(firstPoint: Point2d, secondPoint: Point2d): Point2d =
-    firstPoint + 0.5 * (secondPoint - firstPoint)
+    firstPoint + 0.5 * firstPoint.vectorTo(secondPoint)
 
   val Origin: Point2d = Point2d(0.0, 0.0)
 }

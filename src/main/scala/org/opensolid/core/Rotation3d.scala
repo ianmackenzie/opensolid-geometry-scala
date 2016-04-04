@@ -24,7 +24,7 @@ final case class Rotation3d(axis: Axis3d, angle: Double) extends Transformation3
   ) = Numerics.rotationBasis(axis.direction, angle)
 
   override def apply(point: Point3d): Point3d =
-    axis.originPoint + apply(point - axis.originPoint)
+    axis.originPoint + apply(axis.originPoint.vectorTo(point))
 
   override def apply(vector: Vector3d): Vector3d =
     Vector3d(

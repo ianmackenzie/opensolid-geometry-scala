@@ -137,6 +137,9 @@ sealed abstract class VectorExpression3d[P] {
     case _ => ScalarExpression.DotProduct3d(this, that)
   }
 
+  final def dot(vector: Vector3d): ScalarExpression[P] =
+    dot(Constant[P](vector))
+
   final def cross(that: VectorExpression3d[P]): VectorExpression3d[P] = (this, that) match {
     case (Constant(firstVector), Constant(secondVector)) =>
       Constant(firstVector.cross(secondVector))
@@ -146,6 +149,12 @@ sealed abstract class VectorExpression3d[P] {
     case (first, second) if (first == -second) => Constant[P](Vector3d.Zero)
     case _ => CrossProduct(this, that)
   }
+
+  final def cross(vector: Vector3d): VectorExpression3d[P] =
+    cross(Constant[P](vector))
+
+  final def componentIn(direction: Direction3d): ScalarExpression[P] =
+    dot(direction.vector)
 
   def x: ScalarExpression[P] =
     ScalarExpression.VectorXComponent3d(this)
@@ -340,28 +349,28 @@ object VectorExpression3d {
       firstExpression.z - secondExpression.z
   }
 
-  case class PointDifference[P](
+  case class Displacement[P](
     firstExpression: PointExpression3d[P],
     secondExpression: PointExpression3d[P]
   ) extends VectorExpression3d[P] {
 
     override def unary_- : VectorExpression3d[P] =
-      PointDifference[P](secondExpression, firstExpression)
+      Displacement[P](secondExpression, firstExpression)
 
     override def derivative(parameter: P): VectorExpression3d[P] =
-      firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
+      secondExpression.derivative(parameter) - firstExpression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
       firstExpression.condition * secondExpression.condition
 
     override def x: ScalarExpression[P] =
-      firstExpression.x - secondExpression.x
+      secondExpression.x - firstExpression.x
 
     override def y: ScalarExpression[P] =
-      firstExpression.y - secondExpression.y
+      secondExpression.y - firstExpression.y
 
     override def z: ScalarExpression[P] =
-      firstExpression.z - secondExpression.z
+      secondExpression.z - firstExpression.z
   }
 
   case class Product[P](

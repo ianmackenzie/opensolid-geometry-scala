@@ -16,7 +16,7 @@ package org.opensolid.core
 
 final case class Localization3d(frame: Frame3d) extends Transformation3d {
   def apply(point: Point3d): Point3d = {
-    val displacement = point - frame.originPoint
+    val displacement = frame.originPoint.vectorTo(point)
     Point3d(
       displacement.componentIn(frame.xDirection),
       displacement.componentIn(frame.yDirection),

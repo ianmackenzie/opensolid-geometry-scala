@@ -56,7 +56,7 @@ final case class Circle2d(centerPoint: Point2d, radius: Double) extends Scalable
 
 object Circle2d {
   def throughTwoPoints(firstPoint: Point2d, secondPoint: Point2d, radius: Double): Circle2d = {
-    val displacementVector = secondPoint - firstPoint
+    val displacementVector = firstPoint.vectorTo(secondPoint)
     val halfDistance = displacementVector.length / 2.0
     val sidewaysDistance = math.sqrt((halfDistance * halfDistance - radius * radius).max(0.0))
     val sidewaysDirection = displacementVector.normalDirection
@@ -69,9 +69,11 @@ object Circle2d {
     secondPoint: Point2d,
     thirdPoint: Point2d
   ): Circle2d = {
-    val a = (secondPoint - firstPoint).length
-    val b = (thirdPoint - secondPoint).length
-    val c = (firstPoint - thirdPoint).length
+    val u = firstPoint.vectorTo(secondPoint)
+    val v = firstPoint.vectorTo(thirdPoint)
+    val a = u.length
+    val b = secondPoint.distanceTo(thirdPoint)
+    val c = v.length
     val a2 = a * a
     val b2 = b * b
     val c2 = c * c
@@ -81,12 +83,10 @@ object Circle2d {
     val sum = t1 + t2 + t3
     if (sum <= 0.0) throw GeometricException("Points are collinear")
     val sumInverse = 1.0 / sum
-    val w1 = t1 * sumInverse
-    val w3 = t3 * sumInverse
-    val centerPoint = firstPoint + w1 * (thirdPoint - firstPoint) + w3 * (secondPoint - firstPoint)
-    val firstRadius = (firstPoint - centerPoint).length
-    val secondRadius = (secondPoint - centerPoint).length
-    val thirdRadius = (thirdPoint - centerPoint).length
+    val centerPoint = firstPoint + (t1 * sumInverse) * v + (t3 * sumInverse) * u
+    val firstRadius = centerPoint.distanceTo(firstPoint)
+    val secondRadius = centerPoint.distanceTo(secondPoint)
+    val thirdRadius = centerPoint.distanceTo(thirdPoint)
     val radius = (firstRadius + secondRadius + thirdRadius) / 3.0;
     Circle2d(centerPoint, radius)
   }

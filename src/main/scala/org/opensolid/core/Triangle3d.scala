@@ -68,17 +68,17 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
     this.thirdVertex.isEqualTo(that.thirdVertex, tolerance)
 
   def area: Double =
-    0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex).length
+    0.5 * firstVertex.vectorTo(secondVertex).cross(firstVertex.vectorTo(thirdVertex)).length
 
   def normalDirection: Direction3d =
     Numerics.normalDirection(firstVertex, secondVertex, thirdVertex)
 
   def centroid: Point3d =
-    firstVertex + ((secondVertex - firstVertex) + (thirdVertex - firstVertex)) / 3.0
+    firstVertex + (firstVertex.vectorTo(secondVertex) + firstVertex.vectorTo(thirdVertex)) / 3.0
 
   def plane: Plane3d = {
     val normalDirection = this.normalDirection
-    val xDirection = (secondVertex - firstVertex).direction
+    val xDirection = firstVertex.vectorTo(secondVertex).direction
     val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
     Plane3d(firstVertex, xDirection, yDirection, normalDirection)
   }

@@ -68,15 +68,15 @@ final case class Triangle2d(firstVertex: Point2d, secondVertex: Point2d, thirdVe
     this.thirdVertex.isEqualTo(that.thirdVertex, tolerance)
 
   def area: Double =
-    0.5 * (secondVertex - firstVertex).cross(thirdVertex - firstVertex)
+    0.5 * firstVertex.vectorTo(secondVertex).cross(firstVertex.vectorTo(thirdVertex))
 
   def centroid: Point2d =
-    firstVertex + ((secondVertex - firstVertex) + (thirdVertex - firstVertex)) / 3.0
+    firstVertex + (firstVertex.vectorTo(secondVertex) + firstVertex.vectorTo(thirdVertex)) / 3.0
 
   def contains(point: Point2d): Boolean = {
-    val firstProduct = (secondVertex - firstVertex).cross(point - firstVertex)
-    val secondProduct = (thirdVertex - secondVertex).cross(point - secondVertex)
-    val thirdProduct = (firstVertex - thirdVertex).cross(point - thirdVertex)
+    val firstProduct = firstVertex.vectorTo(secondVertex).cross(firstVertex.vectorTo(point))
+    val secondProduct = secondVertex.vectorTo(thirdVertex).cross(secondVertex.vectorTo(point))
+    val thirdProduct = thirdVertex.vectorTo(firstVertex).cross(thirdVertex.vectorTo(point))
 
     (firstProduct >= 0 && secondProduct >= 0 && thirdProduct >= 0) ||
     (firstProduct <= 0 && secondProduct <= 0 && thirdProduct <= 0)
