@@ -466,9 +466,9 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def squared: Interval =
     if (isEmpty) {
       Interval.Empty
-    } else if (lowerBound > 0.0) {
+    } else if (lowerBound >= 0.0) {
       Interval(lowerBound * lowerBound, upperBound * upperBound)
-    } else if (upperBound < 0.0) {
+    } else if (upperBound <= 0.0) {
       Interval(upperBound * upperBound, lowerBound * lowerBound)
     } else if (-lowerBound < upperBound) {
       Interval(0.0, upperBound * upperBound)
