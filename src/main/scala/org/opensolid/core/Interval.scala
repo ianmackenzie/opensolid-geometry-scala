@@ -418,30 +418,34 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def times(that: Interval): Interval =
     this * that
 
-  def /(value: Double): Interval = {
-    if (isSingleton) {
-      Interval.singleton(lowerBound / value)
+  def /(value: Double): Interval =
+    if (isEmpty || value.isNaN) {
+      Interval.Empty
+    } else if (value.isInfinity) {
+      if (lowerBound.isPosInfinity || upperBound.isNegInfinity) Interval.Empty else Interval.Zero
+    } else if (value > 0.0) {
+      Interval(lowerBound / value, upperBound / value)
+    } else if (value < 0.0) {
+      Interval(upperBound / value, lowerBound / value)
+    } else if (value == 0.0) {
+      if (lowerBound == 0.0 && upperBound == 0.0) {
+        Interval.Empty
+      } else if (lowerBound >= 0.0) {
+        Interval.PositiveInfinity
+      } else if (upperBound <= 0.0) {
+        Interval.NegativeInfinity
+      } else {
+        Interval.Whole
+      }
     } else {
-      val reciprocal = 1.0 / value
-      (lowerBound * reciprocal).hull(upperBound * reciprocal)
+      Interval.Empty
     }
-  }
 
   def dividedBy(value: Double): Interval =
     this / value
 
-  def /(that: Interval): Interval = {
-    if (isEmpty || that.isEmpty) {
-      Interval.Empty
-    } else if (that.lowerBound > 0.0 || that.upperBound < 0.0) {
-      val reciprocal = Interval(1.0 / that.upperBound, 1.0 / that.lowerBound)
-      this * reciprocal
-    } else if (this == Interval.Zero) {
-      if (that == Interval.Zero) Interval.Empty else Interval.Zero
-    } else {
-      Interval.Whole
-    }
-  }
+  def /(that: Interval): Interval =
+    this * that.reciprocal
 
   def dividedBy(that: Interval): Interval =
     this / that
