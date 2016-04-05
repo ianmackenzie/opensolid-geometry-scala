@@ -591,13 +591,12 @@ object Interval {
 
   private[this] val atan2FullRange = Interval(-math.Pi, math.Pi)
 
-  def exp(interval: Interval): Interval = {
+  def exp(interval: Interval): Interval =
     if (interval.isEmpty) {
       Interval.Empty
     } else {
       Interval(math.exp(interval.lowerBound), math.exp(interval.upperBound))
     }
-  }
 
   def log(interval: Interval): Interval =
     if (interval.isEmpty || interval.upperBound < 0.0) {
