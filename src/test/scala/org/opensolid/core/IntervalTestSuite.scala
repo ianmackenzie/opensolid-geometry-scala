@@ -395,10 +395,6 @@ class IntervalTestSuite extends TestSuite
     testUnaryFunction(value => math.atan(value), interval => Interval.atan(interval))
   }
 
-  test("atan2") {
-    testBinaryFunction((y, x) => math.atan2(y, x), (y, x) => Interval.atan2(y, x))
-  }
-
   test("exp") {
     testUnaryFunction(
       value => math.exp(value),

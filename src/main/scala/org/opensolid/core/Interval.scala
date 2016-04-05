@@ -573,24 +573,6 @@ object Interval {
   def atan(interval: Interval): Interval =
     Interval(math.atan(interval.lowerBound), math.atan(interval.upperBound))
 
-  def atan2(y: Interval, x: Interval): Interval = {
-    if (y.isEmpty || x.isEmpty) {
-      Interval.Empty
-    } else if (y.isSingleton && x.isSingleton) {
-      Interval.singleton(math.atan2(y.lowerBound, x.lowerBound))
-    } else if (x.lowerBound > 0.0) {
-      Interval.atan(y / x)
-    } else if (y.lowerBound > 0.0) {
-      Interval.atan(-x / y) + math.Pi / 2.0
-    } else if (y.upperBound < 0.0) {
-      Interval.atan(-x / y) - math.Pi / 2.0
-    } else {
-      atan2FullRange
-    }
-  }
-
-  private[this] val atan2FullRange = Interval(-math.Pi, math.Pi)
-
   def exp(interval: Interval): Interval =
     if (interval.isEmpty) {
       Interval.Empty
