@@ -631,19 +631,6 @@ object Interval {
 
   val NegativeHalf: Interval = Interval(Double.NegativeInfinity, 0.0)
 
-  private[Interval] def safeProduct(firstValue: Double, secondValue: Double) = {
-    val result = firstValue * secondValue
-    if (java.lang.Double.isFinite(result)) {
-      result
-    } else if (firstValue.isNaN || secondValue.isNaN) {
-      Double.NaN
-    } else if (firstValue == 0.0 || secondValue == 0.0) {
-      0.0
-    } else {
-      result
-    }
-  }
-
   private[Interval] def nondecreasing(lowerBound: Double, upperBound: Double): Interval =
     if (lowerBound <= upperBound) {
       Interval(lowerBound, upperBound)
