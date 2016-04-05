@@ -409,7 +409,11 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     this * value
 
   def *(that: Interval): Interval =
-    (this * that.lowerBound).hull(this * that.upperBound)
+    if (this == Interval.Zero && that == Interval.Whole) {
+      Interval.Zero
+    } else {
+      (this * that.lowerBound).hull(this * that.upperBound)
+    }
 
   def times(that: Interval): Interval =
     this * that
