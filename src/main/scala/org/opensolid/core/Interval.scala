@@ -450,7 +450,7 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def dividedBy(that: Interval): Interval =
     this / that
 
-  def abs: Interval = {
+  def abs: Interval =
     if (isEmpty) {
       Interval.Empty
     } else if (lowerBound >= 0.0) {
@@ -462,9 +462,8 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     } else {
       Interval(0.0, -lowerBound)
     }
-  }
 
-  def squared: Interval = {
+  def squared: Interval =
     if (isEmpty) {
       Interval.Empty
     } else if (lowerBound > 0.0) {
@@ -476,7 +475,6 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     } else {
       Interval(0.0, lowerBound * lowerBound)
     }
-  }
 }
 
 object Interval {
@@ -487,15 +485,14 @@ object Interval {
   def singleton(value: Double): Interval =
     Interval(value, value)
 
-  def sqrt(interval: Interval): Interval = {
+  def sqrt(interval: Interval): Interval =
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
     } else {
       Interval(math.sqrt(interval.lowerBound.max(0.0)), math.sqrt(interval.upperBound))
     }
-  }
 
-  def sin(interval: Interval): Interval = {
+  def sin(interval: Interval): Interval =
     if (interval.isEmpty) {
       Interval.Empty
     } else if (interval.isSingleton) {
@@ -512,9 +509,8 @@ object Interval {
         Interval(lowerBound, upperBound)
       }
     }
-  }
 
-  def cos(interval: Interval): Interval = {
+  def cos(interval: Interval): Interval =
     if (interval.isEmpty) {
       Interval.Empty
     } else if (interval.isSingleton) {
@@ -531,7 +527,6 @@ object Interval {
         Interval(lowerBound, upperBound)
       }
     }
-  }
 
   private[this] def cosHasMinMax(interval: Interval): (Boolean, Boolean) = {
     val abs = interval.abs
@@ -561,21 +556,19 @@ object Interval {
     }
   }
 
-  def asin(interval: Interval): Interval = {
+  def asin(interval: Interval): Interval =
     if (interval.isEmpty || interval.lowerBound > 1.0 || interval.upperBound < -1.0) {
       Interval.Empty
     } else {
       Interval(math.asin(interval.lowerBound.max(-1.0)), math.asin(interval.upperBound.min(1.0)))
     }
-  }
 
-  def acos(interval: Interval): Interval = {
+  def acos(interval: Interval): Interval =
     if (interval.isEmpty || interval.lowerBound > 1.0 || interval.upperBound < -1.0) {
       Interval.Empty
     } else {
       Interval(math.acos(interval.upperBound.min(1.0)), math.acos(interval.lowerBound.max(-1.0)))
     }
-  }
 
   def atan(interval: Interval): Interval =
     Interval(math.atan(interval.lowerBound), math.atan(interval.upperBound))
@@ -606,13 +599,12 @@ object Interval {
     }
   }
 
-  def log(interval: Interval): Interval = {
+  def log(interval: Interval): Interval =
     if (interval.isEmpty || interval.upperBound < 0.0) {
       Interval.Empty
     } else {
       Interval(math.log(interval.lowerBound.max(0.0)), math.log(interval.upperBound))
     }
-  }
 
   def ulp(interval: Interval): Double =
     math.ulp(interval.lowerBound).max(math.ulp(interval.upperBound))
