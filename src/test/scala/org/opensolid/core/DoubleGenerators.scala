@@ -46,12 +46,33 @@ trait DoubleGenerators {
       Double.NaN
     case Interval.Whole =>
       validDouble
+    case Interval.NegativeInfinity =>
+      Double.NegativeInfinity
+    case Interval.PositiveInfinity =>
+      Double.PositiveInfinity
     case Interval(Double.NegativeInfinity, upper) =>
-      Gen.frequency(8 -> finiteDouble.map(upper - _.abs), 1 -> Double.NegativeInfinity)
+      if (upper <= 0.0) {
+        validDouble.map(upper - _.abs).map(-_.abs)
+      } else {
+        validDouble.map(upper - _.abs)
+      }
     case Interval(lower, Double.PositiveInfinity) =>
-      Gen.frequency(8 -> finiteDouble.map(lower + _.abs), 1 -> Double.PositiveInfinity)
-    case _ =>
-      Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
+      if (lower >= 0.0) {
+        validDouble.map(lower + _.abs).map(_.abs)
+      } else {
+        validDouble.map(lower + _.abs)
+      }
+    case Interval(lower, upper) => {
+      val containedValue =
+        Gen.chooseNum(0.0, 1.0).map(interval.interpolated(_)).suchThat(interval.contains(_))
+      if (upper <= 0.0) {
+        containedValue.map(-_.abs)
+      } else if (lower >= 0.0) {
+        containedValue.map(_.abs)
+      } else {
+        containedValue
+      }
+    }
   }
 }
 
