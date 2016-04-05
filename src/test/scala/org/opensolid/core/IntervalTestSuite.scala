@@ -335,6 +335,8 @@ class IntervalTestSuite extends TestSuite
 
   test("*(that)") {
     testBinaryFunction((x, y) => x * y, (x, y) => x * y)
+    (Interval.Whole * Interval.Zero).shouldBe(Interval.Zero)
+    (Interval.Zero * Interval.Whole).shouldBe(Interval.Zero)
   }
 
   test("/(value)") {
