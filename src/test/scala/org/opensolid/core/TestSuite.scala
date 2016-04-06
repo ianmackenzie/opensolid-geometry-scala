@@ -29,7 +29,7 @@ abstract class TestSuite extends FunSuite
     math.ulp(value).max(minEps).min(maxEps)
 
   def eps(interval: Interval): Double =
-    Interval.ulp(interval).max(minEps).min(maxEps)
+    interval.ulp.max(minEps).min(maxEps)
 }
 
 object TestSuite {

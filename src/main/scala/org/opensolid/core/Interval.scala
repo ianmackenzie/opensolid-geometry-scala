@@ -31,8 +31,8 @@ import scala.util.Random
   * the lowest possible product of values taken from those two intervals is `2.0 * (-5.0) == -10.0`
   * and the highest possible product is `1.0 * (-3.0) == -3.0`.
   *
-  * Note that not only the endpoints are considered - `Interval.sin(Interval(0.0, math.Pi))` results
-  * in `Interval(0.0, 1.0)` even though `math.sin(0.0)` and `math.sin(math.Pi)` are both zero, since
+  * Note that not only the endpoints are considered - `Interval(0.0, math.Pi).sin` results in
+  * `Interval(0.0, 1.0)` even though `math.sin(0.0)` and `math.sin(math.Pi)` are both zero, since
   * `math.sin(math.Pi / 2.0)` is 1.0 and `math.Pi / 2.0` is a possible value within
   * `Interval(0.0, math.Pi)`.
   *
@@ -475,61 +475,52 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
     } else {
       Interval(0.0, lowerBound * lowerBound)
     }
-}
 
-object Interval {
-  def fromEndpoints(endpoints: (Double, Double)): Interval = endpoints match {
-    case (lowerBound, upperBound) => Interval(lowerBound, upperBound)
-  }
-
-  def singleton(value: Double): Interval =
-    Interval(value, value)
-
-  def sqrt(interval: Interval): Interval =
-    if (interval.isEmpty || interval.upperBound < 0.0) {
+  def sqrt: Interval =
+    if (isEmpty || upperBound < 0.0) {
       Interval.Empty
     } else {
-      Interval(math.sqrt(interval.lowerBound.max(0.0)), math.sqrt(interval.upperBound))
+      Interval(math.sqrt(lowerBound.max(0.0)), math.sqrt(upperBound))
     }
 
-  def sin(interval: Interval): Interval =
-    if (interval.isEmpty) {
+  def sin: Interval =
+    if (isEmpty) {
       Interval.Empty
-    } else if (interval.isSingleton) {
-      Interval.singleton(math.sin(interval.lowerBound))
+    } else if (isSingleton) {
+      Interval.singleton(math.sin(lowerBound))
     } else {
-      val (hasMin, hasMax) = cosHasMinMax(interval - math.Pi / 2.0)
+      val (hasMin, hasMax) = (this - math.Pi / 2.0).cosHasMinMax
       if (hasMin && hasMax) {
-        sinCosFullRange
+        Interval.SinCosFullRange
       } else {
-        val sinLower = math.sin(interval.lowerBound)
-        val sinUpper = math.sin(interval.upperBound)
+        val sinLower = math.sin(this.lowerBound)
+        val sinUpper = math.sin(this.upperBound)
         val lowerBound = if (hasMin) -1.0 else sinLower.min(sinUpper)
         val upperBound = if (hasMax) 1.0 else sinLower.max(sinUpper)
         Interval(lowerBound, upperBound)
       }
     }
 
-  def cos(interval: Interval): Interval =
-    if (interval.isEmpty) {
+  def cos: Interval =
+    if (isEmpty) {
       Interval.Empty
-    } else if (interval.isSingleton) {
-      Interval.singleton(math.cos(interval.lowerBound))
+    } else if (isSingleton) {
+      Interval.singleton(math.cos(lowerBound))
     } else {
-      val (hasMin, hasMax) = cosHasMinMax(interval)
+      val (hasMin, hasMax) = cosHasMinMax
       if (hasMin && hasMax) {
-        sinCosFullRange
+        Interval.SinCosFullRange
       } else {
-        val cosLower = math.cos(interval.lowerBound)
-        val cosUpper = math.cos(interval.upperBound)
+        val cosLower = math.cos(this.lowerBound)
+        val cosUpper = math.cos(this.upperBound)
         val lowerBound = if (hasMin) -1.0 else cosLower.min(cosUpper)
         val upperBound = if (hasMax) 1.0 else cosLower.max(cosUpper)
         Interval(lowerBound, upperBound)
       }
     }
 
-  private[this] def cosHasMinMax(interval: Interval): (Boolean, Boolean) = {
-    val abs = interval.abs
+  private def cosHasMinMax: (Boolean, Boolean) = {
+    val abs = this.abs
     if (abs.upperBound.isInfinity) {
       (true, true)
     } else {
@@ -540,55 +531,54 @@ object Interval {
     }
   }
 
-  private[this] val sinCosFullRange = Interval(-1.0, 1.0)
-
-  def tan(interval: Interval): Interval = {
-    val abs = interval.abs
+  def tan: Interval = {
+    val abs = this.abs
     if (abs.upperBound.isInfinity) {
       Interval.Whole
     } else {
       val hasSingularity = (abs.upperBound + math.Pi / 2.0) % math.Pi <= abs.width
-      if (hasSingularity) {
-        Interval.Whole
-      } else {
-        Interval(math.tan(interval.lowerBound), math.tan(interval.upperBound))
-      }
+      if (hasSingularity) Interval.Whole else Interval(math.tan(lowerBound), math.tan(upperBound))
     }
   }
 
-  def asin(interval: Interval): Interval =
-    if (interval.isEmpty || interval.lowerBound > 1.0 || interval.upperBound < -1.0) {
+  def asin: Interval =
+    if (isEmpty || lowerBound > 1.0 || upperBound < -1.0) {
       Interval.Empty
     } else {
-      Interval(math.asin(interval.lowerBound.max(-1.0)), math.asin(interval.upperBound.min(1.0)))
+      Interval(math.asin(lowerBound.max(-1.0)), math.asin(upperBound.min(1.0)))
     }
 
-  def acos(interval: Interval): Interval =
-    if (interval.isEmpty || interval.lowerBound > 1.0 || interval.upperBound < -1.0) {
+  def acos: Interval =
+    if (isEmpty || lowerBound > 1.0 || upperBound < -1.0) {
       Interval.Empty
     } else {
-      Interval(math.acos(interval.upperBound.min(1.0)), math.acos(interval.lowerBound.max(-1.0)))
+      Interval(math.acos(upperBound.min(1.0)), math.acos(lowerBound.max(-1.0)))
     }
 
-  def atan(interval: Interval): Interval =
-    Interval(math.atan(interval.lowerBound), math.atan(interval.upperBound))
+  def atan: Interval =
+    Interval(math.atan(lowerBound), math.atan(upperBound))
 
-  def exp(interval: Interval): Interval =
-    if (interval.isEmpty) {
+  def exp: Interval =
+    Interval(math.exp(lowerBound), math.exp(upperBound))
+
+  def log: Interval =
+    if (isEmpty || upperBound < 0.0) {
       Interval.Empty
     } else {
-      Interval(math.exp(interval.lowerBound), math.exp(interval.upperBound))
+      Interval(math.log(lowerBound.max(0.0)), math.log(upperBound))
     }
 
-  def log(interval: Interval): Interval =
-    if (interval.isEmpty || interval.upperBound < 0.0) {
-      Interval.Empty
-    } else {
-      Interval(math.log(interval.lowerBound.max(0.0)), math.log(interval.upperBound))
-    }
+  def ulp: Double =
+    math.ulp(lowerBound).max(math.ulp(upperBound))
+}
 
-  def ulp(interval: Interval): Double =
-    math.ulp(interval.lowerBound).max(math.ulp(interval.upperBound))
+object Interval {
+  def fromEndpoints(endpoints: (Double, Double)): Interval = endpoints match {
+    case (lowerBound, upperBound) => Interval(lowerBound, upperBound)
+  }
+
+  def singleton(value: Double): Interval =
+    Interval(value, value)
 
   /** The empty interval (contains no values).
     *
@@ -611,6 +601,8 @@ object Interval {
   val PositiveHalf: Interval = Interval(0.0, Double.PositiveInfinity)
 
   val NegativeHalf: Interval = Interval(Double.NegativeInfinity, 0.0)
+
+  private[Interval] val SinCosFullRange = Interval(-1.0, 1.0)
 
   private[Interval] def nondecreasing(lowerBound: Double, upperBound: Double): Interval =
     if (lowerBound <= upperBound) {

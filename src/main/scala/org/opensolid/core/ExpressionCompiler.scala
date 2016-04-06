@@ -742,7 +742,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.sqrt(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.sqrt(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).sqrt
   }
 
   private[ExpressionCompiler] class Sine(argumentIndex: Int, resultIndex: Int)
@@ -752,7 +752,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.sin(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.sin(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).sin
   }
 
   private[ExpressionCompiler] class Cosine(argumentIndex: Int, resultIndex: Int)
@@ -762,7 +762,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.cos(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.cos(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).cos
   }
 
   private[ExpressionCompiler] class Tangent(argumentIndex: Int, resultIndex: Int)
@@ -772,7 +772,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.tan(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.tan(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).tan
   }
 
   private[ExpressionCompiler] class Arcsine(argumentIndex: Int, resultIndex: Int)
@@ -782,7 +782,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.asin(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.asin(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).asin
   }
 
   private[ExpressionCompiler] class Arccosine(argumentIndex: Int, resultIndex: Int)
@@ -792,7 +792,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.acos(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.acos(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).acos
   }
 
   private[ExpressionCompiler] class Arctangent(argumentIndex: Int, resultIndex: Int)
@@ -802,7 +802,7 @@ private object ExpressionCompiler {
       values(resultIndex) = math.atan(values(argumentIndex))
 
     override def execute(values: Array[Interval]): Unit =
-      values(resultIndex) = Interval.atan(values(argumentIndex))
+      values(resultIndex) = values(argumentIndex).atan
   }
 
   private[ExpressionCompiler] class DotProduct2d(

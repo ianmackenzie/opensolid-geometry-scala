@@ -358,47 +358,39 @@ class IntervalTestSuite extends TestSuite
   test("sqrt") {
     testUnaryFunction(
       value => math.sqrt(value),
-      interval => Interval.sqrt(interval),
+      interval => interval.sqrt,
       Interval(0.0, Double.PositiveInfinity)
     )
   }
 
   test("sin") {
-    testUnaryFunction(value => math.sin(value), interval => Interval.sin(interval))
+    testUnaryFunction(value => math.sin(value), interval => interval.sin)
   }
 
   test("cos") {
-    testUnaryFunction(value => math.cos(value), interval => Interval.cos(interval))
+    testUnaryFunction(value => math.cos(value), interval => interval.cos)
   }
 
   test("tan") {
-    testUnaryFunction(value => math.tan(value), interval => Interval.tan(interval))
+    testUnaryFunction(value => math.tan(value), interval => interval.tan)
   }
 
   test("asin") {
-    testUnaryFunction(
-      value => math.asin(value),
-      interval => Interval.asin(interval),
-      Interval(-1, 1)
-    )
+    testUnaryFunction(value => math.asin(value), interval => interval.asin, Interval(-1, 1))
   }
 
   test("acos") {
-    testUnaryFunction(
-      value => math.acos(value),
-      interval => Interval.acos(interval),
-      Interval(-1, 1)
-    )
+    testUnaryFunction(value => math.acos(value), interval => interval.acos, Interval(-1, 1))
   }
 
   test("atan") {
-    testUnaryFunction(value => math.atan(value), interval => Interval.atan(interval))
+    testUnaryFunction(value => math.atan(value), interval => interval.atan)
   }
 
   test("exp") {
     testUnaryFunction(
       value => math.exp(value),
-      interval => Interval.exp(interval),
+      interval => interval.exp,
       Interval(Double.NegativeInfinity, 1e2)
     )
   }
@@ -406,7 +398,7 @@ class IntervalTestSuite extends TestSuite
   test("log") {
     testUnaryFunction(
       value => math.log(value),
-      interval => Interval.log(interval),
+      interval => interval.log,
       Interval(0.0, Double.PositiveInfinity)
     )
   }
