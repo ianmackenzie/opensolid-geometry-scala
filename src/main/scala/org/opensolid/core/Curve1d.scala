@@ -35,6 +35,7 @@ trait Curve1d extends Bounded[Interval] {
     val parameterizedCurve = this.parameterized
     val expression = parameterizedCurve.expression
     val domain = parameterizedCurve.domain
+    val width = domain.width
     val derivatives =
       for {
         derivative <- Array.iterate(expression, maxOrder + 2)(_.derivative(CurveParameter))
@@ -46,13 +47,14 @@ trait Curve1d extends Bounded[Interval] {
     val tolerances = Array.ofDim[Double](maxOrder + 2)
     tolerances(0) = tolerance
     for (n <- 1 to maxOrder + 1) {
-      tolerances(n) = n * tolerances(n - 1) / domain.width
+      tolerances(n) = n * tolerances(n - 1) / width
     }
 
     // Check left end
     val leftXValue = domain.lowerBound
     val leftIsZero = derivatives(0).evaluate(leftXValue).isZero(tolerance)
-    val leftRoot = if (leftIsZero) rootAt(leftXValue, derivatives, tolerances, 0) else None
+    val leftRoot =
+      if (leftIsZero) rootAt(leftXValue, derivatives, tolerances, 0, width) else None
     if (leftIsZero && leftRoot.isEmpty) {
       // Curve is identically zero
       EntireCurve
@@ -60,7 +62,8 @@ trait Curve1d extends Bounded[Interval] {
       // Check right end
       val rightXValue = domain.upperBound
       val rightIsZero = derivatives(0).evaluate(rightXValue).isZero(tolerance)
-      val rightRoot = if (rightIsZero) rootAt(rightXValue, derivatives, tolerances, 0) else None
+      val rightRoot =
+        if (rightIsZero) rootAt(rightXValue, derivatives, tolerances, 0, width) else None
       if (rightIsZero && rightRoot.isEmpty) {
         // Curve is identically zero
         EntireCurve
@@ -78,8 +81,13 @@ trait Curve1d extends Bounded[Interval] {
           case Some(RootWithRadius(root, radius)) =>
             (List(root), rightXValue - radius)
         }
-        val fullInterval = Interval(leftBound, rightBound)
-        val midRoots = allRootsWithin(fullInterval, derivatives, tolerances, maxOrder).map(_.root)
+        val midRoots =
+          if (leftBound < rightBound) {
+            val fullInterval = Interval(leftBound, rightBound)
+            allRootsWithin(fullInterval, derivatives, tolerances, maxOrder, width).map(_.root)
+          } else {
+            List.empty[Root]
+          }
         Roots(leftRoots ++ midRoots ++ rightRoots)
       }
     }
@@ -102,49 +110,43 @@ object Curve1d {
     xValue: Double,
     derivatives: Array[ScalarExpression.CompiledCurve],
     tolerances: Array[Double],
-    minOrder: Int
+    minOrder: Int,
+    maxRadius: Double
   ): Option[RootWithRadius] = {
     val derivativeOrder = minOrder + 1
     if (derivativeOrder >= derivatives.size) {
       None
     } else {
-      val derivativeValue = derivatives(derivativeOrder).evaluate(xValue)
+      val derivative = derivatives(derivativeOrder)
+      val derivativeValue = derivative.evaluate(xValue)
       if (derivativeValue.isNotZero(tolerances(derivativeOrder))) {
-        val radius = radiusOfInfluence(derivativeOrder, derivativeValue, tolerances(0))
+        val radius = nonZeroRadiusAbout(xValue, derivative, maxRadius)
         Some(RootWithRadius(Root(xValue, minOrder, derivativeValue.signum), radius))
       } else {
-        rootAt(xValue, derivatives, tolerances, derivativeOrder)
+        rootAt(xValue, derivatives, tolerances, derivativeOrder, maxRadius)
       }
     }
   }
 
-  private[this] def radiusOfInfluence(
-    order: Int,
-    derivativeValue: Double,
-    tolerance: Double
-  ): Double = {
-    val ratio = (tolerance / derivativeValue).abs
-    order match {
-      case 1 =>
-        ratio
-      case 2 =>
-        math.sqrt(2 * ratio)
-      case 3 =>
-        math.cbrt(6 * ratio)
-      case 4 =>
-        math.sqrt(math.sqrt(24 * ratio))
-      case _ =>
-        throw new MatchError(s"Radius of influence not implemented for order $order")
+  private[this] def nonZeroRadiusAbout(
+    xValue: Double,
+    derivative: ScalarExpression.CompiledCurve,
+    radius: Double
+  ): Double =
+    if (derivative.evaluateBounds(Interval(xValue - radius, xValue + radius)).contains(0.0)) {
+      if (radius == 0.0) radius else nonZeroRadiusAbout(xValue, derivative, radius / 2.0)
+    } else {
+      radius
     }
-  }
 
   private[Curve1d] def allRootsWithin(
     xInterval: Interval,
     derivatives: Array[ScalarExpression.CompiledCurve],
     tolerances: Array[Double],
-    order: Int
+    order: Int,
+    maxRadius: Double
   ): List[RootWithRadius] = {
-    val roots = rootsWithin(xInterval, derivatives, tolerances, order)
+    val roots = rootsWithin(xInterval, derivatives, tolerances, order, maxRadius)
     order match {
       case 0 =>
         roots
@@ -154,13 +156,14 @@ object Curve1d {
             (left, accumulator) => accumulator match {
               case (results, upperBound) => {
                 val interval = Interval(left.root.x + left.radiusOfInfluence, upperBound)
-                val lowerOrder = allRootsWithin(interval, derivatives, tolerances, order - 1)
+                val lowerOrder =
+                  allRootsWithin(interval, derivatives, tolerances, order - 1, maxRadius)
                 (left +: lowerOrder ::: results, left.root.x - left.radiusOfInfluence)
               }
             }
           )
         val headInterval = Interval(xInterval.lowerBound, upperBound)
-        val head = allRootsWithin(headInterval, derivatives, tolerances, order - 1)
+        val head = allRootsWithin(headInterval, derivatives, tolerances, order - 1, maxRadius)
         head ++ tail
       }
     }
@@ -170,7 +173,8 @@ object Curve1d {
     xInterval: Interval,
     derivatives: Array[ScalarExpression.CompiledCurve],
     tolerances: Array[Double],
-    order: Int
+    order: Int,
+    maxRadius: Double
   ): List[RootWithRadius] = {
     val derivativeBounds = evaluateWithin(xInterval, derivatives)
     val lowerOrderNonZero =
@@ -189,13 +193,14 @@ object Curve1d {
         // X interval is large enough to bisect - recurse into each half
         val leftInterval = Interval(xMin, xMid)
         val rightInterval = Interval(xMid, xMax)
-        val leftRoots = rootsWithin(leftInterval, derivatives, tolerances, order)
-        val rightRoots = rootsWithin(rightInterval, derivatives, tolerances, order)
+        val leftRoots = rootsWithin(leftInterval, derivatives, tolerances, order, maxRadius)
+        val rightRoots = rootsWithin(rightInterval, derivatives, tolerances, order, maxRadius)
         mergeRoots(leftRoots, rightRoots)
       } else {
         // Cannot bisect any further - check if a root has been found
-        val nextDerivativeValue = derivatives(order + 1).evaluate(xMid)
-        val radius = radiusOfInfluence(order + 1, nextDerivativeValue, tolerances(0))
+        val nextDerivative = derivatives(order + 1)
+        val nextDerivativeValue = nextDerivative.evaluate(xMid)
+        val radius = nonZeroRadiusAbout(xMid, nextDerivative, maxRadius)
         List(RootWithRadius(Root(xMid, order, nextDerivativeValue.signum), radius))
       }
     }
@@ -210,15 +215,22 @@ object Curve1d {
     result(maxOrder) = derivatives(maxOrder).evaluateBounds(domain)
     for (order <- maxOrder - 1 to 0 by -1) {
       val derivative = derivatives(order)
-      result(order) = if (result(order + 1).contains(0.0)) {
-        derivative.evaluateBounds(domain)
-      } else {
-        // Next derivative is never zero in this interval, i.e. this derivative is monotonic - can
-        // evaluate bounds by looking at endpoints only
-        val leftValue = derivative.evaluate(domain.lowerBound)
-        val rightValue = derivative.evaluate(domain.upperBound)
-        leftValue.hull(rightValue)
-      }
+      val nextDerivativeBounds = result(order + 1)
+      result(order) =
+        if (nextDerivativeBounds.contains(0.0) || nextDerivativeBounds.width.isInfinity) {
+          derivative.evaluateBounds(domain)
+        } else {
+          // Next derivative is always finite and never zero in this interval, i.e. this derivative
+          // is monotonic - can evaluate bounds by looking at endpoints only
+          val leftValue = derivative.evaluate(domain.lowerBound)
+          val rightValue = derivative.evaluate(domain.upperBound)
+          if (leftValue.isNaN || rightValue.isNaN) {
+            // Fall back to bounds-based evaluation - function is undefined on part of the domain
+            derivative.evaluateBounds(domain)
+          } else {
+            leftValue.hull(rightValue)
+          }
+        }
     }
     result
   }
