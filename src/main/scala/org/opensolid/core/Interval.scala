@@ -112,6 +112,9 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def isWhole: Boolean =
     lowerBound.isNegInfinity && upperBound.isPosInfinity
 
+  def isZero(tolerance: Double): Boolean =
+    lowerBound >= -tolerance && upperBound <= tolerance
+
   /** Returns the width of this interval (the difference between the upper and lower bounds). */
   def width: Double =
     upperBound - lowerBound
