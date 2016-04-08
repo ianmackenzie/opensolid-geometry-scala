@@ -111,15 +111,17 @@ object Curve1d {
 
     // Calculate tolerances for each derivative order: tolerance(n) = n! * tolerance / width^n
     val tolerances: Array[Double] = {
+      val width = domain.width
       val result = Array.ofDim[Double](maxDerivativeOrder + 1)
       result(0) = tolerance
       for (n <- 1 to maxDerivativeOrder) {
         result(n) = n * result(n - 1) / width
       }
+      result
     }
 
     @tailrec
-    def rootAt(xValue: Double, minRootOrder: Int = 0): Option[Root] =
+    final def rootAt(xValue: Double, minRootOrder: Int = 0): Option[Root] =
       if (minRootOrder >= maxDerivativeOrder) {
         None
       } else {
@@ -136,15 +138,15 @@ object Curve1d {
     def isZeroAt(xValue: Double, derivativeOrder: Int = 0): Boolean =
       derivatives(derivativeOrder).evaluate(xValue).isZero(tolerances(derivativeOrder))
 
-    def rootsWithin(xInterval: Interval): List[Root] = {
-      val mergedRegions = mergeRegions(monotonicRegionsWithin(xInterval))
+    def rootsWithin(xInterval: Interval, currentRoots: List[Root]): List[Root] = {
+      val mergedRegions = mergeRegions(monotonicRegionsWithin(xInterval, Nil))
+      ???
     }
 
     private[this] def rootWithin(region: MonotonicRegion): Option[Root] = {
       ???
     }
 
-    @tailrec
     private[this] def monotonicRegionsWithin(
       xInterval: Interval,
       currentRegions: List[MonotonicRegion]
@@ -165,6 +167,7 @@ object Curve1d {
           }
           case Some(order) =>
             MonotonicRegion(xInterval, order) :: currentRegions
+        }
       }
     }
 
@@ -173,7 +176,7 @@ object Curve1d {
         case Nil =>
           Nil
         case head :: tail => {
-          val buffer = ListBuffer[MonotonicRegion]
+          val buffer = ListBuffer[MonotonicRegion]()
           @tailrec
           def add(current: MonotonicRegion, rest: List[MonotonicRegion]): Unit = rest match {
             case Nil =>
