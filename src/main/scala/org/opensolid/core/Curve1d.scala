@@ -81,13 +81,18 @@ trait Curve1d extends Bounded[Interval] {
           rightXValue + rightRadius(width)
         }
       }
-      val midRoots =
+      val rightRoots =
         if (leftBound < rightBound) {
-          derivativeSet.rootsWithin(Interval(leftBound, rightBound))
+          derivativeSet.rootsWithin(Interval(leftBound, rightBound), rightRoot.toList)
         } else {
-          List.empty[Root]
+          rightRoot.toList
         }
-      Roots(leftRoot ++ midRoots ++ rightRoot)
+      leftRoot match {
+        case None =>
+          Roots(rightRoots)
+        case Some(root) =>
+          Roots(root :: rightRoots)
+      }
     }
   }
 }
