@@ -14,6 +14,7 @@
 
 package org.opensolid.core
 
+import java.lang.Math
 import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.math
@@ -83,7 +84,8 @@ trait Curve1d extends Bounded[Interval] {
       }
       val rightRoots =
         if (leftBound < rightBound) {
-          derivativeSet.rootsWithin(Interval(leftBound, rightBound), rightRoot.toList)
+          val xInterval = Interval(leftBound, rightBound)
+          derivativeSet.rootsWithin(xInterval, xInterval.ulp, maxRootOrder + 2, rightRoot.toList)
         } else {
           rightRoot.toList
         }
@@ -143,109 +145,118 @@ object Curve1d {
     def isZeroAt(xValue: Double, derivativeOrder: Int = 0): Boolean =
       derivatives(derivativeOrder).evaluate(xValue).isZero(tolerances(derivativeOrder))
 
-    def rootsWithin(xInterval: Interval, currentRoots: List[Root]): List[Root] = {
-      val mergedRegions = mergeRegions(monotonicRegionsWithin(xInterval, Nil))
-      ???
-    }
-
-    private[this] def rootWithin(region: MonotonicRegion): Option[Root] = {
-      ???
-    }
-
-    private[this] def monotonicRegionsWithin(
+    def rootsWithin(
       xInterval: Interval,
-      currentRegions: List[MonotonicRegion]
-    ): List[MonotonicRegion] = {
-      val derivativeBounds = evaluateAllWithin(xInterval)
-      if (derivativeBounds(0).isZero(tolerance)) {
-        MonotonicRegion(xInterval, -1) :: currentRegions
+      resolution: Double,
+      knownNonZeroOrder: Int,
+      tail: List[Root]
+    ): List[Root] = {
+      val function = derivatives(0)
+      val functionBounds = function.evaluateBounds(xInterval)
+      if (functionBounds.isNotZero(tolerance)) {
+        tail
       } else {
-        val nonZeroDerivativeOrder =
-          (0 to maxDerivativeOrder).find(
-            order => !derivativeBounds(order).expandedBy(tolerances(order)).contains(0.0)
-          )
-        nonZeroDerivativeOrder match {
-          case None => {
+        if (xInterval.width > resolution) {
+          @tailrec
+          def classify(minOrder: Int, minOrderBounds: Interval): (Boolean, Int) =
+            if (minOrder > maxRootOrder) {
+              (false, knownNonZeroOrder)
+            } else {
+              val derivativeOrder = minOrder + 1
+              if (derivativeOrder == knownNonZeroOrder) {
+                if (minOrderBounds.contains(0.0)) {
+                  (true, derivativeOrder)
+                } else {
+                  (false, derivativeOrder)
+                }
+              } else {
+                val derivativeBounds = derivatives(derivativeOrder).evaluateBounds(xInterval)
+                val derivativeTolerance = tolerances(derivativeOrder)
+                if (minOrderBounds.contains(0.0)) {
+                  if (derivativeBounds.isNotZero(derivativeTolerance)) {
+                    (true, derivativeOrder)
+                  } else if (!derivativeBounds.isZero(derivativeTolerance)) {
+                    (true, knownNonZeroOrder)
+                  } else {
+                    classify(derivativeOrder, derivativeBounds)
+                  }
+                } else {
+                  if (derivativeBounds.isNotZero(derivativeTolerance)) {
+                    (false, derivativeOrder)
+                  } else {
+                    classify(derivativeOrder, derivativeBounds)
+                  }
+                }
+              }
+            }
+          val (mightHaveRoot, updatedNonZeroOrder) = classify(0, functionBounds)
+          if (mightHaveRoot) {
             val (leftInterval, rightInterval) = xInterval.bisected
-            val rightRegions = monotonicRegionsWithin(rightInterval, currentRegions)
-            monotonicRegionsWithin(leftInterval, rightRegions)
-          }
-          case Some(order) =>
-            MonotonicRegion(xInterval, order) :: currentRegions
-        }
-      }
-    }
-
-    private[this] def mergeRegions(regions: List[MonotonicRegion]): List[MonotonicRegion] =
-      regions.foldRight(List.empty[MonotonicRegion])((region, list) => region.mergeWith(list))
-
-    private[this] def evaluateAllWithin(xInterval: Interval): Array[Interval] = {
-      val result = Array.ofDim[Interval](derivatives.size)
-      result(maxDerivativeOrder) = derivatives(maxDerivativeOrder).evaluateBounds(xInterval)
-      for (derivativeOrder <- (maxDerivativeOrder - 1) to 0 by -1) {
-        val derivative = derivatives(derivativeOrder)
-        val nextDerivativeBounds = result(derivativeOrder + 1)
-        result(derivativeOrder) =
-          if (nextDerivativeBounds.contains(0.0) || nextDerivativeBounds.width.isInfinity) {
-            derivative.evaluateBounds(xInterval)
+            val updatedTail = rootsWithin(rightInterval, resolution, updatedNonZeroOrder, tail)
+            rootsWithin(leftInterval, resolution, updatedNonZeroOrder, updatedTail)
           } else {
-            // Next derivative is always finite and never zero in this interval, i.e. this
-            // derivative is monotonic - can evaluate bounds by looking at endpoints only
-            val leftValue = derivative.evaluate(xInterval.lowerBound)
-            val rightValue = derivative.evaluate(xInterval.upperBound)
-            leftValue.hull(rightValue)
+            tail
           }
-      }
-      result
-    }
-  }
-
-  private sealed trait MonotonicRegion {
-    def xInterval: Interval
-
-    def derivativeBounds: Array[Interval]
-
-    def nonZeroDerivativeOrder: Int
-
-    def merged(that: MonotonicRegion): MonotonicRegion =
-      ???
-
-    def bisected: (MonotonicRegion, MonotonicRegion)
-  }
-
-  private case class MonotonicRegion(xInterval: Interval, nonZeroDerivativeOrder: Int) {
-    def mergeWith(regions: List[Region]): List[Region] = regions match {
-      case head :: tail => {
-        if (this.nonZeroDerivativeOrder == head.nonZeroDerivativeOrder) {
-          val mergedInterval = Interval(this.xInterval.lowerBound, head.xInterval.upperBound)
-          MonotonicRegion(mergedInterval, this.nonZeroDerivativeOrder) :: tail
         } else {
-          this :: regions
+          @tailrec
+          def prependRoot(minOrder: Int, minOrderBounds: Interval): List[Root] = {
+            if (minOrder > maxRootOrder) {
+              tail
+            } else {
+              val function = derivatives(minOrder)
+              val derivativeOrder = minOrder + 1
+              val derivative = derivatives(derivativeOrder)
+              val derivativeBounds = derivative.evaluateBounds(xInterval)
+              if (minOrderBounds.contains(0.0)) {
+                if (derivativeBounds.isNotZero(tolerances(derivativeOrder))) {
+                  val x1 = xInterval.lowerBound
+                  val x2 = xInterval.upperBound
+                  val y1 = function.evaluate(x1)
+                  val y2 = function.evaluate(x2)
+                  if (y2 < 0.0) {
+                    if (y1 > 0.0) {
+                      Root(xInterval.midpoint, minOrder, -1) :: tail
+                    } else if (y1 < 0.0) {
+                      tail
+                    } else if (y1 == 0.0) {
+                      Root(x1, minOrder, -1) :: tail
+                    } else {
+                      Root(x2, minOrder, -1) :: tail
+                    }
+                  } else if (y2 > 0.0) {
+                    if (y1 < 0.0) {
+                      Root(xInterval.midpoint, minOrder, 1) :: tail
+                    } else if (y1 > 0.0) {
+                      tail
+                    } else if (y1 == 0.0) {
+                      Root(x1, minOrder, 1) :: tail
+                    } else {
+                      Root(x2, minOrder, 1) :: tail
+                    }
+                  } else if (y2 == 0.0) {
+                    tail
+                  } else {
+                    if (y1 < 0.0) {
+                      Root(x1, minOrder, 1) :: tail
+                    } else if (y1 > 0.0) {
+                      Root(x1, minOrder, -1) :: tail
+                    } else if (y1 == 0.0) {
+                      Root(x1, minOrder, derivativeBounds.lowerBound.signum) :: tail
+                    } else {
+                      tail
+                    }
+                  }
+                } else {
+                  prependRoot(derivativeOrder, derivativeBounds)
+                }
+              } else {
+                prependRoot(derivativeOrder, derivativeBounds)
+              }
+            }
+          }
+          prependRoot(0, functionBounds)
         }
       }
-      case Nil =>
-        List(this)
-    }
-  }
-
-  private object MonotonicRegion {
-    def apply(
-      xInterval: Interval,
-      derivativeBounds: Array[Interval],
-      nonZeroDerivativeOrder: Int
-    ): MonotonicRegion =
-      ???
-
-    case class Leaf(
-      override val xInterval: Interval,
-      override val derivativeBounds: Array[Interval],
-      override val nonZeroDerivativeOrder: Int
-    )
-
-    case class Node(left: Leaft, right: Leaf) {
-      override val xInterval = Interval(left.interval.lowerBound, right.interval.upperBound)
-
-
     }
   }
 
