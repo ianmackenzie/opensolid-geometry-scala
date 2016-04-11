@@ -200,6 +200,19 @@ object Curve1d {
     }
   }
 
+  private sealed trait MonotonicRegion {
+    def xInterval: Interval
+
+    def derivativeBounds: Array[Interval]
+
+    def nonZeroDerivativeOrder: Int
+
+    def merged(that: MonotonicRegion): MonotonicRegion =
+      ???
+
+    def bisected: (MonotonicRegion, MonotonicRegion)
+  }
+
   private case class MonotonicRegion(xInterval: Interval, nonZeroDerivativeOrder: Int) {
     def mergeWith(regions: List[Region]): List[Region] = regions match {
       case head :: tail => {
@@ -212,6 +225,27 @@ object Curve1d {
       }
       case Nil =>
         List(this)
+    }
+  }
+
+  private object MonotonicRegion {
+    def apply(
+      xInterval: Interval,
+      derivativeBounds: Array[Interval],
+      nonZeroDerivativeOrder: Int
+    ): MonotonicRegion =
+      ???
+
+    case class Leaf(
+      override val xInterval: Interval,
+      override val derivativeBounds: Array[Interval],
+      override val nonZeroDerivativeOrder: Int
+    )
+
+    case class Node(left: Leaft, right: Leaf) {
+      override val xInterval = Interval(left.interval.lowerBound, right.interval.upperBound)
+
+
     }
   }
 
