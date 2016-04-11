@@ -115,6 +115,9 @@ final case class Interval(lowerBound: Double, upperBound: Double) extends Bounds
   def isZero(tolerance: Double): Boolean =
     lowerBound >= -tolerance && upperBound <= tolerance
 
+  def isNotZero(tolerance: Double): Boolean =
+    lowerBound > tolerance || upperBound < -tolerance
+
   /** Returns the width of this interval (the difference between the upper and lower bounds). */
   def width: Double =
     upperBound - lowerBound
