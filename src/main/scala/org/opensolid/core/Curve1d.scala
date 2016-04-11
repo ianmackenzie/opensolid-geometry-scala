@@ -157,46 +157,45 @@ object Curve1d {
         tail
       } else {
         if (xInterval.width > resolution) {
+          def bisect(newNonZeroOrder: Int) = {
+            val (leftInterval, rightInterval) = xInterval.bisected
+            val updatedTail = rootsWithin(rightInterval, resolution, newNonZeroOrder, tail)
+            rootsWithin(leftInterval, resolution, newNonZeroOrder, updatedTail)
+          }
+
           @tailrec
-          def classify(minOrder: Int, minOrderBounds: Interval): (Boolean, Int) =
+          def bisect(minOrder: Int, minOrderBounds: Interval): List[Root] =
             if (minOrder > maxRootOrder) {
-              (false, knownNonZeroOrder)
+              tail
             } else {
               val derivativeOrder = minOrder + 1
               if (derivativeOrder == knownNonZeroOrder) {
                 if (minOrderBounds.contains(0.0)) {
-                  (true, derivativeOrder)
+                  bisect(knownNonZeroOrder)
                 } else {
-                  (false, derivativeOrder)
+                  tail
                 }
               } else {
                 val derivativeBounds = derivatives(derivativeOrder).evaluateBounds(xInterval)
                 val derivativeTolerance = tolerances(derivativeOrder)
                 if (minOrderBounds.contains(0.0)) {
                   if (derivativeBounds.isNotZero(derivativeTolerance)) {
-                    (true, derivativeOrder)
+                    bisect(derivativeOrder)
                   } else if (!derivativeBounds.isZero(derivativeTolerance)) {
-                    (true, knownNonZeroOrder)
+                    bisect(knownNonZeroOrder)
                   } else {
-                    classify(derivativeOrder, derivativeBounds)
+                    bisect(derivativeOrder, derivativeBounds)
                   }
                 } else {
                   if (derivativeBounds.isNotZero(derivativeTolerance)) {
-                    (false, derivativeOrder)
+                    tail
                   } else {
-                    classify(derivativeOrder, derivativeBounds)
+                    bisect(derivativeOrder, derivativeBounds)
                   }
                 }
               }
             }
-          val (mightHaveRoot, updatedNonZeroOrder) = classify(0, functionBounds)
-          if (mightHaveRoot) {
-            val (leftInterval, rightInterval) = xInterval.bisected
-            val updatedTail = rootsWithin(rightInterval, resolution, updatedNonZeroOrder, tail)
-            rootsWithin(leftInterval, resolution, updatedNonZeroOrder, updatedTail)
-          } else {
-            tail
-          }
+          bisect(0, functionBounds)
         } else {
           @tailrec
           def prependRoot(minOrder: Int, minOrderBounds: Interval): List[Root] = {
