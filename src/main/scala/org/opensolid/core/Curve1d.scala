@@ -177,29 +177,7 @@ object Curve1d {
     }
 
     private[this] def mergeRegions(regions: List[MonotonicRegion]): List[MonotonicRegion] =
-      regions match {
-        case Nil =>
-          Nil
-        case head :: tail => {
-          val buffer = ListBuffer[MonotonicRegion]()
-          @tailrec
-          def add(current: MonotonicRegion, rest: List[MonotonicRegion]): Unit = rest match {
-            case Nil =>
-              buffer += current
-            case next :: remaining =>
-              if (current.nonZeroDerivativeOrder == next.nonZeroDerivativeOrder) {
-                val mergedInterval =
-                  Interval(current.xInterval.lowerBound, next.xInterval.upperBound)
-                add(MonotonicRegion(mergedInterval, current.nonZeroDerivativeOrder), remaining)
-              } else {
-                buffer += current
-                add(next, remaining)
-              }
-          }
-          add(head, tail)
-          buffer.toList
-        }
-      }
+      regions.foldRight(List.empty[MonotonicRegion])((region, list) => region.mergeWith(list))
 
     private[this] def evaluateAllWithin(xInterval: Interval): Array[Interval] = {
       val result = Array.ofDim[Interval](derivatives.size)
@@ -222,7 +200,20 @@ object Curve1d {
     }
   }
 
-  private case class MonotonicRegion(xInterval: Interval, nonZeroDerivativeOrder: Int)
+  private case class MonotonicRegion(xInterval: Interval, nonZeroDerivativeOrder: Int) {
+    def mergeWith(regions: List[Region]): List[Region] = regions match {
+      case head :: tail => {
+        if (this.nonZeroDerivativeOrder == head.nonZeroDerivativeOrder) {
+          val mergedInterval = Interval(this.xInterval.lowerBound, head.xInterval.upperBound)
+          MonotonicRegion(mergedInterval, this.nonZeroDerivativeOrder) :: tail
+        } else {
+          this :: regions
+        }
+      }
+      case Nil =>
+        List(this)
+    }
+  }
 
   sealed trait Zeros
 
