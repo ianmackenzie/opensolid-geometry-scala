@@ -95,6 +95,8 @@ object Numerics {
     var error = y.abs
     var nonImprovementCount = 0
     var xWithinInterval = true
+    var root = x
+    var minError = error
     while (xWithinInterval && nonImprovementCount < 2) {
       val yPrime = derivative(x)
       val xNew = x - y / yPrime
@@ -105,19 +107,14 @@ object Numerics {
         x = xNew
         y = yNew
         error = errorNew
+        if (error < minError) {
+          root = x
+          minError = error
+        }
       } else {
         xWithinInterval = false
       }
     }
-    if (xWithinInterval) {
-      // Check for convergence - Y values adjacent to root should bracket 0
-      val xPrev = Math.nextAfter(x, Double.NegativeInfinity)
-      val xNext = Math.nextAfter(x, Double.PositiveInfinity)
-      val yPrev = expression(xPrev)
-      val yNext = expression(xNext)
-      if ((yPrev < 0.0 && 0.0 < yNext) || (yPrev > 0.0 && 0.0 > yNext)) Some(x) else None
-    } else {
-      None
-    }
+    if (xWithinInterval) Some(root) else None
   }
 }
