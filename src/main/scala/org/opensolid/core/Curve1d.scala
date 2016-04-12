@@ -100,6 +100,17 @@ trait Curve1d extends Bounded[Interval] {
 }
 
 object Curve1d {
+  private def evaluate(
+    function: ScalarExpression.CompiledCurve,
+    domain: Interval,
+    isMonotonic: Boolean
+  ): Interval =
+    if (isMonotonic) {
+      function.evaluate(domain.lowerBound).hull(function.evaluate(domain.upperBound))
+    } else {
+      function.evaluateBounds(domain)
+    }
+
   private case class DerivativeSet(
     expression: ScalarExpression[CurveParameter],
     domain: Interval,
@@ -152,50 +163,42 @@ object Curve1d {
       tail: List[Root]
     ): List[Root] = {
       val function = derivatives(0)
-      val functionBounds = function.evaluateBounds(xInterval)
-      if (functionBounds.isNotZero(tolerance)) {
+      val functionBounds = evaluate(function, xInterval, knownNonZeroOrder == 1)
+      if (functionBounds.isNotZero(tolerance) || functionBounds.isEmpty) {
         tail
       } else {
         if (xInterval.width > resolution) {
-          def bisect(newNonZeroOrder: Int) = {
+          def bisect(knownNonZeroOrder: Int): List[Root] = {
             val (leftInterval, rightInterval) = xInterval.bisected
-            val updatedTail = rootsWithin(rightInterval, resolution, newNonZeroOrder, tail)
-            rootsWithin(leftInterval, resolution, newNonZeroOrder, updatedTail)
+            val updatedTail = rootsWithin(rightInterval, resolution, knownNonZeroOrder, tail)
+            rootsWithin(leftInterval, resolution, knownNonZeroOrder, updatedTail)
           }
 
           @tailrec
-          def bisect(minOrder: Int, minOrderBounds: Interval): List[Root] =
-            if (minOrder > maxRootOrder) {
-              tail
+          def checkOrder(order: Int, bounds: Interval): List[Root] =
+            if (order > maxRootOrder) {
+              bisect(knownNonZeroOrder)
             } else {
-              val derivativeOrder = minOrder + 1
+              val derivativeOrder = order + 1
               if (derivativeOrder == knownNonZeroOrder) {
-                if (minOrderBounds.contains(0.0)) {
-                  bisect(knownNonZeroOrder)
-                } else {
-                  tail
-                }
+                if (bounds.contains(0.0)) bisect(knownNonZeroOrder) else tail
               } else {
-                val derivativeBounds = derivatives(derivativeOrder).evaluateBounds(xInterval)
-                val derivativeTolerance = tolerances(derivativeOrder)
-                if (minOrderBounds.contains(0.0)) {
-                  if (derivativeBounds.isNotZero(derivativeTolerance)) {
-                    bisect(derivativeOrder)
-                  } else if (!derivativeBounds.isZero(derivativeTolerance)) {
-                    bisect(knownNonZeroOrder)
+                val derivative = derivatives(derivativeOrder)
+                val derivativeIsMonotonic = knownNonZeroOrder == derivativeOrder + 1
+                val derivativeBounds = evaluate(derivative, xInterval, derivativeIsMonotonic)
+                if (derivativeBounds.isNotZero(tolerances(derivativeOrder))) {
+                  if (bounds.contains(0.0)) {
+                    bisect(if (derivativeBounds.isFinite) derivativeOrder else knownNonZeroOrder)
                   } else {
-                    bisect(derivativeOrder, derivativeBounds)
+                    tail
                   }
                 } else {
-                  if (derivativeBounds.isNotZero(derivativeTolerance)) {
-                    tail
-                  } else {
-                    bisect(derivativeOrder, derivativeBounds)
-                  }
+                  checkOrder(derivativeOrder, derivativeBounds)
                 }
               }
             }
-          bisect(0, functionBounds)
+
+          checkOrder(0, functionBounds)
         } else {
           @tailrec
           def prependRoot(minOrder: Int, minOrderBounds: Interval): List[Root] = {
