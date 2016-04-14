@@ -84,37 +84,36 @@ object Numerics {
   }
 
   def newtonRaphson(
-    expression: (Double) => Double,
+    function: (Double) => Double,
     derivative: (Double) => Double,
-    interval: Interval
+    interval: Interval,
+    tolerance: Double
   ): Option[Double] = {
-    val xMin = interval.lowerBound
-    val xMax = interval.upperBound
     var x = interval.midpoint
-    var y = expression(x)
+    var y = function(x)
     var error = y.abs
+    var minError = error
+    var estimate = x
     var nonImprovementCount = 0
     var xWithinInterval = true
-    var root = x
-    var minError = error
     while (xWithinInterval && nonImprovementCount < 2) {
       val yPrime = derivative(x)
       val xNew = x - y / yPrime
-      if (xMin < xNew && xNew < xMax) {
-        val yNew = expression(xNew)
+      if (interval.contains(xNew)) {
+        val yNew = function(xNew)
         val errorNew = yNew.abs
         if (errorNew >= error) nonImprovementCount += 1
         x = xNew
         y = yNew
         error = errorNew
-        if (error < minError) {
-          root = x
+        if (error <= tolerance && error < minError) {
+          estimate = x
           minError = error
         }
       } else {
         xWithinInterval = false
       }
     }
-    if (xWithinInterval) Some(root) else None
+    if (minError <= tolerance) Some(estimate) else None
   }
 }
