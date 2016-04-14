@@ -19,19 +19,16 @@ class ParametricCurve1d(
   val domain: Interval
 ) extends Curve1d {
 
-  private[this] val compiled = ScalarExpression.compileCurve(expression)
+  val function: CurveFunction1d = expression.toCurveFunction
 
   override def bounds: Interval =
-    evaluateBounds(domain)
+    function(domain)
 
   override def parameterized: ParametricCurve1d =
     this
 
-  def evaluate(parameterValue: Double): Double =
-    compiled.evaluate(parameterValue)
-
-  def evaluateBounds(parameterBounds: Interval): Interval =
-    compiled.evaluateBounds(parameterBounds)
+  def evaluateAt(parameterValue: Double): Double =
+    function(parameterValue)
 }
 
 object ParametricCurve1d {

@@ -131,6 +131,62 @@ sealed abstract class ScalarExpression[P] {
 
   def squared: ScalarExpression[P] =
     Square(this)
+
+  final def toCurveFunction(implicit evidence: P =:= CurveParameter): CurveFunction1d = {
+    val compiler = new ExpressionCompiler(1)
+    val resultIndex = compiler.evaluate(this)
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
+
+    new CurveFunction1d {
+      override def apply(parameterValue: Double): Double = {
+        val array = Array.ofDim[Double](arraySize)
+        array(0) = parameterValue
+        for (operation <- arrayOperations) {
+          operation.execute(array)
+        }
+        array(resultIndex)
+      }
+
+      override def apply(parameterBounds: Interval): Interval = {
+        val array = Array.ofDim[Interval](arraySize)
+        array(0) = parameterBounds
+        for (operation <- arrayOperations) {
+          operation.execute(array)
+        }
+        array(resultIndex)
+      }
+    }
+  }
+
+  final def toSurfaceFunction(implicit evidence: P =:= SurfaceParameter): SurfaceFunction1d = {
+    val compiler = new ExpressionCompiler(2)
+    val resultIndex = compiler.evaluate(this)
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
+
+    new SurfaceFunction1d {
+      override def apply(parameterValue: Point2d): Double = {
+        val array = Array.ofDim[Double](arraySize)
+        array(0) = parameterValue.x
+        array(1) = parameterValue.y
+        for (operation <- arrayOperations) {
+          operation.execute(array)
+        }
+        array(resultIndex)
+      }
+
+      override def apply(parameterBounds: Bounds2d): Interval = {
+        val array = Array.ofDim[Interval](arraySize)
+        array(0) = parameterBounds.x
+        array(1) = parameterBounds.y
+        for (operation <- arrayOperations) {
+          operation.execute(array)
+        }
+        array(resultIndex)
+      }
+    }
+  }
 }
 
 object ScalarExpression {
@@ -154,52 +210,6 @@ object ScalarExpression {
 
   def atan[P](expression: ScalarExpression[P]): ScalarExpression[P] =
     Arctangent(expression)
-
-  case class CompiledCurve(evaluate: (Double) => Double, evaluateBounds: (Interval) => Interval)
-
-  def compileCurve[P <: CurveParameter](expression: ScalarExpression[P]): CompiledCurve = {
-    val compiler = new ExpressionCompiler(1)
-    val resultIndex = compiler.evaluate(expression)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-    val evaluate = (parameterValue: Double) => {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue
-      for { operation <- arrayOperations } operation.execute(array)
-      array(resultIndex)
-    }
-    val evaluateBounds = (parameterBounds: Interval) => {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds
-      for { operation <- arrayOperations } operation.execute(array)
-      array(resultIndex)
-    }
-    CompiledCurve(evaluate, evaluateBounds)
-  }
-
-  case class CompiledSurface(evaluate: (Point2d) => Double, evaluateBounds: (Bounds2d) => Interval)
-
-  def compileSurface[P <: SurfaceParameter](expression: ScalarExpression[P]): CompiledSurface = {
-    val compiler = new ExpressionCompiler(2)
-    val resultIndex = compiler.evaluate(expression)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-    val evaluate = (parameterValue: Point2d) => {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue.x
-      array(1) = parameterValue.y
-      for { operation <- arrayOperations } operation.execute(array)
-      array(resultIndex)
-    }
-    val evaluateBounds = (parameterBounds: Bounds2d) => {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds.x
-      array(1) = parameterBounds.y
-      for { operation <- arrayOperations } operation.execute(array)
-      array(resultIndex)
-    }
-    CompiledSurface(evaluate, evaluateBounds)
-  }
 
   abstract class Parameter[P <: Parameter[P]] extends ScalarExpression[P] {
     def index: Int
