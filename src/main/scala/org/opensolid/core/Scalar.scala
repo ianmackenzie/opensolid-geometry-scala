@@ -21,8 +21,8 @@ case class Scalar(val value: Double) extends AnyVal
   def isZero(tolerance: Double): Boolean =
     value.isZero(tolerance)
 
-  def isNotZero(tolerance: Double): Boolean =
-    value.isNotZero(tolerance)
+  def isNonZero(tolerance: Double): Boolean =
+    value.isNonZero(tolerance)
 
   def bounds: Interval =
     Interval.singleton(value)

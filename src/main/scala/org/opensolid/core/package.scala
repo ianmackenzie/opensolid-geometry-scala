@@ -87,7 +87,7 @@ package object core {
     def isZero(tolerance: Double): Boolean =
       value >= -tolerance && value <= tolerance
 
-    def isNotZero(tolerance: Double): Boolean =
+    def isNonZero(tolerance: Double): Boolean =
       value < -tolerance || value > tolerance
 
     def isEqualTo(that: Double, tolerance: Double): Boolean =

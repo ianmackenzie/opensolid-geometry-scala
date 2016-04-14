@@ -36,8 +36,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def isZero(tolerance: Double): Boolean =
     squaredLength.isZero(tolerance * tolerance)
 
-  def isNotZero(tolerance: Double): Boolean =
-    squaredLength.isNotZero(tolerance * tolerance)
+  def isNonZero(tolerance: Double): Boolean =
+    squaredLength.isNonZero(tolerance * tolerance)
 
   override def transformedBy(transformation: Transformation3d): Vector3d =
     transformation(this)

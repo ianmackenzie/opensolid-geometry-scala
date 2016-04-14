@@ -35,8 +35,8 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def isZero(tolerance: Double): Boolean =
     squaredLength.isZero(tolerance * tolerance)
 
-  def isNotZero(tolerance: Double): Boolean =
-    squaredLength.isNotZero(tolerance * tolerance)
+  def isNonZero(tolerance: Double): Boolean =
+    squaredLength.isNonZero(tolerance * tolerance)
 
   override def transformedBy(transformation: Transformation2d): Vector2d =
     transformation(this)
