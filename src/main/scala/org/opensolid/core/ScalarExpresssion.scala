@@ -251,10 +251,9 @@ object ScalarExpression {
   ) extends ScalarExpression[P] {
 
     override def derivative(parameter: P): ScalarExpression[P] =
-      (
-        firstExpression.derivative(parameter) * secondExpression -
-        firstExpression * secondExpression.derivative(parameter)
-      ) / secondExpression.squared
+      ( firstExpression.derivative(parameter) * secondExpression -
+        firstExpression * secondExpression.derivative(parameter) ) /
+      secondExpression.squared
   }
 
   case class Square[P](expression: ScalarExpression[P]) extends ScalarExpression[P] {
