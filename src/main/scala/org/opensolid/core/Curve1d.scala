@@ -25,7 +25,7 @@ trait Curve1d extends Bounded[Interval] {
   def parameterized: ParametricCurve1d
 
   def parameterizedBy(
-    expression: ScalarExpression[CurveParameter],
+    expression: Expression1d[CurveParameter],
     domain: Interval
   ): ParametricCurve1d =
     new ParametricCurve1d(expression, domain) {

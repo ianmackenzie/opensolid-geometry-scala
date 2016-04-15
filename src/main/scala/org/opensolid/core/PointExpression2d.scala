@@ -67,31 +67,31 @@ sealed abstract class PointExpression2d[P] {
   final def vectorTo(point: Point2d): VectorExpression2d[P] =
     this.vectorTo(Constant[P](point))
 
-  def x: ScalarExpression[P] =
-    ScalarExpression.PointXComponent2d(this)
+  def x: Expression1d[P] =
+    Expression1d.PointXComponent2d(this)
 
-  def y: ScalarExpression[P] =
-    ScalarExpression.PointYComponent2d(this)
+  def y: Expression1d[P] =
+    Expression1d.PointYComponent2d(this)
 
-  final def squaredDistanceTo(that: PointExpression2d[P]): ScalarExpression[P] =
+  final def squaredDistanceTo(that: PointExpression2d[P]): Expression1d[P] =
     vectorTo(that).squaredLength
 
-  final def squaredDistanceTo(point: Point2d): ScalarExpression[P] =
+  final def squaredDistanceTo(point: Point2d): Expression1d[P] =
     squaredDistanceTo(Constant[P](point))
 
-  final def distanceTo(that: PointExpression2d[P]): ScalarExpression[P] =
+  final def distanceTo(that: PointExpression2d[P]): Expression1d[P] =
     vectorTo(that).length
 
-  final def distanceTo(point: Point2d): ScalarExpression[P] =
+  final def distanceTo(point: Point2d): Expression1d[P] =
     distanceTo(Constant[P](point))
 }
 
 object PointExpression2d {
   def fromComponents[P](
-    xExpression: ScalarExpression[P],
-    yExpression: ScalarExpression[P]
+    xExpression: Expression1d[P],
+    yExpression: Expression1d[P]
   ): PointExpression2d[P] = (xExpression, yExpression) match {
-    case (ScalarExpression.Constant(xValue), ScalarExpression.Constant(yValue)) =>
+    case (Expression1d.Constant(xValue), Expression1d.Constant(yValue)) =>
       Constant(Point2d(xValue, yValue))
     case _ => FromComponents(xExpression, yExpression)
   }
@@ -100,16 +100,16 @@ object PointExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.Constant(Vector2d.Zero)
 
-    override def x: ScalarExpression[P] =
-      ScalarExpression.Constant(point.x)
+    override def x: Expression1d[P] =
+      Expression1d.Constant(point.x)
 
-    override def y: ScalarExpression[P] =
-      ScalarExpression.Constant(point.y)
+    override def y: Expression1d[P] =
+      Expression1d.Constant(point.y)
   }
 
   case class FromComponents[P](
-    override val x: ScalarExpression[P],
-    override val y: ScalarExpression[P]
+    override val x: Expression1d[P],
+    override val y: Expression1d[P]
   ) extends PointExpression2d[P] {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
@@ -124,10 +124,10 @@ object PointExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       pointExpression.derivative(parameter) + vectorExpression.derivative(parameter)
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       pointExpression.x + vectorExpression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       pointExpression.y + vectorExpression.y
   }
 
@@ -139,10 +139,10 @@ object PointExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       pointExpression.derivative(parameter) - vectorExpression.derivative(parameter)
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       pointExpression.x - vectorExpression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       pointExpression.y - vectorExpression.y
   }
 }

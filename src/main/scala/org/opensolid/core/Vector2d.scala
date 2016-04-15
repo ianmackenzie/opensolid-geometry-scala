@@ -105,31 +105,31 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def *(value: Double): Vector2d =
     Vector2d(x * value, y * value)
 
-  def *[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+  def *[P](expression: Expression1d[P]): VectorExpression2d[P] =
     VectorExpression2d.Constant[P](this) * expression
 
   def times(value: Double): Vector2d =
     this * value
 
-  def times[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+  def times[P](expression: Expression1d[P]): VectorExpression2d[P] =
     this * expression
 
   def /(value: Double): Vector2d =
     Vector2d(x / value, y / value)
 
-  def /[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+  def /[P](expression: Expression1d[P]): VectorExpression2d[P] =
     VectorExpression2d.Constant[P](this) / expression
 
   def dividedBy(value: Double): Vector2d =
     this / value
 
-  def dividedBy[P](expression: ScalarExpression[P]): VectorExpression2d[P] =
+  def dividedBy[P](expression: Expression1d[P]): VectorExpression2d[P] =
     this / expression
 
   def dot(that: Vector2d): Double =
     this.x * that.x + this.y * that.y
 
-  def dot[P](expression: VectorExpression2d[P]): ScalarExpression[P] =
+  def dot[P](expression: VectorExpression2d[P]): Expression1d[P] =
     VectorExpression2d.Constant[P](this).dot(expression)
 
   def cross(that: Vector2d): Double =
@@ -138,7 +138,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def cross(direction: Direction2d): Double =
     x * direction.y - y * direction.x
 
-  def cross[P](expression: VectorExpression2d[P]): ScalarExpression[P] =
+  def cross[P](expression: VectorExpression2d[P]): Expression1d[P] =
     VectorExpression2d.Constant[P](this).cross(expression)
 
   def componentIn(direction: Direction2d): Double =

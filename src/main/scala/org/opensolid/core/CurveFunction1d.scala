@@ -19,7 +19,7 @@ trait CurveFunction1d extends Function1[Double, Double] {
 }
 
 object CurveFunction1d {
-  def compile(expression: ScalarExpression[CurveParameter]): CurveFunction1d = {
+  def compile(expression: Expression1d[CurveParameter]): CurveFunction1d = {
     val compiler = new ExpressionCompiler(1)
     val resultIndex = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray

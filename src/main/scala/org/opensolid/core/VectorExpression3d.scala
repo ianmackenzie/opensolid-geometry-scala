@@ -31,7 +31,7 @@ sealed abstract class VectorExpression3d[P] {
     case (Constant(firstVector), Constant(secondVector)) => Constant(firstVector + secondVector)
     case (expression, Constant(Vector3d.Zero)) => expression
     case (Constant(Vector3d.Zero), expression) => expression
-    case (first, second) if (first == second) => ScalarExpression.Constant(2) * first
+    case (first, second) if (first == second) => Expression1d.Constant(2) * first
     case (first, Negation(second)) => first - second
     case (Negation(first), second) => second - first
     case _ => Sum(this, that)
@@ -64,60 +64,60 @@ sealed abstract class VectorExpression3d[P] {
   final def minus(vector: Vector3d): VectorExpression3d[P] =
     this - vector
 
-  final def *(scalarExpression: ScalarExpression[P]): VectorExpression3d[P] =
+  final def *(scalarExpression: Expression1d[P]): VectorExpression3d[P] =
     (this, scalarExpression) match {
-      case (Constant(vector), ScalarExpression.Constant(value)) => Constant(vector * value)
+      case (Constant(vector), Expression1d.Constant(value)) => Constant(vector * value)
       case (Constant(Vector3d.Zero), _) => Constant(Vector3d.Zero)
-      case (_, ScalarExpression.Constant(0)) => Constant(Vector3d.Zero)
-      case (expression, ScalarExpression.Constant(1)) => expression
-      case (expression, ScalarExpression.Constant(-1)) => -expression
-      case (Quotient(a, b), ScalarExpression.Quotient(c, d)) => (a * c) / (b * d)
+      case (_, Expression1d.Constant(0)) => Constant(Vector3d.Zero)
+      case (expression, Expression1d.Constant(1)) => expression
+      case (expression, Expression1d.Constant(-1)) => -expression
+      case (Quotient(a, b), Expression1d.Quotient(c, d)) => (a * c) / (b * d)
       case _ => VectorExpression3d.Product(scalarExpression, this)
     }
 
   final def *(value: Double): VectorExpression3d[P] =
-    this * ScalarExpression.Constant[P](value)
+    this * Expression1d.Constant[P](value)
 
-  final def times(scalarExpression: ScalarExpression[P]): VectorExpression3d[P] =
+  final def times(scalarExpression: Expression1d[P]): VectorExpression3d[P] =
     this * scalarExpression
 
   final def times(value: Double): VectorExpression3d[P] =
     this * value
 
-  final def /(scalarExpression: ScalarExpression[P]): VectorExpression3d[P] =
+  final def /(scalarExpression: Expression1d[P]): VectorExpression3d[P] =
     (this, scalarExpression) match {
-      case (_, ScalarExpression.Constant(0)) => throw new ArithmeticException("Division by zero")
-      case (Constant(vector), ScalarExpression.Constant(divisor)) => Constant(vector / divisor)
+      case (_, Expression1d.Constant(0)) => throw new ArithmeticException("Division by zero")
+      case (Constant(vector), Expression1d.Constant(divisor)) => Constant(vector / divisor)
       case (Constant(Vector3d.Zero), _) => Constant(Vector3d.Zero)
-      case (expression, ScalarExpression.Constant(1)) => expression
-      case (expression, ScalarExpression.Constant(-1)) => -expression
-      case (expression, ScalarExpression.Constant(value)) =>
-        ScalarExpression.Constant(1 / value) * expression
-      case (expression, ScalarExpression.Quotient(numerator, denominator)) =>
+      case (expression, Expression1d.Constant(1)) => expression
+      case (expression, Expression1d.Constant(-1)) => -expression
+      case (expression, Expression1d.Constant(value)) =>
+        Expression1d.Constant(1 / value) * expression
+      case (expression, Expression1d.Quotient(numerator, denominator)) =>
         expression * (denominator / numerator)
       case _ => Quotient(this, scalarExpression)
     }
 
   final def /(value: Double): VectorExpression3d[P] =
-    this / ScalarExpression.Constant[P](value)
+    this / Expression1d.Constant[P](value)
 
-  final def dividedBy(scalarExpression: ScalarExpression[P]): VectorExpression3d[P] =
+  final def dividedBy(scalarExpression: Expression1d[P]): VectorExpression3d[P] =
     this / scalarExpression
 
   final def dividedBy(value: Double): VectorExpression3d[P] =
     this / value
 
-  def squaredLength: ScalarExpression[P] =
-    ScalarExpression.SquaredLength3d(this)
+  def squaredLength: Expression1d[P] =
+    Expression1d.SquaredLength3d(this)
 
-  def length: ScalarExpression[P] =
+  def length: Expression1d[P] =
     squaredLength.sqrt
 
-  final def dot(that: VectorExpression3d[P]): ScalarExpression[P] = (this, that) match {
+  final def dot(that: VectorExpression3d[P]): Expression1d[P] = (this, that) match {
     case (Constant(firstVector), Constant(secondVector)) =>
-      ScalarExpression.Constant(firstVector.dot(secondVector))
-    case (Constant(Vector3d.Zero), _) => ScalarExpression.Constant(0)
-    case (_, Constant(Vector3d.Zero)) => ScalarExpression.Constant(0)
+      Expression1d.Constant(firstVector.dot(secondVector))
+    case (Constant(Vector3d.Zero), _) => Expression1d.Constant(0)
+    case (_, Constant(Vector3d.Zero)) => Expression1d.Constant(0)
     case (Constant(Vector3d(1, 0, 0)), expression) => expression.x
     case (Constant(Vector3d(-1, 0, 0)), expression) => -expression.x
     case (Constant(Vector3d(0, 1, 0)), expression) => expression.y
@@ -132,10 +132,10 @@ sealed abstract class VectorExpression3d[P] {
     case (expression, Constant(Vector3d(0, 0, -1))) => -expression.z
     case (first, second) if (first == second) => first.squaredLength
     case (first, second) if (first == -second) => -first.squaredLength
-    case _ => ScalarExpression.DotProduct3d(this, that)
+    case _ => Expression1d.DotProduct3d(this, that)
   }
 
-  final def dot(vector: Vector3d): ScalarExpression[P] =
+  final def dot(vector: Vector3d): Expression1d[P] =
     dot(Constant[P](vector))
 
   final def cross(that: VectorExpression3d[P]): VectorExpression3d[P] = (this, that) match {
@@ -151,29 +151,29 @@ sealed abstract class VectorExpression3d[P] {
   final def cross(vector: Vector3d): VectorExpression3d[P] =
     cross(Constant[P](vector))
 
-  final def componentIn(direction: Direction3d): ScalarExpression[P] =
+  final def componentIn(direction: Direction3d): Expression1d[P] =
     dot(direction.vector)
 
-  def x: ScalarExpression[P] =
-    ScalarExpression.VectorXComponent3d(this)
+  def x: Expression1d[P] =
+    Expression1d.VectorXComponent3d(this)
 
-  def y: ScalarExpression[P] =
-    ScalarExpression.VectorYComponent3d(this)
+  def y: Expression1d[P] =
+    Expression1d.VectorYComponent3d(this)
 
-  def z: ScalarExpression[P] =
-    ScalarExpression.VectorZComponent3d(this)
+  def z: Expression1d[P] =
+    Expression1d.VectorZComponent3d(this)
 }
 
 object VectorExpression3d {
   def fromComponents[P](
-    xExpression: ScalarExpression[P],
-    yExpression: ScalarExpression[P],
-    zExpression: ScalarExpression[P]
+    xExpression: Expression1d[P],
+    yExpression: Expression1d[P],
+    zExpression: Expression1d[P]
   ): VectorExpression3d[P] = (xExpression, yExpression, zExpression) match {
     case (
-      ScalarExpression.Constant(xValue),
-      ScalarExpression.Constant(yValue),
-      ScalarExpression.Constant(zValue)
+      Expression1d.Constant(xValue),
+      Expression1d.Constant(yValue),
+      Expression1d.Constant(zValue)
     ) => Constant(Vector3d(xValue, yValue, zValue))
     case _ => FromComponents(xExpression, yExpression, zExpression)
   }
@@ -185,26 +185,26 @@ object VectorExpression3d {
     override def unary_- : VectorExpression3d[P] =
       Constant(-vector)
 
-    override def squaredLength: ScalarExpression[P] =
-      ScalarExpression.Constant(vector.squaredLength)
+    override def squaredLength: Expression1d[P] =
+      Expression1d.Constant(vector.squaredLength)
 
-    override def length: ScalarExpression[P] =
-      ScalarExpression.Constant(vector.length)
+    override def length: Expression1d[P] =
+      Expression1d.Constant(vector.length)
 
-    override def x: ScalarExpression[P] =
-      ScalarExpression.Constant(vector.x)
+    override def x: Expression1d[P] =
+      Expression1d.Constant(vector.x)
 
-    override def y: ScalarExpression[P] =
-      ScalarExpression.Constant(vector.y)
+    override def y: Expression1d[P] =
+      Expression1d.Constant(vector.y)
 
-    override def z: ScalarExpression[P] =
-      ScalarExpression.Constant(vector.z)
+    override def z: Expression1d[P] =
+      Expression1d.Constant(vector.z)
   }
 
   case class FromComponents[P](
-    override val x: ScalarExpression[P],
-    override val y: ScalarExpression[P],
-    override val z: ScalarExpression[P]
+    override val x: Expression1d[P],
+    override val y: Expression1d[P],
+    override val z: Expression1d[P]
   ) extends VectorExpression3d[P] {
 
     override def derivative(parameter: P): VectorExpression3d[P] =
@@ -217,7 +217,7 @@ object VectorExpression3d {
     override def unary_- : VectorExpression3d[P] =
       VectorExpression3d.fromComponents(-x, -y, -z)
 
-    override def squaredLength: ScalarExpression[P] =
+    override def squaredLength: Expression1d[P] =
       x.squared + y.squared + z.squared
   }
 
@@ -225,19 +225,19 @@ object VectorExpression3d {
     override def derivative(parameter: P): VectorExpression3d[P] =
       -expression.derivative(parameter)
 
-    override def squaredLength: ScalarExpression[P] =
+    override def squaredLength: Expression1d[P] =
       expression.squaredLength
 
-    override def length: ScalarExpression[P] =
+    override def length: Expression1d[P] =
       expression.length
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       -expression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       -expression.y
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       -expression.z
   }
 
@@ -249,13 +249,13 @@ object VectorExpression3d {
     override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       firstExpression.x + secondExpression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       firstExpression.y + secondExpression.y
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       firstExpression.z + secondExpression.z
   }
 
@@ -270,13 +270,13 @@ object VectorExpression3d {
     override def derivative(parameter: P): VectorExpression3d[P] =
       firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       firstExpression.x - secondExpression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       firstExpression.y - secondExpression.y
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       firstExpression.z - secondExpression.z
   }
 
@@ -291,18 +291,18 @@ object VectorExpression3d {
     override def derivative(parameter: P): VectorExpression3d[P] =
       secondExpression.derivative(parameter) - firstExpression.derivative(parameter)
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       secondExpression.x - firstExpression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       secondExpression.y - firstExpression.y
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       secondExpression.z - firstExpression.z
   }
 
   case class Product[P](
-    scalarExpression: ScalarExpression[P],
+    scalarExpression: Expression1d[P],
     vectorExpression: VectorExpression3d[P]
   ) extends VectorExpression3d[P] {
 
@@ -310,19 +310,19 @@ object VectorExpression3d {
       scalarExpression.derivative(parameter) * vectorExpression +
       scalarExpression * vectorExpression.derivative(parameter)
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       scalarExpression * vectorExpression.x
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       scalarExpression * vectorExpression.y
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       scalarExpression * vectorExpression.z
   }
 
   case class Quotient[P](
     vectorExpression: VectorExpression3d[P],
-    scalarExpression: ScalarExpression[P]
+    scalarExpression: Expression1d[P]
   ) extends VectorExpression3d[P] {
 
     override def derivative(parameter: P): VectorExpression3d[P] =
@@ -330,13 +330,13 @@ object VectorExpression3d {
         vectorExpression * scalarExpression.derivative(parameter) ) /
       scalarExpression.squared
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       vectorExpression.x / scalarExpression
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       vectorExpression.y / scalarExpression
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       vectorExpression.z / scalarExpression
   }
 
@@ -349,13 +349,13 @@ object VectorExpression3d {
       firstExpression.derivative(parameter).cross(secondExpression) +
       firstExpression.cross(secondExpression.derivative(parameter))
 
-    override def x: ScalarExpression[P] =
+    override def x: Expression1d[P] =
       firstExpression.y * secondExpression.z - firstExpression.z * secondExpression.y
 
-    override def y: ScalarExpression[P] =
+    override def y: Expression1d[P] =
       firstExpression.z * secondExpression.x - firstExpression.x * secondExpression.z
 
-    override def z: ScalarExpression[P] =
+    override def z: Expression1d[P] =
       firstExpression.x * secondExpression.y - firstExpression.y * secondExpression.x
   }
 }

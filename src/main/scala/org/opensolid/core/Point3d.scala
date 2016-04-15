@@ -39,13 +39,13 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
   def squaredDistanceTo(that: Point3d): Double =
     vectorTo(that).squaredLength
 
-  def squaredDistanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
+  def squaredDistanceTo[P](expression: PointExpression3d[P]): Expression1d[P] =
     PointExpression3d.Constant[P](this).squaredDistanceTo(expression)
 
   def distanceTo(that: Point3d): Double =
     vectorTo(that).length
 
-  def distanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
+  def distanceTo[P](expression: PointExpression3d[P]): Expression1d[P] =
     PointExpression3d.Constant[P](this).distanceTo(expression)
 
   def isOrigin(tolerance: Double): Boolean =

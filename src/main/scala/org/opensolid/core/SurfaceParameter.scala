@@ -14,7 +14,7 @@
 
 package org.opensolid.core
 
-abstract class SurfaceParameter extends ScalarExpression.Parameter[SurfaceParameter]
+abstract class SurfaceParameter extends Expression1d.Parameter[SurfaceParameter]
 
 object SurfaceParameter {
   object U extends SurfaceParameter {

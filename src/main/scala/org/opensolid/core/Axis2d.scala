@@ -38,7 +38,7 @@ final case class Axis2d(originPoint: Point2d, direction: Direction2d)
   def signedDistanceTo(point: Point2d): Double =
     originPoint.vectorTo(point).componentIn(normalDirection)
 
-  def signedDistanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
+  def signedDistanceTo[P](expression: PointExpression2d[P]): Expression1d[P] =
     PointExpression2d.Constant[P](originPoint).vectorTo(expression).componentIn(normalDirection)
 }
 

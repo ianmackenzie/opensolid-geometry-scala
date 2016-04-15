@@ -38,13 +38,13 @@ final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d]
   def squaredDistanceTo(that: Point2d): Double =
     vectorTo(that).squaredLength
 
-  def squaredDistanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
+  def squaredDistanceTo[P](expression: PointExpression2d[P]): Expression1d[P] =
     PointExpression2d.Constant[P](this).squaredDistanceTo(expression)
 
   def distanceTo(that: Point2d): Double =
     vectorTo(that).length
 
-  def distanceTo[P](expression: PointExpression2d[P]): ScalarExpression[P] =
+  def distanceTo[P](expression: PointExpression2d[P]): Expression1d[P] =
     PointExpression2d.Constant[P](this).distanceTo(expression)
 
   def isOrigin(tolerance: Double): Boolean =

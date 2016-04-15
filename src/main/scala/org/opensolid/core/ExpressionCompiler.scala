@@ -59,66 +59,66 @@ private class ExpressionCompiler(numParameters: Int) {
   private[this] val product3dMap = mutable.Map.empty[(Int, (Int, Int, Int)), (Int, Int, Int)]
   private[this] val quotient3dMap = mutable.Map.empty[((Int, Int, Int), Int), (Int, Int, Int)]
 
-  def evaluate(expression: ScalarExpression[_]): Int = expression match {
-    case parameter: ScalarExpression.Parameter[_] =>
+  def evaluate(expression: Expression1d[_]): Int = expression match {
+    case parameter: Expression1d.Parameter[_] =>
       parameter.index
-    case ScalarExpression.Constant(value) =>
+    case Expression1d.Constant(value) =>
       constant1d(value)
-    case ScalarExpression.VectorXComponent2d(expression) =>
+    case Expression1d.VectorXComponent2d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex) => xIndex }
-    case ScalarExpression.VectorYComponent2d(expression) =>
+    case Expression1d.VectorYComponent2d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex) => yIndex }
-    case ScalarExpression.VectorXComponent3d(expression) =>
+    case Expression1d.VectorXComponent3d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex, zIndex) => xIndex }
-    case ScalarExpression.VectorYComponent3d(expression) =>
+    case Expression1d.VectorYComponent3d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex, zIndex) => yIndex }
-    case ScalarExpression.VectorZComponent3d(expression) =>
+    case Expression1d.VectorZComponent3d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex, zIndex) => zIndex }
-    case ScalarExpression.PointXComponent2d(expression) =>
+    case Expression1d.PointXComponent2d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex) => xIndex }
-    case ScalarExpression.PointYComponent2d(expression) =>
+    case Expression1d.PointYComponent2d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex) => yIndex }
-    case ScalarExpression.PointXComponent3d(expression) =>
+    case Expression1d.PointXComponent3d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex, zIndex) => xIndex }
-    case ScalarExpression.PointYComponent3d(expression) =>
+    case Expression1d.PointYComponent3d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex, zIndex) => yIndex }
-    case ScalarExpression.PointZComponent3d(expression) =>
+    case Expression1d.PointZComponent3d(expression) =>
       evaluate(expression) match { case (xIndex, yIndex, zIndex) => zIndex }
-    case ScalarExpression.Negation(argument) =>
+    case Expression1d.Negation(argument) =>
       negation1d(evaluate(argument))
-    case ScalarExpression.Sum(firstArgument, secondArgument) =>
+    case Expression1d.Sum(firstArgument, secondArgument) =>
       sum1d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.Difference(firstArgument, secondArgument) =>
+    case Expression1d.Difference(firstArgument, secondArgument) =>
       difference1d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.Product(firstArgument, secondArgument) =>
+    case Expression1d.Product(firstArgument, secondArgument) =>
       product1d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.Quotient(firstArgument, secondArgument) =>
+    case Expression1d.Quotient(firstArgument, secondArgument) =>
       quotient1d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.Square(argument) =>
+    case Expression1d.Square(argument) =>
       square(evaluate(argument))
-    case ScalarExpression.SquareRoot(argument) =>
+    case Expression1d.SquareRoot(argument) =>
       squareRoot(evaluate(argument))
-    case ScalarExpression.Sine(argument) =>
+    case Expression1d.Sine(argument) =>
       sine(evaluate(argument))
-    case ScalarExpression.Cosine(argument) =>
+    case Expression1d.Cosine(argument) =>
       cosine(evaluate(argument))
-    case ScalarExpression.Tangent(argument) =>
+    case Expression1d.Tangent(argument) =>
       tangent(evaluate(argument))
-    case ScalarExpression.Arcsine(argument) =>
+    case Expression1d.Arcsine(argument) =>
       arcsine(evaluate(argument))
-    case ScalarExpression.Arccosine(argument) =>
+    case Expression1d.Arccosine(argument) =>
       arccosine(evaluate(argument))
-    case ScalarExpression.Arctangent(argument) =>
+    case Expression1d.Arctangent(argument) =>
       arctangent(evaluate(argument))
-    case ScalarExpression.DotProduct2d(firstArgument, secondArgument) =>
+    case Expression1d.DotProduct2d(firstArgument, secondArgument) =>
       dotProduct2d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.DotProduct3d(firstArgument, secondArgument) =>
+    case Expression1d.DotProduct3d(firstArgument, secondArgument) =>
       dotProduct3d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.CrossProduct2d(firstArgument, secondArgument) =>
+    case Expression1d.CrossProduct2d(firstArgument, secondArgument) =>
       crossProduct2d(evaluate(firstArgument), evaluate(secondArgument))
-    case ScalarExpression.SquaredLength2d(argument) =>
+    case Expression1d.SquaredLength2d(argument) =>
       squaredNorm2d(evaluate(argument))
-    case ScalarExpression.SquaredLength3d(argument) =>
+    case Expression1d.SquaredLength3d(argument) =>
       squaredNorm3d(evaluate(argument))
   }
 
