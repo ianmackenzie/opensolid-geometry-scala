@@ -352,10 +352,9 @@ object VectorExpression2d {
   ) extends VectorExpression2d[P] {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
-      (
-        vectorExpression.derivative(parameter) * scalarExpression -
-        vectorExpression * scalarExpression.derivative(parameter)
-      ) / scalarExpression.squared
+      ( vectorExpression.derivative(parameter) * scalarExpression -
+        vectorExpression * scalarExpression.derivative(parameter) ) /
+      scalarExpression.squared
 
     override def x: ScalarExpression[P] =
       vectorExpression.x / scalarExpression
