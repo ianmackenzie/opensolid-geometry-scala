@@ -162,25 +162,25 @@ private class ExpressionCompiler(numParameters: Int) {
       crossProduct3d(evaluate(firstArgument), evaluate(secondArgument))
   }
 
-  def evaluate(expression: PointExpression2d[_]): (Int, Int) = expression match {
-    case PointExpression2d.Constant(point) =>
+  def evaluate(expression: Expression2d[_]): (Int, Int) = expression match {
+    case Expression2d.Constant(point) =>
       constant2d(point.x, point.y)
-    case PointExpression2d.FromComponents(x, y) =>
+    case Expression2d.FromComponents(x, y) =>
       (evaluate(x), evaluate(y))
-    case PointExpression2d.PointPlusVector(pointExpression, vectorExpression) =>
+    case Expression2d.PointPlusVector(pointExpression, vectorExpression) =>
       sum2d(evaluate(pointExpression), evaluate(vectorExpression))
-    case PointExpression2d.PointMinusVector(pointExpression, vectorExpression) =>
+    case Expression2d.PointMinusVector(pointExpression, vectorExpression) =>
       difference2d(evaluate(pointExpression), evaluate(vectorExpression))
   }
 
-  def evaluate(expression: PointExpression3d[_]): (Int, Int, Int) = expression match {
-    case PointExpression3d.Constant(point) =>
+  def evaluate(expression: Expression3d[_]): (Int, Int, Int) = expression match {
+    case Expression3d.Constant(point) =>
       constant3d(point.x, point.y, point.z)
-    case PointExpression3d.FromComponents(x, y, z) =>
+    case Expression3d.FromComponents(x, y, z) =>
       (evaluate(x), evaluate(y), evaluate(z))
-    case PointExpression3d.PointPlusVector(pointExpression, vectorExpression) =>
+    case Expression3d.PointPlusVector(pointExpression, vectorExpression) =>
       sum3d(evaluate(pointExpression), evaluate(vectorExpression))
-    case PointExpression3d.PointMinusVector(pointExpression, vectorExpression) =>
+    case Expression3d.PointMinusVector(pointExpression, vectorExpression) =>
       difference3d(evaluate(pointExpression), evaluate(vectorExpression))
   }
 

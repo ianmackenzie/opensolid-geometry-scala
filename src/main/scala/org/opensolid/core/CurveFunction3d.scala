@@ -19,7 +19,7 @@ trait CurveFunction3d extends Function1[Double, Point3d] {
 }
 
 object CurveFunction3d {
-  def compile(expression: PointExpression3d[CurveParameter]): CurveFunction3d = {
+  def compile(expression: Expression3d[CurveParameter]): CurveFunction3d = {
     val compiler = new ExpressionCompiler(1)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray

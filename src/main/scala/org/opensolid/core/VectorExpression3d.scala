@@ -281,8 +281,8 @@ object VectorExpression3d {
   }
 
   case class Displacement[P](
-    firstExpression: PointExpression3d[P],
-    secondExpression: PointExpression3d[P]
+    firstExpression: Expression3d[P],
+    secondExpression: Expression3d[P]
   ) extends VectorExpression3d[P] {
 
     override def unary_- : VectorExpression3d[P] =

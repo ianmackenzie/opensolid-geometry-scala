@@ -16,12 +16,12 @@ package org.opensolid.core
 
 import scala.math
 
-sealed abstract class PointExpression3d[P] {
-  import PointExpression3d._
+sealed abstract class Expression3d[P] {
+  import Expression3d._
 
   def derivative(parameter: P): VectorExpression3d[P]
 
-  final def +(vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+  final def +(vectorExpression: VectorExpression3d[P]): Expression3d[P] =
     (this, vectorExpression) match {
       case (Constant(point), VectorExpression3d.Constant(vector)) => Constant(point + vector)
       case (expression, VectorExpression3d.Constant(Vector3d.Zero)) => expression
@@ -29,16 +29,16 @@ sealed abstract class PointExpression3d[P] {
       case _ => PointPlusVector(this, vectorExpression)
     }
 
-  final def +(vector: Vector3d): PointExpression3d[P] =
+  final def +(vector: Vector3d): Expression3d[P] =
     this + VectorExpression3d.Constant[P](vector)
 
-  final def plus(vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+  final def plus(vectorExpression: VectorExpression3d[P]): Expression3d[P] =
     this + vectorExpression
 
-  final def plus(vector: Vector3d): PointExpression3d[P] =
+  final def plus(vector: Vector3d): Expression3d[P] =
     this + VectorExpression3d.Constant[P](vector)
 
-  final def -(vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+  final def -(vectorExpression: VectorExpression3d[P]): Expression3d[P] =
     (this, vectorExpression) match {
       case (Constant(point), VectorExpression3d.Constant(vector)) => Constant(point - vector)
       case (expression, VectorExpression3d.Constant(Vector3d.Zero)) => expression
@@ -46,16 +46,16 @@ sealed abstract class PointExpression3d[P] {
       case _ => PointMinusVector(this, vectorExpression)
     }
 
-  final def -(vector: Vector3d): PointExpression3d[P] =
+  final def -(vector: Vector3d): Expression3d[P] =
     this - VectorExpression3d.Constant[P](vector)
 
-  final def minus(vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+  final def minus(vectorExpression: VectorExpression3d[P]): Expression3d[P] =
     this - vectorExpression
 
-  final def minus(vector: Vector3d): PointExpression3d[P] =
+  final def minus(vector: Vector3d): Expression3d[P] =
     this - VectorExpression3d.Constant[P](vector)
 
-  final def vectorTo(that: PointExpression3d[P]): VectorExpression3d[P] = (this, that) match {
+  final def vectorTo(that: Expression3d[P]): VectorExpression3d[P] = (this, that) match {
     case (Constant(firstPoint), Constant(secondPoint)) =>
       VectorExpression3d.Constant(firstPoint.vectorTo(secondPoint))
     case (first, second) if (first == second) =>
@@ -76,25 +76,25 @@ sealed abstract class PointExpression3d[P] {
   def z: Expression1d[P] =
     Expression1d.PointZComponent3d(this)
 
-  final def squaredDistanceTo(that: PointExpression3d[P]): Expression1d[P] =
+  final def squaredDistanceTo(that: Expression3d[P]): Expression1d[P] =
     vectorTo(that).squaredLength
 
   final def squaredDistanceTo(point: Point3d): Expression1d[P] =
     squaredDistanceTo(Constant[P](point))
 
-  final def distanceTo(that: PointExpression3d[P]): Expression1d[P] =
+  final def distanceTo(that: Expression3d[P]): Expression1d[P] =
     vectorTo(that).length
 
   final def distanceTo(point: Point3d): Expression1d[P] =
     distanceTo(Constant[P](point))
 }
 
-object PointExpression3d {
+object Expression3d {
   def fromComponents[P](
     xExpression: Expression1d[P],
     yExpression: Expression1d[P],
     zExpression: Expression1d[P]
-  ): PointExpression3d[P] = (xExpression, yExpression, zExpression) match {
+  ): Expression3d[P] = (xExpression, yExpression, zExpression) match {
     case (
       Expression1d.Constant(xValue),
       Expression1d.Constant(yValue),
@@ -103,7 +103,7 @@ object PointExpression3d {
     case _ => FromComponents(xExpression, yExpression, zExpression)
   }
 
-  case class Constant[P](val point: Point3d) extends PointExpression3d[P] {
+  case class Constant[P](val point: Point3d) extends Expression3d[P] {
     override def derivative(parameter: P): VectorExpression3d[P] =
       VectorExpression3d.Constant(Vector3d.Zero)
 
@@ -121,7 +121,7 @@ object PointExpression3d {
     override val x: Expression1d[P],
     override val y: Expression1d[P],
     override val z: Expression1d[P]
-  ) extends PointExpression3d[P] {
+  ) extends Expression3d[P] {
 
     override def derivative(parameter: P): VectorExpression3d[P] =
       VectorExpression3d.fromComponents(
@@ -132,9 +132,9 @@ object PointExpression3d {
   }
 
   case class PointPlusVector[P](
-    pointExpression: PointExpression3d[P],
+    pointExpression: Expression3d[P],
     vectorExpression: VectorExpression3d[P]
-  ) extends PointExpression3d[P] {
+  ) extends Expression3d[P] {
 
     override def derivative(parameter: P): VectorExpression3d[P] =
       pointExpression.derivative(parameter) + vectorExpression.derivative(parameter)
@@ -150,9 +150,9 @@ object PointExpression3d {
   }
 
   case class PointMinusVector[P](
-    pointExpression: PointExpression3d[P],
+    pointExpression: Expression3d[P],
     vectorExpression: VectorExpression3d[P]
-  ) extends PointExpression3d[P] {
+  ) extends Expression3d[P] {
 
     override def derivative(parameter: P): VectorExpression3d[P] =
       pointExpression.derivative(parameter) - vectorExpression.derivative(parameter)

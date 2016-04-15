@@ -39,14 +39,14 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
   def squaredDistanceTo(that: Point3d): Double =
     vectorTo(that).squaredLength
 
-  def squaredDistanceTo[P](expression: PointExpression3d[P]): Expression1d[P] =
-    PointExpression3d.Constant[P](this).squaredDistanceTo(expression)
+  def squaredDistanceTo[P](expression: Expression3d[P]): Expression1d[P] =
+    Expression3d.Constant[P](this).squaredDistanceTo(expression)
 
   def distanceTo(that: Point3d): Double =
     vectorTo(that).length
 
-  def distanceTo[P](expression: PointExpression3d[P]): Expression1d[P] =
-    PointExpression3d.Constant[P](this).distanceTo(expression)
+  def distanceTo[P](expression: Expression3d[P]): Expression1d[P] =
+    Expression3d.Constant[P](this).distanceTo(expression)
 
   def isOrigin(tolerance: Double): Boolean =
     x * x + y * y + z * z <= tolerance * tolerance
@@ -95,32 +95,32 @@ final case class Point3d(x: Double, y: Double, z: Double) extends Scalable3d[Poi
   def +(vector: Vector3d): Point3d =
     Point3d(x + vector.x, y + vector.y, z + vector.z)
 
-  def +[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
-    PointExpression3d.Constant[P](this) + vectorExpression
+  def +[P](vectorExpression: VectorExpression3d[P]): Expression3d[P] =
+    Expression3d.Constant[P](this) + vectorExpression
 
   def plus(vector: Vector3d): Point3d =
     this + vector
 
-  def plus[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+  def plus[P](vectorExpression: VectorExpression3d[P]): Expression3d[P] =
     this + vectorExpression
 
   def -(vector: Vector3d): Point3d =
     Point3d(x - vector.x, y - vector.y, z - vector.z)
 
-  def -[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
-    PointExpression3d.Constant[P](this) - vectorExpression
+  def -[P](vectorExpression: VectorExpression3d[P]): Expression3d[P] =
+    Expression3d.Constant[P](this) - vectorExpression
 
   def minus(vector: Vector3d): Point3d =
     this - vector
 
-  def minus[P](vectorExpression: VectorExpression3d[P]): PointExpression3d[P] =
+  def minus[P](vectorExpression: VectorExpression3d[P]): Expression3d[P] =
     this - vectorExpression
 
   def vectorTo(that: Point3d): Vector3d =
     Vector3d(that.x - this.x, that.y - this.y, that.z - this.z)
 
-  def vectorTo[P](pointExpression: PointExpression3d[P]): VectorExpression3d[P] =
-    PointExpression3d.Constant[P](this).vectorTo(pointExpression)
+  def vectorTo[P](pointExpression: Expression3d[P]): VectorExpression3d[P] =
+    Expression3d.Constant[P](this).vectorTo(pointExpression)
 }
 
 object Point3d {

@@ -19,7 +19,7 @@ trait SurfaceFunction3d extends Function1[Point2d, Point3d] {
 }
 
 object SurfaceFunction3d {
-  def compile(expression: PointExpression3d[SurfaceParameter]): SurfaceFunction3d = {
+  def compile(expression: Expression3d[SurfaceParameter]): SurfaceFunction3d = {
     val compiler = new ExpressionCompiler(2)
     val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
     val arrayOperations = compiler.arrayOperations.toArray

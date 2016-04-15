@@ -38,14 +38,14 @@ final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d]
   def squaredDistanceTo(that: Point2d): Double =
     vectorTo(that).squaredLength
 
-  def squaredDistanceTo[P](expression: PointExpression2d[P]): Expression1d[P] =
-    PointExpression2d.Constant[P](this).squaredDistanceTo(expression)
+  def squaredDistanceTo[P](expression: Expression2d[P]): Expression1d[P] =
+    Expression2d.Constant[P](this).squaredDistanceTo(expression)
 
   def distanceTo(that: Point2d): Double =
     vectorTo(that).length
 
-  def distanceTo[P](expression: PointExpression2d[P]): Expression1d[P] =
-    PointExpression2d.Constant[P](this).distanceTo(expression)
+  def distanceTo[P](expression: Expression2d[P]): Expression1d[P] =
+    Expression2d.Constant[P](this).distanceTo(expression)
 
   def isOrigin(tolerance: Double): Boolean =
     x * x + y * y <= tolerance * tolerance
@@ -80,32 +80,32 @@ final case class Point2d(x: Double, y: Double) extends Scalable2d[Point2d]
   def +(vector: Vector2d): Point2d =
     Point2d(x + vector.x, y + vector.y)
 
-  def +[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
-    PointExpression2d.Constant[P](this) + vectorExpression
+  def +[P](vectorExpression: VectorExpression2d[P]): Expression2d[P] =
+    Expression2d.Constant[P](this) + vectorExpression
 
   def plus(vector: Vector2d): Point2d =
     this + vector
 
-  def plus[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
+  def plus[P](vectorExpression: VectorExpression2d[P]): Expression2d[P] =
     this + vectorExpression
 
   def -(vector: Vector2d): Point2d =
     Point2d(x - vector.x, y - vector.y)
 
-  def -[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
-    PointExpression2d.Constant[P](this) - vectorExpression
+  def -[P](vectorExpression: VectorExpression2d[P]): Expression2d[P] =
+    Expression2d.Constant[P](this) - vectorExpression
 
   def minus(vector: Vector2d): Point2d =
     this - vector
 
-  def minus[P](vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
+  def minus[P](vectorExpression: VectorExpression2d[P]): Expression2d[P] =
     this - vectorExpression
 
   def vectorTo(that: Point2d): Vector2d =
     Vector2d(that.x - this.x, that.y - this.y)
 
-  def vectorTo[P](pointExpression: PointExpression2d[P]): VectorExpression2d[P] =
-    PointExpression2d.Constant[P](this).vectorTo(pointExpression)
+  def vectorTo[P](pointExpression: Expression2d[P]): VectorExpression2d[P] =
+    Expression2d.Constant[P](this).vectorTo(pointExpression)
 }
 
 object Point2d {

@@ -16,12 +16,12 @@ package org.opensolid.core
 
 import scala.math
 
-sealed abstract class PointExpression2d[P] {
-  import PointExpression2d._
+sealed abstract class Expression2d[P] {
+  import Expression2d._
 
   def derivative(parameter: P): VectorExpression2d[P]
 
-  final def +(vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
+  final def +(vectorExpression: VectorExpression2d[P]): Expression2d[P] =
     (this, vectorExpression) match {
       case (Constant(point), VectorExpression2d.Constant(vector)) => Constant(point + vector)
       case (expression, VectorExpression2d.Constant(Vector2d.Zero)) => expression
@@ -29,16 +29,16 @@ sealed abstract class PointExpression2d[P] {
       case _ => PointPlusVector(this, vectorExpression)
     }
 
-  final def +(vector: Vector2d): PointExpression2d[P] =
+  final def +(vector: Vector2d): Expression2d[P] =
     this + VectorExpression2d.Constant[P](vector)
 
-  final def plus(vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
+  final def plus(vectorExpression: VectorExpression2d[P]): Expression2d[P] =
     this + vectorExpression
 
-  final def plus(vector: Vector2d): PointExpression2d[P] =
+  final def plus(vector: Vector2d): Expression2d[P] =
     this + VectorExpression2d.Constant[P](vector)
 
-  final def -(vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
+  final def -(vectorExpression: VectorExpression2d[P]): Expression2d[P] =
     (this, vectorExpression) match {
       case (Constant(point), VectorExpression2d.Constant(vector)) => Constant(point - vector)
       case (expression, VectorExpression2d.Constant(Vector2d.Zero)) => expression
@@ -46,16 +46,16 @@ sealed abstract class PointExpression2d[P] {
       case _ => PointMinusVector(this, vectorExpression)
     }
 
-  final def -(vector: Vector2d): PointExpression2d[P] =
+  final def -(vector: Vector2d): Expression2d[P] =
     this - VectorExpression2d.Constant[P](vector)
 
-  final def minus(vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
+  final def minus(vectorExpression: VectorExpression2d[P]): Expression2d[P] =
     this - vectorExpression
 
-  final def minus(vector: Vector2d): PointExpression2d[P] =
+  final def minus(vector: Vector2d): Expression2d[P] =
     this - VectorExpression2d.Constant[P](vector)
 
-  final def vectorTo(that: PointExpression2d[P]): VectorExpression2d[P] = (this, that) match {
+  final def vectorTo(that: Expression2d[P]): VectorExpression2d[P] = (this, that) match {
     case (Constant(firstPoint), Constant(secondPoint)) =>
       VectorExpression2d.Constant(firstPoint.vectorTo(secondPoint))
     case (first, second) if (first == second) =>
@@ -73,30 +73,30 @@ sealed abstract class PointExpression2d[P] {
   def y: Expression1d[P] =
     Expression1d.PointYComponent2d(this)
 
-  final def squaredDistanceTo(that: PointExpression2d[P]): Expression1d[P] =
+  final def squaredDistanceTo(that: Expression2d[P]): Expression1d[P] =
     vectorTo(that).squaredLength
 
   final def squaredDistanceTo(point: Point2d): Expression1d[P] =
     squaredDistanceTo(Constant[P](point))
 
-  final def distanceTo(that: PointExpression2d[P]): Expression1d[P] =
+  final def distanceTo(that: Expression2d[P]): Expression1d[P] =
     vectorTo(that).length
 
   final def distanceTo(point: Point2d): Expression1d[P] =
     distanceTo(Constant[P](point))
 }
 
-object PointExpression2d {
+object Expression2d {
   def fromComponents[P](
     xExpression: Expression1d[P],
     yExpression: Expression1d[P]
-  ): PointExpression2d[P] = (xExpression, yExpression) match {
+  ): Expression2d[P] = (xExpression, yExpression) match {
     case (Expression1d.Constant(xValue), Expression1d.Constant(yValue)) =>
       Constant(Point2d(xValue, yValue))
     case _ => FromComponents(xExpression, yExpression)
   }
 
-  case class Constant[P](val point: Point2d) extends PointExpression2d[P] {
+  case class Constant[P](val point: Point2d) extends Expression2d[P] {
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.Constant(Vector2d.Zero)
 
@@ -110,16 +110,16 @@ object PointExpression2d {
   case class FromComponents[P](
     override val x: Expression1d[P],
     override val y: Expression1d[P]
-  ) extends PointExpression2d[P] {
+  ) extends Expression2d[P] {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.fromComponents(x.derivative(parameter), y.derivative(parameter))
   }
 
   case class PointPlusVector[P](
-    pointExpression: PointExpression2d[P],
+    pointExpression: Expression2d[P],
     vectorExpression: VectorExpression2d[P]
-  ) extends PointExpression2d[P] {
+  ) extends Expression2d[P] {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       pointExpression.derivative(parameter) + vectorExpression.derivative(parameter)
@@ -132,9 +132,9 @@ object PointExpression2d {
   }
 
   case class PointMinusVector[P](
-    pointExpression: PointExpression2d[P],
+    pointExpression: Expression2d[P],
     vectorExpression: VectorExpression2d[P]
-  ) extends PointExpression2d[P] {
+  ) extends Expression2d[P] {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       pointExpression.derivative(parameter) - vectorExpression.derivative(parameter)

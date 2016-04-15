@@ -286,27 +286,27 @@ object Expression1d {
       expression.derivative(parameter).z
   }
 
-  case class PointXComponent2d[P](expression: PointExpression2d[P]) extends Expression1d[P] {
+  case class PointXComponent2d[P](expression: Expression2d[P]) extends Expression1d[P] {
     override def derivative(parameter: P): Expression1d[P] =
       expression.derivative(parameter).x
   }
 
-  case class PointYComponent2d[P](expression: PointExpression2d[P]) extends Expression1d[P] {
+  case class PointYComponent2d[P](expression: Expression2d[P]) extends Expression1d[P] {
     override def derivative(parameter: P): Expression1d[P] =
       expression.derivative(parameter).y
   }
 
-  case class PointXComponent3d[P](expression: PointExpression3d[P]) extends Expression1d[P] {
+  case class PointXComponent3d[P](expression: Expression3d[P]) extends Expression1d[P] {
     override def derivative(parameter: P): Expression1d[P] =
       expression.derivative(parameter).x
   }
 
-  case class PointYComponent3d[P](expression: PointExpression3d[P]) extends Expression1d[P] {
+  case class PointYComponent3d[P](expression: Expression3d[P]) extends Expression1d[P] {
     override def derivative(parameter: P): Expression1d[P] =
       expression.derivative(parameter).y
   }
 
-  case class PointZComponent3d[P](expression: PointExpression3d[P]) extends Expression1d[P] {
+  case class PointZComponent3d[P](expression: Expression3d[P]) extends Expression1d[P] {
     override def derivative(parameter: P): Expression1d[P] =
       expression.derivative(parameter).z
   }
