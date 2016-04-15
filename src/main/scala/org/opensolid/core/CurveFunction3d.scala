@@ -29,18 +29,14 @@ object CurveFunction3d {
       override def apply(parameterValue: Double): Point3d = {
         val array = Array.ofDim[Double](arraySize)
         array(0) = parameterValue
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         Point3d(array(xIndex), array(yIndex), array(zIndex))
       }
 
       override def apply(parameterBounds: Interval): Bounds3d = {
         val array = Array.ofDim[Interval](arraySize)
         array(0) = parameterBounds
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         Bounds3d(array(xIndex), array(yIndex), array(zIndex))
       }
     }

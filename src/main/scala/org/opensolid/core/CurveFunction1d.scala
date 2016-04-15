@@ -29,18 +29,14 @@ object CurveFunction1d {
       override def apply(parameterValue: Double): Double = {
         val array = Array.ofDim[Double](arraySize)
         array(0) = parameterValue
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         array(resultIndex)
       }
 
       override def apply(parameterBounds: Interval): Interval = {
         val array = Array.ofDim[Interval](arraySize)
         array(0) = parameterBounds
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         array(resultIndex)
       }
     }

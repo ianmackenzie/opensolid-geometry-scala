@@ -29,18 +29,14 @@ object CurveFunction2d {
       override def apply(parameterValue: Double): Point2d = {
         val array = Array.ofDim[Double](arraySize)
         array(0) = parameterValue
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         Point2d(array(xIndex), array(yIndex))
       }
 
       override def apply(parameterBounds: Interval): Bounds2d = {
         val array = Array.ofDim[Interval](arraySize)
         array(0) = parameterBounds
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         Bounds2d(array(xIndex), array(yIndex))
       }
     }

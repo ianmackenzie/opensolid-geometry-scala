@@ -30,9 +30,7 @@ object VectorSurfaceFunction3d {
         val array = Array.ofDim[Double](arraySize)
         array(0) = parameterValue.x
         array(1) = parameterValue.y
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         Vector3d(array(xIndex), array(yIndex), array(zIndex))
       }
 
@@ -40,9 +38,7 @@ object VectorSurfaceFunction3d {
         val array = Array.ofDim[Interval](arraySize)
         array(0) = parameterBounds.x
         array(1) = parameterBounds.y
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         VectorBounds3d(array(xIndex), array(yIndex), array(zIndex))
       }
     }

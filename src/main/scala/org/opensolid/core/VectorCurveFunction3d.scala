@@ -29,18 +29,14 @@ object VectorCurveFunction3d {
       override def apply(parameterValue: Double): Vector3d = {
         val array = Array.ofDim[Double](arraySize)
         array(0) = parameterValue
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         Vector3d(array(xIndex), array(yIndex), array(zIndex))
       }
 
       override def apply(parameterBounds: Interval): VectorBounds3d = {
         val array = Array.ofDim[Interval](arraySize)
         array(0) = parameterBounds
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
+        arrayOperations.foreach(_.execute(array))
         VectorBounds3d(array(xIndex), array(yIndex), array(zIndex))
       }
     }
