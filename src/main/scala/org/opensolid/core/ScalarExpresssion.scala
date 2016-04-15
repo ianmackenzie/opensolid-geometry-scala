@@ -22,16 +22,24 @@ sealed abstract class ScalarExpression[P] {
   def unary_- : ScalarExpression[P] =
     Negation(this)
 
-  final def negated: ScalarExpression[P] = -this
+  final def negated: ScalarExpression[P] =
+    -this
 
   final def +(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
-    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue + secondValue)
-    case (expression, Constant(0)) => expression
-    case (Constant(0), expression) => expression
-    case (first, second) if (first == second) => Constant(2) * first
-    case (first, Negation(second)) => first - second
-    case (Negation(first), second) => second - first
-    case _ => Sum(this, that)
+    case (Constant(firstValue), Constant(secondValue)) =>
+      Constant(firstValue + secondValue)
+    case (expression, Constant(0)) =>
+      expression
+    case (Constant(0), expression) =>
+      expression
+    case (first, second) if (first == second) =>
+      Constant(2) * first
+    case (first, Negation(second)) =>
+      first - second
+    case (Negation(first), second) =>
+      second - first
+    case _ =>
+      Sum(this, that)
   }
 
   final def +(value: Double): ScalarExpression[P] =
@@ -44,12 +52,18 @@ sealed abstract class ScalarExpression[P] {
     this + Constant[P](value)
 
   final def -(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
-    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue - secondValue)
-    case (expression, Constant(0)) => expression
-    case (Constant(0), expression) => -expression
-    case (first, second) if (first == second) => Constant(0)
-    case (first, Negation(second)) => first + second
-    case _ => Difference(this, that)
+    case (Constant(firstValue), Constant(secondValue)) =>
+      Constant(firstValue - secondValue)
+    case (expression, Constant(0)) =>
+      expression
+    case (Constant(0), expression) =>
+    -1-expression
+    case (first, second) if (first == second) =>
+      Constant(0)
+    case (first, Negation(second)) =>
+      first + second
+    case _ =>
+      Difference(this, that)
   }
 
   final def -(value: Double): ScalarExpression[P] =
@@ -62,16 +76,26 @@ sealed abstract class ScalarExpression[P] {
     this - Constant[P](value)
 
   final def *(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
-    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue * secondValue)
-    case (_, Constant(0)) => Constant(0)
-    case (Constant(0), _) => Constant(0)
-    case (expression, Constant(1)) => expression
-    case (Constant(1), expression) => expression
-    case (expression, Constant(-1)) => -expression
-    case (Constant(-1), expression) => -expression
-    case (first, second) if (first == second) => first.squared
-    case (Quotient(a, b), Quotient(c, d)) => (a * c) / (b * d)
-    case _ => Product(this, that)
+    case (Constant(firstValue), Constant(secondValue)) =>
+      Constant(firstValue * secondValue)
+    case (_, Constant(0)) =>
+      Constant(0)
+    case (Constant(0), _) =>
+      Constant(0)
+    case (expression, Constant(1)) =>
+      expression
+    case (Constant(1), expression) =>
+      expression
+    case (expression, Constant(-1)) =>
+    -1-expression
+    case (Constant(-1), expression) =>
+    -1-expression
+    case (first, second) if (first == second) =>
+      first.squared
+    case (Quotient(a, b), Quotient(c, d)) =>
+      (a * c) / (b * d)
+    case _ =>
+      Product(this, that)
   }
 
   final def *(value: Double): ScalarExpression[P] =
@@ -108,14 +132,22 @@ sealed abstract class ScalarExpression[P] {
     VectorExpression3d.Constant[P](vector) * this
 
   final def /(that: ScalarExpression[P]): ScalarExpression[P] = (this, that) match {
-    case (_, Constant(0)) => throw new ArithmeticException("Division by zero")
-    case (Constant(firstValue), Constant(secondValue)) => Constant(firstValue / secondValue)
-    case (Constant(0), _) => Constant(0)
-    case (expression, Constant(1)) => expression
-    case (expression, Constant(-1)) => -expression
-    case (expression, Constant(value)) => Constant(1 / value) * expression
-    case (expression, Quotient(numerator, denominator)) => expression * denominator / numerator
-    case _ => Quotient(this, that)
+    case (_, Constant(0)) =>
+      throw new ArithmeticException("Division by zero")
+    case (Constant(firstValue), Constant(secondValue)) =>
+      Constant(firstValue / secondValue)
+    case (Constant(0), _) =>
+      Constant(0)
+    case (expression, Constant(1)) =>
+      expression
+    case (expression, Constant(-1)) =>
+      -expression
+    case (expression, Constant(value)) =>
+      Constant(1 / value) * expression
+    case (expression, Quotient(numerator, denominator)) =>
+      expression * denominator / numerator
+    case _ =>
+      Quotient(this, that)
   }
 
   final def /(value: Double): ScalarExpression[P] =
