@@ -21,8 +21,6 @@ sealed abstract class PointExpression2d[P] {
 
   def derivative(parameter: P): VectorExpression2d[P]
 
-  def condition: ScalarExpression[P]
-
   final def +(vectorExpression: VectorExpression2d[P]): PointExpression2d[P] =
     (this, vectorExpression) match {
       case (Constant(point), VectorExpression2d.Constant(vector)) => Constant(point + vector)
@@ -148,9 +146,6 @@ object PointExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.Constant(Vector2d.Zero)
 
-    override def condition: ScalarExpression[P] =
-      ScalarExpression.Constant(1)
-
     override def x: ScalarExpression[P] =
       ScalarExpression.Constant(point.x)
 
@@ -165,9 +160,6 @@ object PointExpression2d {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.fromComponents(x.derivative(parameter), y.derivative(parameter))
-
-    override def condition: ScalarExpression[P] =
-      x.condition * y.condition
   }
 
   case class PointPlusVector[P](
@@ -177,9 +169,6 @@ object PointExpression2d {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       pointExpression.derivative(parameter) + vectorExpression.derivative(parameter)
-
-    override def condition: ScalarExpression[P] =
-      pointExpression.condition * vectorExpression.condition
 
     override def x: ScalarExpression[P] =
       pointExpression.x + vectorExpression.x
@@ -195,9 +184,6 @@ object PointExpression2d {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       pointExpression.derivative(parameter) - vectorExpression.derivative(parameter)
-
-    override def condition: ScalarExpression[P] =
-      pointExpression.condition * vectorExpression.condition
 
     override def x: ScalarExpression[P] =
       pointExpression.x - vectorExpression.x

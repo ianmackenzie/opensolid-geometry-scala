@@ -21,8 +21,6 @@ sealed abstract class VectorExpression2d[P] {
 
   def derivative(parameter: P): VectorExpression2d[P]
 
-  def condition: ScalarExpression[P]
-
   def unary_- : VectorExpression2d[P] =
     Negation(this)
 
@@ -233,9 +231,6 @@ object VectorExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       Constant(Vector2d.Zero)
 
-    override def condition: ScalarExpression[P] =
-      ScalarExpression.Constant(1)
-
     override def unary_- : VectorExpression2d[P] =
       Constant(-vector)
 
@@ -260,9 +255,6 @@ object VectorExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.fromComponents(x.derivative(parameter), y.derivative(parameter))
 
-    override def condition: ScalarExpression[P] =
-      x.condition * y.condition
-
     override def unary_- : VectorExpression2d[P] =
       VectorExpression2d.fromComponents(-x, -y)
 
@@ -273,9 +265,6 @@ object VectorExpression2d {
   case class Negation[P](expression: VectorExpression2d[P]) extends VectorExpression2d[P] {
     override def derivative(parameter: P): VectorExpression2d[P] =
       -expression.derivative(parameter)
-
-    override def condition: ScalarExpression[P] =
-      expression.condition
 
     override def squaredLength: ScalarExpression[P] =
       expression.squaredLength
@@ -298,9 +287,6 @@ object VectorExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       firstExpression.derivative(parameter) + secondExpression.derivative(parameter)
 
-    override def condition: ScalarExpression[P] =
-      firstExpression.condition * secondExpression.condition
-
     override def x: ScalarExpression[P] =
       firstExpression.x + secondExpression.x
 
@@ -318,9 +304,6 @@ object VectorExpression2d {
 
     override def derivative(parameter: P): VectorExpression2d[P] =
       firstExpression.derivative(parameter) - secondExpression.derivative(parameter)
-
-    override def condition: ScalarExpression[P] =
-      firstExpression.condition * secondExpression.condition
 
     override def x: ScalarExpression[P] =
       firstExpression.x - secondExpression.x
@@ -340,9 +323,6 @@ object VectorExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       secondExpression.derivative(parameter) - firstExpression.derivative(parameter)
 
-    override def condition: ScalarExpression[P] =
-      firstExpression.condition * secondExpression.condition
-
     override def x: ScalarExpression[P] =
       secondExpression.x - firstExpression.x
 
@@ -358,9 +338,6 @@ object VectorExpression2d {
     override def derivative(parameter: P): VectorExpression2d[P] =
       scalarExpression.derivative(parameter) * vectorExpression +
       scalarExpression * vectorExpression.derivative(parameter)
-
-    override def condition: ScalarExpression[P] =
-      scalarExpression.condition * vectorExpression.condition
 
     override def x: ScalarExpression[P] =
       scalarExpression * vectorExpression.x
@@ -379,9 +356,6 @@ object VectorExpression2d {
         vectorExpression.derivative(parameter) * scalarExpression -
         vectorExpression * scalarExpression.derivative(parameter)
       ) / scalarExpression.squared
-
-    override def condition: ScalarExpression[P] =
-      vectorExpression.condition * scalarExpression
 
     override def x: ScalarExpression[P] =
       vectorExpression.x / scalarExpression
