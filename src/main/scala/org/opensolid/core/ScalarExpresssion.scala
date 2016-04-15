@@ -132,6 +132,27 @@ sealed abstract class ScalarExpression[P] {
   def squared: ScalarExpression[P] =
     Square(this)
 
+  def sqrt: ScalarExpression[P] =
+    SquareRoot(this)
+
+  def sin: ScalarExpression[P] =
+    Sine(this)
+
+  def cos: ScalarExpression[P] =
+    Cosine(this)
+
+  def tan: ScalarExpression[P] =
+    Tangent(this)
+
+  def asin: ScalarExpression[P] =
+    Arcsine(this)
+
+  def acos: ScalarExpression[P] =
+    Arccosine(this)
+
+  def atan: ScalarExpression[P] =
+    Arctangent(this)
+
   final def toCurveFunction(implicit evidence: P =:= CurveParameter): CurveFunction1d = {
     val compiler = new ExpressionCompiler(1)
     val resultIndex = compiler.evaluate(this)
@@ -190,27 +211,6 @@ sealed abstract class ScalarExpression[P] {
 }
 
 object ScalarExpression {
-  def sqrt[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    SquareRoot(expression)
-
-  def sin[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    Sine(expression)
-
-  def cos[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    Cosine(expression)
-
-  def tan[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    Tangent(expression)
-
-  def asin[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    Arcsine(expression)
-
-  def acos[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    Arccosine(expression)
-
-  def atan[P](expression: ScalarExpression[P]): ScalarExpression[P] =
-    Arctangent(expression)
-
   abstract class Parameter[P <: Parameter[P]] extends ScalarExpression[P] {
     def index: Int
 
@@ -457,7 +457,7 @@ object ScalarExpression {
 
   case class Sine[P](expression: ScalarExpression[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
-      ScalarExpression.cos(expression) * expression.derivative(parameter)
+      expression.cos * expression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
       expression.condition
@@ -465,7 +465,7 @@ object ScalarExpression {
 
   case class Cosine[P](expression: ScalarExpression[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
-      -ScalarExpression.sin(expression) * expression.derivative(parameter)
+      -expression.sin * expression.derivative(parameter)
 
     override def condition: ScalarExpression[P] =
       expression.condition
@@ -473,15 +473,15 @@ object ScalarExpression {
 
   case class Tangent[P](expression: ScalarExpression[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
-      expression.derivative(parameter) / ScalarExpression.cos(expression).squared
+      expression.derivative(parameter) / expression.cos.squared
 
     override def condition: ScalarExpression[P] =
-      expression.condition * ScalarExpression.cos(expression)
+      expression.condition * expression.cos
   }
 
   case class Arcsine[P](expression: ScalarExpression[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
-      expression.derivative(parameter) / ScalarExpression.sqrt(1 - expression.squared)
+      expression.derivative(parameter) / (1 - expression.squared).sqrt
 
     override def condition: ScalarExpression[P] =
       expression.condition * (1 - expression.squared)
@@ -489,7 +489,7 @@ object ScalarExpression {
 
   case class Arccosine[P](expression: ScalarExpression[P]) extends ScalarExpression[P] {
     override def derivative(parameter: P): ScalarExpression[P] =
-      -expression.derivative(parameter) / ScalarExpression.sqrt(1 - expression.squared)
+      -expression.derivative(parameter) / (1 - expression.squared).sqrt
 
     override def condition: ScalarExpression[P] =
       expression.condition * (1 - expression.squared)

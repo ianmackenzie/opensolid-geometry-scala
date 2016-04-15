@@ -113,7 +113,7 @@ sealed abstract class VectorExpression3d[P] {
     ScalarExpression.SquaredLength3d(this)
 
   def length: ScalarExpression[P] =
-    ScalarExpression.sqrt(squaredLength)
+    squaredLength.sqrt
 
   final def dot(that: VectorExpression3d[P]): ScalarExpression[P] = (this, that) match {
     case (Constant(firstVector), Constant(secondVector)) =>
