@@ -96,52 +96,6 @@ object PointExpression2d {
     case _ => FromComponents(xExpression, yExpression)
   }
 
-  case class CompiledCurve(evaluate: (Double) => Point2d, evaluateBounds: (Interval) => Bounds2d)
-
-  def compileCurve[P <: CurveParameter](expression: PointExpression2d[P]): CompiledCurve = {
-    val compiler = new ExpressionCompiler(1)
-    val (xIndex, yIndex) = compiler.evaluate(expression)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-    val evaluate = (parameterValue: Double) => {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue
-      for { operation <- arrayOperations } operation.execute(array)
-      Point2d(array(xIndex), array(yIndex))
-    }
-    val evaluateBounds = (parameterBounds: Interval) => {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds
-      for { operation <- arrayOperations } operation.execute(array)
-      Bounds2d(array(xIndex), array(yIndex))
-    }
-    CompiledCurve(evaluate, evaluateBounds)
-  }
-
-  case class CompiledSurface(evaluate: (Point2d) => Point2d, evaluateBounds: (Bounds2d) => Bounds2d)
-
-  def compileSurface[P <: SurfaceParameter](expression: PointExpression2d[P]): CompiledSurface = {
-    val compiler = new ExpressionCompiler(2)
-    val (xIndex, yIndex) = compiler.evaluate(expression)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-    val evaluate = (parameterValue: Point2d) => {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue.x
-      array(1) = parameterValue.y
-      for { operation <- arrayOperations } operation.execute(array)
-      Point2d(array(xIndex), array(yIndex))
-    }
-    val evaluateBounds = (parameterBounds: Bounds2d) => {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds.x
-      array(1) = parameterBounds.y
-      for { operation <- arrayOperations } operation.execute(array)
-      Bounds2d(array(xIndex), array(yIndex))
-    }
-    CompiledSurface(evaluate, evaluateBounds)
-  }
-
   case class Constant[P](val point: Point2d) extends PointExpression2d[P] {
     override def derivative(parameter: P): VectorExpression2d[P] =
       VectorExpression2d.Constant(Vector2d.Zero)

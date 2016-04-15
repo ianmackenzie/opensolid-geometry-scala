@@ -178,58 +178,6 @@ object VectorExpression3d {
     case _ => FromComponents(xExpression, yExpression, zExpression)
   }
 
-  case class CompiledCurve(
-    evaluate: (Double) => Vector3d,
-    evaluateBounds: (Interval) => VectorBounds3d
-  )
-
-  def compileCurve[P <: CurveParameter](expression: VectorExpression3d[P]): CompiledCurve = {
-    val compiler = new ExpressionCompiler(1)
-    val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-    val evaluate = (parameterValue: Double) => {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue
-      for { operation <- arrayOperations } operation.execute(array)
-      Vector3d(array(xIndex), array(yIndex), array(zIndex))
-    }
-    val evaluateBounds = (parameterBounds: Interval) => {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds
-      for { operation <- arrayOperations } operation.execute(array)
-      VectorBounds3d(array(xIndex), array(yIndex), array(zIndex))
-    }
-    CompiledCurve(evaluate, evaluateBounds)
-  }
-
-  case class CompiledSurface(
-    evaluate: (Point2d) => Vector3d,
-    evaluateBounds: (Bounds2d) => VectorBounds3d
-  )
-
-  def compileSurface[P <: SurfaceParameter](expression: VectorExpression3d[P]): CompiledSurface = {
-    val compiler = new ExpressionCompiler(2)
-    val (xIndex, yIndex, zIndex) = compiler.evaluate(expression)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-    val evaluate = (parameterValue: Point2d) => {
-      val array = Array.ofDim[Double](arraySize)
-      array(0) = parameterValue.x
-      array(1) = parameterValue.y
-      for { operation <- arrayOperations } operation.execute(array)
-      Vector3d(array(xIndex), array(yIndex), array(zIndex))
-    }
-    val evaluateBounds = (parameterBounds: Bounds2d) => {
-      val array = Array.ofDim[Interval](arraySize)
-      array(0) = parameterBounds.x
-      array(1) = parameterBounds.y
-      for { operation <- arrayOperations } operation.execute(array)
-      VectorBounds3d(array(xIndex), array(yIndex), array(zIndex))
-    }
-    CompiledSurface(evaluate, evaluateBounds)
-  }
-
   case class Constant[P](val vector: Vector3d) extends VectorExpression3d[P] {
     override def derivative(parameter: P): VectorExpression3d[P] =
       Constant(Vector3d.Zero)
