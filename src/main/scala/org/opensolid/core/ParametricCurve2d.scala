@@ -29,5 +29,9 @@ class ParametricCurve2d(
 
   def evaluateAt(parameterValue: Double): Point2d =
     function(parameterValue)
+}
 
+object ParametricCurve2d {
+  def apply(expression: PointExpression2d[CurveParameter], domain: Interval): ParametricCurve2d =
+    new ParametricCurve2d(expression, domain)
 }
