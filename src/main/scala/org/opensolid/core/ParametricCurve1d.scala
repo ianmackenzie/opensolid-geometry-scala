@@ -19,7 +19,7 @@ class ParametricCurve1d(
   val domain: Interval
 ) extends Curve1d {
 
-  val function: CurveFunction1d = expression.toCurveFunction
+  val function: CurveFunction1d = CurveFunction1d.compile(expression)
 
   override def bounds: Interval =
     function(domain)

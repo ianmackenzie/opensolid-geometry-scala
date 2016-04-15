@@ -49,7 +49,7 @@ trait Curve1d extends Bounded[Interval] {
       var derivativeExpression = expression
       for (order <- 1 to maxDerivativeOrder) {
         derivativeExpression = derivativeExpression.derivative(CurveParameter)
-        derivatives(order) = derivativeExpression.toCurveFunction
+        derivatives(order) = CurveFunction1d.compile(derivativeExpression)
       }
 
       // Calculate tolerances for each derivative order: tolerance(n) = n! * tolerance / width^n

@@ -150,62 +150,6 @@ sealed abstract class ScalarExpression[P] {
 
   def atan: ScalarExpression[P] =
     Arctangent(this)
-
-  final def toCurveFunction(implicit evidence: P =:= CurveParameter): CurveFunction1d = {
-    val compiler = new ExpressionCompiler(1)
-    val resultIndex = compiler.evaluate(this)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-
-    new CurveFunction1d {
-      override def apply(parameterValue: Double): Double = {
-        val array = Array.ofDim[Double](arraySize)
-        array(0) = parameterValue
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
-        array(resultIndex)
-      }
-
-      override def apply(parameterBounds: Interval): Interval = {
-        val array = Array.ofDim[Interval](arraySize)
-        array(0) = parameterBounds
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
-        array(resultIndex)
-      }
-    }
-  }
-
-  final def toSurfaceFunction(implicit evidence: P =:= SurfaceParameter): SurfaceFunction1d = {
-    val compiler = new ExpressionCompiler(2)
-    val resultIndex = compiler.evaluate(this)
-    val arrayOperations = compiler.arrayOperations.toArray
-    val arraySize = compiler.arraySize
-
-    new SurfaceFunction1d {
-      override def apply(parameterValue: Point2d): Double = {
-        val array = Array.ofDim[Double](arraySize)
-        array(0) = parameterValue.x
-        array(1) = parameterValue.y
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
-        array(resultIndex)
-      }
-
-      override def apply(parameterBounds: Bounds2d): Interval = {
-        val array = Array.ofDim[Interval](arraySize)
-        array(0) = parameterBounds.x
-        array(1) = parameterBounds.y
-        for (operation <- arrayOperations) {
-          operation.execute(array)
-        }
-        array(resultIndex)
-      }
-    }
-  }
 }
 
 object ScalarExpression {

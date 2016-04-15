@@ -17,3 +17,32 @@ package org.opensolid.core
 trait CurveFunction1d extends Function1[Double, Double] {
   def apply(interval: Interval): Interval
 }
+
+object CurveFunction1d {
+  def compile(expression: ScalarExpression[CurveParameter]): CurveFunction1d = {
+    val compiler = new ExpressionCompiler(1)
+    val resultIndex = compiler.evaluate(expression)
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
+
+    new CurveFunction1d {
+      override def apply(parameterValue: Double): Double = {
+        val array = Array.ofDim[Double](arraySize)
+        array(0) = parameterValue
+        for (operation <- arrayOperations) {
+          operation.execute(array)
+        }
+        array(resultIndex)
+      }
+
+      override def apply(parameterBounds: Interval): Interval = {
+        val array = Array.ofDim[Interval](arraySize)
+        array(0) = parameterBounds
+        for (operation <- arrayOperations) {
+          operation.execute(array)
+        }
+        array(resultIndex)
+      }
+    }
+  }
+}
