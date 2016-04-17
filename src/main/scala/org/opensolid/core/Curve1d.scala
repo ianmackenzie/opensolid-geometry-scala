@@ -117,7 +117,7 @@ trait Curve1d extends Bounded[Interval] {
       def rootsWithin(xInterval: Interval, tail: List[Root]): List[Root] = {
         val derivativeBounds = evaluateWithin(xInterval)
         val functionBounds = derivativeBounds(0)
-        if (functionBounds.isEmpty || functionBounds.isNonZero(roundoff)) {
+        if (functionBounds.isEmpty || functionBounds.isNonZero(tolerance / 2)) {
           tail
         } else {
           val nonZeroOrder =
