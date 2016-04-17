@@ -141,4 +141,15 @@ trait Curve1d extends Bounded[Interval] {
 
 object Curve1d {
   case class Root(x: Double, order: Int, sign: Int)
+
+  private[Curve1d] val interpolationValues =
+    List(
+      0.5,
+      math.sqrt(2.0) - 1,
+      2 - math.sqrt(2.0),
+      3.0 - math.E,
+      math.E - 2.0,
+      math.Pi - 3.0,
+      4.0 - math.Pi
+    )
 }
