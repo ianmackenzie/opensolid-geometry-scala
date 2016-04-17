@@ -73,22 +73,30 @@ trait Curve1d extends Bounded[Interval] {
       def solveMonotonic(xInterval: Interval, order: Int, tail: List[Root]): List[Root] = {
         val monotonicFunction = derivatives(order)
         val nonZeroDerivative = derivatives(order + 1)
-        val y1 = monotonicFunction(xInterval.lowerBound)
-        val y2 = monotonicFunction(xInterval.upperBound)
+        val roundoff = tolerances(order) / 2
+        val x1 = xInterval.lowerBound
+        val x2 = xInterval.upperBound
+        val y1 = monotonicFunction(x1)
+        val y2 = monotonicFunction(x2)
         if ((y1 > roundoff && y2 > roundoff) || (y1 < -roundoff && y2 < -roundoff)) {
           if (order > 0) solveMonotonic(xInterval, order - 1, tail) else tail
         } else {
           val root =
             Numerics.newtonRaphson(monotonicFunction, nonZeroDerivative, xInterval, tolerance)
+
+          def bisectAt(bisectionPoint: Double, bisectedOrder: Int): List[Root] = {
+            val rightInterval = Interval(bisectionPoint, x2)
+            val rightRoots = solveMonotonic(rightInterval, bisectedOrder, tail)
+            val leftInterval = Interval(x1, bisectionPoint)
+            solveMonotonic(leftInterval, bisectedOrder, rightRoots)
+          }
+
           root match {
             case Some(x) => {
               if (function(x).abs < tolerance) {
                 Root(x, order, nonZeroDerivative(x).signum) :: tail
               } else {
-                val rightInterval = Interval(x, xInterval.upperBound)
-                val rightRoots = solveMonotonic(rightInterval, order - 1, tail)
-                val leftInterval = Interval(xInterval.lowerBound, x)
-                solveMonotonic(leftInterval, order - 1, rightRoots)
+                bisectAt(x, order - 1)
               }
             }
             case None => {
