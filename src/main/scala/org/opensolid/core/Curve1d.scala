@@ -61,6 +61,15 @@ trait Curve1d extends Bounded[Interval] {
       // near zero)
       val resolution = domain.ulp
 
+      def nonZeroBisectionPoint(
+        function: CurveFunction1d,
+        xInterval: Interval,
+        tolerance: Double
+      ): Option[Double] =
+        interpolationValues.view
+          .map(interpolationValue => xInterval.interpolated(interpolationValue))
+          .find(x => function(x).abs > tolerance)
+
       def solveMonotonic(xInterval: Interval, order: Int, tail: List[Root]): List[Root] = {
         val monotonicFunction = derivatives(order)
         val nonZeroDerivative = derivatives(order + 1)
@@ -125,17 +134,6 @@ trait Curve1d extends Bounded[Interval] {
       }
 
       rootsWithin(domain, List.empty[Root])
-
-      // def nonZeroBisectionPoint(
-      //   function: CurveFunction1d,
-      //   xInterval: Interval,
-      //   maxAttempts: Int
-      // ): Option[Double] =
-      //   Iterator.continually(xInterval.randomValue).take(maxAttempts).find(x =>
-      //     x > xInterval.lowerBound &&
-      //     x < xInterval.upperBound &&
-      //     !(function(x).abs < roundoff)
-      //   )
     }
 }
 
