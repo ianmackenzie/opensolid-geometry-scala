@@ -55,10 +55,7 @@ trait Curve1d extends Bounded[Interval] {
       // Calculate tolerances for each derivative order: tolerance(n) = n! * tolerance / width^n
       val tolerances = Array.ofDim[Double](derivatives.size)
       tolerances(0) = tolerance
-      for (n <- 1 to maxDerivativeOrder) {
-        tolerances(n) = n * tolerances(n - 1) / domain.width
-      }
-      val roundoff = tolerance / 2
+      (1 to maxDerivativeOrder).foreach(n => tolerances(n) = n * tolerances(n - 1) / domain.width)
 
       // Use consistent resolution for whole domain (e.g., don't bisect to extremely small values
       // near zero)
