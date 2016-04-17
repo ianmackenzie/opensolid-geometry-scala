@@ -36,8 +36,8 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def isZero(tolerance: Double): Boolean =
     squaredLength.isZero(tolerance * tolerance)
 
-  def isNotZero(tolerance: Double): Boolean =
-    squaredLength.isNotZero(tolerance * tolerance)
+  def isNonZero(tolerance: Double): Boolean =
+    squaredLength.isNonZero(tolerance * tolerance)
 
   override def transformedBy(transformation: Transformation3d): Vector3d =
     transformation(this)
@@ -128,31 +128,31 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def *(value: Double): Vector3d =
     Vector3d(x * value, y * value, z * value)
 
-  def *[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+  def *[P](expression: Expression1d[P]): VectorExpression3d[P] =
     VectorExpression3d.Constant[P](this) * expression
 
   def times(value: Double): Vector3d =
     this * value
 
-  def times[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+  def times[P](expression: Expression1d[P]): VectorExpression3d[P] =
     this * expression
 
   def /(value: Double): Vector3d =
     Vector3d(x / value, y / value, z / value)
 
-  def /[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+  def /[P](expression: Expression1d[P]): VectorExpression3d[P] =
     VectorExpression3d.Constant[P](this) / expression
 
   def dividedBy(value: Double): Vector3d =
     this / value
 
-  def dividedBy[P](expression: ScalarExpression[P]): VectorExpression3d[P] =
+  def dividedBy[P](expression: Expression1d[P]): VectorExpression3d[P] =
     this / expression
 
   def dot(that: Vector3d): Double =
     this.x * that.x + this.y * that.y + this.z * that.z
 
-  def dot[P](expression: VectorExpression3d[P]): ScalarExpression[P] =
+  def dot[P](expression: VectorExpression3d[P]): Expression1d[P] =
     VectorExpression3d.Constant[P](this).dot(expression)
 
   def cross(that: Vector3d): Vector3d =

@@ -21,8 +21,8 @@ case class Scalar(val value: Double) extends AnyVal
   def isZero(tolerance: Double): Boolean =
     value.isZero(tolerance)
 
-  def isNotZero(tolerance: Double): Boolean =
-    value.isNotZero(tolerance)
+  def isNonZero(tolerance: Double): Boolean =
+    value.isNonZero(tolerance)
 
   def bounds: Interval =
     Interval.singleton(value)
@@ -126,17 +126,17 @@ case class Scalar(val value: Double) extends AnyVal
   def times(direction: Direction3d): Vector3d =
     value * direction
 
-  def plus[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-    value + scalarExpression
+  def plus[P](expression: Expression1d[P]): Expression1d[P] =
+    value + expression
 
-  def minus[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-    value - scalarExpression
+  def minus[P](expression: Expression1d[P]): Expression1d[P] =
+    value - expression
 
-  def times[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-    value * scalarExpression
+  def times[P](expression: Expression1d[P]): Expression1d[P] =
+    value * expression
 
-  def dividedBy[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-    value / scalarExpression
+  def dividedBy[P](expression: Expression1d[P]): Expression1d[P] =
+    value / expression
 
   def times[P](vectorExpression: VectorExpression2d[P]): VectorExpression2d[P] =
     value * vectorExpression

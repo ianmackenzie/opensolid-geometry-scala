@@ -14,22 +14,33 @@
 
 package org.opensolid.core
 
-class ParametricCurve1d(val expression: Expression1d[CurveParameter], val domain: Interval)
-  extends Curve1d {
-
-  val function: CurveFunction1d = CurveFunction1d.compile(expression)
-
-  override def bounds: Interval =
-    function(domain)
-
-  override def parameterized: ParametricCurve1d =
-    this
-
-  def evaluateAt(parameterValue: Double): Double =
-    function(parameterValue)
+trait SurfaceFunction2d extends Function1[Point2d, Point2d] {
+  def apply(interval: Bounds2d): Bounds2d
 }
 
-object ParametricCurve1d {
-  def apply(expression: Expression1d[CurveParameter], domain: Interval): ParametricCurve1d =
-    new ParametricCurve1d(expression, domain)
+object SurfaceFunction2d {
+  def compile(expression: Expression2d[SurfaceParameter]): SurfaceFunction2d = {
+    val compiler = new ExpressionCompiler(2)
+    val (xIndex, yIndex) = compiler.evaluate(expression)
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
+
+    new SurfaceFunction2d {
+      override def apply(parameterValue: Point2d): Point2d = {
+        val array = Array.ofDim[Double](arraySize)
+        array(0) = parameterValue.x
+        array(1) = parameterValue.y
+        arrayOperations.foreach(_.execute(array))
+        Point2d(array(xIndex), array(yIndex))
+      }
+
+      override def apply(parameterBounds: Bounds2d): Bounds2d = {
+        val array = Array.ofDim[Interval](arraySize)
+        array(0) = parameterBounds.x
+        array(1) = parameterBounds.y
+        arrayOperations.foreach(_.execute(array))
+        Bounds2d(array(xIndex), array(yIndex))
+      }
+    }
+  }
 }

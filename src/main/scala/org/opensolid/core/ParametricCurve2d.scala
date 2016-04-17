@@ -14,22 +14,22 @@
 
 package org.opensolid.core
 
-class ParametricCurve2d(
-  val expression: PointExpression2d[CurveParameter],
-  val domain: Interval
-) extends Curve2d {
+class ParametricCurve2d(val expression: Expression2d[CurveParameter], val domain: Interval)
+  extends Curve2d {
 
-  private[this] val compiled = PointExpression2d.compileCurve(expression)
+  val function: CurveFunction2d = CurveFunction2d.compile(expression)
 
   override def bounds: Bounds2d =
-    evaluateBounds(domain)
+    function(domain)
 
   override def parameterized: ParametricCurve2d =
     this
 
-  def evaluate(parameterValue: Double): Point2d =
-    compiled.evaluate(parameterValue)
+  def evaluateAt(parameterValue: Double): Point2d =
+    function(parameterValue)
+}
 
-  def evaluateBounds(parameterBounds: Interval): Bounds2d =
-    compiled.evaluateBounds(parameterBounds)
+object ParametricCurve2d {
+  def apply(expression: Expression2d[CurveParameter], domain: Interval): ParametricCurve2d =
+    new ParametricCurve2d(expression, domain)
 }

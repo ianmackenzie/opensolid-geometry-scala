@@ -47,8 +47,8 @@ final case class Plane3d(
   def signedDistanceTo(point: Point3d): Double =
     originPoint.vectorTo(point).componentIn(normalDirection)
 
-  def signedDistanceTo[P](expression: PointExpression3d[P]): ScalarExpression[P] =
-    PointExpression3d.Constant(originPoint).vectorTo(expression).componentIn(normalDirection)
+  def signedDistanceTo[P](expression: Expression3d[P]): Expression1d[P] =
+    Expression3d.Constant(originPoint).vectorTo(expression).componentIn(normalDirection)
 }
 
 object Plane3d {

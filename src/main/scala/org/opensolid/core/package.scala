@@ -87,7 +87,7 @@ package object core {
     def isZero(tolerance: Double): Boolean =
       value >= -tolerance && value <= tolerance
 
-    def isNotZero(tolerance: Double): Boolean =
+    def isNonZero(tolerance: Double): Boolean =
       value < -tolerance || value > tolerance
 
     def isEqualTo(that: Double, tolerance: Double): Boolean =
@@ -241,23 +241,23 @@ package object core {
     def *(direction: Direction3d): Vector3d =
       direction * value
 
-    def +[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-      ScalarExpression.Constant[P](value) + scalarExpression
+    def +[P](expression: Expression1d[P]): Expression1d[P] =
+      Expression1d.Constant[P](value) + expression
 
-    def -[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-      ScalarExpression.Constant[P](value) - scalarExpression
+    def -[P](expression: Expression1d[P]): Expression1d[P] =
+      Expression1d.Constant[P](value) - expression
 
-    def *[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-      ScalarExpression.Constant[P](value) * scalarExpression
+    def *[P](expression: Expression1d[P]): Expression1d[P] =
+      Expression1d.Constant[P](value) * expression
 
-    def /[P](scalarExpression: ScalarExpression[P]): ScalarExpression[P] =
-      ScalarExpression.Constant[P](value) / scalarExpression
+    def /[P](expression: Expression1d[P]): Expression1d[P] =
+      Expression1d.Constant[P](value) / expression
 
     def *[P](vectorExpression: VectorExpression2d[P]): VectorExpression2d[P] =
-      ScalarExpression.Constant[P](value) * vectorExpression
+      Expression1d.Constant[P](value) * vectorExpression
 
     def *[P](vectorExpression: VectorExpression3d[P]): VectorExpression3d[P] =
-      ScalarExpression.Constant[P](value) * vectorExpression
+      Expression1d.Constant[P](value) * vectorExpression
 
     def hull(that: Double): Interval =
       if (value <= that) {

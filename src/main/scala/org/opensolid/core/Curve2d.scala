@@ -18,7 +18,7 @@ trait Curve2d extends Bounded[Bounds2d] {
   def parameterized: ParametricCurve2d
 
   def parameterizedBy(
-    expression: PointExpression2d[CurveParameter],
+    expression: Expression2d[CurveParameter],
     domain: Interval
   ): ParametricCurve2d =
     new ParametricCurve2d(expression, domain) {

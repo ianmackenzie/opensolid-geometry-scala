@@ -14,16 +14,33 @@
 
 package org.opensolid.core
 
-abstract class SurfaceParameter extends Expression1d.Parameter[SurfaceParameter]
+trait VectorSurfaceFunction2d extends Function1[Point2d, Vector2d] {
+  def apply(interval: Bounds2d): VectorBounds2d
+}
 
-object SurfaceParameter {
-  object U extends SurfaceParameter {
-    override def index: Int =
-      0
-  }
+object VectorSurfaceFunction2d {
+  def compile(expression: VectorExpression2d[SurfaceParameter]): VectorSurfaceFunction2d = {
+    val compiler = new ExpressionCompiler(2)
+    val (xIndex, yIndex) = compiler.evaluate(expression)
+    val arrayOperations = compiler.arrayOperations.toArray
+    val arraySize = compiler.arraySize
 
-  object V extends SurfaceParameter {
-    override def index: Int =
-      1
+    new VectorSurfaceFunction2d {
+      override def apply(parameterValue: Point2d): Vector2d = {
+        val array = Array.ofDim[Double](arraySize)
+        array(0) = parameterValue.x
+        array(1) = parameterValue.y
+        arrayOperations.foreach(_.execute(array))
+        Vector2d(array(xIndex), array(yIndex))
+      }
+
+      override def apply(parameterBounds: Bounds2d): VectorBounds2d = {
+        val array = Array.ofDim[Interval](arraySize)
+        array(0) = parameterBounds.x
+        array(1) = parameterBounds.y
+        arrayOperations.foreach(_.execute(array))
+        VectorBounds2d(array(xIndex), array(yIndex))
+      }
+    }
   }
 }
