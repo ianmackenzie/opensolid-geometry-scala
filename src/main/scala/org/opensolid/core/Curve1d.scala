@@ -135,8 +135,7 @@ trait Curve1d extends Bounded[Interval] {
             case None => {
               function.bisectionPointWithin(xInterval, roundoff) match {
                 case Some(bisectionValue) => {
-                  val leftInterval = Interval(xInterval.lowerBound, bisectionValue)
-                  val rightInterval = Interval(bisectionValue, xInterval.upperBound)
+                  val (leftInterval, rightInterval) = xInterval.bisectedAt(bisectionValue)
                   rootsWithin(leftInterval, rootsWithin(rightInterval, tail))
                 }
                 case None =>
