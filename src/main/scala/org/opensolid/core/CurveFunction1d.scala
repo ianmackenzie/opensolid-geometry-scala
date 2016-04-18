@@ -17,7 +17,6 @@ package org.opensolid.core
 trait CurveFunction1d extends Function1[Double, Double] {
   def apply(interval: Interval): Interval
 
-  def bisectionPoint(interval: Interval, tolerance: Double): Option[Double] = {
   def isZeroWithin(interval: Interval, tolerance: Double): Boolean = {
     val bounds = this(interval)
     if (bounds.isZero(tolerance)) {
@@ -68,6 +67,7 @@ trait CurveFunction1d extends Function1[Double, Double] {
       None
     }
 
+  def bisectionPointWithin(interval: Interval, tolerance: Double): Option[Double] = {
     def recurseWithBias(interval: Interval, bias: Int): Option[Double] = {
       val midpoint = interval.midpoint
       if (midpoint <= interval.lowerBound || midpoint >= interval.upperBound) {
