@@ -54,6 +54,20 @@ trait CurveFunction1d extends Function1[Double, Double] {
     }
   }
 
+  def firstRootWithin(interval: Interval): Option[Double] =
+    if (this(interval).contains(0.0)) {
+      val xLow = interval.lowerBound
+      val xMid = interval.midpoint
+      val xHigh = interval.upperBound
+      if (xLow < xMid && xMid < xHigh) {
+        firstRootWithin(Interval(xLow, xMid)).orElse(firstRootWithin(Interval(xMid, xHigh)))
+      } else {
+        if (this(xLow).abs <= this(xHigh).abs) Some(xLow) else Some(xHigh)
+      }
+    } else {
+      None
+    }
+
     def recurseWithBias(interval: Interval, bias: Int): Option[Double] = {
       val midpoint = interval.midpoint
       if (midpoint <= interval.lowerBound || midpoint >= interval.upperBound) {
