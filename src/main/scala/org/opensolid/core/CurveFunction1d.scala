@@ -18,6 +18,42 @@ trait CurveFunction1d extends Function1[Double, Double] {
   def apply(interval: Interval): Interval
 
   def bisectionPoint(interval: Interval, tolerance: Double): Option[Double] = {
+  def isZeroWithin(interval: Interval, tolerance: Double): Boolean = {
+    val bounds = this(interval)
+    if (bounds.isZero(tolerance)) {
+      true
+    } else if (bounds.isNonZero(tolerance)) {
+      false
+    } else {
+      val midpoint = interval.midpoint
+      if (interval.lowerBound < midpoint && midpoint < interval.upperBound) {
+        isZeroWithin(Interval(interval.lowerBound, midpoint), tolerance) &&
+        isZeroWithin(Interval(midpoint, interval.upperBound), tolerance)
+      } else {
+        this(interval.lowerBound).isZero(tolerance) &&
+        this(interval.upperBound).isZero(tolerance)
+      }
+    }
+  }
+
+  def isNonZeroWithin(interval: Interval, tolerance: Double): Boolean = {
+    val bounds = this(interval)
+    if (bounds.isZero(tolerance)) {
+      false
+    } else if (bounds.isNonZero(tolerance)) {
+      true
+    } else {
+      val midpoint = interval.midpoint
+      if (interval.lowerBound < midpoint && midpoint < interval.upperBound) {
+        isNonZeroWithin(Interval(interval.lowerBound, midpoint), tolerance) &&
+        isNonZeroWithin(Interval(midpoint, interval.upperBound), tolerance)
+      } else {
+        this(interval.lowerBound).isNonZero(tolerance) &&
+        this(interval.upperBound).isNonZero(tolerance)
+      }
+    }
+  }
+
     def recurseWithBias(interval: Interval, bias: Int): Option[Double] = {
       val midpoint = interval.midpoint
       if (midpoint <= interval.lowerBound || midpoint >= interval.upperBound) {
