@@ -47,7 +47,8 @@ trait Curve1d extends Bounded[Interval] {
       val derivatives = Array.ofDim[CurveFunction1d](maxDerivativeOrder + 1)
       derivatives(0) = function
       var derivativeExpression = expression
-      for (order <- 1 to maxDerivativeOrder) {
+      val derivativeOrders = 1 to maxDerivativeOrder
+      for (order <- derivativeOrders) {
         derivativeExpression = derivativeExpression.derivative(CurveParameter)
         derivatives(order) = CurveFunction1d.compile(derivativeExpression)
       }
@@ -55,58 +56,14 @@ trait Curve1d extends Bounded[Interval] {
       // Calculate tolerances for each derivative order: tolerance(n) = n! * tolerance / width^n
       val tolerances = Array.ofDim[Double](derivatives.size)
       tolerances(0) = tolerance
-      (1 to maxDerivativeOrder).foreach(n => tolerances(n) = n * tolerances(n - 1) / domain.width)
+      derivativeOrders.foreach(n => tolerances(n) = n * tolerances(n - 1) / domain.width)
+      val roundoff = tolerance / 2
 
       // Use consistent resolution for whole domain (e.g., don't bisect to extremely small values
       // near zero)
       val resolution = domain.ulp
 
-      def nonZeroBisectionPoint(
-        function: CurveFunction1d,
-        xInterval: Interval,
-        tolerance: Double
-      ): Option[Double] =
-        interpolationValues.view
-          .map(interpolationValue => xInterval.interpolated(interpolationValue))
-          .find(x => function(x).abs > tolerance)
-
-      def solveMonotonic(xInterval: Interval, order: Int, tail: List[Root]): List[Root] = {
-        val monotonicFunction = derivatives(order)
-        val nonZeroDerivative = derivatives(order + 1)
-        val roundoff = tolerances(order) / 2
-        val x1 = xInterval.lowerBound
-        val x2 = xInterval.upperBound
-        val y1 = monotonicFunction(x1)
-        val y2 = monotonicFunction(x2)
-        if ((y1 > roundoff && y2 > roundoff) || (y1 < -roundoff && y2 < -roundoff)) {
-          if (order > 0) solveMonotonic(xInterval, order - 1, tail) else tail
-        } else {
-          val root =
-            Numerics.newtonRaphson(monotonicFunction, nonZeroDerivative, xInterval, tolerance)
-
-          def bisectAt(bisectionPoint: Double, bisectedOrder: Int): List[Root] = {
-            val rightInterval = Interval(bisectionPoint, x2)
-            val rightRoots = solveMonotonic(rightInterval, bisectedOrder, tail)
-            val leftInterval = Interval(x1, bisectionPoint)
-            solveMonotonic(leftInterval, bisectedOrder, rightRoots)
-          }
-
-          root match {
-            case Some(x) => {
-              if (function(x).abs < tolerance) {
-                Root(x, order, nonZeroDerivative(x).signum) :: tail
-              } else {
-                bisectAt(x, order - 1)
-              }
-            }
-            case None => {
-              ???
-            }
-          }
-        }
-      }
-
-      def evaluateWithin(xInterval: Interval): Array[Interval] = {
+      def evaluateAllWithin(xInterval: Interval): Array[Interval] = {
         val results = Array.ofDim[Interval](derivatives.size)
         results(maxDerivativeOrder) = derivatives(maxDerivativeOrder)(xInterval)
         for (order <- maxDerivativeOrder - 1 to 0 by -1) {
@@ -122,20 +79,69 @@ trait Curve1d extends Bounded[Interval] {
         results
       }
 
+      def rootAt(x: Double, order: Int, tail: List[Root]): List[Root] =
+        Root(x, order, derivatives(order + 1)(x).signum) :: tail
+
+      def solveMonotonic(xInterval: Interval, order: Int, tail: List[Root]): List[Root] =
+        derivatives(order).firstRootWithin(xInterval) match {
+          case Some(x) =>
+            if (function(x).abs < tolerance) {
+              rootAt(x, order, tail)
+            } else if (order > 0) {
+              val (leftInterval, rightInterval) = xInterval.bisectedAt(x)
+              val rightRoots = solveMonotonic(rightInterval, order - 1, tail)
+              solveMonotonic(leftInterval, order - 1, rightRoots)
+            } else {
+              tail
+            }
+          case None =>
+            if (order > 0) solveMonotonic(xInterval, order - 1, tail) else tail
+        }
+
+      def solveWithinTolerance(xInterval: Interval, tail: List[Root]): List[Root] = {
+        val nonZeroOrder =
+          derivativeOrders
+            .find(order => derivatives(order).isNonZeroWithin(xInterval, tolerances(order)))
+        nonZeroOrder match {
+          case Some(order) =>
+            derivatives(order - 1).firstRootWithin(xInterval) match {
+              case Some(x) =>
+                rootAt(x, order - 1, tail)
+              case None =>
+                if (function(xInterval.lowerBound).abs <= function(xInterval.upperBound).abs) {
+                  rootAt(xInterval.lowerBound, order - 1, tail)
+                } else {
+                  rootAt(xInterval.upperBound, order - 1, tail)
+                }
+            }
+          case None =>
+            tail
+        }
+      }
+
       def rootsWithin(xInterval: Interval, tail: List[Root]): List[Root] = {
-        val derivativeBounds = evaluateWithin(xInterval)
+        val derivativeBounds = evaluateAllWithin(xInterval)
         val functionBounds = derivativeBounds(0)
-        if (functionBounds.isEmpty || functionBounds.isNonZero(tolerance / 2)) {
+        if (functionBounds.isEmpty || functionBounds.isNonZero(roundoff)) {
           tail
+        } else if (functionBounds.isZero(tolerance)) {
+          solveWithinTolerance(xInterval, tail)
         } else {
           val nonZeroOrder =
-            (1 to derivatives.size)
-              .find(order => derivativeBounds(order).isNonZero(tolerances(order)))
+            derivativeOrders.find(order => derivativeBounds(order).isNonZero(tolerances(order)))
           nonZeroOrder match {
             case Some(order) =>
               solveMonotonic(xInterval, order - 1, tail)
             case None => {
-              ???
+              function.bisectionPointWithin(xInterval, roundoff) match {
+                case Some(bisectionValue) => {
+                  val leftInterval = Interval(xInterval.lowerBound, bisectionValue)
+                  val rightInterval = Interval(bisectionValue, xInterval.upperBound)
+                  rootsWithin(leftInterval, rootsWithin(rightInterval, tail))
+                }
+                case None =>
+                  solveWithinTolerance(xInterval, tail)
+              }
             }
           }
         }
@@ -147,15 +153,4 @@ trait Curve1d extends Bounded[Interval] {
 
 object Curve1d {
   case class Root(x: Double, order: Int, sign: Int)
-
-  private[Curve1d] val interpolationValues =
-    List(
-      0.5,
-      math.sqrt(2.0) - 1,
-      2 - math.sqrt(2.0),
-      3.0 - math.E,
-      math.E - 2.0,
-      math.Pi - 3.0,
-      4.0 - math.Pi
-    )
 }
