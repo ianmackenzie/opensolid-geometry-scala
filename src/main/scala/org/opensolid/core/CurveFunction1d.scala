@@ -53,6 +53,21 @@ trait CurveFunction1d extends Function1[Double, Double] {
     }
   }
 
+  def isFiniteWithin(interval: Interval): Boolean = {
+    val bounds = this(interval)
+    if (bounds.isFinite) {
+      true
+    } else {
+      val midpoint = interval.midpoint
+      if (interval.lowerBound < midpoint && midpoint < interval.upperBound) {
+        isFiniteWithin(Interval(interval.lowerBound, midpoint)) &&
+        isFiniteWithin(Interval(midpoint, interval.upperBound))
+      } else {
+        false
+      }
+    }
+  }
+
   def firstRootWithin(interval: Interval): Option[Double] =
     if (this(interval).contains(0.0)) {
       val xLow = interval.lowerBound
