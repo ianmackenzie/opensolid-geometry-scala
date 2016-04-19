@@ -39,6 +39,9 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def isNonZero(tolerance: Double): Boolean =
     squaredLength.isNonZero(tolerance * tolerance)
 
+  def isValid: Boolean =
+    !(x.isNaN || y.isNaN || z.isNaN)
+
   override def transformedBy(transformation: Transformation3d): Vector3d =
     transformation(this)
 
@@ -57,20 +60,22 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
       this.componentIn(plane.yDirection)
     )
 
-  def normalized: Vector3d = {
+  def normalized: Option[Vector3d] = {
     val length = this.length
     if (length == 0.0) {
-      throw GeometricException.ZeroVector
+      None
+    } else {
+      Some(this / length)
     }
-    this / length
   }
 
-  def direction: Direction3d = {
+  def direction: Option[Direction3d] = {
     val length = this.length
     if (length == 0.0) {
-      throw GeometricException.ZeroVector
+      None
+    } else {
+      Some(Direction3d(x / length, y / length, z / length))
     }
-    Direction3d(x / length, y / length, z / length)
   }
 
   def perpendicularVector: Vector3d = {
@@ -92,7 +97,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
     }
   }
 
-  def normalDirection: Direction3d =
+  def normalDirection: Option[Direction3d] =
     perpendicularVector.direction
 
   def unary_- : Vector3d =

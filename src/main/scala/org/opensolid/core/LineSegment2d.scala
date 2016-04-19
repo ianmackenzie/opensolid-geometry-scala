@@ -26,14 +26,14 @@ final case class LineSegment2d(startPoint: Point2d, endPoint: Point2d)
   def vector: Vector2d =
     startPoint.vectorTo(endPoint)
 
-  def direction: Direction2d =
+  def direction: Option[Direction2d] =
     vector.direction
 
-  def normalDirection: Direction2d =
-    direction.normalDirection
+  def normalDirection: Option[Direction2d] =
+    direction.map(_.normalDirection)
 
-  def axis: Axis2d =
-    Axis2d(startPoint, direction)
+  def axis: Option[Axis2d] =
+    direction.map(Axis2d(startPoint, _))
 
   def reversed: LineSegment2d =
     LineSegment2d(endPoint, startPoint)

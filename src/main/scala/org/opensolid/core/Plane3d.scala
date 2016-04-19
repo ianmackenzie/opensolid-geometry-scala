@@ -68,10 +68,7 @@ object Plane3d {
 
   def throughPoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Plane3d = {
     val normalDirection = Numerics.normalDirection(firstPoint, secondPoint, thirdPoint)
-    val xDirection = firstPoint.vectorTo(secondPoint) match {
-      case Vector3d.Zero => normalDirection.normalDirection
-      case nonZeroVector: Vector3d => nonZeroVector.direction
-    }
+    val xDirection = normalDirection.normalDirection
     val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
     Plane3d(firstPoint, xDirection, yDirection, normalDirection)
   }
@@ -85,18 +82,20 @@ object Plane3d {
 
   def throughAxisAndPoint(axis: Axis3d, point: Point3d): Plane3d = {
     val xDirection = axis.direction
-    val crossProduct = xDirection.cross(axis.originPoint.vectorTo(point))
-    val normalDirection = crossProduct match {
-      case Vector3d.Zero => axis.normalDirection
-      case nonZeroVector: Vector3d => nonZeroVector.direction
-    }
+    val crossProduct = axis.direction.cross(axis.originPoint.vectorTo(point))
+    val normalDirection = crossProduct.direction.getOrElse(axis.normalDirection)
     val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
     Plane3d(axis.originPoint, xDirection, yDirection, normalDirection)
   }
 
-  def midplaneBetweenPoints(lowerPoint: Point3d, upperPoint: Point3d): Plane3d = {
+  def midplaneBetweenPoints(lowerPoint: Point3d, upperPoint: Point3d): Option[Plane3d] = {
     val displacementVector = lowerPoint.vectorTo(upperPoint)
-    Plane3d.fromPointAndNormal(lowerPoint + 0.5 * displacementVector, displacementVector.direction)
+    for {
+      normalDirection <- displacementVector.direction
+      originPoint = lowerPoint + 0.5 * displacementVector
+    } yield {
+      Plane3d.fromPointAndNormal(originPoint, normalDirection)
+    }
   }
 
   def midplaneBetweenPlanes(lowerPlane: Plane3d, upperPlane: Plane3d): Plane3d = {
@@ -122,9 +121,9 @@ object Plane3d {
       }
     val normalDirection =
       if (normalVectorSum.dot(displacementVector) >= 0.0) {
-        normalVectorSum.direction
+        normalVectorSum.direction.get
       } else {
-        -normalVectorSum.direction
+        -normalVectorSum.direction.get
       }
 
     Plane3d.fromPointAndNormal(originPoint, normalDirection)

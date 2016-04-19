@@ -37,10 +37,12 @@ object Numerics {
       // Cross product is poorly conditioned (i.e., triangle is degenerate or
       // nearly so) - instead of using the cross product, compute a unit vector
       // perpendicular to the longest of the two edges
-      if (firstSquaredLength >= secondSquaredLength) {
-        firstVector.normalDirection
+      if (firstSquaredLength > 0.0 && firstSquaredLength >= secondSquaredLength) {
+        firstVector.normalDirection.get
+      } else if (secondSquaredLength > 0.0) {
+        secondVector.normalDirection.get
       } else {
-        secondVector.normalDirection
+        Direction3d.Z
       }
     }
   }

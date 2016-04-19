@@ -76,12 +76,8 @@ final case class Triangle3d(firstVertex: Point3d, secondVertex: Point3d, thirdVe
   def centroid: Point3d =
     firstVertex + (firstVertex.vectorTo(secondVertex) + firstVertex.vectorTo(thirdVertex)) / 3.0
 
-  def plane: Plane3d = {
-    val normalDirection = this.normalDirection
-    val xDirection = firstVertex.vectorTo(secondVertex).direction
-    val yDirection = Numerics.binormalToBasis(normalDirection, xDirection)
-    Plane3d(firstVertex, xDirection, yDirection, normalDirection)
-  }
+  def plane: Plane3d =
+    Plane3d.fromPointAndNormal(firstVertex, normalDirection)
 
   def projectedOnto(plane: Plane3d): Triangle3d =
     Triangle3d(

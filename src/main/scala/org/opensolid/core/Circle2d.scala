@@ -55,20 +55,27 @@ final case class Circle2d(centerPoint: Point2d, radius: Double) extends Scalable
 }
 
 object Circle2d {
-  def throughTwoPoints(firstPoint: Point2d, secondPoint: Point2d, radius: Double): Circle2d = {
+  def throughTwoPoints(
+    firstPoint: Point2d,
+    secondPoint: Point2d,
+    radius: Double
+  ): Option[Circle2d] = {
     val displacementVector = firstPoint.vectorTo(secondPoint)
     val halfDistance = displacementVector.length / 2.0
     val sidewaysDistance = math.sqrt((halfDistance * halfDistance - radius * radius).max(0.0))
-    val sidewaysDirection = displacementVector.normalDirection
-    val centerPoint = firstPoint + displacementVector / 2.0 + sidewaysDistance * sidewaysDirection
-    Circle2d(centerPoint, radius)
+    for {
+      sidewaysDirection <- displacementVector.normalDirection
+      centerPoint = firstPoint + displacementVector / 2.0 + sidewaysDistance * sidewaysDirection
+    } yield {
+      Circle2d(centerPoint, radius)
+    }
   }
 
   def throughThreePoints(
     firstPoint: Point2d,
     secondPoint: Point2d,
     thirdPoint: Point2d
-  ): Circle2d = {
+  ): Option[Circle2d] = {
     val u = firstPoint.vectorTo(secondPoint)
     val v = firstPoint.vectorTo(thirdPoint)
     val a = u.length
@@ -81,17 +88,20 @@ object Circle2d {
     val t2 = b2 * (c2 + a2 - b2)
     val t3 = c2 * (a2 + b2 - c2)
     val sum = t1 + t2 + t3
-    if (sum <= 0.0) throw GeometricException.CollinearPoints
-    val sumInverse = 1.0 / sum
-    val centerPoint = firstPoint + (t1 * sumInverse) * v + (t3 * sumInverse) * u
-    val firstRadius = centerPoint.distanceTo(firstPoint)
-    val secondRadius = centerPoint.distanceTo(secondPoint)
-    val thirdRadius = centerPoint.distanceTo(thirdPoint)
-    val radius = (firstRadius + secondRadius + thirdRadius) / 3.0;
-    Circle2d(centerPoint, radius)
+    if (sum <= 0.0) {
+      None
+    } else {
+      val sumInverse = 1.0 / sum
+      val centerPoint = firstPoint + (t1 * sumInverse) * v + (t3 * sumInverse) * u
+      val firstRadius = centerPoint.distanceTo(firstPoint)
+      val secondRadius = centerPoint.distanceTo(secondPoint)
+      val thirdRadius = centerPoint.distanceTo(thirdPoint)
+      val radius = (firstRadius + secondRadius + thirdRadius) / 3.0;
+      Some(Circle2d(centerPoint, radius))
+    }
   }
 
-  def circumcircle(triangle: Triangle2d): Circle2d =
+  def circumcircle(triangle: Triangle2d): Option[Circle2d] =
     Circle2d.throughThreePoints(triangle.firstVertex, triangle.secondVertex, triangle.thirdVertex)
 
   val Unit: Circle2d = Circle2d(Point2d.Origin, 1.0)

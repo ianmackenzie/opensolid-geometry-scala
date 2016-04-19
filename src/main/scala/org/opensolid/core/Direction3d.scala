@@ -52,14 +52,14 @@ final case class Direction3d(x: Double, y: Double, z: Double)
   def transformedBy(transformation: Transformation3d): Direction3d =
     transformation(this)
 
-  def projectedOnto(plane: Plane3d): Direction3d =
+  def projectedOnto(plane: Plane3d): Option[Direction3d] =
     vector.projectedOnto(plane).direction
 
-  def projectedInto(plane: Plane3d): Direction2d =
+  def projectedInto(plane: Plane3d): Option[Direction2d] =
     vector.projectedInto(plane).direction
 
   def normalDirection: Direction3d =
-    vector.normalDirection
+    vector.normalDirection.get
 
   def angleTo(that: Direction3d): Double =
     math.acos(x * that.x + y * that.y + z * that.z)

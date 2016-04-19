@@ -75,7 +75,7 @@ class Vector2dTestSuite extends TestSuite
     forAll {
       (vector: Vector2d) => {
         whenever(vector != Vector2d.Zero) {
-          val normalized = vector.normalized
+          val normalized = vector.normalized.get
           normalized.length.should(beEqualTo(1.0, 2 * eps(1.0)))
           val tolerance = 4 * eps(vector.length)
           vector.dot(normalized).should(beEqualTo(vector.length, tolerance))
@@ -89,7 +89,7 @@ class Vector2dTestSuite extends TestSuite
     forAll {
       (vector: Vector2d) => {
         whenever(vector != Vector2d.Zero) {
-          vector.direction.vector.shouldBe(vector.normalized)
+          vector.direction.get.vector.shouldBe(vector.normalized.get)
         }
       }
     }
@@ -111,8 +111,8 @@ class Vector2dTestSuite extends TestSuite
       (vector: Vector2d) => {
         whenever (vector != Vector2d.Zero) {
           val tolerance = 4 * eps(vector.length)
-          vector.componentIn(vector.normalDirection).should(beEqualTo(0.0, tolerance))
-          vector.componentIn(vector.direction).should(beEqualTo(vector.length, tolerance))
+          vector.componentIn(vector.normalDirection.get).should(beEqualTo(0.0, tolerance))
+          vector.componentIn(vector.direction.get).should(beEqualTo(vector.length, tolerance))
         }
       }
     }

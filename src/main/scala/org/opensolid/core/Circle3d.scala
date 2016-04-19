@@ -62,21 +62,25 @@ object Circle3d {
     secondPoint: Point3d,
     normalDirection: Direction3d,
     radius: Double
-  ): Circle3d = {
+  ): Option[Circle3d] = {
     val plane =
       Plane3d.fromPointAndNormal(Point3d.midpoint(firstPoint, secondPoint), normalDirection)
     Circle2d.throughTwoPoints(
       firstPoint.projectedInto(plane),
       secondPoint.projectedInto(plane),
       radius
-    ).placedOnto(plane)
+    ).map(_.placedOnto(plane))
   }
 
-  def throughThreePoints(firstPoint: Point3d, secondPoint: Point3d, thirdPoint: Point3d): Circle3d =
+  def throughThreePoints(
+    firstPoint: Point3d,
+    secondPoint: Point3d,
+    thirdPoint: Point3d
+  ): Option[Circle3d] =
     Circle3d.circumcircle(Triangle3d(firstPoint, secondPoint, thirdPoint))
 
-  def circumcircle(triangle: Triangle3d): Circle3d = {
+  def circumcircle(triangle: Triangle3d): Option[Circle3d] = {
     val plane = triangle.plane
-    Circle2d.circumcircle(triangle.projectedInto(plane)).placedOnto(plane)
+    Circle2d.circumcircle(triangle.projectedInto(plane)).map(_.placedOnto(plane))
   }
 }

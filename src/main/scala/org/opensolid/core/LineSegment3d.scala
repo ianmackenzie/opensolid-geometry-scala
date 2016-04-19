@@ -25,14 +25,14 @@ final case class LineSegment3d(startPoint: Point3d, endPoint: Point3d)
   def vector: Vector3d =
     startPoint.vectorTo(endPoint)
 
-  def direction: Direction3d =
+  def direction: Option[Direction3d] =
     vector.direction
 
-  def normalDirection: Direction3d =
-    direction.normalDirection
+  def normalDirection: Option[Direction3d] =
+    direction.map(_.normalDirection)
 
-  def axis: Axis3d =
-    Axis3d(startPoint, direction)
+  def axis: Option[Axis3d] =
+    direction.map(Axis3d(startPoint, _))
 
   def length: Double =
     vector.length

@@ -24,7 +24,7 @@ trait Direction2dGenerators {
   private[this] val randomDirection2d: Gen[Direction2d] = {
     val vectorGenerator = vectorWithin(VectorBounds2d(Interval(-1.0, 1.0), Interval(-1.0, 1.0)))
     val radiusPredicate = (vector: Vector2d) => Interval(0.25, 1.0).contains(vector.squaredLength)
-    vectorGenerator.retryUntil(radiusPredicate).map(_.direction)
+    vectorGenerator.retryUntil(radiusPredicate).map(_.direction.get)
   }
 
   val anyDirection2d: Gen[Direction2d] =

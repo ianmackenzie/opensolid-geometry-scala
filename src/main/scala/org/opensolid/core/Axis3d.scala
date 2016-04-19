@@ -26,11 +26,19 @@ final case class Axis3d(originPoint: Point3d, direction: Direction3d)
   def translatedTo(point: Point3d): Axis3d =
     Axis3d(point, direction)
 
-  def projectedOnto(plane: Plane3d): Axis3d =
-    Axis3d(originPoint.projectedOnto(plane), direction.projectedOnto(plane))
+  def projectedOnto(plane: Plane3d): Option[Axis3d] =
+    for {
+      projectedDirection <- direction.projectedOnto(plane)
+    } yield {
+      Axis3d(originPoint.projectedOnto(plane), projectedDirection)
+    }
 
-  def projectedInto(plane: Plane3d): Axis2d =
-    Axis2d(originPoint.projectedInto(plane), direction.projectedInto(plane))
+  def projectedInto(plane: Plane3d): Option[Axis2d] =
+    for {
+      projectedDirection <- direction.projectedInto(plane)
+    } yield {
+      Axis2d(originPoint.projectedInto(plane), projectedDirection)
+    }
 
   def normalPlane: Plane3d =
     Plane3d.fromPointAndNormal(originPoint, direction)
