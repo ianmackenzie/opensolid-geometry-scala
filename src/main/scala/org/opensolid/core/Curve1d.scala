@@ -18,6 +18,7 @@ import java.lang.Math
 import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.math
+import scala.util.Try
 
 trait Curve1d extends Bounded[Interval] {
   import Curve1d._
@@ -33,7 +34,7 @@ trait Curve1d extends Bounded[Interval] {
         Curve1d.this.bounds
     }
 
-  def roots(tolerance: Double, maxRootOrder: Int = 2): List[Root] =
+  def roots(tolerance: Double, maxRootOrder: Int = 2): Try[List[Root]] = Try {
     if (maxRootOrder < 0) {
       List.empty[Root]
     } else {
@@ -53,6 +54,17 @@ trait Curve1d extends Bounded[Interval] {
         derivatives(order) = CurveFunction1d.compile(derivativeExpression)
       }
 
+      // Check for any infinities
+      if (!function.isFiniteWithin(domain)) {
+        throw GeometricException.InfiniteFunctionValue
+      }
+      derivativeOrders.find(!derivatives(_).isFiniteWithin(domain)) match {
+        case Some(order) =>
+          throw GeometricException.InfiniteDerivativeValue(order)
+        case None =>
+          ()
+      }
+
       // Calculate tolerances for each derivative order: tolerance(n) = n! * tolerance / width^n
       val tolerances = Array.ofDim[Double](derivatives.size)
       tolerances(0) = tolerance
@@ -70,7 +82,7 @@ trait Curve1d extends Bounded[Interval] {
           val derivative = derivatives(order)
           val nextDerivativeBounds = results(order + 1)
           results(order) =
-            if (nextDerivativeBounds.isFinite && !nextDerivativeBounds.contains(0.0)) {
+            if (!nextDerivativeBounds.contains(0.0)) {
               derivative(xInterval.lowerBound).hull(derivative(xInterval.upperBound))
             } else {
               derivative(xInterval)
@@ -115,7 +127,7 @@ trait Curve1d extends Bounded[Interval] {
                 }
             }
           case None =>
-            tail
+            throw GeometricException.NoNonZeroDerivative
         }
       }
 
@@ -139,7 +151,11 @@ trait Curve1d extends Bounded[Interval] {
                   rootsWithin(leftInterval, rootsWithin(rightInterval, tail))
                 }
                 case None =>
-                  solveWithinTolerance(xInterval, tail)
+                  if (function.isZeroWithin(xInterval, tolerance)) {
+                    solveWithinTolerance(xInterval, tail)
+                  } else {
+                    throw GeometricException.FunctionDoesNotConverge
+                  }
               }
             }
           }
@@ -148,6 +164,7 @@ trait Curve1d extends Bounded[Interval] {
 
       rootsWithin(domain, List.empty[Root])
     }
+  }
 }
 
 object Curve1d {

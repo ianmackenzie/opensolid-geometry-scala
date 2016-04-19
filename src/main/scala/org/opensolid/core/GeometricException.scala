@@ -20,6 +20,14 @@ object GeometricException {
   case object ZeroVector extends GeometricException
 
   case object CollinearPoints extends GeometricException
+
+  case object InfiniteFunctionValue extends GeometricException
+
+  case class InfiniteDerivativeValue(order: Int) extends GeometricException
+
+  case object NoNonZeroDerivative extends GeometricException
+
+  case object FunctionDoesNotConverge extends GeometricException
 }
 
 
