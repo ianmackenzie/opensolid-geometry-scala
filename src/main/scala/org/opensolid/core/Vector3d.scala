@@ -60,7 +60,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def normalized: Vector3d = {
     val length = this.length
     if (length == 0.0) {
-      throw GeometricException("Cannot normalize zero length vector")
+      throw GeometricException.ZeroVector
     }
     this / length
   }
@@ -68,7 +68,7 @@ final case class Vector3d(x: Double, y: Double, z: Double) extends VectorTransfo
   def direction: Direction3d = {
     val length = this.length
     if (length == 0.0) {
-      throw GeometricException("Cannot find direction of zero length vector")
+      throw GeometricException.ZeroVector
     }
     Direction3d(x / length, y / length, z / length)
   }

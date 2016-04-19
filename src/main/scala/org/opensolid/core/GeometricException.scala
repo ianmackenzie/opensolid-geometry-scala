@@ -14,4 +14,12 @@
 
 package org.opensolid.core
 
-final case class GeometricException(message: String) extends Exception(message)
+sealed abstract class GeometricException extends Exception
+
+object GeometricException {
+  case object ZeroVector extends GeometricException
+
+  case object CollinearPoints extends GeometricException
+}
+
+

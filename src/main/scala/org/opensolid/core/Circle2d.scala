@@ -81,7 +81,7 @@ object Circle2d {
     val t2 = b2 * (c2 + a2 - b2)
     val t3 = c2 * (a2 + b2 - c2)
     val sum = t1 + t2 + t3
-    if (sum <= 0.0) throw GeometricException("Points are collinear")
+    if (sum <= 0.0) throw GeometricException.CollinearPoints
     val sumInverse = 1.0 / sum
     val centerPoint = firstPoint + (t1 * sumInverse) * v + (t3 * sumInverse) * u
     val firstRadius = centerPoint.distanceTo(firstPoint)

@@ -53,7 +53,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def normalized: Vector2d = {
     val length = this.length
     if (length == 0.0) {
-      throw GeometricException("Cannot normalize zero length vector")
+      throw GeometricException.ZeroVector
     }
     this / length
   }
@@ -61,7 +61,7 @@ final case class Vector2d(x: Double, y: Double) extends VectorTransformable2d[Ve
   def direction: Direction2d = {
     val length = this.length
     if (length == 0.0) {
-      throw GeometricException("Cannot find direction of zero length vector")
+      throw GeometricException.ZeroVector
     }
     Direction2d(x / length, y / length)
   }
