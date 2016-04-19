@@ -69,12 +69,12 @@ For example:</p><pre><span class="num">1.</span>millimeters <span class="cmt">//
 convert into meters, do all calculations in meters, then use <code>result.inFeet</code> to convert back to
 feet at the end for output. Use expressions such as <code>45.degrees</code> to pass fixed rotation angles
 to functions expecting values in radians.</p><h5> Naming conventions </h5><p>OpenSolid uses standard Scala naming conventions: values and functions are camelCase, types and
-constants (such as <code>Point3d.Origin</code>) are PascalCase. Other than well-established function names
-such as <code>equals</code> and <code>contains</code> (and, for symmetry, <code>overlaps</code>), functions returning Boolean
-results start with 'is' or 'has' (e.g. <code>point.isOn(plane, tolerance)</code>).</p><p>Functions transforming an object usually belong to the object being transformed, so for example
+constants (such as <code>Point3d.Origin</code>) are PascalCase. Other than some well-established function
+names such as <code>contains</code> (and, for symmetry, <code>overlaps</code>), functions returning Boolean results
+start with 'is' or 'has' (e.g. <code>point.isOn(plane, tolerance)</code>).</p><p>Functions transforming an object usually belong to the object being transformed, so for example
 one uses <code>point.projectedOnto(plane)</code> instead of something like <code>plane.project(point)</code>.
 In general, names have been chosen to make entire expressions read as naturally as possible as
-'noun phrases', for example <code>if (bounds.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
+noun phrases, for example <code>if (boundingBox.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
 vector-like classes, <code>VectorTransformable2d</code> or <code>VectorTransformable3d</code>). These provide support
 for the common transformations such as translations, rotations, and mirrors, as well as
 transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds types </h5><p>TODO</p><h5> Operators </h5><p>TODO (mention Java-friendly versions)</p><h5> Tuples </h5><p>TODO
@@ -91,7 +91,7 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -104,7 +104,7 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -154,41 +154,41 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
     </span>
       
     </li><li name="org.opensolid.core.Bounded" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Bounded[T]extendsAnyRef"></a>
-      <a id="Bounded[T]:Bounded[T]"></a>
+      <a id="Bounded[B&lt;:org.opensolid.core.Bounds[B]]extendsAny"></a>
+      <a id="Bounded[B&lt;:Bounds[B]]:Bounded[B]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="Bounded.html"><span class="name">Bounded</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="Bounded.html"><span class="name">Bounded</span></a><span class="tparams">[<span name="B">B &lt;: <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<span class="extype" name="org.opensolid.core.Bounded.B">B</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Bounded[T]extendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@Bounded[B&lt;:org.opensolid.core.Bounds[B]]extendsAny" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Bounds[T]extendsAnyRef"></a>
-      <a id="Bounds[T]:Bounds[T]"></a>
+      <a id="Bounds[B&lt;:org.opensolid.core.Bounds[B]]extendsAnyRef"></a>
+      <a id="Bounds[B&lt;:Bounds[B]]:Bounds[B]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="Bounds.html"><span class="name">Bounds</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="Bounds.html"><span class="name">Bounds</span></a><span class="tparams">[<span name="B">B &lt;: <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<span class="extype" name="org.opensolid.core.Bounds.B">B</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Bounds[T]extendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@Bounds[B&lt;:org.opensolid.core.Bounds[B]]extendsAnyRef" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Bounds2dextendsBounded[org.opensolid.core.Bounds2d]withProductwithSerializable"></a>
+      <a id="Bounds2dextendsBounds[org.opensolid.core.Bounds2d]withBounded[org.opensolid.core.Bounds2d]withProductwithSerializable"></a>
       <a id="Bounds2d:Bounds2d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -196,16 +196,16 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Bounds2d.html"><span class="name">Bounds2d</span></a><span class="params">(<span name="x">x: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="y">y: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result"> extends <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Bounds2d.html"><span class="name">Bounds2d</span></a><span class="params">(<span name="x">x: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="y">y: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result"> extends <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>] with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Bounds2dextendsBounded[org.opensolid.core.Bounds2d]withProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@Bounds2dextendsBounds[org.opensolid.core.Bounds2d]withBounded[org.opensolid.core.Bounds2d]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Bounds3dextendsBounded[org.opensolid.core.Bounds3d]withProductwithSerializable"></a>
+      <a id="Bounds3dextendsBounds[org.opensolid.core.Bounds3d]withBounded[org.opensolid.core.Bounds3d]withProductwithSerializable"></a>
       <a id="Bounds3d:Bounds3d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -213,10 +213,10 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Bounds3d.html"><span class="name">Bounds3d</span></a><span class="params">(<span name="x">x: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="y">y: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="z">z: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result"> extends <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds3d.html" class="extype" name="org.opensolid.core.Bounds3d">Bounds3d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Bounds3d.html"><span class="name">Bounds3d</span></a><span class="params">(<span name="x">x: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="y">y: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="z">z: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result"> extends <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<a href="Bounds3d.html" class="extype" name="org.opensolid.core.Bounds3d">Bounds3d</a>] with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Bounds3d.html" class="extype" name="org.opensolid.core.Bounds3d">Bounds3d</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Bounds3dextendsBounded[org.opensolid.core.Bounds3d]withProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@Bounds3dextendsBounds[org.opensolid.core.Bounds3d]withBounded[org.opensolid.core.Bounds3d]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -289,8 +289,59 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.CurveFunction1d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CurveFunction1dextendsDouble=&gt;Double"></a>
+      <a id="CurveFunction1d:CurveFunction1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CurveFunction1d.html"><span class="name">CurveFunction1d</span></a><span class="result"> extends (<span class="extype" name="scala.Double">Double</span>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@CurveFunction1dextendsDouble=&gt;Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.CurveFunction2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CurveFunction2dextendsDouble=&gt;org.opensolid.core.Point2d"></a>
+      <a id="CurveFunction2d:CurveFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CurveFunction2d.html"><span class="name">CurveFunction2d</span></a><span class="result"> extends (<span class="extype" name="scala.Double">Double</span>) ⇒ <a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@CurveFunction2dextendsDouble=&gt;org.opensolid.core.Point2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.CurveFunction3d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="CurveFunction3dextendsDouble=&gt;org.opensolid.core.Point3d"></a>
+      <a id="CurveFunction3d:CurveFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="CurveFunction3d.html"><span class="name">CurveFunction3d</span></a><span class="result"> extends (<span class="extype" name="scala.Double">Double</span>) ⇒ <a href="Point3d.html" class="extype" name="org.opensolid.core.Point3d">Point3d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@CurveFunction3dextendsDouble=&gt;org.opensolid.core.Point3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.CurveParameter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="CurveParameterextendsScalarExpression.Parameter[org.opensolid.core.CurveParameter]"></a>
+      <a id="CurveParameterextendsExpression1d.Parameter[org.opensolid.core.CurveParameter]"></a>
       <a id="CurveParameter:CurveParameter"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -298,10 +349,10 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="CurveParameter.html"><span class="name">CurveParameter</span></a><span class="result"> extends <a href="ScalarExpression$$Parameter.html" class="extype" name="org.opensolid.core.ScalarExpression.Parameter">Parameter</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>
+        <a href="CurveParameter.html"><span class="name">CurveParameter</span></a><span class="result"> extends <a href="Expression1d$$Parameter.html" class="extype" name="org.opensolid.core.Expression1d.Parameter">Parameter</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@CurveParameterextendsScalarExpression.Parameter[org.opensolid.core.CurveParameter]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@CurveParameterextendsExpression1d.Parameter[org.opensolid.core.CurveParameter]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -391,6 +442,57 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.Expression1d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Expression1d[P]extendsAnyRef"></a>
+      <a id="Expression1d[P]:Expression1d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Expression1d.html"><span class="name">Expression1d</span></a><span class="tparams">[<span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@Expression1d[P]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Expression2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Expression2d[P]extendsAnyRef"></a>
+      <a id="Expression2d[P]:Expression2d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Expression2d.html"><span class="name">Expression2d</span></a><span class="tparams">[<span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@Expression2d[P]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Expression3d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="Expression3d[P]extendsAnyRef"></a>
+      <a id="Expression3d[P]:Expression3d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">sealed abstract </span>
+        <span class="kind">class</span>
+      </span>
+      <span class="symbol">
+        <a href="Expression3d.html"><span class="name">Expression3d</span></a><span class="tparams">[<span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@Expression3d[P]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Frame2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Frame2dextendsTransformable2d[org.opensolid.core.Frame2d]withProductwithSerializable"></a>
       <a id="Frame2d:Frame2d"></a>
@@ -443,7 +545,7 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
     </span>
       
     </li><li name="org.opensolid.core.GeometricallyComparable" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="GeometricallyComparable[T]extendsAnyRef"></a>
+      <a id="GeometricallyComparable[T]extendsAny"></a>
       <a id="GeometricallyComparable[T]:GeometricallyComparable[T]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -451,10 +553,10 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a href="GeometricallyComparable.html"><span class="name">GeometricallyComparable</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a href="GeometricallyComparable.html"><span class="name">GeometricallyComparable</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.Any">Any</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@GeometricallyComparable[T]extendsAnyRef" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@GeometricallyComparable[T]extendsAny" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -494,7 +596,7 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
     </span>
       
     </li><li name="org.opensolid.core.Interval" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="IntervalextendsBounded[org.opensolid.core.Interval]withGeometricallyComparable[org.opensolid.core.Interval]withProductwithSerializable"></a>
+      <a id="IntervalextendsBounds[org.opensolid.core.Interval]withBounded[org.opensolid.core.Interval]withProductwithSerializable"></a>
       <a id="Interval:Interval"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -502,10 +604,10 @@ transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds 
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Interval.html"><span class="name">Interval</span></a><span class="params">(<span name="lowerBound">lowerBound: <span class="extype" name="scala.Double">Double</span></span>, <span name="upperBound">upperBound: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a href="Interval.html"><span class="name">Interval</span></a><span class="params">(<span name="lowerBound">lowerBound: <span class="extype" name="scala.Double">Double</span></span>, <span name="upperBound">upperBound: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@IntervalextendsBounded[org.opensolid.core.Interval]withGeometricallyComparable[org.opensolid.core.Interval]withProductwithSerializable" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@IntervalextendsBounds[org.opensolid.core.Interval]withBounded[org.opensolid.core.Interval]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -517,8 +619,8 @@ possible floating-point values that could result from applying the corresponding
 mathematical operation to on any combination of values from the inputs. For instance, the
 expression <code>Interval(1.0, 2.0) * Interval(-5.0, -3.0)</code> results in <code>Interval(-10.0, -3.0)</code> since
 the lowest possible product of values taken from those two intervals is <code>2.0 * (-5.0) == -10.0</code>
-and the highest possible product is <code>1.0 * (-3.0) == -3.0</code>.</p><p>Note that not only the endpoints are considered - <code>Interval.sin(Interval(0.0, math.Pi))</code> results
-in <code>Interval(0.0, 1.0)</code> even though <code>math.sin(0.0)</code> and <code>math.sin(math.Pi)</code> are both zero, since
+and the highest possible product is <code>1.0 * (-3.0) == -3.0</code>.</p><p>Note that not only the endpoints are considered - <code>Interval(0.0, math.Pi).sin</code> results in
+<code>Interval(0.0, 1.0)</code> even though <code>math.sin(0.0)</code> and <code>math.sin(math.Pi)</code> are both zero, since
 <code>math.sin(math.Pi / 2.0)</code> is 1.0 and <code>math.Pi / 2.0</code> is a possible value within
 <code>Interval(0.0, math.Pi)</code>.</p><p>Examples:</p><pre>scala&gt; <span class="kw">val</span> a = Interval(<span class="num">2.0</span>, <span class="num">3.0</span>)
 a: org.opensolid.core.Interval = Interval(<span class="num">2.0</span>,<span class="num">3.0</span>)
@@ -541,7 +643,7 @@ res2: <span class="std">Double</span> = -<span class="num">4.0</span>
 scala&gt; c.upperBound
 res3: <span class="std">Double</span> = -<span class="num">1.0</span>
 
-scala&gt; c.median
+scala&gt; c.midpoint
 res4: <span class="std">Double</span> = -<span class="num">2.5</span>
 
 scala&gt; c.width
@@ -733,40 +835,6 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.PointExpression2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="PointExpression2d[P]extendsAnyRef"></a>
-      <a id="PointExpression2d[P]:PointExpression2d[P]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">sealed abstract </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="PointExpression2d.html"><span class="name">PointExpression2d</span></a><span class="tparams">[<span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@PointExpression2d[P]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.PointExpression3d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="PointExpression3d[P]extendsAnyRef"></a>
-      <a id="PointExpression3d[P]:PointExpression3d[P]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">sealed abstract </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="PointExpression3d.html"><span class="name">PointExpression3d</span></a><span class="tparams">[<span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@PointExpression3d[P]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="org.opensolid.core.Rotation2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Rotation2dextendsTransformation2dwithProductwithSerializable"></a>
       <a id="Rotation2d:Rotation2d"></a>
@@ -836,69 +904,35 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
     </span>
       
     </li><li name="org.opensolid.core.Scalar" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ScalarextendsAnyVal"></a>
+      <a id="ScalarextendsAnyValwithBounded[org.opensolid.core.Interval]withGeometricallyComparable[org.opensolid.core.Scalar]withProductwithSerializable"></a>
       <a id="Scalar:Scalar"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a href="Scalar.html"><span class="name">Scalar</span></a><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
+        <a href="Scalar.html"><span class="name">Scalar</span></a><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span> with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="Scalar.html" class="extype" name="org.opensolid.core.Scalar">Scalar</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@ScalarextendsAnyVal" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.ScalarExpression" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="ScalarExpression[P]extendsAnyRef"></a>
-      <a id="ScalarExpression[P]:ScalarExpression[P]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">sealed abstract </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="ScalarExpression.html"><span class="name">ScalarExpression</span></a><span class="tparams">[<span name="P">P</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@ScalarExpression[P]extendsAnyRef" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.SpatialSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SpatialSet[T&lt;:org.opensolid.core.Bounded[B]withorg.opensolid.core.GeometricallyComparable[T],B]extendsIndexedSeq[T]"></a>
-      <a id="SpatialSet[T&lt;:Bounded[B]withGeometricallyComparable[T],B]:SpatialSet[T,B]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="SpatialSet.html"><span class="name">SpatialSet</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<span class="extype" name="org.opensolid.core.SpatialSet.B">B</span>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<span class="extype" name="org.opensolid.core.SpatialSet.T">T</span>]</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="scala.IndexedSeq">IndexedSeq</span>[<span class="extype" name="org.opensolid.core.SpatialSet.T">T</span>]</span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@SpatialSet[T&lt;:org.opensolid.core.Bounded[B]withorg.opensolid.core.GeometricallyComparable[T],B]extendsIndexedSeq[T]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@ScalarextendsAnyValwithBounded[org.opensolid.core.Interval]withGeometricallyComparable[org.opensolid.core.Scalar]withProductwithSerializable" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.SpatialTree" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="SpatialTree[T&lt;:org.opensolid.core.Bounded[B],B]extendsIterable[T]"></a>
-      <a id="SpatialTree[T&lt;:Bounded[B],B]:SpatialTree[T,B]"></a>
+      <a id="SpatialTree[T&lt;:org.opensolid.core.Bounded[B]withorg.opensolid.core.GeometricallyComparable[T],B&lt;:org.opensolid.core.Bounds[B]]extendsIterable[T]"></a>
+      <a id="SpatialTree[T&lt;:Bounded[B]withGeometricallyComparable[T],B&lt;:Bounds[B]]:SpatialTree[T,B]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">sealed abstract </span>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SpatialTree.html"><span class="name">SpatialTree</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<span class="extype" name="org.opensolid.core.SpatialTree.B">B</span>]</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="org.opensolid.core.SpatialTree.T">T</span>]</span>
+        <a href="SpatialTree.html"><span class="name">SpatialTree</span></a><span class="tparams">[<span name="T">T &lt;: <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<span class="extype" name="org.opensolid.core.SpatialTree.B">B</span>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<span class="extype" name="org.opensolid.core.SpatialTree.T">T</span>]</span>, <span name="B">B &lt;: <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<span class="extype" name="org.opensolid.core.SpatialTree.B">B</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="org.opensolid.core.SpatialTree.T">T</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@SpatialTree[T&lt;:org.opensolid.core.Bounded[B],B]extendsIterable[T]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@SpatialTree[T&lt;:org.opensolid.core.Bounded[B]withorg.opensolid.core.GeometricallyComparable[T],B&lt;:org.opensolid.core.Bounds[B]]extendsIterable[T]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -920,8 +954,59 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.SurfaceFunction1d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SurfaceFunction1dextendsorg.opensolid.core.Point2d=&gt;Double"></a>
+      <a id="SurfaceFunction1d:SurfaceFunction1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="SurfaceFunction1d.html"><span class="name">SurfaceFunction1d</span></a><span class="result"> extends (<a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a>) ⇒ <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceFunction1dextendsorg.opensolid.core.Point2d=&gt;Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.SurfaceFunction2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SurfaceFunction2dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Point2d"></a>
+      <a id="SurfaceFunction2d:SurfaceFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="SurfaceFunction2d.html"><span class="name">SurfaceFunction2d</span></a><span class="result"> extends (<a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a>) ⇒ <a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceFunction2dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Point2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.SurfaceFunction3d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="SurfaceFunction3dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Point3d"></a>
+      <a id="SurfaceFunction3d:SurfaceFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="SurfaceFunction3d.html"><span class="name">SurfaceFunction3d</span></a><span class="result"> extends (<a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a>) ⇒ <a href="Point3d.html" class="extype" name="org.opensolid.core.Point3d">Point3d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceFunction3dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Point3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.SurfaceParameter" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="SurfaceParameterextendsScalarExpression.Parameter[org.opensolid.core.SurfaceParameter]"></a>
+      <a id="SurfaceParameterextendsExpression1d.Parameter[org.opensolid.core.SurfaceParameter]"></a>
       <a id="SurfaceParameter:SurfaceParameter"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -929,10 +1014,10 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a href="SurfaceParameter.html"><span class="name">SurfaceParameter</span></a><span class="result"> extends <a href="ScalarExpression$$Parameter.html" class="extype" name="org.opensolid.core.ScalarExpression.Parameter">Parameter</a>[<a href="SurfaceParameter.html" class="extype" name="org.opensolid.core.SurfaceParameter">SurfaceParameter</a>]</span>
+        <a href="SurfaceParameter.html"><span class="name">SurfaceParameter</span></a><span class="result"> extends <a href="Expression1d$$Parameter.html" class="extype" name="org.opensolid.core.Expression1d.Parameter">Parameter</a>[<a href="SurfaceParameter.html" class="extype" name="org.opensolid.core.SurfaceParameter">SurfaceParameter</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@SurfaceParameterextendsScalarExpression.Parameter[org.opensolid.core.SurfaceParameter]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceParameterextendsExpression1d.Parameter[org.opensolid.core.SurfaceParameter]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1076,40 +1161,6 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Tuple2Extensions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Tuple2Extensions[T]extendsAnyVal"></a>
-      <a id="Tuple2Extensions[T]:Tuple2Extensions[T]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="package$$Tuple2Extensions.html"><span class="name">Tuple2Extensions</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Tuple2Extensions[T]extendsAnyVal" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Tuple3Extensions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Tuple3Extensions[T]extendsAnyVal"></a>
-      <a id="Tuple3Extensions[T]:Tuple3Extensions[T]"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">implicit final </span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a href="package$$Tuple3Extensions.html"><span class="name">Tuple3Extensions</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@Tuple3Extensions[T]extendsAnyVal" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="org.opensolid.core.Vector2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Vector2dextendsVectorTransformable2d[org.opensolid.core.Vector2d]withProductwithSerializable"></a>
       <a id="Vector2d:Vector2d"></a>
@@ -1178,6 +1229,40 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.VectorCurveFunction2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VectorCurveFunction2dextendsDouble=&gt;org.opensolid.core.Vector2d"></a>
+      <a id="VectorCurveFunction2d:VectorCurveFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorCurveFunction2d.html"><span class="name">VectorCurveFunction2d</span></a><span class="result"> extends (<span class="extype" name="scala.Double">Double</span>) ⇒ <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorCurveFunction2dextendsDouble=&gt;org.opensolid.core.Vector2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.VectorCurveFunction3d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VectorCurveFunction3dextendsDouble=&gt;org.opensolid.core.Vector3d"></a>
+      <a id="VectorCurveFunction3d:VectorCurveFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorCurveFunction3d.html"><span class="name">VectorCurveFunction3d</span></a><span class="result"> extends (<span class="extype" name="scala.Double">Double</span>) ⇒ <a href="Vector3d.html" class="extype" name="org.opensolid.core.Vector3d">Vector3d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorCurveFunction3dextendsDouble=&gt;org.opensolid.core.Vector3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.VectorExpression2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="VectorExpression2d[P]extendsAnyRef"></a>
       <a id="VectorExpression2d[P]:VectorExpression2d[P]"></a>
@@ -1208,6 +1293,40 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.package@VectorExpression3d[P]extendsAnyRef" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.VectorSurfaceFunction2d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VectorSurfaceFunction2dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Vector2d"></a>
+      <a id="VectorSurfaceFunction2d:VectorSurfaceFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorSurfaceFunction2d.html"><span class="name">VectorSurfaceFunction2d</span></a><span class="result"> extends (<a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a>) ⇒ <a href="Vector2d.html" class="extype" name="org.opensolid.core.Vector2d">Vector2d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorSurfaceFunction2dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Vector2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.VectorSurfaceFunction3d" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="VectorSurfaceFunction3dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Vector3d"></a>
+      <a id="VectorSurfaceFunction3d:VectorSurfaceFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorSurfaceFunction3d.html"><span class="name">VectorSurfaceFunction3d</span></a><span class="result"> extends (<a href="Point2d.html" class="extype" name="org.opensolid.core.Point2d">Point2d</a>) ⇒ <a href="Vector3d.html" class="extype" name="org.opensolid.core.Vector3d">Vector3d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorSurfaceFunction3dextendsorg.opensolid.core.Point2d=&gt;org.opensolid.core.Vector3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1355,6 +1474,74 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.Curve1d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Curve1d"></a>
+      <a id="Curve1d:Curve1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Curve1d$.html"><span class="name">Curve1d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@Curve1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.CurveFunction1d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CurveFunction1d"></a>
+      <a id="CurveFunction1d:CurveFunction1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CurveFunction1d$.html"><span class="name">CurveFunction1d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@CurveFunction1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.CurveFunction2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CurveFunction2d"></a>
+      <a id="CurveFunction2d:CurveFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CurveFunction2d$.html"><span class="name">CurveFunction2d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@CurveFunction2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.CurveFunction3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CurveFunction3d"></a>
+      <a id="CurveFunction3d:CurveFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="CurveFunction3d$.html"><span class="name">CurveFunction3d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@CurveFunction3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.CurveParameter" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="CurveParameter"></a>
       <a id="CurveParameter:CurveParameter"></a>
@@ -1440,19 +1627,53 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.ExpressionCompiler" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ExpressionCompiler"></a>
-      <a id="ExpressionCompiler:ExpressionCompiler"></a>
+    </li><li name="org.opensolid.core.Expression1d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Expression1d"></a>
+      <a id="Expression1d:Expression1d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a href="ExpressionCompiler$.html"><span class="name">ExpressionCompiler</span></a>
+        <a href="Expression1d$.html"><span class="name">Expression1d</span></a>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@ExpressionCompiler" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.package@Expression1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Expression2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Expression2d"></a>
+      <a id="Expression2d:Expression2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Expression2d$.html"><span class="name">Expression2d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@Expression2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Expression3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Expression3d"></a>
+      <a id="Expression3d:Expression3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="Expression3d$.html"><span class="name">Expression3d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@Expression3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1559,6 +1780,40 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.ParametricCurve1d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParametricCurve1d"></a>
+      <a id="ParametricCurve1d:ParametricCurve1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParametricCurve1d$.html"><span class="name">ParametricCurve1d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@ParametricCurve1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.ParametricCurve2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ParametricCurve2d"></a>
+      <a id="ParametricCurve2d:ParametricCurve2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="ParametricCurve2d$.html"><span class="name">ParametricCurve2d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@ParametricCurve2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Plane3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Plane3d"></a>
       <a id="Plane3d:Plane3d"></a>
@@ -1610,74 +1865,6 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.PointExpression2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="PointExpression2d"></a>
-      <a id="PointExpression2d:PointExpression2d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="PointExpression2d$.html"><span class="name">PointExpression2d</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@PointExpression2d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.PointExpression3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="PointExpression3d"></a>
-      <a id="PointExpression3d:PointExpression3d"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="PointExpression3d$.html"><span class="name">PointExpression3d</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@PointExpression3d" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.ScalarExpression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ScalarExpression"></a>
-      <a id="ScalarExpression:ScalarExpression"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="ScalarExpression$.html"><span class="name">ScalarExpression</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@ScalarExpression" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.SpatialSet" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="SpatialSet"></a>
-      <a id="SpatialSet:SpatialSet"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a href="SpatialSet$.html"><span class="name">SpatialSet</span></a>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.package@SpatialSet" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
     </li><li name="org.opensolid.core.SpatialTree" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="SpatialTree"></a>
       <a id="SpatialTree:SpatialTree"></a>
@@ -1691,6 +1878,57 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.package@SpatialTree" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.SurfaceFunction1d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SurfaceFunction1d"></a>
+      <a id="SurfaceFunction1d:SurfaceFunction1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SurfaceFunction1d$.html"><span class="name">SurfaceFunction1d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceFunction1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.SurfaceFunction2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SurfaceFunction2d"></a>
+      <a id="SurfaceFunction2d:SurfaceFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SurfaceFunction2d$.html"><span class="name">SurfaceFunction2d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceFunction2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.SurfaceFunction3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="SurfaceFunction3d"></a>
+      <a id="SurfaceFunction3d:SurfaceFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="SurfaceFunction3d$.html"><span class="name">SurfaceFunction3d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@SurfaceFunction3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1797,6 +2035,23 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.TupleExtensions" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="TupleExtensions"></a>
+      <a id="TupleExtensions:TupleExtensions"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="TupleExtensions$.html"><span class="name">TupleExtensions</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@TupleExtensions" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Vector2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Vector2d"></a>
       <a id="Vector2d:Vector2d"></a>
@@ -1865,6 +2120,40 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.VectorCurveFunction2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VectorCurveFunction2d"></a>
+      <a id="VectorCurveFunction2d:VectorCurveFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorCurveFunction2d$.html"><span class="name">VectorCurveFunction2d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorCurveFunction2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.VectorCurveFunction3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VectorCurveFunction3d"></a>
+      <a id="VectorCurveFunction3d:VectorCurveFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorCurveFunction3d$.html"><span class="name">VectorCurveFunction3d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorCurveFunction3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.VectorExpression2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="VectorExpression2d"></a>
       <a id="VectorExpression2d:VectorExpression2d"></a>
@@ -1895,6 +2184,40 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </span>
       </h4><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.package@VectorExpression3d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.VectorSurfaceFunction2d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VectorSurfaceFunction2d"></a>
+      <a id="VectorSurfaceFunction2d:VectorSurfaceFunction2d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorSurfaceFunction2d$.html"><span class="name">VectorSurfaceFunction2d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorSurfaceFunction2d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.VectorSurfaceFunction3d" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="VectorSurfaceFunction3d"></a>
+      <a id="VectorSurfaceFunction3d:VectorSurfaceFunction3d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a href="VectorSurfaceFunction3d$.html"><span class="name">VectorSurfaceFunction3d</span></a>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.package@VectorSurfaceFunction3d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

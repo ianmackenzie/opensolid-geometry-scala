@@ -28,10 +28,12 @@
         </head>
         <body class="type">
       <div id="definition">
-        <img alt="Class" src="../../../lib/class_big.png" />
+        <a href="ParametricCurve1d$.html" title="See companion object"><img alt="Class/Object" src="../../../lib/class_to_object_big.png" /></a>
         <p id="owner"><a href="../../package.html" class="extype" name="org">org</a>.<a href="../package.html" class="extype" name="org.opensolid">opensolid</a>.<a href="package.html" class="extype" name="org.opensolid.core">core</a></p>
-        <h1>ParametricCurve1d</h1><h3><span class="morelinks"><div>Related Doc:
-            <a href="package.html" class="extype" name="org.opensolid.core">package core</a>
+        <h1><a href="ParametricCurve1d$.html" title="See companion object">ParametricCurve1d</a></h1><h3><span class="morelinks"><div>
+            Related Docs:
+            <a href="ParametricCurve1d$.html" title="See companion object">object ParametricCurve1d</a>
+            | <a href="package.html" class="extype" name="org.opensolid.core">package core</a>
           </div></span></h3><span class="permalink">
       <a href="../../../index.html#org.opensolid.core.ParametricCurve1d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
@@ -62,7 +64,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -75,7 +77,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -89,7 +91,7 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.opensolid.core.ParametricCurve1d#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(expression:org.opensolid.core.ScalarExpression[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d"></a>
+      <a id="&lt;init&gt;(expression:org.opensolid.core.Expression1d[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d"></a>
       <a id="&lt;init&gt;:ParametricCurve1d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
@@ -97,10 +99,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ParametricCurve1d</span><span class="params">(<span name="expression">expression: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>, <span name="domain">domain: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span>
+        <span class="name">ParametricCurve1d</span><span class="params">(<span name="expression">expression: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>, <span name="domain">domain: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@&lt;init&gt;(expression:org.opensolid.core.ScalarExpression[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@&lt;init&gt;(expression:org.opensolid.core.Expression1d[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -273,53 +275,36 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.opensolid.core.ParametricCurve1d#evaluate" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="evaluate(parameterBounds:org.opensolid.core.Interval):org.opensolid.core.Interval"></a>
-      <a id="evaluate(Interval):Interval"></a>
+    </li><li name="org.opensolid.core.ParametricCurve1d#evaluateAt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="evaluateAt(parameterValue:Double):Double"></a>
+      <a id="evaluateAt(Double):Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">evaluate</span><span class="params">(<span name="parameterBounds">parameterBounds: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+        <span class="name">evaluateAt</span><span class="params">(<span name="parameterValue">parameterValue: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@evaluate(parameterBounds:org.opensolid.core.Interval):org.opensolid.core.Interval" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.ParametricCurve1d#evaluate" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="evaluate(parameterValue:Double):Double"></a>
-      <a id="evaluate(Double):Double"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">evaluate</span><span class="params">(<span name="parameterValue">parameterValue: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@evaluate(parameterValue:Double):Double" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@evaluateAt(parameterValue:Double):Double" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.ParametricCurve1d#expression" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="expression:org.opensolid.core.ScalarExpression[org.opensolid.core.CurveParameter]"></a>
-      <a id="expression:ScalarExpression[CurveParameter]"></a>
+      <a id="expression:org.opensolid.core.Expression1d[org.opensolid.core.CurveParameter]"></a>
+      <a id="expression:Expression1d[CurveParameter]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">expression</span><span class="result">: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>
+        <span class="name">expression</span><span class="result">: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@expression:org.opensolid.core.ScalarExpression[org.opensolid.core.CurveParameter]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@expression:org.opensolid.core.Expression1d[org.opensolid.core.CurveParameter]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -347,6 +332,23 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="org.opensolid.core.ParametricCurve1d#function" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="function:org.opensolid.core.CurveFunction1d"></a>
+      <a id="function:CurveFunction1d"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">function</span><span class="result">: <a href="CurveFunction1d.html" class="extype" name="org.opensolid.core.CurveFunction1d">CurveFunction1d</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@function:org.opensolid.core.CurveFunction1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.AnyRef#getClass" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <a id="getClass():Class[_]"></a>
@@ -467,18 +469,35 @@
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.ParametricCurve1d">ParametricCurve1d</a> → <a href="Curve1d.html" class="extype" name="org.opensolid.core.Curve1d">Curve1d</a></dd></dl></div>
     </li><li name="org.opensolid.core.Curve1d#parameterizedBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="parameterizedBy(expression:org.opensolid.core.ScalarExpression[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d"></a>
-      <a id="parameterizedBy(ScalarExpression[CurveParameter],Interval):ParametricCurve1d"></a>
+      <a id="parameterizedBy(expression:org.opensolid.core.Expression1d[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d"></a>
+      <a id="parameterizedBy(Expression1d[CurveParameter],Interval):ParametricCurve1d"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">parameterizedBy</span><span class="params">(<span name="expression">expression: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>, <span name="domain">domain: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.ParametricCurve1d">ParametricCurve1d</a></span>
+        <span class="name">parameterizedBy</span><span class="params">(<span name="expression">expression: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<a href="CurveParameter.html" class="extype" name="org.opensolid.core.CurveParameter">CurveParameter</a>]</span>, <span name="domain">domain: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.ParametricCurve1d">ParametricCurve1d</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@parameterizedBy(expression:org.opensolid.core.ScalarExpression[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@parameterizedBy(expression:org.opensolid.core.Expression1d[org.opensolid.core.CurveParameter],domain:org.opensolid.core.Interval):org.opensolid.core.ParametricCurve1d" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Curve1d.html" class="extype" name="org.opensolid.core.Curve1d">Curve1d</a></dd></dl></div>
+    </li><li name="org.opensolid.core.Curve1d#roots" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="roots(tolerance:Double,maxRootOrder:Int):List[org.opensolid.core.Curve1d.Root]"></a>
+      <a id="roots(Double,Int):List[Root]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">roots</span><span class="params">(<span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>, <span name="maxRootOrder">maxRootOrder: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">2</span></span>)</span><span class="result">: <span class="extype" name="scala.List">List</span>[<a href="Curve1d$$Root.html" class="extype" name="org.opensolid.core.Curve1d.Root">Root</a>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.ParametricCurve1d@roots(tolerance:Double,maxRootOrder:Int):List[org.opensolid.core.Curve1d.Root]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>

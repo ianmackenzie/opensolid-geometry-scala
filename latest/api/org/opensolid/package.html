@@ -109,12 +109,12 @@ For example:</p><pre><span class="num">1.</span>millimeters <span class="cmt">//
 convert into meters, do all calculations in meters, then use <code>result.inFeet</code> to convert back to
 feet at the end for output. Use expressions such as <code>45.degrees</code> to pass fixed rotation angles
 to functions expecting values in radians.</p><h5> Naming conventions </h5><p>OpenSolid uses standard Scala naming conventions: values and functions are camelCase, types and
-constants (such as <code>Point3d.Origin</code>) are PascalCase. Other than well-established function names
-such as <code>equals</code> and <code>contains</code> (and, for symmetry, <code>overlaps</code>), functions returning Boolean
-results start with 'is' or 'has' (e.g. <code>point.isOn(plane, tolerance)</code>).</p><p>Functions transforming an object usually belong to the object being transformed, so for example
+constants (such as <code>Point3d.Origin</code>) are PascalCase. Other than some well-established function
+names such as <code>contains</code> (and, for symmetry, <code>overlaps</code>), functions returning Boolean results
+start with 'is' or 'has' (e.g. <code>point.isOn(plane, tolerance)</code>).</p><p>Functions transforming an object usually belong to the object being transformed, so for example
 one uses <code>point.projectedOnto(plane)</code> instead of something like <code>plane.project(point)</code>.
 In general, names have been chosen to make entire expressions read as naturally as possible as
-'noun phrases', for example <code>if (bounds.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
+noun phrases, for example <code>if (boundingBox.contains(lineSegment.rotatedAbout(axis, angle)) ...</code>.</p><h5> Transformations framework </h5><p>Many OpenSolid classes inherit from the <code>Transformable2d</code> or <code>Transformable3d</code> traits (or for
 vector-like classes, <code>VectorTransformable2d</code> or <code>VectorTransformable3d</code>). These provide support
 for the common transformations such as translations, rotations, and mirrors, as well as
 transformations between local and global coordinates.</p><p>TODO</p><h5> Bounds types </h5><p>TODO</p><h5> Operators </h5><p>TODO (mention Java-friendly versions)</p><h5> Tuples </h5><p>TODO

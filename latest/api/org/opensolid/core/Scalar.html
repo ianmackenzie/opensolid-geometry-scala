@@ -42,16 +42,16 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Scalar</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span></span>
+        <span class="name">Scalar</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <span class="extype" name="scala.AnyVal">AnyVal</span> with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Scalar">Scalar</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyVal">AnyVal</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Scalar">Scalar</a>], <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>], <span class="extype" name="scala.AnyVal">AnyVal</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -62,20 +62,20 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.opensolid.core.Scalar"><span>Scalar</span></li><li class="in" name="scala.AnyVal"><span>AnyVal</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.opensolid.core.Scalar"><span>Scalar</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="org.opensolid.core.GeometricallyComparable"><span>GeometricallyComparable</span></li><li class="in" name="org.opensolid.core.Bounded"><span>Bounded</span></li><li class="in" name="scala.AnyVal"><span>AnyVal</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -182,6 +182,23 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.opensolid.core.Scalar#bounds" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="bounds:org.opensolid.core.Interval"></a>
+      <a id="bounds:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bounds</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Scalar@bounds:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Scalar">Scalar</a> → <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a></dd></dl></div>
     </li><li name="org.opensolid.core.Scalar#centimeters" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="centimeters:Double"></a>
       <a id="centimeters:Double"></a>
@@ -217,18 +234,18 @@
     </span>
       
     </li><li name="org.opensolid.core.Scalar#dividedBy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="dividedBy[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]"></a>
-      <a id="dividedBy[P](ScalarExpression[P]):ScalarExpression[P]"></a>
+      <a id="dividedBy[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]"></a>
+      <a id="dividedBy[P](Expression1d[P]):Expression1d[P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">dividedBy</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="scalarExpression">scalarExpression: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.dividedBy.P">P</span>]</span>)</span><span class="result">: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.dividedBy.P">P</span>]</span>
+        <span class="name">dividedBy</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="expression">expression: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.dividedBy.P">P</span>]</span>)</span><span class="result">: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.dividedBy.P">P</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Scalar@dividedBy[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Scalar@dividedBy[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -539,6 +556,23 @@
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.Scalar#isEqualTo" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="isEqualTo(that:org.opensolid.core.Scalar,tolerance:Double):Boolean"></a>
+      <a id="isEqualTo(Scalar,Double):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isEqualTo</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Scalar">Scalar</a></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Scalar@isEqualTo(that:org.opensolid.core.Scalar,tolerance:Double):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Scalar">Scalar</a> → <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a></dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -556,19 +590,19 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="org.opensolid.core.Scalar#isNotZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="isNotZero(tolerance:Double):Boolean"></a>
-      <a id="isNotZero(Double):Boolean"></a>
+    </li><li name="org.opensolid.core.Scalar#isNonZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isNonZero(tolerance:Double):Boolean"></a>
+      <a id="isNonZero(Double):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isNotZero</span><span class="params">(<span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">isNonZero</span><span class="params">(<span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Scalar@isNotZero(tolerance:Double):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Scalar@isNonZero(tolerance:Double):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -676,18 +710,18 @@
     </span>
       
     </li><li name="org.opensolid.core.Scalar#minus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="minus[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]"></a>
-      <a id="minus[P](ScalarExpression[P]):ScalarExpression[P]"></a>
+      <a id="minus[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]"></a>
+      <a id="minus[P](Expression1d[P]):Expression1d[P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">minus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="scalarExpression">scalarExpression: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.minus.P">P</span>]</span>)</span><span class="result">: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.minus.P">P</span>]</span>
+        <span class="name">minus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="expression">expression: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.minus.P">P</span>]</span>)</span><span class="result">: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.minus.P">P</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Scalar@minus[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Scalar@minus[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -710,18 +744,18 @@
     </span>
       
     </li><li name="org.opensolid.core.Scalar#plus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="plus[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]"></a>
-      <a id="plus[P](ScalarExpression[P]):ScalarExpression[P]"></a>
+      <a id="plus[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]"></a>
+      <a id="plus[P](Expression1d[P]):Expression1d[P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">plus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="scalarExpression">scalarExpression: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.plus.P">P</span>]</span>)</span><span class="result">: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.plus.P">P</span>]</span>
+        <span class="name">plus</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="expression">expression: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.plus.P">P</span>]</span>)</span><span class="result">: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.plus.P">P</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Scalar@plus[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Scalar@plus[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -778,6 +812,23 @@
     </span>
       
     </li><li name="org.opensolid.core.Scalar#times" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="times[P](vectorExpression:org.opensolid.core.VectorExpression3d[P]):org.opensolid.core.VectorExpression3d[P]"></a>
+      <a id="times[P](VectorExpression3d[P]):VectorExpression3d[P]"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">times</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="vectorExpression">vectorExpression: <a href="VectorExpression3d.html" class="extype" name="org.opensolid.core.VectorExpression3d">VectorExpression3d</a>[<span class="extype" name="org.opensolid.core.Scalar.times.P">P</span>]</span>)</span><span class="result">: <a href="VectorExpression3d.html" class="extype" name="org.opensolid.core.VectorExpression3d">VectorExpression3d</a>[<span class="extype" name="org.opensolid.core.Scalar.times.P">P</span>]</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Scalar@times[P](vectorExpression:org.opensolid.core.VectorExpression3d[P]):org.opensolid.core.VectorExpression3d[P]" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Scalar#times" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="times[P](vectorExpression:org.opensolid.core.VectorExpression2d[P]):org.opensolid.core.VectorExpression2d[P]"></a>
       <a id="times[P](VectorExpression2d[P]):VectorExpression2d[P]"></a>
       <h4 class="signature">
@@ -795,18 +846,18 @@
     </span>
       
     </li><li name="org.opensolid.core.Scalar#times" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="times[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]"></a>
-      <a id="times[P](ScalarExpression[P]):ScalarExpression[P]"></a>
+      <a id="times[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]"></a>
+      <a id="times[P](Expression1d[P]):Expression1d[P]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">times</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="scalarExpression">scalarExpression: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.times.P">P</span>]</span>)</span><span class="result">: <a href="ScalarExpression.html" class="extype" name="org.opensolid.core.ScalarExpression">ScalarExpression</a>[<span class="extype" name="org.opensolid.core.Scalar.times.P">P</span>]</span>
+        <span class="name">times</span><span class="tparams">[<span name="P">P</span>]</span><span class="params">(<span name="expression">expression: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.times.P">P</span>]</span>)</span><span class="result">: <a href="Expression1d.html" class="extype" name="org.opensolid.core.Expression1d">Expression1d</a>[<span class="extype" name="org.opensolid.core.Scalar.times.P">P</span>]</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Scalar@times[P](scalarExpression:org.opensolid.core.ScalarExpression[P]):org.opensolid.core.ScalarExpression[P]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Scalar@times[P](expression:org.opensolid.core.Expression1d[P]):org.opensolid.core.Expression1d[P]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -896,23 +947,6 @@
       </a>
     </span>
       
-    </li><li name="scala.Any#toString" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
-      <a id="toString():String"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Scalar@toString():String" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="org.opensolid.core.Scalar#value" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="value:Double"></a>
       <a id="value:Double"></a>
@@ -956,7 +990,19 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyVal">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="org.opensolid.core.GeometricallyComparable">
+              <h3>Inherited from <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Scalar">Scalar</a>]</h3>
+            </div><div class="parent" name="org.opensolid.core.Bounded">
+              <h3>Inherited from <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a>]</h3>
+            </div><div class="parent" name="scala.AnyVal">
               <h3>Inherited from <span class="extype" name="scala.AnyVal">AnyVal</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

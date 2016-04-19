@@ -47,7 +47,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">Interval</span><span class="params">(<span name="lowerBound">lowerBound: <span class="extype" name="scala.Double">Double</span></span>, <span name="upperBound">upperBound: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">Interval</span><span class="params">(<span name="lowerBound">lowerBound: <span class="extype" name="scala.Double">Double</span></span>, <span name="upperBound">upperBound: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result"> extends <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
       
@@ -59,8 +59,8 @@ possible floating-point values that could result from applying the corresponding
 mathematical operation to on any combination of values from the inputs. For instance, the
 expression <code>Interval(1.0, 2.0) * Interval(-5.0, -3.0)</code> results in <code>Interval(-10.0, -3.0)</code> since
 the lowest possible product of values taken from those two intervals is <code>2.0 * (-5.0) == -10.0</code>
-and the highest possible product is <code>1.0 * (-3.0) == -3.0</code>.</p><p>Note that not only the endpoints are considered - <code>Interval.sin(Interval(0.0, math.Pi))</code> results
-in <code>Interval(0.0, 1.0)</code> even though <code>math.sin(0.0)</code> and <code>math.sin(math.Pi)</code> are both zero, since
+and the highest possible product is <code>1.0 * (-3.0) == -3.0</code>.</p><p>Note that not only the endpoints are considered - <code>Interval(0.0, math.Pi).sin</code> results in
+<code>Interval(0.0, 1.0)</code> even though <code>math.sin(0.0)</code> and <code>math.sin(math.Pi)</code> are both zero, since
 <code>math.sin(math.Pi / 2.0)</code> is 1.0 and <code>math.Pi / 2.0</code> is a possible value within
 <code>Interval(0.0, math.Pi)</code>.</p><p>Examples:</p><pre>scala&gt; <span class="kw">val</span> a = Interval(<span class="num">2.0</span>, <span class="num">3.0</span>)
 a: org.opensolid.core.Interval = Interval(<span class="num">2.0</span>,<span class="num">3.0</span>)
@@ -83,13 +83,13 @@ res2: <span class="std">Double</span> = -<span class="num">4.0</span>
 scala&gt; c.upperBound
 res3: <span class="std">Double</span> = -<span class="num">1.0</span>
 
-scala&gt; c.median
+scala&gt; c.midpoint
 res4: <span class="std">Double</span> = -<span class="num">2.5</span>
 
 scala&gt; c.width
 res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>], <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>], <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -100,20 +100,20 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
                 <span class="filtertype">Inherited<br />
                 </span>
                 <ol id="linearization">
-                  <li class="in" name="org.opensolid.core.Interval"><span>Interval</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="org.opensolid.core.GeometricallyComparable"><span>GeometricallyComparable</span></li><li class="in" name="org.opensolid.core.Bounded"><span>Bounded</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                  <li class="in" name="org.opensolid.core.Interval"><span>Interval</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="org.opensolid.core.Bounded"><span>Bounded</span></li><li class="in" name="org.opensolid.core.Bounds"><span>Bounds</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                 </ol>
               </div><div id="ancestors">
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -356,6 +356,23 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       
+    </li><li name="org.opensolid.core.Interval#acos" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="acos:org.opensolid.core.Interval"></a>
+      <a id="acos:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">acos</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@acos:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <a id="asInstanceOf[T0]:T0"></a>
@@ -373,6 +390,57 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.opensolid.core.Interval#asin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="asin:org.opensolid.core.Interval"></a>
+      <a id="asin:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asin</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@asin:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Interval#atan" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="atan:org.opensolid.core.Interval"></a>
+      <a id="atan:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">atan</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@atan:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Interval#bisected" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="bisected(index:Int):(org.opensolid.core.Interval,org.opensolid.core.Interval)"></a>
+      <a id="bisected(Int):(Interval,Interval)"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bisected</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: (<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>, <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@bisected(index:Int):(org.opensolid.core.Interval,org.opensolid.core.Interval)" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#bisected" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="bisected:(org.opensolid.core.Interval,org.opensolid.core.Interval)"></a>
       <a id="bisected:(Interval,Interval)"></a>
@@ -389,9 +457,10 @@ res5: <span class="std">Double</span> = <span class="num">3.0</span></pre></div>
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Returns a pair of intervals equal to this interval split into two halves.</p><div class="fullcomment"><div class="comment cmt"><p>Returns a pair of intervals equal to this interval split into two halves.</p><p>If this interval has finite width, then the split point is this interval's median and the two
-returned intervals are <code>Interval(lowerBound, median)</code> and <code>Interval(median, upperBound)</code>.
-Otherwise, a set of heuristics is used to find a reasonable split point.</p><p>Examples:</p><pre>scala&gt; Interval(<span class="num">2.0</span>, <span class="num">3.0</span>).bisected
+      <p class="shortcomment cmt">Returns a pair of intervals equal to this interval split into two halves.</p><div class="fullcomment"><div class="comment cmt"><p>Returns a pair of intervals equal to this interval split into two halves.</p><p>If this interval has finite width, then the split point is this interval's midpoint and the
+two returned intervals are <code>Interval(lowerBound, midpoint)</code> and
+<code>Interval(midpoint, upperBound)</code>. Otherwise, a set of heuristics is used to find a reasonable
+split point.</p><p>Examples:</p><pre>scala&gt; Interval(<span class="num">2.0</span>, <span class="num">3.0</span>).bisected
 res0: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
   (Interval(<span class="num">2.0</span>, <span class="num">2.5</span>),Interval(<span class="num">2.5</span>, <span class="num">3.0</span>))
 
@@ -410,6 +479,23 @@ res3: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
 scala&gt; Interval.Empty.bisected
 res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
   (Interval.Empty,Interval.Empty)</pre></div></div>
+    </li><li name="org.opensolid.core.Interval#bisectedAt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="bisectedAt(value:Double):(org.opensolid.core.Interval,org.opensolid.core.Interval)"></a>
+      <a id="bisectedAt(Double):(Interval,Interval)"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">bisectedAt</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: (<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>, <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>)</span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@bisectedAt(value:Double):(org.opensolid.core.Interval,org.opensolid.core.Interval)" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#bounds" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="bounds:org.opensolid.core.Interval"></a>
       <a id="bounds:Interval"></a>
@@ -450,39 +536,23 @@ res4: (org.opensolid.core.Interval, org.opensolid.core.Interval) =
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="org.opensolid.core.Interval#contains" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="contains(that:org.opensolid.core.Interval,tolerance:Double):Boolean"></a>
-      <a id="contains(Interval,Double):Boolean"></a>
+    </li><li name="org.opensolid.core.Interval#component" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="component(index:Int):org.opensolid.core.Interval"></a>
+      <a id="component(Int):Interval"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">contains</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">component</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Interval@contains(that:org.opensolid.core.Interval,tolerance:Double):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Interval@component(index:Int):org.opensolid.core.Interval" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Returns true if this interval, expanded by the given tolerance, fully contains the given
-interval.</p><div class="fullcomment"><div class="comment cmt"><p>Returns true if this interval, expanded by the given tolerance, fully contains the given
-interval. <code>interval.contains(that, tolerance)</code> is equivalent to
-<code>Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance).contains(that)</code>.
-Note that this means it is also possible to use a negative tolerance to make the containment
-check more strict by not accepting intervals that come too close to to this interval's
-endpoints.</p><p>Examples:</p><pre>scala&gt; Interval(<span class="num">5</span>, <span class="num">10</span>).contains(Interval(<span class="num">8</span>, <span class="num">10.000001</span>))
-res0: <span class="std">Boolean</span> = <span class="kw">false</span>
-
-scala&gt; Interval(<span class="num">5</span>, <span class="num">10</span>).contains(Interval(<span class="num">8</span>, <span class="num">10.000001</span>), <span class="num">0.001</span>)
-res1: <span class="std">Boolean</span> = <span class="kw">true</span>
-
-scala&gt; Interval(<span class="num">5</span>, <span class="num">10</span>).contains(Interval(<span class="num">8</span>, <span class="num">9.99999</span>))
-res2: <span class="std">Boolean</span> = <span class="kw">true</span>
-
-scala&gt; Interval(<span class="num">5</span>, <span class="num">10</span>).contains(Interval(<span class="num">8</span>, <span class="num">9.99999</span>), -<span class="num">0.001</span>)
-res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#contains" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="contains(that:org.opensolid.core.Interval):Boolean"></a>
       <a id="contains(Interval):Boolean"></a>
@@ -508,38 +578,7 @@ scala&gt; Interval(<span class="num">5</span>, <span class="num">10</span>).cont
 res1: <span class="std">Boolean</span> = <span class="kw">true</span>
 
 scala&gt; Interval(<span class="num">5</span>, <span class="num">10</span>).contains(Interval(<span class="num">8</span>, <span class="num">12</span>))
-res2: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div></div>
-    </li><li name="org.opensolid.core.Interval#contains" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="contains(value:Double,tolerance:Double):Boolean"></a>
-      <a id="contains(Double,Double):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">contains</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Interval@contains(value:Double,tolerance:Double):Boolean" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Returns true if this interval, expanded by the given tolerance, contains the given value.</p><div class="fullcomment"><div class="comment cmt"><p>Returns true if this interval, expanded by the given tolerance, contains the given value.
-<code>interval.contains(value, tolerance)</code> is equivalent to
-<code>Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance).contains(value)</code>.
-Note that this means it is also possible to use a negative tolerance to make the containment
-check more strict by not accepting values that are too close to this interval's endpoints.</p><p>Examples:</p><pre>scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).contains(<span class="num">3.000001</span>)
-res0: <span class="std">Boolean</span> = <span class="kw">false</span>
-
-scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).contains(<span class="num">3.000001</span>, <span class="num">0.001</span>)
-res1: <span class="std">Boolean</span> = <span class="kw">true</span>
-
-scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).contains(<span class="num">2.000001</span>)
-res2: <span class="std">Boolean</span> = <span class="kw">true</span>
-
-scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).contains(<span class="num">2.000001</span>, -<span class="num">0.001</span>)
-res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div></div>
+res2: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#contains" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="contains(value:Double):Boolean"></a>
       <a id="contains(Double):Boolean"></a>
@@ -557,6 +596,23 @@ res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
       </a>
     </span>
       <p class="shortcomment cmt">Returns true if the given value is between the upper and lower bounds of this interval.</p>
+    </li><li name="org.opensolid.core.Interval#cos" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="cos:org.opensolid.core.Interval"></a>
+      <a id="cos:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cos</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@cos:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#dividedBy" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="dividedBy(that:org.opensolid.core.Interval):org.opensolid.core.Interval"></a>
       <a id="dividedBy(Interval):Interval"></a>
@@ -626,25 +682,6 @@ res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.opensolid.core.Interval#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(that:org.opensolid.core.Interval,tolerance:Double):Boolean"></a>
-      <a id="equals(Interval,Double):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Interval@equals(that:org.opensolid.core.Interval,tolerance:Double):Boolean" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Performs a tolerant equality check.</p><div class="fullcomment"><div class="comment cmt"><p>Performs a tolerant equality check.</p><p>Returns true if each endpoint of this interval is equal the corresponding endpoint of the
-other interval, to within the given tolerance.
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a></dd></dl></div>
-    </li><li name="org.opensolid.core.Interval#equals" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(other:Any):Boolean"></a>
       <a id="equals(Any):Boolean"></a>
       <h4 class="signature">
@@ -661,6 +698,40 @@ other interval, to within the given tolerance.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → Equals → AnyRef → Any</dd></dl></div>
+    </li><li name="org.opensolid.core.Interval#exp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="exp:org.opensolid.core.Interval"></a>
+      <a id="exp:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">exp</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@exp:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Interval#expandedBy" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="expandedBy(value:Double):org.opensolid.core.Interval"></a>
+      <a id="expandedBy(Double):Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">expandedBy</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@expandedBy(value:Double):org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <a id="finalize():Unit"></a>
@@ -701,6 +772,57 @@ other interval, to within the given tolerance.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="org.opensolid.core.Bounds#hasEqualMedianTo" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hasEqualMedianTo(that:B,index:Int):Boolean"></a>
+      <a id="hasEqualMedianTo(Interval,Int):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasEqualMedianTo</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@hasEqualMedianTo(that:B,index:Int):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
+    </li><li name="org.opensolid.core.Bounds#hasGreaterMedianThan" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hasGreaterMedianThan(that:B,index:Int):Boolean"></a>
+      <a id="hasGreaterMedianThan(Interval,Int):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasGreaterMedianThan</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@hasGreaterMedianThan(that:B,index:Int):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
+    </li><li name="org.opensolid.core.Bounds#hasLesserMedianThan" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hasLesserMedianThan(that:B,index:Int):Boolean"></a>
+      <a id="hasLesserMedianThan(Interval,Int):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hasLesserMedianThan</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@hasLesserMedianThan(that:B,index:Int):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#hashCode" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <a id="hashCode():Int"></a>
@@ -718,7 +840,7 @@ other interval, to within the given tolerance.
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → AnyRef → Any</dd></dl></div>
-    </li><li name="org.opensolid.core.Interval#hull" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="org.opensolid.core.Interval#hull" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hull(that:org.opensolid.core.Interval):org.opensolid.core.Interval"></a>
       <a id="hull(Interval):Interval"></a>
       <h4 class="signature">
@@ -734,7 +856,7 @@ other interval, to within the given tolerance.
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
-      <p class="shortcomment cmt">Returns a new interval that contains both this interval and the given interval.</p>
+      <p class="shortcomment cmt">Returns a new interval that contains both this interval and the given interval.</p><div class="fullcomment"><div class="comment cmt"><p>Returns a new interval that contains both this interval and the given interval.</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#hull" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="hull(value:Double):org.opensolid.core.Interval"></a>
       <a id="hull(Double):Interval"></a>
@@ -781,9 +903,7 @@ scala&gt; interval.interpolated(<span class="num">0.5</span>)
 res2: <span class="std">Double</span> = <span class="num">2.5</span>
 
 scala&gt; interval.interpolated(<span class="num">2.0</span>)
-res3: <span class="std">Double</span> = <span class="num">4.0</span></pre><p>Behaviour is undefined if the interval has infinite width (either the lower or upper bound is
-infinite).
-</p></div></div>
+res3: <span class="std">Double</span> = <span class="num">4.0</span></pre></div></div>
     </li><li name="org.opensolid.core.Interval#intersection" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="intersection(that:org.opensolid.core.Interval):org.opensolid.core.Interval"></a>
       <a id="intersection(Interval):Interval"></a>
@@ -823,6 +943,23 @@ interval. If the two intervals do not overlap at all then the empty interval is 
       <p class="shortcomment cmt">Returns true if this is the empty interval (contains no values).</p><div class="fullcomment"><div class="comment cmt"><p>Returns true if this is the empty interval (contains no values). Note that a singleton
 interval (one with zero width) is not considered empty since it contains a single value.</p><p>Equivalent to <code>this == Interval.Empty</code>.
 </p></div></div>
+    </li><li name="org.opensolid.core.Interval#isFinite" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isFinite:Boolean"></a>
+      <a id="isFinite:Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isFinite</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@isFinite:Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="scala.Any#isInstanceOf" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <a id="isInstanceOf[T0]:Boolean"></a>
@@ -840,6 +977,23 @@ interval (one with zero width) is not considered empty since it contains a singl
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="org.opensolid.core.Interval#isNonZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isNonZero(tolerance:Double):Boolean"></a>
+      <a id="isNonZero(Double):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isNonZero</span><span class="params">(<span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@isNonZero(tolerance:Double):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#isSingleton" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="isSingleton:Boolean"></a>
       <a id="isSingleton:Boolean"></a>
@@ -878,6 +1032,40 @@ equal).</p>
 negative infinity to positive infinity).</p><div class="fullcomment"><div class="comment cmt"><p>Returns true if this interval represents the entire range of possible real values (from
 negative infinity to positive infinity).</p><p>Equivalent to <code>this == Interval.Whole</code>.
 </p></div></div>
+    </li><li name="org.opensolid.core.Interval#isZero" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="isZero(tolerance:Double):Boolean"></a>
+      <a id="isZero(Double):Boolean"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">isZero</span><span class="params">(<span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@isZero(tolerance:Double):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Interval#log" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="log:org.opensolid.core.Interval"></a>
+      <a id="log:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">log</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@log:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#lowerBound" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="lowerBound:Double"></a>
       <a id="lowerBound:Double"></a>
@@ -895,19 +1083,19 @@ negative infinity to positive infinity).</p><p>Equivalent to <code>this == Inter
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Interval#median" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="median:Double"></a>
-      <a id="median:Double"></a>
+    </li><li name="org.opensolid.core.Interval#midpoint" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="midpoint:Double"></a>
+      <a id="midpoint:Double"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">median</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+        <span class="name">midpoint</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Interval@median:Double" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Interval@midpoint:Double" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -1015,37 +1203,6 @@ negative infinity to positive infinity).</p><p>Equivalent to <code>this == Inter
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="org.opensolid.core.Interval#overlaps" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="overlaps(that:org.opensolid.core.Interval,tolerance:Double):Boolean"></a>
-      <a id="overlaps(Interval,Double):Boolean"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">overlaps</span><span class="params">(<span name="that">that: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Interval@overlaps(that:org.opensolid.core.Interval,tolerance:Double):Boolean" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      <p class="shortcomment cmt">Returns true if this interval, expanded by the given tolerance, overlaps the given interval.</p><div class="fullcomment"><div class="comment cmt"><p>Returns true if this interval, expanded by the given tolerance, overlaps the given interval.
-<code>interval.overlaps(that, tolerance)</code> is equivalent to
-<code>Interval(interval.lowerBound - tolerance, interval.upperBound + tolerance).overlaps(that)</code>.
-Note that this means it is also possible to use a negative tolerance to make the overlap
-check more strict by not accepting intervals that only barely touch.</p><p>Examples:</p><pre>scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).overlaps(Interval(<span class="num">3.000001</span>, <span class="num">4</span>))
-res0: <span class="std">Boolean</span> = <span class="kw">false</span>
-
-scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).overlaps(Interval(<span class="num">3.000001</span>, <span class="num">4</span>), <span class="num">0.001</span>)
-res1: <span class="std">Boolean</span> = <span class="kw">true</span>
-
-scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).overlaps(Interval(<span class="num">2.99999</span>, <span class="num">4</span>))
-res2: <span class="std">Boolean</span> = <span class="kw">true</span>
-
-scala&gt; Interval(<span class="num">2</span>, <span class="num">3</span>).overlaps(Interval(<span class="num">2.99999</span>, <span class="num">4</span>), -<span class="num">0.001</span>)
-res3: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div></div>
-    </li><li name="org.opensolid.core.Interval#overlaps" visbl="pub" data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="overlaps(that:org.opensolid.core.Interval):Boolean"></a>
       <a id="overlaps(Interval):Boolean"></a>
       <h4 class="signature">
@@ -1074,7 +1231,7 @@ scala&gt; Interval(<span class="num">0</span>, <span class="num">1</span>).overl
 res3: <span class="std">Boolean</span> = <span class="kw">true</span>
 
 scala&gt; Interval(<span class="num">0</span>, <span class="num">1</span>).overlaps(Interval.Empty)
-res4: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div></div>
+res4: <span class="std">Boolean</span> = <span class="kw">false</span></pre></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a></dd></dl></div>
     </li><li name="org.opensolid.core.Interval#plus" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="plus(that:org.opensolid.core.Interval):org.opensolid.core.Interval"></a>
       <a id="plus(Interval):Interval"></a>
@@ -1143,6 +1300,57 @@ res4: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
       </a>
     </span>
       <p class="shortcomment cmt">Returns a random value within this interval.</p>
+    </li><li name="org.opensolid.core.Interval#reciprocal" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="reciprocal:org.opensolid.core.Interval"></a>
+      <a id="reciprocal:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">reciprocal</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@reciprocal:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Interval#sin" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sin:org.opensolid.core.Interval"></a>
+      <a id="sin:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sin</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@sin:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Interval#sqrt" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sqrt:org.opensolid.core.Interval"></a>
+      <a id="sqrt:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sqrt</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@sqrt:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#squared" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="squared:org.opensolid.core.Interval"></a>
       <a id="squared:Interval"></a>
@@ -1177,6 +1385,23 @@ res4: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="org.opensolid.core.Interval#tan" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="tan:org.opensolid.core.Interval"></a>
+      <a id="tan:Interval"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">tan</span><span class="result">: <a href="" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@tan:org.opensolid.core.Interval" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#times" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="times(that:org.opensolid.core.Interval):org.opensolid.core.Interval"></a>
       <a id="times(Interval):Interval"></a>
@@ -1228,6 +1453,23 @@ res4: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="org.opensolid.core.Interval">Interval</a> → AnyRef → Any</dd></dl></div>
+    </li><li name="org.opensolid.core.Interval#ulp" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ulp:Double"></a>
+      <a id="ulp:Double"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ulp</span><span class="result">: <span class="extype" name="scala.Double">Double</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Interval@ulp:Double" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
     </li><li name="org.opensolid.core.Interval#unary_-" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="unary_-:org.opensolid.core.Interval"></a>
       <a id="unary_-:Interval"></a>
@@ -1365,10 +1607,10 @@ res4: <span class="std">Boolean</span> = <span class="kw">false</span></pre></di
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="org.opensolid.core.GeometricallyComparable">
-              <h3>Inherited from <a href="GeometricallyComparable.html" class="extype" name="org.opensolid.core.GeometricallyComparable">GeometricallyComparable</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>]</h3>
             </div><div class="parent" name="org.opensolid.core.Bounded">
               <h3>Inherited from <a href="Bounded.html" class="extype" name="org.opensolid.core.Bounded">Bounded</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>]</h3>
+            </div><div class="parent" name="org.opensolid.core.Bounds">
+              <h3>Inherited from <a href="Bounds.html" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<a href="" class="extype" name="org.opensolid.core.Interval">Interval</a>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

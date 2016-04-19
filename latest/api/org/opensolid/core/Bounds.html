@@ -45,14 +45,17 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Bounds</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Bounds</span><span class="tparams">[<span name="B">B &lt;: <a href="" class="extype" name="org.opensolid.core.Bounds">Bounds</a>[<span class="extype" name="org.opensolid.core.Bounds.B">B</span>]</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
       
           <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">Linear Supertypes</span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">Known Subclasses</span>
+            <div class="subClasses hiddenContent"><a href="Bounds2d.html" class="extype" name="org.opensolid.core.Bounds2d">Bounds2d</a>, <a href="Bounds3d.html" class="extype" name="org.opensolid.core.Bounds3d">Bounds3d</a>, <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -62,7 +65,7 @@
               <ol>
                 
                 <li class="alpha in"><span>Alphabetic</span></li>
-                <li class="inherit out"><span>By inheritance</span></li>
+                <li class="inherit out"><span>By Inheritance</span></li>
               </ol>
             </div>
         <div id="ancestors">
@@ -75,7 +78,7 @@
             <span class="filtertype"></span>
             <ol>
               <li class="hideall out"><span>Hide All</span></li>
-              <li class="showall in"><span>Show all</span></li>
+              <li class="showall in"><span>Show All</span></li>
             </ol>
           </div>
         <div id="visbl">
@@ -89,8 +92,8 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="org.opensolid.core.Bounds#&lt;init&gt;" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;():org.opensolid.core.Bounds[T]"></a>
-      <a id="&lt;init&gt;:Bounds[T]"></a>
+      <a id="&lt;init&gt;():org.opensolid.core.Bounds[B]"></a>
+      <a id="&lt;init&gt;:Bounds[B]"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
@@ -100,7 +103,7 @@
         <span class="name">Bounds</span><span class="params">()</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@&lt;init&gt;():org.opensolid.core.Bounds[T]" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@&lt;init&gt;():org.opensolid.core.Bounds[B]" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -112,121 +115,104 @@
 
         <div id="values" class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="org.opensolid.core.Bounds#Empty" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="Empty:T"></a>
-      <a id="Empty:T"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Empty</span><span class="result">: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@Empty:T" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Bounds#NumDimensions" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="NumDimensions:Int"></a>
-      <a id="NumDimensions:Int"></a>
-      <h4 class="signature">
-      <span class="modifier_kind">
-        <span class="modifier">abstract </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">NumDimensions</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@NumDimensions:Int" title="Permalink" target="_top">
-        <img src="../../../lib/permalink.png" alt="Permalink" />
-      </a>
-    </span>
-      
-    </li><li name="org.opensolid.core.Bounds#bisected" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="bisected(bounds:T,index:Int):(T,T)"></a>
-      <a id="bisected(T,Int):(T,T)"></a>
+              <ol><li name="org.opensolid.core.Bounds#bisected" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="bisected(index:Int):(B,B)"></a>
+      <a id="bisected(Int):(B,B)"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">bisected</span><span class="params">(<span name="bounds">bounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: (<span class="extype" name="org.opensolid.core.Bounds.T">T</span>, <span class="extype" name="org.opensolid.core.Bounds.T">T</span>)</span>
+        <span class="name">bisected</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: (<span class="extype" name="org.opensolid.core.Bounds.B">B</span>, <span class="extype" name="org.opensolid.core.Bounds.B">B</span>)</span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@bisected(bounds:T,index:Int):(T,T)" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@bisected(index:Int):(B,B)" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds#component" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="component(bounds:T,index:Int):org.opensolid.core.Interval"></a>
-      <a id="component(T,Int):Interval"></a>
+      <a id="component(index:Int):org.opensolid.core.Interval"></a>
+      <a id="component(Int):Interval"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">component</span><span class="params">(<span name="bounds">bounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
+        <span class="name">component</span><span class="params">(<span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="Interval.html" class="extype" name="org.opensolid.core.Interval">Interval</a></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@component(bounds:T,index:Int):org.opensolid.core.Interval" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@component(index:Int):org.opensolid.core.Interval" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds#contains" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="contains(firstBounds:T,secondBounds:T,tolerance:Double):Boolean"></a>
-      <a id="contains(T,T,Double):Boolean"></a>
+      <a id="contains(that:B):Boolean"></a>
+      <a id="contains(B):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">contains</span><span class="params">(<span name="firstBounds">firstBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="secondBounds">secondBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">contains</span><span class="params">(<span name="that">that: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@contains(firstBounds:T,secondBounds:T,tolerance:Double):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@contains(that:B):Boolean" title="Permalink" target="_top">
+        <img src="../../../lib/permalink.png" alt="Permalink" />
+      </a>
+    </span>
+      
+    </li><li name="org.opensolid.core.Bounds#expandedBy" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="expandedBy(value:Double):B"></a>
+      <a id="expandedBy(Double):B"></a>
+      <h4 class="signature">
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">expandedBy</span><span class="params">(<span name="value">value: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>
+      </span>
+      </h4><span class="permalink">
+      <a href="../../../index.html#org.opensolid.core.Bounds@expandedBy(value:Double):B" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds#hull" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="hull(firstBounds:T,secondBounds:T):T"></a>
-      <a id="hull(T,T):T"></a>
+      <a id="hull(that:B):B"></a>
+      <a id="hull(B):B"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hull</span><span class="params">(<span name="firstBounds">firstBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="secondBounds">secondBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>)</span><span class="result">: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>
+        <span class="name">hull</span><span class="params">(<span name="that">that: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>)</span><span class="result">: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@hull(firstBounds:T,secondBounds:T):T" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@hull(that:B):B" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
     </li><li name="org.opensolid.core.Bounds#overlaps" visbl="pub" data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="overlaps(firstBounds:T,secondBounds:T,tolerance:Double):Boolean"></a>
-      <a id="overlaps(T,T,Double):Boolean"></a>
+      <a id="overlaps(that:B):Boolean"></a>
+      <a id="overlaps(B):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier">abstract </span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">overlaps</span><span class="params">(<span name="firstBounds">firstBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="secondBounds">secondBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="tolerance">tolerance: <span class="extype" name="scala.Double">Double</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">overlaps</span><span class="params">(<span name="that">that: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@overlaps(firstBounds:T,secondBounds:T,tolerance:Double):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@overlaps(that:B):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
@@ -401,53 +387,53 @@
       </a>
     </span>
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="org.opensolid.core.Bounds#hasEqualMedian" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="hasEqualMedian(firstBounds:T,secondBounds:T,index:Int):Boolean"></a>
-      <a id="hasEqualMedian(T,T,Int):Boolean"></a>
+    </li><li name="org.opensolid.core.Bounds#hasEqualMedianTo" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasEqualMedianTo(that:B,index:Int):Boolean"></a>
+      <a id="hasEqualMedianTo(B,Int):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hasEqualMedian</span><span class="params">(<span name="firstBounds">firstBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="secondBounds">secondBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">hasEqualMedianTo</span><span class="params">(<span name="that">that: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@hasEqualMedian(firstBounds:T,secondBounds:T,index:Int):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@hasEqualMedianTo(that:B,index:Int):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Bounds#hasGreaterMedian" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="hasGreaterMedian(firstBounds:T,secondBounds:T,index:Int):Boolean"></a>
-      <a id="hasGreaterMedian(T,T,Int):Boolean"></a>
+    </li><li name="org.opensolid.core.Bounds#hasGreaterMedianThan" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasGreaterMedianThan(that:B,index:Int):Boolean"></a>
+      <a id="hasGreaterMedianThan(B,Int):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hasGreaterMedian</span><span class="params">(<span name="firstBounds">firstBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="secondBounds">secondBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">hasGreaterMedianThan</span><span class="params">(<span name="that">that: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@hasGreaterMedian(firstBounds:T,secondBounds:T,index:Int):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@hasGreaterMedianThan(that:B,index:Int):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
       
-    </li><li name="org.opensolid.core.Bounds#hasLesserMedian" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="hasLesserMedian(firstBounds:T,secondBounds:T,index:Int):Boolean"></a>
-      <a id="hasLesserMedian(T,T,Int):Boolean"></a>
+    </li><li name="org.opensolid.core.Bounds#hasLesserMedianThan" visbl="pub" data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="hasLesserMedianThan(that:B,index:Int):Boolean"></a>
+      <a id="hasLesserMedianThan(B,Int):Boolean"></a>
       <h4 class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hasLesserMedian</span><span class="params">(<span name="firstBounds">firstBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="secondBounds">secondBounds: <span class="extype" name="org.opensolid.core.Bounds.T">T</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">hasLesserMedianThan</span><span class="params">(<span name="that">that: <span class="extype" name="org.opensolid.core.Bounds.B">B</span></span>, <span name="index">index: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       </h4><span class="permalink">
-      <a href="../../../index.html#org.opensolid.core.Bounds@hasLesserMedian(firstBounds:T,secondBounds:T,index:Int):Boolean" title="Permalink" target="_top">
+      <a href="../../../index.html#org.opensolid.core.Bounds@hasLesserMedianThan(that:B,index:Int):Boolean" title="Permalink" target="_top">
         <img src="../../../lib/permalink.png" alt="Permalink" />
       </a>
     </span>
